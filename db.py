@@ -2,25 +2,25 @@ import psycopg2
 import hashlib
 
 # -----------------------------
-# Helper function to get DB connection
+# DB CONNECTION
 # -----------------------------
 def get_connection():
     return psycopg2.connect(
         host="localhost",
-        database="fyp_chatbot",   # your database name
-        user="postgres",           # your PostgreSQL username
-        password="123456",  # your PostgreSQL password
+        database="fyp_chatbot",
+        user="postgres",
+        password="123456",
         port=5432
     )
 
 # -----------------------------
-# Password hashing
+# PASSWORD HASHING
 # -----------------------------
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 # -----------------------------
-# Users
+# USERS
 # -----------------------------
 def add_user(username, email, password):
     conn = get_connection()
@@ -45,8 +45,19 @@ def check_login(email, password):
     conn.close()
     return result
 
+def update_password(email, new_password):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute(
+        "UPDATE users SET password_hash=%s WHERE email=%s",
+        (hash_password(new_password), email)
+    )
+    conn.commit()
+    cur.close()
+    conn.close()
+
 # -----------------------------
-# Messages
+# MESSAGES
 # -----------------------------
 def add_message(user_id, role, content):
     conn = get_connection()
@@ -72,7 +83,7 @@ def get_messages(user_id):
     return result
 
 # -----------------------------
-# Mood Tracker
+# MOOD TRACKER
 # -----------------------------
 def add_mood(user_id, mood):
     conn = get_connection()
@@ -98,7 +109,7 @@ def get_moods(user_id):
     return result
 
 # -----------------------------
-# Journal
+# JOURNAL
 # -----------------------------
 def add_journal(user_id, entry):
     conn = get_connection()

@@ -1,62 +1,33 @@
-/* GLOBAL */
 .stApp {
-    background: #eef2ff;
-    font-family: 'Segoe UI', sans-serif;
-    padding: 20px;
+    background: linear-gradient(120deg, #eef2ff, #f8fafc);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Smooth fade animation */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+section.main > div {
+    animation: fadeIn 0.5s ease-in-out;
 }
 
 /* Buttons */
 .stButton>button {
-    background: linear-gradient(90deg, #4f46e5, #6366f1);
-    color: white;
-    border-radius: 10px;
-    padding: 10px 20px;
-    border: none;
+    border-radius: 12px;
+    padding: 10px 24px;
     font-weight: 600;
+    background: linear-gradient(90deg, #6366f1, #4f46e5);
+    transition: all 0.3s ease;
 }
+
 .stButton>button:hover {
-    background: linear-gradient(90deg, #4338ca, #4f46e5);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(79,70,229,0.3);
 }
 
-/* Inputs */
-.stTextInput>div>div>input,
-.stTextArea textarea {
-    border-radius: 10px;
-    border: 1px solid #d1d5db;
-    padding: 10px;
-}
-
-/* Chat bubbles */
-.user-msg {
-    background: #dbeafe;
-    color: #1e3a8a;
-    padding: 12px 18px;
-    border-radius: 20px 20px 0 20px;
-    margin: 8px 0;
-    text-align: right;
-    max-width: 70%;
-    float: right;
-    clear: both;
-    font-weight: 500;
-}
-
-.bot-msg {
-    background: #dcfce7;
-    color: #065f46;
-    padding: 12px 18px;
-    border-radius: 20px 20px 20px 0;
-    margin: 8px 0;
-    text-align: left;
-    max-width: 70%;
-    float: left;
-    clear: both;
-    font-weight: 500;
-}
-
-/* Tabs / Containers */
-.stContainer {
-    background: #ffffffaa;
-    border-radius: 15px;
-    padding: 15px;
-    margin-bottom: 15px;
+/* Cards */
+.block-container {
+    padding-top: 2rem;
 }

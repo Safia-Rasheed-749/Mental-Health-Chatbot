@@ -1,192 +1,270 @@
-import psycopg2
-from streamlit_mic_recorder import mic_recorder
-import speech_recognition as sr
-import tempfile
-from gtts import gTTS
-import base64
 import streamlit as st
+import psycopg2
+import re
 import time
+from gtts import gTTS
+import speech_recognition as sr
+from streamlit_mic_recorder import mic_recorder
+import tempfile
+from pydub import AudioSegment
 import matplotlib.pyplot as plt
+
 from db import (
     add_user,
     check_login,
-    get_messages,
     add_message,
+    get_messages,
     add_mood,
     get_moods,
     add_journal,
-    get_journals
+    get_journals,
+    update_password
 )
 
-# ---------------- SESSION ----------------
-if "user" not in st.session_state:
-    st.session_state["user"] = None
-if "page" not in st.session_state:
-    st.session_state["page"] = "chat"
+# ---------------- PAGE CONFIG ----------------
+st.set_page_config(
+    page_title="AI Mental Wellness Assistant",
+    page_icon="🧠",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-# ---------------- CSS ----------------
+# ---------------- LOAD CSS ----------------
 def load_css():
     with open("assets/style.css") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
 load_css()
 
-# ---------------- VOICE / TTS ----------------
+# ---------------- PASSWORD VALIDATION ----------------
+def is_valid_password(password):
+    if len(password) < 8:
+        return False
+    if not re.search(r"\d", password):
+        return False
+    return True
+
+# ---------------- TEXT TO SPEECH ----------------
 def speak(text):
     tts = gTTS(text=text, lang="en")
     tts.save("response.mp3")
-    with open("response.mp3", "rb") as f:
-        audio_bytes = f.read()
-        audio_base64 = base64.b64encode(audio_bytes).decode()
-    audio_html = f"""
-    <audio autoplay controls>
-        <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
-    </audio>
-    """
-    st.markdown(audio_html, unsafe_allow_html=True)
+    st.audio("response.mp3")
 
-# ---------------- PAGE CONFIG ----------------
-st.set_page_config(page_title="Mental Wellness GPT", page_icon="🧠", layout="wide")
+# ---------------- SESSION INIT ----------------
+if "user" not in st.session_state:
+    st.session_state["user"] = None
 
-# ======================= AUTH =======================
+# =========================
+# 🔐 AUTHENTICATION SECTION
+# =========================
 if st.session_state["user"] is None:
-    st.title("🧠 Mental Wellness GPT Assistant")
-    st.subheader("🔐 Authentication")
-    choice = st.radio("Select Action", ["Login", "Sign Up"])
 
-    if choice == "Sign Up":
+    st.title("🧠 AI Mental Wellness Assistant")
+    st.subheader("Secure Login & Registration")
+
+    auth_choice = st.radio(
+        "Select Action",
+        ["Login", "Sign Up", "Forgot Password"]
+    )
+
+    # -------- SIGN UP --------
+    if auth_choice == "Sign Up":
         username = st.text_input("Username")
         email = st.text_input("Email")
         password = st.text_input("Password", type="password")
-        if st.button("Create Account"):
-            try:
-                add_user(username, email, password)
-                st.success("Account created! Please login.")
-                st.rerun()
-            except psycopg2.errors.UniqueViolation:
-                st.error("User already exists.")
-            except Exception as e:
-                st.error(f"Error: {e}")
 
-    if choice == "Login":
+        if st.button("Create Account"):
+            if not is_valid_password(password):
+                st.warning("⚠ Password must be at least 8 characters and contain at least one number.")
+            else:
+                try:
+                    add_user(username, email, password)
+                    st.success("Account created successfully. Please login.")
+                except psycopg2.errors.UniqueViolation:
+                    st.error("User already exists.")
+                except Exception as e:
+                    st.error(f"Error: {e}")
+
+    # -------- LOGIN --------
+    elif auth_choice == "Login":
         email = st.text_input("Email")
         password = st.text_input("Password", type="password")
+
         if st.button("Login"):
             user = check_login(email, password)
             if user:
                 st.session_state["user"] = user
+                st.success(f"Welcome {user[1]}!")
                 st.rerun()
             else:
-                st.error("Incorrect email or password")
+                st.error("Invalid email or password.")
+
+    # -------- FORGOT PASSWORD --------
+    elif auth_choice == "Forgot Password":
+        email_reset = st.text_input("Enter your registered email")
+        new_pass = st.text_input("New Password", type="password")
+
+        if st.button("Reset Password"):
+            if not is_valid_password(new_pass):
+                st.warning("Password must be at least 8 characters and contain a number.")
+            else:
+                try:
+                    update_password(email_reset, new_pass)
+                    st.success("Password updated successfully! Please login.")
+                except Exception as e:
+                    st.error(f"Error: {e}")
+
     st.stop()
 
-# ======================= AFTER LOGIN =======================
+# =========================
+# 🏠 AFTER LOGIN
+# =========================
+
 user_id = st.session_state["user"][0]
 username = st.session_state["user"][1]
 
-# ================= SIDEBAR =================
-st.sidebar.title(f"Hello, {username}!")
-st.sidebar.markdown("### Menu")
-if st.sidebar.button("Chat"):
-    st.session_state["page"] = "chat"
-    st.rerun()
-if st.sidebar.button("Dashboard"):
-    st.session_state["page"] = "dashboard"
-    st.rerun()
-if st.sidebar.button("Logout"):
-    del st.session_state["user"]
-    st.rerun()
+# ---------------- SIDEBAR ----------------
+with st.sidebar:
+    st.markdown(f"### 👋 Welcome, {username}")
+    st.divider()
 
-# ================= MAIN AREA =================
-if st.session_state["page"] == "chat":
-    st.title("💬 Chat Assistant")
+    menu = st.radio(
+        "Navigation",
+        ["Dashboard", "Chat", "History", "Mood Analytics", "Journal"]
+    )
 
-    # Display chat messages
-    messages = get_messages(user_id)
-    for role, content in messages[-10:]:
-        if role == "user":
-            st.markdown(f'<div class="user-msg">{content}</div>', unsafe_allow_html=True)
-        else:
-            st.markdown(f'<div class="bot-msg">{content}</div>', unsafe_allow_html=True)
+    st.divider()
 
-    # Text input
-    user_input = st.text_input("Type your message here...")
-    if st.button("Send Message") and user_input.strip():
-        add_message(user_id, "user", user_input)
-        with st.spinner("Assistant is typing..."):
-            time.sleep(1.5)
-            response = "I hear you. Let's explore this together."
-            add_message(user_id, "assistant", response)
-            speak(response)
+    if st.button("Logout"):
+        st.session_state["user"] = None
         st.rerun()
 
-    # Voice input
-    st.subheader("🎤 Voice Feature")
-    audio = mic_recorder(start_prompt="Start Recording", stop_prompt="Stop Recording", key="voice")
+# =========================
+# 📊 DASHBOARD
+# =========================
+if menu == "Dashboard":
+    st.title("Your AI Mental Wellness Companion")
+    st.markdown("""
+    ✔ Emotion-aware AI Conversations  
+    ✔ Voice Interaction Support  
+    ✔ Mood Tracking & Journaling  
+    ✔ Secure & Private Data Storage  
+    """)
+
+# =========================
+# 💬 CHAT SECTION
+# =========================
+elif menu == "Chat":
+
+    st.title("Chat with AI Assistant")
+
+    messages = get_messages(user_id)
+
+    # Display chat history in ChatGPT style
+    for role, content in messages:
+        if role == "user":
+            with st.chat_message("user"):
+                st.write(content)
+        else:
+            with st.chat_message("assistant"):
+                st.write(content)
+
+    # Text Chat Input
+    user_input = st.chat_input("Type your message...")
+
+    if user_input:
+        add_message(user_id, "user", user_input)
+
+        response = "I hear you. Let's explore this together."
+        add_message(user_id, "assistant", response)
+
+        speak(response)
+        st.rerun()
+
+    # Voice Recording
+    st.markdown("### 🎤 Voice Input")
+    audio = mic_recorder(
+        start_prompt="Start Recording",
+        stop_prompt="Stop Recording",
+        key="voice_recorder"
+    )
+
     if audio:
         recognizer = sr.Recognizer()
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp:
             tmp.write(audio["bytes"])
-            wav_path = tmp.name
+            tmp_path = tmp.name
+
+        wav_path = tmp_path.replace(".webm", ".wav")
+        sound = AudioSegment.from_file(tmp_path)
+        sound.export(wav_path, format="wav")
+
         with sr.AudioFile(wav_path) as source:
             audio_data = recognizer.record(source)
             try:
                 voice_text = recognizer.recognize_google(audio_data)
+
                 add_message(user_id, "user", voice_text)
-                with st.spinner("Assistant is typing..."):
-                    time.sleep(1.5)
-                    response = "I hear you. Let's explore this together."
-                    add_message(user_id, "assistant", response)
-                    speak(response)
+
+                response = "I hear you. Let's explore this together."
+                add_message(user_id, "assistant", response)
+
+                speak(response)
                 st.rerun()
-            except:
-                st.error("Could not recognize speech")
 
-    # Convert chat text to speech
-    st.subheader("🔊 Convert Text to Sound")
-    text_to_speak = st.text_area("Enter text to convert to audio")
-    if st.button("Convert to Speech") and text_to_speak.strip():
-        speak(text_to_speak)
+            except Exception:
+                st.error("Speech not recognized. Please try again.")
 
-# ================= DASHBOARD =================
-elif st.session_state["page"] == "dashboard":
-    st.title("📊 Dashboard")
-    tabs = st.tabs(["Previous Chats", "Mood Tracker", "Journal"])
+# =========================
+# 📂 CHAT HISTORY
+# =========================
+elif menu == "History":
+    st.title("Chat History")
+    chats = get_messages(user_id)
+    for role, content in chats:
+        st.write(f"{role.upper()}: {content}")
 
-    # Previous Chats Tab
-    with tabs[0]:
-        st.subheader("Previous Chats")
-        messages = get_messages(user_id)
-        for role, content in messages:
-            if role == "user":
-                st.markdown(f'<div class="user-msg">{content}</div>', unsafe_allow_html=True)
-            else:
-                st.markdown(f'<div class="bot-msg">{content}</div>', unsafe_allow_html=True)
+# =========================
+# 📈 MOOD ANALYTICS
+# =========================
+elif menu == "Mood Analytics":
+    st.title("Mood Tracker")
 
-    # Mood Tracker Tab
-    with tabs[1]:
-        st.subheader("Mood Tracker")
-        mood = st.radio("How are you feeling today?", ["Happy", "Neutral", "Sad", "Anxious", "Angry"])
-        if st.button("Log Mood"):
-            add_mood(user_id, mood)
-            st.success("Mood logged successfully!")
-        moods = get_moods(user_id)
-        if moods:
-            mood_counts = {m: moods.count(m) for m in set(moods)}
-            fig, ax = plt.subplots()
-            ax.bar(mood_counts.keys(), mood_counts.values())
-            ax.set_ylabel("Count")
-            ax.set_title("Mood Overview")
-            st.pyplot(fig)
+    mood = st.radio(
+        "How are you feeling today?",
+        ["Happy", "Neutral", "Sad", "Anxious", "Angry"]
+    )
 
-    # Journal Tab
-    with tabs[2]:
-        st.subheader("Journal")
-        journal_entry = st.text_area("Write your thoughts here...")
-        if st.button("Save Journal Entry") and journal_entry.strip():
-            add_journal(user_id, journal_entry)
-            st.success("Journal entry saved!")
-        journals = get_journals(user_id)
-        if journals:
-            st.subheader("Recent Entries")
-            for entry in journals[-5:]:
-                st.write("-", entry)
+    if st.button("Log Mood"):
+        add_mood(user_id, mood)
+        st.success("Mood logged successfully!")
+
+    moods = get_moods(user_id)
+
+    if moods:
+        mood_counts = {m: moods.count(m) for m in set(moods)}
+        fig, ax = plt.subplots()
+        ax.bar(mood_counts.keys(), mood_counts.values())
+        ax.set_title("Mood Overview")
+        ax.set_ylabel("Count")
+        st.pyplot(fig)
+
+# =========================
+# 📝 JOURNAL
+# =========================
+elif menu == "Journal":
+    st.title("Personal Journal")
+
+    entry = st.text_area("Write your thoughts here...")
+
+    if st.button("Save Entry"):
+        if entry.strip():
+            add_journal(user_id, entry)
+            st.success("Journal entry saved successfully.")
+
+    journals = get_journals(user_id)
+    if journals:
+        st.subheader("Recent Entries")
+        for j in journals[:5]:
+            st.write("-", j)
