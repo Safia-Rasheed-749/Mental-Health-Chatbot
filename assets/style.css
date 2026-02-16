@@ -1,45 +1,32 @@
-/* ===============================
-   GLOBAL APP STYLING
-=================================*/
-
+/* GLOBAL */
 .stApp {
-    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+    background: #eef2ff;
     font-family: 'Segoe UI', sans-serif;
+    padding: 20px;
 }
 
-/* Remove Streamlit default padding */
-.block-container {
-    padding-top: 2rem;
+/* Buttons */
+.stButton>button {
+    background: linear-gradient(90deg, #4f46e5, #6366f1);
+    color: white;
+    border-radius: 10px;
+    padding: 10px 20px;
+    border: none;
+    font-weight: 600;
+}
+.stButton>button:hover {
+    background: linear-gradient(90deg, #4338ca, #4f46e5);
 }
 
-/* ===============================
-   AUTH BOX
-=================================*/
-
-.auth-box {
-    background: white;
-    padding: 40px;
-    border-radius: 20px;
-    max-width: 420px;
-    margin: auto;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+/* Inputs */
+.stTextInput>div>div>input,
+.stTextArea textarea {
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    padding: 10px;
 }
 
-/* ===============================
-   CHAT CONTAINER
-=================================*/
-
-.chat-container {
-    background: white;
-    padding: 25px;
-    border-radius: 20px;
-    max-height: 450px;
-    overflow-y: auto;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-    margin-bottom: 20px;
-}
-
-/* User Message Bubble */
+/* Chat bubbles */
 .user-msg {
     background: #dbeafe;
     color: #1e3a8a;
@@ -53,7 +40,6 @@
     font-weight: 500;
 }
 
-/* Assistant Message Bubble */
 .bot-msg {
     background: #dcfce7;
     color: #065f46;
@@ -67,51 +53,10 @@
     font-weight: 500;
 }
 
-/* ===============================
-   BUTTONS
-=================================*/
-
-.stButton>button {
-    background: linear-gradient(90deg, #4f46e5, #6366f1);
-    color: white;
-    border-radius: 10px;
-    padding: 10px 20px;
-    border: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.stButton>button:hover {
-    background: linear-gradient(90deg, #4338ca, #4f46e5);
-    transform: translateY(-2px);
-}
-
-/* ===============================
-   INPUT FIELDS
-=================================*/
-
-.stTextInput>div>div>input,
-.stTextArea textarea {
-    border-radius: 10px;
-    border: 1px solid #d1d5db;
-    padding: 10px;
-}
-
-/* ===============================
-   SUCCESS MESSAGE
-=================================*/
-
-.stAlert-success {
-    border-radius: 10px;
-}
-
-/* ===============================
-   MOOD SECTION CARD
-=================================*/
-
-.mood-card {
-    background: white;
-    padding: 20px;
+/* Tabs / Containers */
+.stContainer {
+    background: #ffffffaa;
     border-radius: 15px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+    padding: 15px;
+    margin-bottom: 15px;
 }
