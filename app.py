@@ -73,17 +73,18 @@ if st.session_state["user"] is None:
         email = st.text_input("Email")
         password = st.text_input("Password", type="password")
 
-        if st.button("Create Account"):
-            if not is_valid_password(password):
-                st.warning("⚠ Password must be at least 8 characters and contain at least one number.")
+    if st.button("Create Account"):
+
+        if not is_valid_password(password):
+            st.warning("⚠ Password must be at least 8 characters and contain at least one number.")
+
+        else:
+            success, message = add_user(username, email, password)
+
+            if success:
+                st.success(message)
             else:
-                try:
-                    add_user(username, email, password)
-                    st.success("Account created successfully. Please login.")
-                except psycopg2.errors.UniqueViolation:
-                    st.error("User already exists.")
-                except Exception as e:
-                    st.error(f"Error: {e}")
+                st.error(message)
 
     # -------- LOGIN --------
     elif auth_choice == "Login":
