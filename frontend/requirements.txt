@@ -1,0 +1,7 @@
+streamlit
+psycopg2
+streamlit-mic-recorder
+speechrecognition
+gtts
+pydub
+matplotlib
