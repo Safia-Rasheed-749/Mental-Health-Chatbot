@@ -1,7 +1,8 @@
 streamlit
-psycopg2
-streamlit-mic-recorder
 speechrecognition
-gtts
 pydub
+streamlit-mic-recorder
+gtts
+psycopg2-binary
+requests
 matplotlib
