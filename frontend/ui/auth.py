@@ -1,4 +1,5 @@
 import streamlit as st
+import re
 from db import add_user, check_login
 
 def show_auth_page():
@@ -343,48 +344,35 @@ button[data-baseweb="tab"][aria-selected="true"] {
                     """, unsafe_allow_html=True)
 
         # ================= SIGNUP =================
-        with tab_signup:
-            name = st.text_input("Full Name", key="reg_name")
-            reg_email = st.text_input("Email", key="reg_email")
-            reg_password = st.text_input("Password", type="password", key="reg_password")
+        # ================= SIGNUP =================
+    with tab_signup:
+        name = st.text_input("Full Name", key="reg_name")
+        reg_email = st.text_input("Email", key="reg_email")
+        reg_password = st.text_input("Password", type="password", key="reg_password")
 
-            if st.button("Create Account", key="signup_btn", use_container_width=True):
-                if name and reg_email and reg_password:
-                    add_user(name, reg_email, reg_password)
-                    st.markdown("""
-                        <div class="success-message">
-                            ✓ Account created successfully!
-                        </div>
-                    """, unsafe_allow_html=True)
+        def is_valid_email(email):
+            pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+            return re.match(pattern, email) is not None
+
+        if st.button("Create Account", key="signup_btn", use_container_width=True):
+            if name and reg_email and reg_password:
+                if not is_valid_email(reg_email):
+                    st.markdown('<div class="warning-message">⚠ Please enter a valid email address.</div>', unsafe_allow_html=True)
                 else:
-                    st.markdown("""
-                        <div class="warning-message">
-                            ⚠ Please fill all fields.
-                        </div>
-                    """, unsafe_allow_html=True)
-
-        # Social Login Section
-        st.markdown("""
-            <p style="text-align:center; margin-top:30px; color:#64748B; font-size:0.85rem;">
-                or continue with
-            </p>
-        """, unsafe_allow_html=True)
-
-        st.markdown("""
-            <div class="social-row">
-                <div class="social-btn">
-                    <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png">
-                    Google
-                </div>
-                <div class="social-btn">
-                    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" style="filter: invert(1);">
-                    GitHub
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-        # CLOSE MAIN CARD
-        st.markdown('</div>', unsafe_allow_html=True)
+                    # Use add_user which already handles duplicate emails!
+                    success, message = add_user(name, reg_email, reg_password)
+                    
+                    if success:
+                        st.markdown(f'<div class="success-message">✓ {message}</div>', unsafe_allow_html=True)
+                        # Optional: Clear the form
+                        # st.session_state["reg_name"] = ""
+                        # st.session_state["reg_email"] = ""
+                        # st.session_state["reg_password"] = ""
+                    else:
+                        # This will show "This email is already registered" when duplicate
+                        st.markdown(f'<div class="error-message">❌ {message}</div>', unsafe_allow_html=True)
+            else:
+                st.markdown('<div class="warning-message">⚠ Please fill all fields.</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     show_auth_page()
