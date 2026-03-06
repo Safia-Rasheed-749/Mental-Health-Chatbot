@@ -12,7 +12,7 @@ try:
         host="localhost",
         database="fyp_chatbot",
         user="postgres",
-        password="123456789",
+        password="123456",
         port=5432
     )
 except Exception as e:

@@ -1,29 +1,94 @@
 import streamlit as st
 
 def show_dashboard():
-    # Page title
-    st.title("Your AI Mental Wellness Companion 🧠")
-    
-    # Info cards with calm styling
-    st.markdown(
-        """
-        <div style='display:flex; gap:20px; flex-wrap: wrap;'>
-            <div style='flex:1; background-color:#e0f7fa; padding:20px; border-radius:10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);'>
-                <h3>✔ Emotion-aware AI Conversations</h3>
-                <p>Engage in AI-powered chats that understand your mood.</p>
-            </div>
-            <div style='flex:1; background-color:#e0f7fa; padding:20px; border-radius:10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);'>
-                <h3>✔ Voice Interaction Support</h3>
-                <p>Talk to your AI companion using voice for a more natural experience.</p>
-            </div>
-            <div style='flex:1; background-color:#e0f7fa; padding:20px; border-radius:10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);'>
-                <h3>✔ Mood Tracking & Journaling</h3>
-                <p>Monitor your mood trends and maintain a private journal.</p>
-            </div>
-            <div style='flex:1; background-color:#e0f7fa; padding:20px; border-radius:10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);'>
-                <h3>✔ Secure & Private Data Storage</h3>
-                <p>Your data remains private and encrypted at all times.</p>
-            </div>
-        </div>
-        """, unsafe_allow_html=True
-    )
+
+    # Hide default Streamlit menu/header/footer
+    st.markdown("""
+        <style>
+        #MainMenu {visibility: hidden;}
+        header {visibility: hidden;}
+        footer {visibility: hidden;}
+
+        .dashboard-title{
+            text-align:center;
+            font-size:40px;
+            font-weight:bold;
+            background: linear-gradient(90deg,#4facfe,#00f2fe);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            margin-bottom:10px;
+        }
+
+        .dashboard-sub{
+            text-align:center;
+            font-size:18px;
+            color:#555;
+            margin-bottom:50px;
+        }
+
+        .card{
+            background-color:#b3e0ff;  /* slightly darker light-blue */
+            padding:30px;
+            border-radius:15px;
+            text-align:center;
+            box-shadow:0px 4px 10px rgba(0,0,0,0.1);
+            margin:15px;  /* space between cards */
+            transition:none; /* remove hover effect */
+        }
+
+        .icon{
+            font-size:40px;
+            margin-bottom:15px;
+        }
+
+        .title{
+            font-size:20px;
+            font-weight:600;
+            color:#0077b6;
+            margin-bottom:10px;
+        }
+
+        .text{
+            font-size:14px;
+            color:#444;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Dashboard Title
+    st.markdown('<div class="dashboard-title">🧠 MindCare AI Dashboard</div>', unsafe_allow_html=True)
+    st.markdown('<div class="dashboard-sub">Your Personal AI Mental Wellness Companion</div>', unsafe_allow_html=True)
+
+    # Cards in two rows of two columns each
+    rows = []
+    for _ in range(2):
+        rows.append(st.columns(2, gap="large"))
+
+    # Card contents
+    cards = [
+        {"icon":"💬", "title":"AI Chat", "text":"Talk with your AI mental wellness companion anytime."},
+        {"icon":"📊", "title":"Mood Log", "text":"Track your daily mood and emotional trends."},
+        {"icon":"🕒", "title":"Chat History", "text":"Review your previous conversations anytime."},
+        {"icon":"📖", "title":"Journal", "text":"Write private thoughts and reflect on your feelings."}
+    ]
+
+    for i, row in enumerate(rows):
+        with row[0]:
+            st.markdown(f"""
+                <div class="card">
+                    <div class="icon">{cards[i*2]['icon']}</div>
+                    <div class="title">{cards[i*2]['title']}</div>
+                    <div class="text">{cards[i*2]['text']}</div>
+                </div>
+            """, unsafe_allow_html=True)
+        with row[1]:
+            st.markdown(f"""
+                <div class="card">
+                    <div class="icon">{cards[i*2+1]['icon']}</div>
+                    <div class="title">{cards[i*2+1]['title']}</div>
+                    <div class="text">{cards[i*2+1]['text']}</div>
+                </div>
+            """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<center>🌿 Take care of your mental wellness today.</center>", unsafe_allow_html=True)

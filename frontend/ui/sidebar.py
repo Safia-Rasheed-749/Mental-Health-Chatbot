@@ -1,6 +1,14 @@
 import streamlit as st
 
 def show_sidebar():
+
+    # Hide Streamlit default multipage navigation (App / About)
+    st.markdown("""
+        <style>
+        [data-testid="stSidebarNav"] {display: none;}
+        </style>
+    """, unsafe_allow_html=True)
+
     with st.sidebar:
         st.markdown("## 🧠 MindCare AI")
         
@@ -16,6 +24,7 @@ def show_sidebar():
                 st.session_state.get("current_page", "Dashboard")
             )
         )
+
         st.session_state.current_page = menu
         
         st.markdown("---")
@@ -24,4 +33,4 @@ def show_sidebar():
         if st.button("Logout"):
             st.session_state.user = None
             st.session_state.current_page = "Dashboard"
-            st.experimental_rerun()
+            st.rerun()

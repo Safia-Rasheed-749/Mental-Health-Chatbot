@@ -4,21 +4,46 @@ import matplotlib.pyplot as plt
 from db import add_mood, get_moods
 
 def show_mood_analytics(user_id):
+    # ---------------- HIDE DEFAULT UI ----------------
+    st.markdown("""
+        <style>
+        #MainMenu {visibility: hidden;}
+        header {visibility: hidden;}
+        footer {visibility: hidden;}
+
+        /* Gradient Log Mood button */
+        div.stButton > button:first-child {
+            background: linear-gradient(90deg, #4facfe, #00f2fe) !important;
+            color: white !important;
+            font-weight: 700;
+            border-radius: 12px;
+            height: 50px;
+            width: 100%;
+        }
+
+        div.stButton > button:hover {
+            opacity: 0.9;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
     st.title("📈 Mood Tracker")
 
     # ---------------- Mood Input ----------------
     st.markdown("### How are you feeling today?")
     mood = st.radio(
         "",
-        ["Happy", "Neutral", "Sad", "Anxious", "Angry"],
+        ["😄 Happy", "😐 Neutral", "😔 Sad", "😰 Anxious", "😡 Angry"],
         index=1,
         horizontal=True
     )
 
     # Log Mood Button
     if st.button("Log Mood", key="log_mood"):
-        add_mood(user_id, mood)
-        st.success(f"✅ Your mood '{mood}' has been logged successfully!")
+        # Strip emoji when saving to DB
+        mood_text = mood.split(" ", 1)[1]
+        add_mood(user_id, mood_text)
+        st.success(f"✅ Your mood '{mood_text}' has been logged successfully!")
 
     # ---------------- Mood Overview ----------------
     moods = get_moods(user_id)
