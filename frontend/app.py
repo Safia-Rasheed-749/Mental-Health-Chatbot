@@ -62,13 +62,11 @@ if st.session_state.user is None:
         show_landing_page()
     
     elif st.session_state.page == "about":
-        # Professional back button to return home
-        if st.button("← Back to Home", type="secondary"):
-            st.session_state.page = "landing"
-            st.rerun()
+        # NO BACK TO HOME BUTTON FOR ABOUT PAGE
         show_about_page()
         
     elif st.session_state.page == "auth":
+        # BACK TO HOME BUTTON FOR AUTH PAGE (keep as is)
         if st.button("← Back to Home", type="secondary"):
             st.session_state.page = "landing"
             st.rerun()

@@ -1,7 +1,7 @@
 import streamlit as st
 
 def show_about_page():
-    # Professional CSS
+    # Professional CSS with Navigation Bar same as landing page
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -29,6 +29,88 @@ def show_about_page():
         padding: 2rem !important;
         max-width: 1200px !important;
         margin: 0 auto !important;
+    }
+    
+    /* ===== NAVIGATION BAR - PURPLE GRADIENT (LIKE LANDING PAGE) ===== */
+    .nav-container {
+        background: purple !important;
+        padding: 12px 30px !important;
+        border-radius: 60px !important;
+        box-shadow: 0 8px 32px 0 rgba(102, 126, 234, 0.3) !important;
+        margin: 10px 0 30px 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        animation: slideDown 0.8s ease-out;
+    }
+    
+    @keyframes slideDown {
+        from {
+            transform: translateY(-100px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    
+    /* Logo styling - white text */
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 26px;
+        font-weight: 700;
+        color: purple!important;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    .logo-icon {
+        font-size: 36px;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    }
+    
+    /* Streamlit button styling for nav */
+    div.stButton > button {
+        background: red !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        color: white !important;
+        font-weight: 600 !important;
+        padding: 8px 25px !important;
+        border-radius: 40px !important;
+        font-size: 16px !important;
+        transition: all 0.3s ease !important;
+        backdrop-filter: blur(5px) !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+        min-width: 100px;
+    }
+    
+    div.stButton > button:hover {
+        background: white !important;
+        color: #667eea !important;
+        transform: translateY(-3px) !important;
+        box-shadow: 0 10px 30px rgba(255,255,255,0.3) !important;
+        border-color: white !important;
+    }
+    
+    /* Get Started button special - red gradient */
+    button[key="nav_getstarted_about"] {
+        background: red !important;
+        border: none !important;
+        color: white !important;
+        padding: 8px 30px !important;
+        border-radius: 40px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4) !important;
+        min-width: 140px !important;
+    }
+    
+    button[key="nav_getstarted_about"]:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 15px 35px rgba(255, 107, 107, 0.6) !important;
+        background: linear-gradient(135deg, #ff6b6b, #ff4d4d) !important;
     }
     
     /* Hero Section */
@@ -80,7 +162,7 @@ def show_about_page():
         border-radius: 2px;
     }
     
-    /* Mission Cards - Colors as they were */
+    /* Mission Cards */
     .mission-card-1 {
         background: #1e2a3a;
         border-radius: 20px;
@@ -135,7 +217,7 @@ def show_about_page():
         line-height: 1.6;
     }
     
-    /* Architecture Cards - Colors as they were */
+    /* Architecture Cards */
     .arch-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -215,7 +297,7 @@ def show_about_page():
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     }
     
-    /* SDG Cards - Colors as they were */
+    /* SDG Cards */
     .sdg-container {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -273,7 +355,7 @@ def show_about_page():
         line-height: 1.6;
     }
     
-    /* Stats Cards - Colors as they were */
+    /* Stats Cards */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -329,7 +411,7 @@ def show_about_page():
         font-size: 1rem;
     }
     
-    /* Team Cards - Colors as they were */
+    /* Team Cards */
     .team-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -437,6 +519,35 @@ def show_about_page():
     }
     </style>
     """, unsafe_allow_html=True)
+
+    # ================= NAVIGATION BAR (NO BACK TO HOME BUTTON) =================
+    col1, col2 = st.columns([1, 1])
+    
+    with col1:
+        st.markdown("""
+            <div class="logo">
+                <span class="logo-icon">🧠</span>
+                <span>Mind Care AI</span>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        nav_col1, nav_col2, nav_col3 = st.columns([1, 1, 1.5])
+        
+        with nav_col1:
+            if st.button("🏠 Home", key="nav_home_about", use_container_width=True):
+                st.session_state.page = "landing"
+                st.rerun()
+        
+        with nav_col2:
+            if st.button("📖 About", key="nav_about_about", use_container_width=True):
+                st.session_state.page = "about"
+                st.rerun()
+        
+        with nav_col3:
+            if st.button("🚀 Get Started", key="nav_getstarted_about", use_container_width=True):
+                st.session_state.page = "auth"
+                st.rerun()
 
     # ================= HERO SECTION =================
     st.markdown("""
