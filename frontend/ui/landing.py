@@ -42,7 +42,7 @@ def show_landing_page():
 
     /* ===== NAVIGATION BAR ===== */
     .nav-container {
-        background: red !important;
+        background: purple !important;
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.3);
@@ -101,27 +101,29 @@ def show_landing_page():
     
     div.stButton > button:hover {
         background: red !important;
-        color: #667eea !important;
+        color: white !important;
         transform: translateY(-3px) !important;
-        box-shadow: 0 10px 30px rgba(255,255,255,0.3) !important;
-        border-color: white !important;
+        box-shadow: 0 10px 30px rgba(255, 68, 68, 0.3) !important;
+        border-color: #ff4444 !important;
     }
     
     /* Get Started button special */
     button[key="nav_getstarted"] {
-        background: red !important;
-        border: none !important;
+        background: purple !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
         color: white !important;
         padding: 8px 30px !important;
         border-radius: 40px !important;
         font-weight: 600 !important;
-        box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4) !important;
         min-width: 140px !important;
     }
     
     button[key="nav_getstarted"]:hover {
+        background: #ff4444 !important;
+        color: white !important;
         transform: translateY(-3px) !important;
-        box-shadow: 0 15px 35px rgba(255, 107, 107, 0.6) !important;
+        box-shadow: 0 10px 30px rgba(255, 68, 68, 0.3) !important;
+        border-color: #ff4444 !important;
     }
 
     /* HERO SECTION */
@@ -543,7 +545,7 @@ def show_landing_page():
     with col1:
         st.markdown("""
             <div class="logo">
-                <span class="logo-icon">🧠</span>
+                <span class="logo-icon">🧠✨</span>
                 <span>Mind Care AI</span>
             </div>
         """, unsafe_allow_html=True)
@@ -563,7 +565,11 @@ def show_landing_page():
         
         with nav_col3:
             if st.button("🚀 Demo", key="nav_demo", use_container_width=True):
-                st.info("✨ Demo feature coming soon! You'll be able to try our AI assistant.")
+                # ⭐ Reset demo state when starting demo
+                st.session_state.demo_messages = []
+                st.session_state.demo_count = 0
+                st.session_state.page = "demo"
+                st.rerun()
         
         with nav_col4:
             if st.button("🚀 Get Started", key="nav_getstarted", use_container_width=True):

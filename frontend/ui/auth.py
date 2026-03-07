@@ -4,6 +4,43 @@ from db import add_user, check_login
 
 def show_auth_page():
 
+    # ================= BACK TO HOME BUTTON =================
+    st.markdown("""
+    <style>
+    /* Back to Home Button Styling */
+    .back-home-btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+    }
+    
+    .back-home-btn button {
+        background: linear-gradient(135deg, #667eea, #764ba2) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 30px !important;
+        padding: 8px 20px !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3) !important;
+    }
+    
+    .back-home-btn button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="back-home-btn">', unsafe_allow_html=True)
+    if st.button("← Back to Home", key="back_to_home"):
+        st.session_state.page = "landing"
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+
     # ================= LIGHTER BACKGROUND =================
     st.markdown("""
 <style>
@@ -291,21 +328,17 @@ button[data-baseweb="tab"][aria-selected="true"] {
 """, unsafe_allow_html=True)
 
     # ================= CENTER LAYOUT =================
-    # Create three columns for centering
     col1, center_col, col2 = st.columns([1, 2, 1])
 
     with center_col:
-        # MAIN CARD - This creates the centered box around ALL content
         st.markdown('<div class="main-card">', unsafe_allow_html=True)
 
-        # Doctor Illustration - NO EXTRA BOX
         st.markdown("""
             <div class="doctor-img">
                 <img src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png">
             </div>
         """, unsafe_allow_html=True)
 
-        # Title and Subtitle - Now inside the card
         st.markdown("""
             <div style="text-align:center; margin-bottom:30px;">
                 <h1>Welcome to Your AI Therapist</h1>
@@ -313,7 +346,6 @@ button[data-baseweb="tab"][aria-selected="true"] {
             </div>
         """, unsafe_allow_html=True)
 
-        # TABS
         tab_login, tab_signup = st.tabs(["Login", "Sign Up"])
 
         # ================= LOGIN =================
@@ -321,7 +353,6 @@ button[data-baseweb="tab"][aria-selected="true"] {
             email = st.text_input("Email Address", key="login_email")
             password = st.text_input("Password", type="password", key="login_password")
 
-            # Remember me and Forgot password
             st.markdown("""
                 <div class="remember-forgot">
                     <label>
@@ -331,10 +362,12 @@ button[data-baseweb="tab"][aria-selected="true"] {
                 </div>
             """, unsafe_allow_html=True)
 
-            if st.button("Sign In", key="signin_btn", ):
+            if st.button("Sign In", key="signin_btn", use_container_width=True):
                 user = check_login(email, password)
                 if user:
                     st.session_state.user = user
+                    st.session_state.current_page = "Dashboard"
+                    st.session_state.page = "dashboard"
                     st.rerun()
                 else:
                     st.markdown("""
@@ -344,35 +377,36 @@ button[data-baseweb="tab"][aria-selected="true"] {
                     """, unsafe_allow_html=True)
 
         # ================= SIGNUP =================
-        # ================= SIGNUP =================
-    with tab_signup:
-        name = st.text_input("Full Name", key="reg_name")
-        reg_email = st.text_input("Email", key="reg_email")
-        reg_password = st.text_input("Password", type="password", key="reg_password")
+        with tab_signup:
+            name = st.text_input("Full Name", key="reg_name")
+            reg_email = st.text_input("Email", key="reg_email")
+            reg_password = st.text_input("Password", type="password", key="reg_password")
 
-        def is_valid_email(email):
-            pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-            return re.match(pattern, email) is not None
+            def is_valid_email(email):
+                pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+                return re.match(pattern, email) is not None
 
-        if st.button("Create Account", key="signup_btn", use_container_width=True):
-            if name and reg_email and reg_password:
-                if not is_valid_email(reg_email):
-                    st.markdown('<div class="warning-message">⚠ Please enter a valid email address.</div>', unsafe_allow_html=True)
-                else:
-                    # Use add_user which already handles duplicate emails!
-                    success, message = add_user(name, reg_email, reg_password)
-                    
-                    if success:
-                        st.markdown(f'<div class="success-message">✓ {message}</div>', unsafe_allow_html=True)
-                        # Optional: Clear the form
-                        # st.session_state["reg_name"] = ""
-                        # st.session_state["reg_email"] = ""
-                        # st.session_state["reg_password"] = ""
+            if st.button("Create Account", key="signup_btn", use_container_width=True):
+                if name and reg_email and reg_password:
+                    if not is_valid_email(reg_email):
+                        st.markdown('<div class="warning-message">⚠ Please enter a valid email address.</div>', unsafe_allow_html=True)
                     else:
-                        # This will show "This email is already registered" when duplicate
-                        st.markdown(f'<div class="error-message">❌ {message}</div>', unsafe_allow_html=True)
-            else:
-                st.markdown('<div class="warning-message">⚠ Please fill all fields.</div>', unsafe_allow_html=True)
+                        success, message = add_user(name, reg_email, reg_password)
+                        
+                        if success:
+                            # Auto login after signup
+                            user = check_login(reg_email, reg_password)
+                            if user:
+                                st.session_state.user = user
+                                st.session_state.current_page = "Dashboard"
+                                st.session_state.page = "dashboard"
+                                st.rerun()
+                        else:
+                            st.markdown(f'<div class="error-message">❌ {message}</div>', unsafe_allow_html=True)
+                else:
+                    st.markdown('<div class="warning-message">⚠ Please fill all fields.</div>', unsafe_allow_html=True)
+
+        st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     show_auth_page()

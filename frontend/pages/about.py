@@ -31,7 +31,7 @@ def show_about_page():
         margin: 0 auto !important;
     }
     
-    /* ===== NAVIGATION BAR - PURPLE GRADIENT (LIKE LANDING PAGE) ===== */
+    /* ===== NAVIGATION BAR - PURPLE GRADIENT ===== */
     .nav-container {
         background: purple !important;
         padding: 12px 30px !important;
@@ -63,7 +63,7 @@ def show_about_page():
         gap: 12px;
         font-size: 26px;
         font-weight: 700;
-        color: purple!important;
+        color: purple !important;  /* ⭐ FIXED: White text */
         text-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
     
@@ -72,45 +72,50 @@ def show_about_page():
         filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
     }
     
-    /* Streamlit button styling for nav */
+    /* Streamlit button styling for nav - ALL BUTTONS PURPLE BY DEFAULT, RED ON HOVER */
     div.stButton > button {
-        background: red !important;
+        background: purple !important;  /* ⭐ FIXED: Semi-transparent white */
         border: 1px solid rgba(255, 255, 255, 0.3) !important;
         color: white !important;
         font-weight: 600 !important;
         padding: 8px 25px !important;
-        border-radius: 40px !important;
-        font-size: 16px !important;
+        border-radius: 35px !important;
+        font-size: 14px !important;
         transition: all 0.3s ease !important;
         backdrop-filter: blur(5px) !important;
         box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
-        min-width: 100px;
+        min-width: 70px;
     }
     
     div.stButton > button:hover {
-        background: white !important;
-        color: #667eea !important;
+        background: red !important;
+        color: white !important;
         transform: translateY(-3px) !important;
-        box-shadow: 0 10px 30px rgba(255,255,255,0.3) !important;
-        border-color: white !important;
+        box-shadow: 0 10px 30px rgba(255, 68, 68, 0.4) !important;
+        border-color: #ff4444 !important;
     }
     
-    /* Get Started button special - red gradient */
+    /* Get Started button - SAME AS OTHER BUTTONS */
     button[key="nav_getstarted_about"] {
-        background: red !important;
-        border: none !important;
+        background: purple !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
         color: white !important;
-        padding: 8px 30px !important;
-        border-radius: 40px !important;
         font-weight: 600 !important;
-        box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4) !important;
+        padding: 8px 30px !important;
+        border-radius: 35px !important;
+        font-size: 14px !important;
+        transition: all 0.3s ease !important;
+        backdrop-filter: blur(5px) !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
         min-width: 140px !important;
     }
     
     button[key="nav_getstarted_about"]:hover {
+        background: #ff4444 !important;
+        color: white !important;
         transform: translateY(-3px) !important;
-        box-shadow: 0 15px 35px rgba(255, 107, 107, 0.6) !important;
-        background: linear-gradient(135deg, #ff6b6b, #ff4d4d) !important;
+        box-shadow: 0 10px 30px rgba(255, 68, 68, 0.4) !important;
+        border-color: #ff4444 !important;
     }
     
     /* Hero Section */
@@ -119,14 +124,14 @@ def show_about_page():
         padding: 50px 20px;
         margin-bottom: 40px;
         background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-        border-radius: 30px;
+        border-radius: 25px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     }
     
     .hero-section h1 {
         font-size: 3.5rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #1e293b, #4f46e5);
+        background: linear-gradient(135deg, #667eea, #764ba2);  /* ⭐ FIXED: Purple gradient */
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 20px;
@@ -520,7 +525,7 @@ def show_about_page():
     </style>
     """, unsafe_allow_html=True)
 
-    # ================= NAVIGATION BAR (NO BACK TO HOME BUTTON) =================
+    # ================= NAVIGATION BAR (WITH DEMO BUTTON - ALL BUTTONS SAME STYLE) =================
     col1, col2 = st.columns([1, 1])
     
     with col1:
@@ -532,7 +537,7 @@ def show_about_page():
         """, unsafe_allow_html=True)
     
     with col2:
-        nav_col1, nav_col2, nav_col3 = st.columns([1, 1, 1.5])
+        nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([1, 1, 1, 1.2])
         
         with nav_col1:
             if st.button("🏠 Home", key="nav_home_about", use_container_width=True):
@@ -545,6 +550,14 @@ def show_about_page():
                 st.rerun()
         
         with nav_col3:
+            if st.button("🚀 Demo", key="nav_demo_about", use_container_width=True):
+                # ⭐ FIXED: Demo button working
+                st.session_state.demo_messages = []
+                st.session_state.demo_count = 0
+                st.session_state.page = "demo"
+                st.rerun()
+        
+        with nav_col4:
             if st.button("🚀 Get Started", key="nav_getstarted_about", use_container_width=True):
                 st.session_state.page = "auth"
                 st.rerun()

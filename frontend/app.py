@@ -1,8 +1,7 @@
 import streamlit as st
 import os
 
-# ---------------- 1. PAGE CONFIGURATION ----------------
-# This MUST be the first Streamlit command in the file
+# ---------------- PAGE CONFIG ----------------
 st.set_page_config(
     page_title="MindCareAI",
     page_icon="🧠",
@@ -10,29 +9,25 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ---------------- 2. IMPORT UI MODULES ----------------
+# ---------------- IMPORT MODULES ----------------
 from ui.landing import show_landing_page
 from ui.auth import show_auth_page
 from ui.sidebar import show_sidebar
-
-# Note: We import from 'pages' since your file is located there
-from pages.about import show_about_page 
-
-# Import dashboard features
+from ui.demo_chat import show_demo_chat
+from pages.about import show_about_page
 from ui import dashboard, chat, history, mood, journal
 
-# ---------------- 3. LOAD CSS ----------------
+# ---------------- CSS ----------------
 def load_css():
-    """Load the modern, clean styles from assets/style.css."""
     try:
         with open("assets/style.css", "r", encoding="utf-8") as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-    except FileNotFoundError:
-        pass # Fallback to default if CSS is missing
+    except:
+        pass
 
 load_css()
 
-# ---------------- 4. SESSION INITIALIZATION ----------------
+# ---------------- SESSION STATE ----------------
 if "user" not in st.session_state:
     st.session_state.user = None
 
@@ -42,8 +37,18 @@ if "page" not in st.session_state:
 if "current_page" not in st.session_state:
     st.session_state.current_page = "Dashboard"
 
-# ---------------- 5. HIDE SIDEBAR FOR PUBLIC PAGES ----------------
-# We only want the sidebar to appear AFTER the user logs in
+# ⭐⭐ CHAT HISTORY INITIALIZATION ⭐⭐
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
+# ⭐ DEMO SESSION VARIABLES
+if "demo_messages" not in st.session_state:
+    st.session_state.demo_messages = []
+
+if "demo_count" not in st.session_state:
+    st.session_state.demo_count = 0
+
+# ---------------- HIDE SIDEBAR FOR PUBLIC ----------------
 if st.session_state.user is None:
     st.markdown(
         """
@@ -55,35 +60,29 @@ if st.session_state.user is None:
     )
 
 # =========================================================
-# 6. ROUTING LOGIC: PUBLIC ACCESS (Landing, About, Auth)
+# ROUTING LOGIC
 # =========================================================
+
+# ⭐⭐ DEMO PAGE (Accessible without login) ⭐⭐
+if st.session_state.page == "demo":
+    show_demo_chat()
+    st.stop()
+
+# PUBLIC PAGES (No login required)
 if st.session_state.user is None:
     if st.session_state.page == "landing":
         show_landing_page()
-    
     elif st.session_state.page == "about":
-        # NO BACK TO HOME BUTTON FOR ABOUT PAGE
         show_about_page()
-        
     elif st.session_state.page == "auth":
-        # BACK TO HOME BUTTON FOR AUTH PAGE (keep as is)
-        if st.button("← Back to Home", type="secondary"):
-            st.session_state.page = "landing"
-            st.rerun()
         show_auth_page()
-    
-    # Block execution here so the dashboard doesn't load for guests
     st.stop()
 
-# =========================================================
-# 7. ROUTING LOGIC: PRIVATE ACCESS (User Logged In)
-# =========================================================
-
-# Show the Sidebar for navigation within the app
+# PRIVATE PAGES (Login required)
 show_sidebar()
-user_id = st.session_state.user[0] # Assumes DB returns [id, name, email]
+user_id = st.session_state.user[0]
 
-# Determine which feature to show based on sidebar selection
+# ⭐ NO SUCCESS MESSAGES - DIRECT DASHBOARD ⭐
 current_view = st.session_state.current_page
 
 if current_view == "Dashboard":
