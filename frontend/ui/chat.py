@@ -4,15 +4,18 @@ import speech_recognition as sr
 from pydub import AudioSegment
 from streamlit_mic_recorder import mic_recorder
 from gtts import gTTS
-from db import add_message  # save messages to DB, but only show current session
+from db import add_message
+from utils.ai_engine import generate_response  # ⭐ our enhanced engine
 
 # ---------------- Initialize session state ----------------
 if 'chat_history' not in st.session_state:
-    st.session_state['chat_history'] = []  # only current session
+    st.session_state['chat_history'] = []
+
 if 'rerun' not in st.session_state:
     st.session_state['rerun'] = False
 
-# ---------------- Text-to-speech ----------------
+
+# ---------------- Text-to-Speech ----------------
 def speak(text):
     tts = gTTS(text=text, lang="en")
     with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
@@ -20,8 +23,10 @@ def speak(text):
         audio_file = fp.name
     st.audio(open(audio_file, "rb").read(), format="audio/mp3")
 
+
 # ---------------- Chat Function ----------------
 def show_chat(user_id):
+
     st.title("💬 Chat with MindCareAI")
 
     # Container to display chat messages
@@ -31,21 +36,31 @@ def show_chat(user_id):
     user_input = st.chat_input("Type your message...")
 
     if user_input:
-        # Append user message to session
+        # Save user message
         st.session_state['chat_history'].append(("user", user_input))
         add_message(user_id, "user", user_input)
 
-        # AI response placeholder
-        response = "I'm here, but I couldn't get a response from AI. Please try again."
+        # Prepare context (last 5 messages)
+        context = st.session_state['chat_history'][-5:]
+
+        # ⭐ Generate AI response with context
+        response = generate_response(user_input, context)
+
+        # Save bot response
         st.session_state['chat_history'].append(("assistant", response))
         add_message(user_id, "assistant", response)
 
-        # Play audio
+        # Play audio response
         speak(response)
 
     # ---------------- Voice Input ----------------
     st.markdown("### 🎤 Voice Input")
-    audio = mic_recorder(start_prompt="Start Recording", stop_prompt="Stop Recording", key="voice_recorder")
+
+    audio = mic_recorder(
+        start_prompt="Start Recording",
+        stop_prompt="Stop Recording",
+        key="voice_recorder"
+    )
 
     if audio:
         recognizer = sr.Recognizer()
@@ -59,21 +74,26 @@ def show_chat(user_id):
             wav_path = tmp_path.replace(".webm", ".wav")
             AudioSegment.from_file(tmp_path).export(wav_path, format="wav")
 
-            # Recognize speech
+            # Speech Recognition
             with sr.AudioFile(wav_path) as source:
                 audio_data = recognizer.record(source)
                 voice_text = recognizer.recognize_google(audio_data)
 
-            # Append voice message to session
+            # Save user voice message
             st.session_state['chat_history'].append(("user", voice_text))
             add_message(user_id, "user", voice_text)
 
-            # AI response placeholder
-            response = "I'm here, but I couldn't get a response from AI. Please try again."
+            # Prepare context
+            context = st.session_state['chat_history'][-5:]
+
+            # ⭐ Generate AI response with context
+            response = generate_response(voice_text, context)
+
+            # Save bot response
             st.session_state['chat_history'].append(("assistant", response))
             add_message(user_id, "assistant", response)
 
-            # Play audio
+            # Play audio response
             speak(response)
 
         except Exception:
@@ -84,17 +104,24 @@ def show_chat(user_id):
         if role == "user":
             with chat_container:
                 with st.chat_message("user"):
-                    st.markdown(f"<div style='font-size:16px'>{content}</div>", unsafe_allow_html=True)
+                    st.markdown(
+                        f"<div style='font-size:16px'>{content}</div>",
+                        unsafe_allow_html=True
+                    )
         else:
             with chat_container:
                 with st.chat_message("assistant"):
-                    st.markdown(f"<div style='font-size:16px; color:#00695c'>{content}</div>", unsafe_allow_html=True)
+                    st.markdown(
+                        f"<div style='font-size:16px; color:#00695c'>{content}</div>",
+                        unsafe_allow_html=True
+                    )
 
     # ---------------- Styling ----------------
     st.markdown("""
         <style>
         .stChatMessage > div[data-testid="stMarkdownContainer"] {
-            padding: 10px; border-radius: 10px;
+            padding: 10px;
+            border-radius: 10px;
         }
         .stChatMessage-user > div[data-testid="stMarkdownContainer"] {
             background-color: #f1f8e9;
