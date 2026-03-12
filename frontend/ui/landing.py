@@ -75,7 +75,7 @@ def show_landing_page():
         gap: 12px;
         font-size: 26px;
         font-weight: 700;
-        color: purple;
+        color: #6D9EEB !important;      
         text-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
     
@@ -86,8 +86,7 @@ def show_landing_page():
     
     /* Streamlit button styling for nav */
     div.stButton > button {
-        background: purple !important;
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        background : linear-gradient(135deg, #B8D9FF, #6D9EEB) !important;
         color: white !important;
         font-weight: 500 !important;
         padding: 8px 25px !important;
@@ -100,7 +99,7 @@ def show_landing_page():
     }
     
     div.stButton > button:hover {
-        background: red !important;
+        background: #6D9EEB  !important;
         color: white !important;
         transform: translateY(-3px) !important;
         box-shadow: 0 10px 30px rgba(255, 68, 68, 0.3) !important;
