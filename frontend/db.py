@@ -2,6 +2,9 @@ import psycopg2
 import hashlib
 from psycopg2 import pool
 from psycopg2 import errors
+import json
+from datetime import datetime, timedelta
+import secrets
 # -----------------------------
 # CONNECTION POOL
 # -----------------------------
@@ -12,7 +15,7 @@ try:
         host="localhost",
         database="fyp_chatbot",
         user="postgres",
-        password="123456789",
+        password="123456",
         port=5432
     )
 except Exception as e:
@@ -174,6 +177,193 @@ def update_password(email, new_password):
             cur.close()
         if conn:
             release_connection(conn)
+def create_reset_token(user_id):
+    """
+    Create a password reset token for user
+    Returns token dict or None
+    """
+    conn = None
+    cur = None
+    try:
+        # Generate secure token
+        reset_code = ''.join(secrets.choice('0123456789') for _ in range(6))
+        reset_token = secrets.token_urlsafe(32)
+        expires_at = datetime.now() + timedelta(hours=1)
+        
+        conn = get_connection()
+        cur = conn.cursor()
+        
+        # Invalidate any existing unused tokens
+        cur.execute(
+            """
+            UPDATE password_reset_tokens 
+            SET used = TRUE 
+            WHERE user_id = %s AND used = FALSE
+            """,
+            (user_id,)
+        )
+        
+        # Insert new token
+        cur.execute(
+            """
+            INSERT INTO password_reset_tokens 
+            (user_id, reset_code, reset_token, expires_at)
+            VALUES (%s, %s, %s, %s)
+            RETURNING id, reset_code, reset_token, expires_at
+            """,
+            (user_id, reset_code, reset_token, expires_at)
+        )
+        
+        token_data = cur.fetchone()
+        conn.commit()
+        
+        return {
+            'id': token_data[0],
+            'reset_code': token_data[1],
+            'reset_token': token_data[2],
+            'expires_at': token_data[3]
+        }
+        
+    except Exception as e:
+        print(f"Error creating reset token: {e}")
+        if conn:
+            conn.rollback()
+        return None
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+def verify_reset_token(email, reset_code):
+    """
+    Verify if reset token is valid
+    Returns user_id if valid, None otherwise
+    """
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        
+        cur.execute(
+            """
+            SELECT u.id, u.email
+            FROM users u
+            JOIN password_reset_tokens t ON u.id = t.user_id
+            WHERE LOWER(u.email) = LOWER(%s)
+            AND t.reset_code = %s
+            AND t.used = FALSE
+            AND t.expires_at > NOW()
+            ORDER BY t.created_at DESC
+            LIMIT 1
+            """,
+            (email, reset_code)
+        )
+        
+        result = cur.fetchone()
+        return result[0] if result else None
+        
+    except Exception as e:
+        print(f"Error verifying reset token: {e}")
+        return None
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+def reset_password_with_code(email, reset_code, new_password):
+    """
+    Reset password using reset code
+    Returns (success, message)
+    """
+    conn = None
+    cur = None
+    try:
+        # First verify the token
+        user_id = verify_reset_token(email, reset_code)
+        
+        if not user_id:
+            return False, "Invalid or expired reset code"
+        
+        conn = get_connection()
+        cur = conn.cursor()
+        
+        # Update password
+        cur.execute(
+            """
+            UPDATE users 
+            SET password_hash = %s
+            WHERE id = %s
+            """,
+            (hash_password(new_password), user_id)
+        )
+        
+        # Mark token as used
+        cur.execute(
+            """
+            UPDATE password_reset_tokens 
+            SET used = TRUE 
+            WHERE user_id = %s AND reset_code = %s
+            """,
+            (user_id, reset_code)
+        )
+        
+        conn.commit()
+        return True, "Password reset successfully"
+        
+    except Exception as e:
+        print(f"Error resetting password: {e}")
+        if conn:
+            conn.rollback()
+        return False, f"Password reset failed: {str(e)}"
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+def get_user_by_email(email):
+    """
+    Get user details by email
+    Returns user dict or None
+    """
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        
+        cur.execute(
+            """
+            SELECT id, username, email
+            FROM users
+            WHERE LOWER(email) = LOWER(%s)
+            """,
+            (email,)
+        )
+        
+        result = cur.fetchone()
+        if result:
+            return {
+                'id': result[0],
+                'username': result[1],
+                'email': result[2]
+            }
+        return None
+        
+    except Exception as e:
+        print(f"Error getting user by email: {e}")
+        return None
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)         
 
 
 # -----------------------------

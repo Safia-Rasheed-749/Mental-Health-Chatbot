@@ -1,6 +1,7 @@
 import streamlit as st
 import re
-from db import add_user, check_login
+from .email_utils import send_reset_email
+from db import add_user, check_login, get_user_by_email, create_reset_token, reset_password_with_code
 
 def show_auth_page():
 
@@ -375,6 +376,85 @@ button[data-baseweb="tab"][aria-selected="true"] {
                             ❌ Invalid email or password
                         </div>
                     """, unsafe_allow_html=True)
+            # Inside tab_login, after the existing login form
+
+# ================= FORGOT PASSWORD MODAL =================
+            with st.expander("🔐 Forgot Password?", expanded=False):
+                st.markdown("#### Reset Your Password")
+                reset_email_input = st.text_input("Enter your email", key="reset_email_widget", 
+                                            placeholder="john@example.com")
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    if st.button("Send Reset Code", key="send_reset_btn", use_container_width=True):
+                        if reset_email_input:
+                            # Check if email exists
+                            user = get_user_by_email(reset_email_input)
+                            if user:
+                                # Create reset token
+                                token_data = create_reset_token(user['id'])
+                                if token_data:
+                                    # Send email (you'll need to implement send_reset_email)
+                                    
+                                    success, message = send_reset_email(
+                                        reset_email_input, 
+                                        token_data['reset_code'],
+                                        user['username']
+                                    )
+                                    if success:
+                                        st.success("✅ Reset code sent! Check your email.")
+                                        # Store reset info in session state
+                                        st.session_state['reset_email_for_verification'] = reset_email_input
+                                    else:
+                                        st.error(f"❌ {message}")
+                                else:
+                                    st.error("❌ Failed to generate reset code")
+                            else:
+                                st.warning("⚠️ Email not found in our system")
+                        else:
+                            st.warning("⚠️ Please enter your email")
+                
+                with col2:
+                    if st.button("I have a code", key="have_code_btn", use_container_width=True):
+                        st.session_state['show_reset_form'] = True
+
+            # ================= RESET PASSWORD FORM =================
+            if st.session_state.get('show_reset_form', False):
+                st.markdown("---")
+                st.markdown("#### Enter Reset Code")
+                
+                reset_code = st.text_input("6-digit reset code", key="reset_code_input",
+                                        placeholder="123456", max_chars=6)
+                new_password = st.text_input("New password", type="password", 
+                                            key="reset_new_password")
+                confirm_password = st.text_input("Confirm new password", type="password",
+                                                key="reset_confirm_password")
+                
+                if st.button("Reset Password", key="reset_password_btn", use_container_width=True):
+                    if reset_code and new_password and confirm_password:
+                        if new_password != confirm_password:
+                            st.error("❌ Passwords don't match")
+                        elif len(new_password) < 8:
+                            st.error("❌ Password must be at least 8 characters")
+                        else:
+                            # Reset password
+                            reset_email = st.session_state.get('reset_email_for_verification', '')
+                            success, message = reset_password_with_code(
+                                reset_email, reset_code, new_password
+                            )
+                            if success:
+                                st.success("✅ Password reset successfully! Please login.")
+                                # Clear reset state
+                                st.session_state['show_reset_form'] = False
+                                st.session_state['reset_emaill_for_verification'] = ''
+                            else:
+                                st.error(f"❌ {message}")
+                    else:
+                        st.warning("⚠️ Please fill all fields")
+                
+                if st.button("Cancel", key="cancel_reset_btn"):
+                    st.session_state['show_reset_form'] = False
+                    st.rerun()
 
         # ================= SIGNUP =================
         with tab_signup:
