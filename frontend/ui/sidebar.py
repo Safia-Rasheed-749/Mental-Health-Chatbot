@@ -32,5 +32,6 @@ def show_sidebar():
         # Logout
         if st.button("Logout"):
             st.session_state.user = None
+            st.session_state.page = "landing"   # ⭐ THIS LINE FIXES EVERYTHING
             st.session_state.current_page = "Dashboard"
             st.rerun()
