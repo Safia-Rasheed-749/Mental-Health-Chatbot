@@ -1,15 +1,26 @@
-# mood.py
 import streamlit as st
 import matplotlib.pyplot as plt
 from db import add_mood, get_moods
 
 def show_mood_analytics(user_id):
-    # ---------------- HIDE DEFAULT UI ----------------
+    # ---------------- HIDE DEFAULT UI (BUT NOT HEADER!) ----------------
     st.markdown("""
         <style>
+        /* Hide only the hamburger menu (top-right) */
         #MainMenu {visibility: hidden;}
-        header {visibility: hidden;}
+        
+        /* Hide the footer */
         footer {visibility: hidden;}
+        
+        /* DO NOT hide header - it contains the sidebar collapse button! */
+        /* header {visibility: hidden;}  ← REMOVED THIS LINE */
+        
+        /* Optional: Make header transparent but keep functionality */
+        header {
+            background: transparent !important;
+            backdrop-filter: blur(0px) !important;
+            box-shadow: none !important;
+        }
 
         /* Gradient Log Mood button */
         div.stButton > button:first-child {

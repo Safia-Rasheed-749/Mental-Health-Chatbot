@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="MindCareAI",
     page_icon="🧠",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
 # ---------------- IMPORT MODULES ----------------
@@ -53,12 +53,18 @@ if st.session_state.user is None:
     st.markdown(
         """
         <style>
-        section[data-testid="stSidebar"] {display:none !important;}
+        /* Hide sidebar but keep it in DOM to avoid state issues */
+        section[data-testid="stSidebar"] {
+            display: none !important;
+        }
+        /* Also hide the collapse button when sidebar is hidden */
+        button[kind="header"] {
+            display: none !important;
+        }
         </style>
         """,
         unsafe_allow_html=True
     )
-
 # =========================================================
 # ROUTING LOGIC
 # =========================================================
@@ -80,8 +86,13 @@ if st.session_state.user is None:
 
 # PRIVATE PAGES (Login required)
 show_sidebar()
-user_id = st.session_state.user[0]
-
+try:
+    user_id = st.session_state.user[0]
+except (TypeError, IndexError, KeyError):
+    st.error("User data corrupted. Please login again.")
+    st.session_state.user = None
+    st.rerun()
+    st.stop()
 # ⭐ NO SUCCESS MESSAGES - DIRECT DASHBOARD ⭐
 current_view = st.session_state.current_page
 

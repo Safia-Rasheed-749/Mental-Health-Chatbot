@@ -2,13 +2,25 @@ import streamlit as st
 
 def show_dashboard():
 
-    # Hide default Streamlit menu/header/footer
+    # FIX: Hide ONLY the hamburger menu and footer, NOT the header
     st.markdown("""
         <style>
+        /* Hide only the hamburger menu (top-right) */
         #MainMenu {visibility: hidden;}
-        header {visibility: hidden;}
+        
+        /* Hide the footer */
         footer {visibility: hidden;}
-
+        
+        /* DO NOT hide header - it contains the sidebar collapse button! */
+        /* header {visibility: hidden;}  ← REMOVED THIS LINE */
+        
+        /* Optional: Make header less intrusive but still visible */
+        header {
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+        
+        /* Your existing dashboard styles */
         .dashboard-title{
             text-align:center;
             font-size:40px;
@@ -27,13 +39,13 @@ def show_dashboard():
         }
 
         .card{
-            background-color:#b3e0ff;  /* slightly darker light-blue */
+            background-color:#b3e0ff;
             padding:30px;
             border-radius:15px;
             text-align:center;
             box-shadow:0px 4px 10px rgba(0,0,0,0.1);
-            margin:15px;  /* space between cards */
-            transition:none; /* remove hover effect */
+            margin:15px;
+            transition:none;
         }
 
         .icon{
