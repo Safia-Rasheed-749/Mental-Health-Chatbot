@@ -4,11 +4,16 @@ from .email_utils import send_reset_email
 from db import add_user, check_login, get_user_by_email, create_reset_token, reset_password_with_code
 
 def show_auth_page():
+    # ✅ If already logged in, go to dashboard immediately
+    if st.session_state.get("user") is not None:
+        st.session_state.page = "dashboard"
+        st.session_state.current_page = "Dashboard"
+        st.rerun()
+        return
 
     # ================= BACK TO HOME BUTTON =================
     st.markdown("""
     <style>
-    /* Back to Home Button Styling */
     .back-home-btn {
         position: fixed;
         top: 20px;
@@ -28,11 +33,6 @@ def show_auth_page():
         transition: all 0.3s ease !important;
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3) !important;
     }
-    
-    .back-home-btn button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
-    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -42,19 +42,10 @@ def show_auth_page():
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # ================= LIGHTER BACKGROUND =================
+    # ================= STYLES =================
     st.markdown("""
 <style>
-                
-/* =============================
-   Proper Animated Calm Background
-   ============================= */
-html, body, .stApp {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
+/* Background Animation */
 .stApp {
     background: linear-gradient(120deg, #ffffff, #f1f5f9, #e2e8f0, #f8fafc);
     background-size: 300% 300%;
@@ -67,54 +58,16 @@ html, body, .stApp {
     100% { background-position: 0% 50%; }
 }
 
-/* =============================
-   Remove Streamlit's default padding and containers
-   ============================= */
+/* Container Spacing */
 .main .block-container {
     padding-top: 2rem;
-    padding-bottom: 2rem;
     max-width: 1200px;
 }
 
-/* Remove any empty boxes */
-.stVerticalBlock {
-    gap: 0rem !important;
-}
-
-div[data-testid="stVerticalBlock"] > div {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-}
-
-/* =============================
-   Main Card Styling - Centered
-   ============================= */
-
-
-/* Doctor image container - NO BOX */
-.doctor-img {
-    text-align: center;
-    animation: float 3s ease-in-out infinite;
-    margin: 0;
-    padding: 0;
-    line-height: 0;  /* Remove any extra spacing */
-}
-
-.doctor-img img {
-    width: 95px;
-    height: auto;
-    display: inline-block;
-}
-
+/* Image Animations */
 @keyframes slideFromLeft {
-    0% {
-        transform: translateX(-100px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateX(0);
-        opacity: 1;
-    }
+    0% { transform: translateX(-100px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
 }
 
 @keyframes float {
@@ -127,221 +80,86 @@ div[data-testid="stVerticalBlock"] > div {
     text-align: center;
     animation: slideFromLeft 1s ease-out forwards, float 3s ease-in-out 0.8s infinite;
 }
-/* =============================
-   Typography
-   ============================= */
-h1 {
-    color: #1e293b !important;
-    font-size: 1.8rem !important;
-    margin-bottom: 5px !important;
-    margin-top: 10px !important;
+
+.doctor-img img {
+    width: 95px;
+    height: auto;
 }
 
-p {
-    color: #475569 !important;
-    font-size: 1rem !important;
-    margin-bottom: 0 !important;
-}
+/* Typography */
+h1 { color: #1e293b !important; font-size: 1.8rem !important; text-align: center; }
+p { color: #475569 !important; font-size: 1rem !important; text-align: center; }
 
-/* =============================
-   Inputs
-   ============================= */
-.stTextInput {
-    margin-bottom: 0 !important;
-}
-
-.stTextInput input {
+/* INPUT BOX UNIFORMITY */
+/* This ensures both Text and Password inputs look identical */
+div[data-testid="stTextInput"] > div[data-testid="stTextInputRootElement"] {
     border-radius: 12px !important;
-    padding: 12px !important;
-    border: 1px solid #cbd5e1 !important;
+    border: 1.5px solid #cbd5e1 !important;
     background-color: #f8fafc !important;
+    padding: 2px !important;
+    transition: all 0.3s ease;
 }
 
-.stTextInput input:focus {
-    border: 1px solid #4A90E2 !important;
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2) !important;
+/* Focus State - Black Border */
+div[data-testid="stTextInput"] > div[data-testid="stTextInputRootElement"]:focus-within {
+    border: 2px solid #000000 !important;
+    background-color: #ffffff !important;
+    box-shadow: none !important;
 }
 
-/* =============================
-   Primary Button
-   ============================= */
+/* Internal Input Styling */
+.stTextInput input {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 12px !important;
+    font-size: 1rem !important;
+    color: #1e293b !important;
+}
+
+/* Hide Streamlit's default red error borders to keep it clean */
+.stTextInput input[aria-invalid="true"] {
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* PASSWORD ICON FIX */
+/* Positioning the visibility toggle correctly without breaking the border */
+div[data-testid="stTextInputRootElement"] button {
+    background-color: transparent !important;
+    border: none !important;
+    color: #64748b !important;
+    margin-right: 10px !important;
+}
+
+/* GLOBAL BUTTON STYLE */
 div.stButton > button {
     background: linear-gradient(135deg, #B8D9FF, #6D9EEB) !important;
-    color: #fffafa !important;
+    color: #ffffff !important;
     border-radius: 12px !important;
     padding: 12px 18px !important;
     font-weight: 600;
     border: none;
     width: 100%;
     transition: all 0.3s ease;
-    margin-top: 0 !important;
+    margin-top: 10px;
 }
 
 div.stButton > button:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 20px -10px #4A90E2 !important;
 }
-
-/* =============================
-   Tabs
-   ============================= */
-.stTabs {
-    margin-top: 20px;
-}
-
-button[data-baseweb="tab"] {
-    font-weight: 600;
-    color: #475569;
-    font-size: 1rem;
-    padding: 8px 16px;
-}
-
-button[data-baseweb="tab"][aria-selected="true"] {
-    color: #4A90E2 !important;
-}
-
-/* =============================
-   Social Buttons
-   ============================= */
-.social-row {
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    margin-top: 20px;
-}
-
-.social-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid #e2e8f0;
-    padding: 10px 24px;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    background: white;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: #1E293B;
-}
-
-.social-btn img {
-    width: 18px;
-    height: 18px;
-}
-
-.social-btn:hover {
-    background: #f8fafc;
-    border-color: #4A90E2;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-/* =============================
-   Custom Checkbox and Links
-   ============================= */
-.remember-forgot {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.85rem;
-    margin: 10px 0 20px 0;
-}
-
-.remember-forgot label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: #475569;
-    cursor: pointer;
-}
-
-.remember-forgot input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-}
-
-.forgot-link {
-    color: #4A90E2;
-    cursor: pointer;
-    font-weight: 500;
-    text-decoration: none;
-}
-
-/* =============================
-   Messages
-   ============================= */
-.error-message, .success-message, .warning-message {
-    padding: 12px 16px;
-    border-radius: 12px;
-    margin: 1rem 0;
-}
-
-.error-message {
-    background: #EF444415;
-    border-left: 4px solid #EF4444;
-    color: #EF4444;
-}
-
-.success-message {
-    background: #10B98115;
-    border-left: 4px solid #10B981;
-    color: #10B981;
-}
-
-.warning-message {
-    background: #F59E0B15;
-    border-left: 4px solid #F59E0B;
-    color: #F59E0B;
-}
-
-/* =============================
-   Responsive Design
-   ============================= */
-@media (max-width: 768px) {
-    .main-card {
-        padding: 25px 15px;
-    }
-    
-    .doctor-img img {
-        width: 70px;
-    }
-    
-    h1 {
-        font-size: 1.5rem !important;
-    }
-    
-    .social-row {
-        flex-direction: column;
-    }
-    
-    .social-btn {
-        justify-content: center;
-    }
-    [data-testid="column"] {
-        background: transparent !important;
-        padding: 0 !important;
-        box-shadow: none !important;
-        border: none !important;
-    }
-}
 </style>
 """, unsafe_allow_html=True)
 
     # ================= CENTER LAYOUT =================
-    col1, center_col, col2 = st.columns([1, 2, 1])
+    _, center_col, _ = st.columns([1, 2, 1])
 
     with center_col:
-        st.markdown('<div class="main-card">', unsafe_allow_html=True)
-
         st.markdown("""
             <div class="doctor-img">
                 <img src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png">
             </div>
-        """, unsafe_allow_html=True)
-
-        st.markdown("""
-            <div style="text-align:center; margin-bottom:30px;">
+            <div style="margin-bottom:30px;">
                 <h1>Welcome to Your AI Therapist</h1>
                 <p>A safe space to talk, heal and grow</p>
             </div>
@@ -351,19 +169,10 @@ button[data-baseweb="tab"][aria-selected="true"] {
 
         # ================= LOGIN =================
         with tab_login:
-            email = st.text_input("Email Address", key="login_email")
-            password = st.text_input("Password", type="password", key="login_password")
+            email = st.text_input("Email Address", key="login_email", placeholder="Enter your email")
+            password = st.text_input("Password", type="password", key="login_password", placeholder="Enter your password")
 
-            st.markdown("""
-                <div class="remember-forgot">
-                    <label>
-                        <input type="checkbox"> Remember me
-                    </label>
-                    <span class="forgot-link">Forgot password?</span>
-                </div>
-            """, unsafe_allow_html=True)
-
-            if st.button("Sign In", key="signin_btn", use_container_width=True):
+            if st.button("Sign In", key="signin_btn"):
                 user = check_login(email, password)
                 if user:
                     st.session_state.user = user
@@ -371,122 +180,54 @@ button[data-baseweb="tab"][aria-selected="true"] {
                     st.session_state.page = "dashboard"
                     st.rerun()
                 else:
-                    st.markdown("""
-                        <div class="error-message">
-                            ❌ Invalid email or password
-                        </div>
-                    """, unsafe_allow_html=True)
-            # Inside tab_login, after the existing login form
+                    st.error("❌ Invalid email or password")
 
-# ================= FORGOT PASSWORD MODAL =================
+            st.markdown("<br>", unsafe_allow_html=True)
+
             with st.expander("🔐 Forgot Password?", expanded=False):
                 st.markdown("#### Reset Your Password")
-                reset_email_input = st.text_input("Enter your email", key="reset_email_widget", 
-                                            placeholder="john@example.com")
-                
-                col1, col2 = st.columns(2)
-                with col1:
-                    if st.button("Send Reset Code", key="send_reset_btn", use_container_width=True):
+                reset_email_input = st.text_input("Enter your registered email", key="reset_email_widget")
+
+                c1, c2 = st.columns(2)
+                with c1:
+                    if st.button("Send Reset Code", key="send_reset_btn"):
                         if reset_email_input:
-                            # Check if email exists
                             user = get_user_by_email(reset_email_input)
                             if user:
-                                # Create reset token
                                 token_data = create_reset_token(user['id'])
-                                if token_data:
-                                    # Send email (you'll need to implement send_reset_email)
-                                    
-                                    success, message = send_reset_email(
-                                        reset_email_input, 
-                                        token_data['reset_code'],
-                                        user['username']
-                                    )
-                                    if success:
-                                        st.success("✅ Reset code sent! Check your email.")
-                                        # Store reset info in session state
-                                        st.session_state['reset_email_for_verification'] = reset_email_input
-                                    else:
-                                        st.error(f"❌ {message}")
+                                success, message = send_reset_email(
+                                    reset_email_input,
+                                    token_data['reset_code'],
+                                    user['username']
+                                )
+                                if success:
+                                    st.success("✅ Reset code sent!")
+                                    st.session_state['reset_email_for_verification'] = reset_email_input
                                 else:
-                                    st.error("❌ Failed to generate reset code")
-                            else:
-                                st.warning("⚠️ Email not found in our system")
-                        else:
-                            st.warning("⚠️ Please enter your email")
-                
-                with col2:
-                    if st.button("I have a code", key="have_code_btn", use_container_width=True):
+                                    st.error(message)
+                with c2:
+                    if st.button("I have a code", key="have_code_btn"):
                         st.session_state['show_reset_form'] = True
-
-            # ================= RESET PASSWORD FORM =================
-            if st.session_state.get('show_reset_form', False):
-                st.markdown("---")
-                st.markdown("#### Enter Reset Code")
-                
-                reset_code = st.text_input("6-digit reset code", key="reset_code_input",
-                                        placeholder="123456", max_chars=6)
-                new_password = st.text_input("New password", type="password", 
-                                            key="reset_new_password")
-                confirm_password = st.text_input("Confirm new password", type="password",
-                                                key="reset_confirm_password")
-                
-                if st.button("Reset Password", key="reset_password_btn", use_container_width=True):
-                    if reset_code and new_password and confirm_password:
-                        if new_password != confirm_password:
-                            st.error("❌ Passwords don't match")
-                        elif len(new_password) < 8:
-                            st.error("❌ Password must be at least 8 characters")
-                        else:
-                            # Reset password
-                            reset_email = st.session_state.get('reset_email_for_verification', '')
-                            success, message = reset_password_with_code(
-                                reset_email, reset_code, new_password
-                            )
-                            if success:
-                                st.success("✅ Password reset successfully! Please login.")
-                                # Clear reset state
-                                st.session_state['show_reset_form'] = False
-                                st.session_state['reset_emaill_for_verification'] = ''
-                            else:
-                                st.error(f"❌ {message}")
-                    else:
-                        st.warning("⚠️ Please fill all fields")
-                
-                if st.button("Cancel", key="cancel_reset_btn"):
-                    st.session_state['show_reset_form'] = False
-                    st.rerun()
 
         # ================= SIGNUP =================
         with tab_signup:
-            name = st.text_input("Full Name", key="reg_name")
-            reg_email = st.text_input("Email", key="reg_email")
-            reg_password = st.text_input("Password", type="password", key="reg_password")
+            name = st.text_input("Full Name", key="reg_name", placeholder="John Doe")
+            reg_email = st.text_input("Email", key="reg_email", placeholder="example@mail.com")
+            reg_password = st.text_input("Password", type="password", key="reg_password", placeholder="Choose a strong password")
 
             def is_valid_email(email):
-                pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-                return re.match(pattern, email) is not None
+                return re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email)
 
-            if st.button("Create Account", key="signup_btn", use_container_width=True):
+            if st.button("Create Account", key="signup_btn"):
                 if name and reg_email and reg_password:
                     if not is_valid_email(reg_email):
-                        st.markdown('<div class="warning-message">⚠ Please enter a valid email address.</div>', unsafe_allow_html=True)
+                        st.warning("Invalid email format")
                     else:
                         success, message = add_user(name, reg_email, reg_password)
-                        
                         if success:
-                            # Auto login after signup
-                            user = check_login(reg_email, reg_password)
-                            if user:
-                                st.session_state.user = user
-                                st.session_state.current_page = "Dashboard"
-                                st.session_state.page = "dashboard"
-                                st.rerun()
+                            st.success("Account created successfully! You can now login.")
                         else:
-                            st.markdown(f'<div class="error-message">❌ {message}</div>', unsafe_allow_html=True)
-                else:
-                    st.markdown('<div class="warning-message">⚠ Please fill all fields.</div>', unsafe_allow_html=True)
-
-        st.markdown('</div>', unsafe_allow_html=True)
+                            st.error(message)
 
 if __name__ == "__main__":
     show_auth_page()
