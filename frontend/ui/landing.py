@@ -544,7 +544,7 @@ def show_landing_page():
     with col1:
         st.markdown("""
             <div class="logo">
-                <span class="logo-icon">🧠✨</span>
+                <span class="logo-icon">🧠</span>
                 <span>Mind Care AI</span>
             </div>
         """, unsafe_allow_html=True)

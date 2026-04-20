@@ -208,6 +208,43 @@ div.stButton > button:hover {
                 with c2:
                     if st.button("I have a code", key="have_code_btn"):
                         st.session_state['show_reset_form'] = True
+            # ================= RESET PASSWORD FORM =================
+            if st.session_state.get('show_reset_form', False):
+                st.markdown("---")
+                st.markdown("#### Enter Reset Code")
+                
+                reset_code = st.text_input("6-digit reset code", key="reset_code_input",
+                                        placeholder="123456", max_chars=6)
+                new_password = st.text_input("New password", type="password", 
+                                            key="reset_new_password")
+                confirm_password = st.text_input("Confirm new password", type="password",
+                                                key="reset_confirm_password")
+                
+                if st.button("Reset Password", key="reset_password_btn", use_container_width=True):
+                    if reset_code and new_password and confirm_password:
+                        if new_password != confirm_password:
+                            st.error("❌ Passwords don't match")
+                        elif len(new_password) < 8:
+                            st.error("❌ Password must be at least 8 characters")
+                        else:
+                            # Reset password
+                            reset_email = st.session_state.get('reset_email_for_verification', '')
+                            success, message = reset_password_with_code(
+                                reset_email, reset_code, new_password
+                            )
+                            if success:
+                                st.success("✅ Password reset successfully! Please login.")
+                                # Clear reset state
+                                st.session_state['show_reset_form'] = False
+                                st.session_state['reset_emaill_for_verification'] = ''
+                            else:
+                                st.error(f"❌ {message}")
+                    else:
+                        st.warning("⚠️ Please fill all fields")
+                
+                if st.button("Cancel", key="cancel_reset_btn"):
+                    st.session_state['show_reset_form'] = False
+                    st.rerun()   
 
         # ================= SIGNUP =================
         with tab_signup:

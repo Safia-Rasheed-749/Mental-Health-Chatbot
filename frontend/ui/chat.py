@@ -5,17 +5,13 @@ from pydub import AudioSegment
 from streamlit_mic_recorder import mic_recorder
 from gtts import gTTS
 from db import add_message
-from utils.ai_engine import generate_response  # ⭐ our enhanced engine
+from utils.ai_engine import generate_response
 
-# ---------------- Initialize session state ----------------
+# ---------------- SESSION ----------------
 if 'chat_history' not in st.session_state:
     st.session_state['chat_history'] = []
 
-if 'rerun' not in st.session_state:
-    st.session_state['rerun'] = False
-
-
-# ---------------- Text-to-Speech ----------------
+# ---------------- TTS ----------------
 def speak(text):
     tts = gTTS(text=text, lang="en")
     with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
@@ -23,111 +19,174 @@ def speak(text):
         audio_file = fp.name
     st.audio(open(audio_file, "rb").read(), format="audio/mp3")
 
-
-# ---------------- Chat Function ----------------
+# ---------------- CHAT ----------------
 def show_chat(user_id):
 
-    st.title("💬 Chat with MindCareAI")
+    # ----- TITLE -----
+    st.title("💬 Chat with MindCare AI")
 
-    # Container to display chat messages
-    chat_container = st.container()
+    # ----- CHAT AREA (SCROLLABLE) -----
+    chat_placeholder = st.container()
 
-    # ---------------- Text Input ----------------
-    user_input = st.chat_input("Type your message...")
-
-    if user_input:
-        # Save user message
-        st.session_state['chat_history'].append(("user", user_input))
-        add_message(user_id, "user", user_input)
-
-        # Prepare context (last 5 messages)
-        context = st.session_state['chat_history'][-5:]
-
-        # ⭐ Generate AI response with context
-        response = generate_response(user_input, context)
-
-        # Save bot response
-        st.session_state['chat_history'].append(("assistant", response))
-        add_message(user_id, "assistant", response)
-
-        # Play audio response
-        speak(response)
-
-    # ---------------- Voice Input ----------------
-    st.markdown("### 🎤 Voice Input")
-
-    audio = mic_recorder(
-        start_prompt="Start Recording",
-        stop_prompt="Stop Recording",
-        key="voice_recorder"
-    )
-
-    if audio:
-        recognizer = sr.Recognizer()
-        try:
-            # Save recorded audio
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp:
-                tmp.write(audio["bytes"])
-                tmp_path = tmp.name
-
-            # Convert to WAV
-            wav_path = tmp_path.replace(".webm", ".wav")
-            AudioSegment.from_file(tmp_path).export(wav_path, format="wav")
-
-            # Speech Recognition
-            with sr.AudioFile(wav_path) as source:
-                audio_data = recognizer.record(source)
-                voice_text = recognizer.recognize_google(audio_data)
-
-            # Save user voice message
-            st.session_state['chat_history'].append(("user", voice_text))
-            add_message(user_id, "user", voice_text)
-
-            # Prepare context
-            context = st.session_state['chat_history'][-5:]
-
-            # ⭐ Generate AI response with context
-            response = generate_response(voice_text, context)
-
-            # Save bot response
-            st.session_state['chat_history'].append(("assistant", response))
-            add_message(user_id, "assistant", response)
-
-            # Play audio response
-            speak(response)
-
-        except Exception:
-            st.error("Speech not recognized. Please try again.")
-
-    # ---------------- Display messages ----------------
-    for role, content in st.session_state['chat_history']:
-        if role == "user":
-            with chat_container:
-                with st.chat_message("user"):
-                    st.markdown(
-                        f"<div style='font-size:16px'>{content}</div>",
-                        unsafe_allow_html=True
-                    )
-        else:
-            with chat_container:
-                with st.chat_message("assistant"):
+    with chat_placeholder:
+        for role, content in st.session_state['chat_history']:
+            with st.chat_message(role):
+                if role == "assistant":
                     st.markdown(
                         f"<div style='font-size:16px; color:#00695c'>{content}</div>",
                         unsafe_allow_html=True
                     )
+                else:
+                    st.markdown(
+                        f"<div style='font-size:16px'>{content}</div>",
+                        unsafe_allow_html=True
+                    )
 
-    # ---------------- Styling ----------------
+    # ----- STICKY INPUT BAR -----
     st.markdown("""
-        <style>
-        .stChatMessage > div[data-testid="stMarkdownContainer"] {
-            padding: 10px;
-            border-radius: 10px;
-        }
-        .stChatMessage-user > div[data-testid="stMarkdownContainer"] {
-            background-color: #f1f8e9;
-        }
-        .stChatMessage-assistant > div[data-testid="stMarkdownContainer"] {
-            background-color: #e0f7fa;
-        }
-        </style>
+        <div class="fixed-bottom">
+    """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns([6, 1, 1])
+
+    with col1:
+        user_text = st.text_input(
+            "",
+            key="text_input",
+            placeholder="Type your message...",
+            label_visibility="collapsed"
+        )
+
+    with col2:
+        audio = mic_recorder(
+            start_prompt="🎤",
+            stop_prompt="⏹️",
+            key="voice_recorder",
+            just_once=True
+        )
+
+    with col3:
+        send_clicked = st.button("➤")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # ----- TEXT INPUT -----
+    if send_clicked and user_text.strip():
+        st.session_state['chat_history'].append(("user", user_text))
+        add_message(user_id, "user", user_text)
+
+        context = st.session_state['chat_history'][-5:]
+        response = generate_response(user_text, context)
+
+        st.session_state['chat_history'].append(("assistant", response))
+        add_message(user_id, "assistant", response)
+
+        st.rerun()
+
+    # ----- VOICE INPUT -----
+    if audio:
+        recognizer = sr.Recognizer()
+        try:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp:
+                tmp.write(audio["bytes"])
+                tmp_path = tmp.name
+
+            wav_path = tmp_path.replace(".webm", ".wav")
+            AudioSegment.from_file(tmp_path).export(wav_path, format="wav")
+
+            with sr.AudioFile(wav_path) as source:
+                audio_data = recognizer.record(source)
+                voice_text = recognizer.recognize_google(audio_data)
+
+            st.session_state['chat_history'].append(("user", voice_text))
+            add_message(user_id, "user", voice_text)
+
+            context = st.session_state['chat_history'][-5:]
+            response = generate_response(voice_text, context)
+
+            st.session_state['chat_history'].append(("assistant", response))
+            add_message(user_id, "assistant", response)
+
+            speak(response)
+
+            st.rerun()
+
+        except Exception as e:
+            st.error(f"Speech not recognized. {str(e)}")
+
+    # ----- AUTO SCROLL -----
+    st.markdown("""
+        <script>
+            var chat = window.parent.document.querySelector('.main');
+            chat.scrollTo(0, chat.scrollHeight);
+        </script>
+    """, unsafe_allow_html=True)
+
+    # ----- STYLING -----
+    st.markdown("""
+    <style>
+
+    /* Chat messages */
+    .stChatMessage {
+        border: none !important;
+        background: transparent !important;
+    }
+
+    .stChatMessage-user > div[data-testid="stMarkdownContainer"] {
+        background-color: #f1f8e9 !important;
+        border-radius: 12px;
+        padding: 10px;
+    }
+
+    .stChatMessage-assistant > div[data-testid="stMarkdownContainer"] {
+        background-color: #e0f7fa !important;
+        border-radius: 12px;
+        padding: 10px;
+    }
+
+    /* STICKY INPUT BAR */
+    .fixed-bottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 10px 20px;
+        border-top: 1px solid #ddd;
+        z-index: 100;
+    }
+
+    /* Unified box */
+    .fixed-bottom div[data-testid="stHorizontalBlock"] {
+        border: 2px solid black;
+        border-radius: 25px;
+        padding: 8px 10px;
+        background: white;
+    }
+
+    /* Remove input border */
+    .stTextInput input {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Buttons */
+    .stButton button {
+        border: none !important;
+        background: transparent !important;
+        font-size: 20px;
+    }
+
+    .stButton button:hover {
+        background: #f0f0f0 !important;
+        border-radius: 50%;
+    }
+
+    /* Prevent content hiding behind input */
+    .block-container {
+        padding-bottom: 100px;
+    }
+
+    </style>
     """, unsafe_allow_html=True)
