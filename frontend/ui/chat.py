@@ -6,46 +6,54 @@ from streamlit_mic_recorder import mic_recorder
 from gtts import gTTS
 from db import add_message
 from utils.ai_engine import generate_response
+import time
+
+# ---------------- FFmpeg setup ----------------
+AudioSegment.converter = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin\ffmpeg.exe"
+AudioSegment.ffprobe = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin\ffprobe.exe"
 
 # ---------------- SESSION ----------------
 if 'chat_history' not in st.session_state:
     st.session_state['chat_history'] = []
 
-# ---------------- TTS ----------------
+# ---------------- TEXT TO SPEECH (FIXED STREAMLIT METHOD) ----------------
 def speak(text):
     tts = gTTS(text=text, lang="en")
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
-        tts.save(fp.name)
-        audio_file = fp.name
-    st.audio(open(audio_file, "rb").read(), format="audio/mp3")
 
-# ---------------- CHAT ----------------
+    audio_path = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3").name
+    tts.save(audio_path)
+
+    # store file in session instead of autoplay (IMPORTANT FIX)
+    st.session_state["audio_file"] = audio_path
+
+# ---------------- CHAT APP ----------------
 def show_chat(user_id):
 
-    # ----- TITLE -----
+    # TITLE
     st.title("💬 Chat with MindCare AI")
 
-    # ----- CHAT AREA (SCROLLABLE) -----
-    chat_placeholder = st.container()
+    # ---------------- CHAT HISTORY ----------------
+    for role, content in st.session_state['chat_history']:
+        with st.chat_message(role):
+            if role == "assistant":
+                st.markdown(
+                    f"<div style='font-size:16px; color:#00695c'>{content}</div>",
+                    unsafe_allow_html=True
+                )
+            else:
+                st.markdown(
+                    f"<div style='font-size:16px'>{content}</div>",
+                    unsafe_allow_html=True
+                )
 
-    with chat_placeholder:
-        for role, content in st.session_state['chat_history']:
-            with st.chat_message(role):
-                if role == "assistant":
-                    st.markdown(
-                        f"<div style='font-size:16px; color:#00695c'>{content}</div>",
-                        unsafe_allow_html=True
-                    )
-                else:
-                    st.markdown(
-                        f"<div style='font-size:16px'>{content}</div>",
-                        unsafe_allow_html=True
-                    )
+    # ---------------- AUDIO PLAYER (IMPORTANT FIX) ----------------
+    if "audio_file" in st.session_state:
+        audio_file = open(st.session_state["audio_file"], "rb").read()
+        st.audio(audio_file, format="audio/mp3")
+        del st.session_state["audio_file"]
 
-    # ----- STICKY INPUT BAR -----
-    st.markdown("""
-        <div class="fixed-bottom">
-    """, unsafe_allow_html=True)
+    # ---------------- INPUT BAR ----------------
+    st.markdown('<div class="fixed-bottom">', unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns([6, 1, 1])
 
@@ -70,7 +78,7 @@ def show_chat(user_id):
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # ----- TEXT INPUT -----
+    # ---------------- TEXT INPUT ----------------
     if send_clicked and user_text.strip():
         st.session_state['chat_history'].append(("user", user_text))
         add_message(user_id, "user", user_text)
@@ -83,9 +91,10 @@ def show_chat(user_id):
 
         st.rerun()
 
-    # ----- VOICE INPUT -----
+    # ---------------- VOICE INPUT ----------------
     if audio:
         recognizer = sr.Recognizer()
+
         try:
             with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp:
                 tmp.write(audio["bytes"])
@@ -98,35 +107,38 @@ def show_chat(user_id):
                 audio_data = recognizer.record(source)
                 voice_text = recognizer.recognize_google(audio_data)
 
+            # USER MESSAGE
             st.session_state['chat_history'].append(("user", voice_text))
             add_message(user_id, "user", voice_text)
 
+            # AI RESPONSE
             context = st.session_state['chat_history'][-5:]
             response = generate_response(voice_text, context)
 
             st.session_state['chat_history'].append(("assistant", response))
             add_message(user_id, "assistant", response)
 
+            # 🔊 SPEAK (SAFE STREAMLIT METHOD)
             speak(response)
 
+            time.sleep(0.5)
             st.rerun()
 
         except Exception as e:
             st.error(f"Speech not recognized. {str(e)}")
 
-    # ----- AUTO SCROLL -----
+    # ---------------- AUTO SCROLL ----------------
     st.markdown("""
-        <script>
-            var chat = window.parent.document.querySelector('.main');
-            chat.scrollTo(0, chat.scrollHeight);
-        </script>
+    <script>
+        var chat = window.parent.document.querySelector('.main');
+        chat.scrollTo(0, chat.scrollHeight);
+    </script>
     """, unsafe_allow_html=True)
 
-    # ----- STYLING -----
+    # ---------------- STYLING ----------------
     st.markdown("""
     <style>
 
-    /* Chat messages */
     .stChatMessage {
         border: none !important;
         background: transparent !important;
@@ -144,7 +156,6 @@ def show_chat(user_id):
         padding: 10px;
     }
 
-    /* STICKY INPUT BAR */
     .fixed-bottom {
         position: fixed;
         bottom: 0;
@@ -156,26 +167,30 @@ def show_chat(user_id):
         z-index: 100;
     }
 
-    /* Unified box */
     .fixed-bottom div[data-testid="stHorizontalBlock"] {
         border: 2px solid black;
         border-radius: 25px;
-        padding: 8px 10px;
+        padding: 8px;
         background: white;
     }
 
-    /* Remove input border */
     .stTextInput input {
         border: none !important;
         outline: none !important;
         box-shadow: none !important;
     }
 
-    /* Buttons */
-    .stButton button {
-        border: none !important;
-        background: transparent !important;
-        font-size: 20px;
+   /* Apply button styling ONLY inside chat input area */
+.fixed-bottom .stButton button {
+    border: none !important;
+    background: transparent !important;
+    font-size: 20px;
+}
+
+.fixed-bottom .stButton button:hover {
+    background: #f0f0f0 !important;
+    border-radius: 50%;
+}
     }
 
     .stButton button:hover {
@@ -183,7 +198,6 @@ def show_chat(user_id):
         border-radius: 50%;
     }
 
-    /* Prevent content hiding behind input */
     .block-container {
         padding-bottom: 100px;
     }
