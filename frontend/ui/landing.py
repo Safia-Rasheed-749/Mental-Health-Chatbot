@@ -31,49 +31,89 @@ def show_landing_page():
         margin-top: -80px !important;
     }
     
-    /* ===== NAVIGATION STYLES ===== */
-    .logo-text {
+    / /* ===== NAVIGATION BAR ===== */
+    .nav-container {
+        background: purple !important;
+        padding: 12px 30px !important;
+        border-radius: 60px !important;
+        box-shadow: 0 8px 32px 0 rgba(102, 126, 234, 0.3) !important;
+        margin: 10px 0 30px 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        animation: slideDown 0.8s ease-out;
+    }
+    
+    @keyframes slideDown {
+        from { transform: translateY(-100px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
         font-size: 26px;
         font-weight: 700;
-        color: #1E40AF !important;
-        padding: 0px 0 5px 0 !important;
-        margin-top: 0px !important;
+        color: #6D9EEB !important;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
     
-    /* Custom Button Styling */
+    .logo-icon {
+        font-size: 36px;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    }
+    
+    /* ===== BUTTON STYLES - COMPACT HORIZONTAL SIZE, PROPER SPACING ===== */
     div.stButton > button {
+        all: unset !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: linear-gradient(135deg, #B8D9FF, #6D9EEB) !important;
+        color: white !important;
+        font-weight: 500 !important;
+        padding: 6px 18px !important;  /* Reduced horizontal padding */
         border-radius: 40px !important;
-        background-color: #DBEAFE !important;
-        color: #1E40AF !important;
-        border: 1px solid #BFDBFE !important;
+        font-size: 15px !important;    /* Slightly smaller font */
         transition: all 0.3s ease !important;
-        font-weight: 500;
-        padding: 6px 18px !important;
-        font-size: 14px !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+        min-width: auto !important;     /* Remove fixed min-width */
+        cursor: pointer !important;
+        line-height: normal !important;
+        height: auto !important;
+        white-space: nowrap !important;
+        margin: 0 10px !important;      /* Increased horizontal margin */
     }
+    
     div.stButton > button:hover {
-        background-color: #FEE2E2 !important;
-        color: #EF4444 !important;
-        border: 1px solid #EF4444 !important;
-        transform: scale(1.02);
+        background: #6D9EEB !important;
+        transform: translateY(-3px) !important;
+        box-shadow: 0 10px 30px rgba(255, 68, 68, 0.3) !important;
     }
     
-    button[key="nav_gs"] {
-        background-color: #1E40AF !important;
-        color: white !important;
-        border: none !important;
+    /* Get Started button special - slightly larger */
+    button[key="nav_getstarted_about"] {
+        background: purple !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        padding: 6px 22px !important;
+        min-width: auto !important;
     }
     
-    button[key="nav_gs"]:hover {
-        background-color: #EF4444 !important;
-        color: white !important;
+    button[key="nav_getstarted_about"]:hover {
+        background: #ff4444 !important;
+        box-shadow: 0 10px 30px rgba(255, 68, 68, 0.3) !important;
     }
     
+    /* Ensure columns have space between buttons */
     .stColumn {
-        gap: 0rem !important;
-    }
+        display: flex;
+        justify-content: center;
+        gap: 0;  /* No extra gap, handled by button margins */
+    }}
     
-    /* Section Titles */
+    /* Section Titles - WITHOUT underline */
     .section-title {
         text-align: center;
         font-size: 2.5rem;
@@ -82,20 +122,9 @@ def show_landing_page():
         margin: 60px 0 20px 0;
         position: relative;
     }
-    
-    .section-title::after {
-        content: '';
-        position: absolute;
-        bottom: -15px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80px;
-        height: 4px;
-        background: linear-gradient(135deg, #1E40AF, #3B82F6);
-        border-radius: 2px;
-    }
+    /* Removed the ::after pseudo-element that created the horizontal line */
 
-    /* ===== EXERCISES SECTION - VERTICAL (ek ke neeche ek) ===== */
+    /* ===== EXERCISES SECTION - VERTICAL ===== */
     .exercise-card {
         border-radius: 25px;
         padding: 30px;
@@ -110,15 +139,10 @@ def show_landing_page():
         box-shadow: 0 10px 25px rgba(0,0,0,0.03);
     }
     
-    /* Make each card take full width and appear vertically */
-    .exercise-wrapper {
-        width: 100%;
-        display: block;
-    }
-    
-    .exercise-card-1 { background: #F5F3FF; border-left: 8px solid #6366F1; }
-    .exercise-card-2 { background: #F0FDFA; border-left: 8px solid #0D9488; }
-    .exercise-card-3 { background: #FFF7ED; border-left: 8px solid #EA580C; }
+    /* Updated colors: soft lavender, soft blue, soft teal */
+    .exercise-card-1 { background: #F3E8FF; border-left: 8px solid #A855F7; }  /* lavender */
+    .exercise-card-2 { background: #DBEAFE; border-left: 8px solid #3B82F6; }  /* soft blue */
+    .exercise-card-3 { background: #CCFBF1; border-left: 8px solid #14B8A6; }  /* soft teal */
     
     .exercise-card:hover {
         transform: translateY(-5px);
@@ -288,56 +312,148 @@ def show_landing_page():
     """, unsafe_allow_html=True)
 
     # ================= NAVIGATION =================
-    nav_l, nav_r = st.columns([1, 1.5])
-    with nav_l:
-        st.markdown('<div class="logo-text">🧠 MindCare AI</div>', unsafe_allow_html=True)
-    with nav_r:
-        n1, n2, n3, n4 = st.columns(4, gap="small")
-        with n1: 
-            if st.button("🏠 Home", key="nav_h", use_container_width=True): 
-                st.session_state.page = "landing"; st.rerun()
-        with n2: 
-            if st.button("📖 About", key="nav_a", use_container_width=True): 
-                st.session_state.page = "about"; st.rerun()
-        with n3: 
-            if st.button("🚀 Demo", key="nav_d", use_container_width=True): 
-                st.session_state.page = "demo"; st.rerun()
-        with n4: 
-            if st.button("Get Started", key="nav_gs", use_container_width=True): 
-                st.session_state.page = "auth"; st.rerun()
+    col1, col2 = st.columns([1, 1])
+    
+    with col1:
+        st.markdown("""
+            <div class="logo">
+                <span class="logo-icon">🧠</span>
+                <span>Mind Care AI</span>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([1, 1, 1, 1.2])
+        
+        with nav_col1:
+            if st.button("🏠 Home", key="nav_home_about", use_container_width=False):
+                st.session_state.page = "landing"
+                st.rerun()
+        
+        with nav_col2:
+            if st.button("📖 About", key="nav_about_about", use_container_width=False):
+                st.session_state.page = "about"
+                st.rerun()
+        
+        with nav_col3:
+            if st.button("🚀 Demo", key="nav_demo_about", use_container_width=False):
+                st.session_state.demo_messages = []
+                st.session_state.demo_count = 0
+                st.session_state.page = "demo"
+                st.rerun()
+        
+        with nav_col4:
+            if st.button("🚀 Get Started", key="nav_getstarted_about", use_container_width=False):
+                st.session_state.page = "auth"
+                st.rerun()
 
     # ================= HERO SECTION =================
     col_t, col_v = st.columns([1, 1.2], gap="large")
     with col_t:
-        st.markdown('<div style="margin-top: 10px;"><h1 style="font-size:3.5rem; font-weight:800; color:#1E293B; line-height:1.1;">AI Powered <span style="color:#1E40AF;">Emotional Care.</span></h1><p style="color: #64748B; font-size: 1.1rem; margin-bottom:30px;">Your personal space for mental calm. Designed at NUML to provide intelligent, empathetic support whenever you need it.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div style="margin-top: 10px;"><h1 style="font-size:3.5rem; font-weight:800; color:#1E293B; line-height:1.1;">AI Powered <span style="color:#1E40AF;">Emotional Care</span></h1><p style="color: #64748B; font-size: 1.1rem; margin-bottom:30px;">Your personal space for mental calm. Designed at NUML to provide intelligent, empathetic support whenever you need it.</p></div>', unsafe_allow_html=True)
         if st.button("✨ Try It Yourself", use_container_width=True, key="hero_try"):
-            st.session_state.page = "auth"; st.rerun()
+            st.session_state.page = "demo"; st.rerun()
 
     with col_v:
         components.html("""
-        <div style="background: white; border-radius: 20px; padding: 25px; border: 1px solid #E2E8F0; box-shadow: 0 10px 30px rgba(0,0,0,0.05); height: 350px; overflow: hidden; font-family: sans-serif;">
-            <div id="chat-box" style="transition: opacity 0.5s ease;"></div>
-        </div>
-        <script>
-        const box = document.getElementById('chat-box');
-        const msgs = [{u: "I'm so stressed about my project.", a: "I understand. Let's break it down into smaller steps together."}, {u: "I need to relax.", a: "Let's try a 1-minute breathing exercise. Ready?"}];
-        let i = 0;
-        function play() {
-            const m = msgs[i]; box.style.opacity = '0';
-            setTimeout(() => {
-                box.innerHTML = `<div style="margin-bottom:20px;"><div style="background:#F1F5F9; padding:12px; border-radius:0 15px 15px 15px; font-size:14px; width:fit-content;">👤 ${m.u}</div></div>`;
-                box.style.opacity = '1';
-            }, 500);
-            setTimeout(() => {
-                box.innerHTML += `<div style="display:flex; flex-direction:row-reverse;"><div style="background:#1E40AF; color:white; padding:12px; border-radius:15px 0 15px 15px; font-size:14px; width:fit-content; box-shadow:0 5px 15px rgba(30,64,175,0.2);">🧠 ${m.a}</div></div>`;
-            }, 2000);
-            setTimeout(() => { i = (i + 1) % msgs.length; play(); }, 6000);
-        }
-        play();
-        </script>
-        """, height=280)
+<div style="
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    height: 350px;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+">
 
-    # ================= MENTAL WELLNESS EXERCISES (VERTICALLY - EK KE NEECHE EK) =================
+    <div id="chat-box" style="
+        flex: 1;
+        overflow-y: auto;
+        padding-right: 10px;
+    "></div>
+
+</div>
+
+<script>
+const box = document.getElementById('chat-box');
+
+const msgs = [
+ {u: "I'm really stressed about my project deadlines.", a: "That sounds overwhelming. Let's break it into smaller tasks."},
+ {u: "I can't focus at all.", a: "Try a short 2-minute breathing pause. It helps reset your focus."},
+ {u: "I feel tired all the time.", a: "Your mind might be overloaded. Rest is just as important as work."},
+ {u: "I don't know where to start.", a: "Start small. Even one completed task builds momentum."}
+];
+
+let i = 0;
+
+function createMsg(text, isUser) {
+    const msg = document.createElement('div');
+    msg.style.display = 'flex';
+    msg.style.marginBottom = '12px';
+    msg.style.justifyContent = isUser ? 'flex-start' : 'flex-end';
+
+    const bubble = document.createElement('div');
+    bubble.innerText = text;
+    bubble.style.padding = '10px 14px';
+    bubble.style.borderRadius = isUser 
+        ? '0 15px 15px 15px' 
+        : '15px 0 15px 15px';
+    bubble.style.fontSize = '14px';
+    bubble.style.maxWidth = '70%';
+    bubble.style.lineHeight = '1.4';
+    bubble.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
+    bubble.style.transition = 'all 0.3s ease';
+
+    if (isUser) {
+        bubble.style.background = '#F1F5F9';
+        bubble.innerText = "👤 " + text;
+    } else {
+        bubble.style.background = '#1E40AF';
+        bubble.style.color = 'white';
+        bubble.innerText = "🧠 " + text;
+    }
+
+    msg.appendChild(bubble);
+
+    // Animation
+    msg.style.opacity = '0';
+    msg.style.transform = 'translateY(10px)';
+    setTimeout(() => {
+        msg.style.opacity = '1';
+        msg.style.transform = 'translateY(0)';
+    }, 50);
+
+    return msg;
+}
+
+function play() {
+    const m = msgs[i];
+
+    // User message
+    const userMsg = createMsg(m.u, true);
+    box.appendChild(userMsg);
+    box.scrollTop = box.scrollHeight;
+
+    // Bot response
+    setTimeout(() => {
+        const botMsg = createMsg(m.a, false);
+        box.appendChild(botMsg);
+        box.scrollTop = box.scrollHeight;
+    }, 1500);
+
+    i = (i + 1) % msgs.length;
+
+    setTimeout(play, 4500);
+}
+
+play();
+</script>
+""", height=380)
+
+    # ================= MENTAL WELLNESS EXERCISES (VERTICALLY) =================
     st.markdown('<h2 class="section-title">🧘 Mental Wellness Exercises</h2>', unsafe_allow_html=True)
     
     st.markdown("""
@@ -346,7 +462,7 @@ def show_landing_page():
     </p>
     """, unsafe_allow_html=True)
     
-    # Exercise 1 - Breathing (Full Width, Vertical)
+    # Exercise 1 - Breathing (lavender)
     st.markdown("""
     <div class="exercise-card exercise-card-1">
         <div class="exercise-icon-large">🌬️</div>
@@ -366,7 +482,7 @@ def show_landing_page():
     </div>
     """, unsafe_allow_html=True)
     
-    # Exercise 2 - Mindfulness (Full Width, Vertical)
+    # Exercise 2 - Mindfulness (soft blue)
     st.markdown("""
     <div class="exercise-card exercise-card-2">
         <div class="exercise-icon-large">🧠</div>
@@ -386,7 +502,7 @@ def show_landing_page():
     </div>
     """, unsafe_allow_html=True)
     
-    # Exercise 3 - Grounding (Full Width, Vertical)
+    # Exercise 3 - Grounding (soft teal)
     st.markdown("""
     <div class="exercise-card exercise-card-3">
         <div class="exercise-icon-large">🌍</div>
