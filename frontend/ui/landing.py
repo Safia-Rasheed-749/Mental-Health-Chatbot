@@ -20,11 +20,13 @@ def show_landing_page():
     }
     
     html, body, [data-testid="stAppViewContainer"] {
-        background-color: #FFFFFF !important;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    
-    header, #MainMenu, footer {visibility: hidden;}
+    background: linear-gradient(
+    to bottom right,
+    #ffffff,
+    #eaf6fb,
+    #d6ecf7
+    );   
+     header, #MainMenu, footer {visibility: hidden;}
     
     /* Remove top margin completely */
     .stApp {
@@ -71,7 +73,7 @@ def show_landing_page():
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        background: linear-gradient(135deg, #B8D9FF, #6D9EEB) !important;
+        background: linear-gradient(135deg, #9FC6F0, #4F84D9) !important;
         color: white !important;
         font-weight: 500 !important;
         padding: 6px 18px !important;  /* Reduced horizontal padding */
@@ -308,6 +310,17 @@ def show_landing_page():
         font-size: 0.9rem;
         margin: 8px 0;
     }
+    /* Carousel container */
+    .carousel-wrapper {
+        max-width: 1400px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    .carousel-outer {
+        border-radius: 30px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -356,102 +369,255 @@ def show_landing_page():
 
     with col_v:
         components.html("""
-<div style="
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    border: 1px solid #E2E8F0;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    height: 350px;
-    overflow: hidden;
-    font-family: 'Segoe UI', sans-serif;
-    display: flex;
-    flex-direction: column;
-">
+        <div style="
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px solid #E2E8F0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: 340px; 
+            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            margin: 10px;
+        ">
+            <div id="chat-box" style="flex: 1; overflow-y: auto; padding-right: 10px;"></div>
+        </div>
 
-    <div id="chat-box" style="
-        flex: 1;
-        overflow-y: auto;
-        padding-right: 10px;
-    "></div>
+        <script>
+        const box = document.getElementById('chat-box');
+        const conversations = [
+            [
+                {u: "I'm really stressed about my project deadlines.", a: "That sounds overwhelming. Let's break it into smaller tasks."},
+                {u: "I can't focus at all.", a: "Try a short 2-minute breathing pause. It helps reset your focus."},
+                {u: "What if I miss the deadline?", a: "Worst case, you communicate early with your manager. Most deadlines can be negotiated."}
+            ],
+            [
+                {u: "I feel anxious about my presentation tomorrow.", a: "Practice out loud 3 times tonight. It builds confidence."},
+                {u: "What if I forget my lines?", a: "Keep bullet points on index cards as backup. You'll do great!"},
+                {u: "Thanks, that helps.", a: "You're welcome! Get good rest tonight."}
+            ],
+            [
+                {u: "My team isn't cooperating well.", a: "Have you tried a quick 5-min standup meeting?"},
+                {u: "They ignore my suggestions.", a: "Try asking 'What if we tried...' instead of giving direct orders."},
+                {u: "That might work.", a: "Lead with curiosity. It opens conversations."}
+            ]
+        ];
+        
+        let convIndex = 0;
+        let msgIndex = 0;
+        let isPlaying = true;
+        
+        function createMsg(text, isUser) {
+            const msg = document.createElement('div');
+            msg.style.display = 'flex';
+            msg.style.marginBottom = '12px';
+            msg.style.justifyContent = isUser ? 'flex-start' : 'flex-end';
+            const bubble = document.createElement('div');
+            bubble.style.padding = '10px 14px';
+            bubble.style.borderRadius = isUser ? '0 15px 15px 15px' : '15px 0 15px 15px';
+            bubble.style.fontSize = '14px';
+            bubble.style.maxWidth = '75%';
+            bubble.style.transition = 'all 0.3s ease';
+            if (isUser) {
+                bubble.style.background = '#F1F5F9';
+                bubble.innerText = "👤 " + text;
+            } else {
+                bubble.style.background = '#1E40AF';
+                bubble.style.color = 'white';
+                bubble.innerText = "🧠 " + text;
+            }
+            msg.appendChild(bubble);
+            return msg;
+        }
+        
+        function clearChat() {
+            return new Promise((resolve) => {
+                box.style.opacity = '0';
+                setTimeout(() => {
+                    while(box.firstChild) {
+                        box.removeChild(box.firstChild);
+                    }
+                    box.style.opacity = '1';
+                    resolve();
+                }, 500);
+            });
+        }
+        
+        async function playConversation() {
+            if (!isPlaying) return;
+            
+            const conv = conversations[convIndex];
+            
+            // Show all 3 messages one by one
+            for (let i = 0; i < conv.length; i++) {
+                // Show user message
+                const userMsg = createMsg(conv[i].u, true);
+                box.appendChild(userMsg);
+                box.scrollTop = box.scrollHeight;
+                
+                // Wait 1.5 seconds before showing bot response
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Show bot response
+                const botMsg = createMsg(conv[i].a, false);
+                box.appendChild(botMsg);
+                box.scrollTop = box.scrollHeight;
+                
+                // Wait 1.5 seconds before next message
+                if (i < conv.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                }
+            }
+            
+            // Wait 2 seconds then clear and move to next conversation
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            // Clear chat with fade effect
+            await clearChat();
+            
+            // Move to next conversation
+            convIndex = (convIndex + 1) % conversations.length;
+            
+            // Wait 0.5 seconds then play next conversation
+            setTimeout(playConversation, 500);
+        }
+        
+        // Start the conversation loop
+        playConversation();
+        </script>
+        """, height=400)
+    # ================= SLIDING QUOTE CAROUSEL =================
+    st.markdown('<div class="carousel-wrapper">', unsafe_allow_html=True)
+    st.markdown('<div class="carousel-outer">', unsafe_allow_html=True)
+    components.html("""
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <style>
+        body {
+            margin: 0;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+        }
+        .carousel-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            height: 350px;
+            background: transparent;
+        }
+        .carousel-track {
+            display: flex;
+            width: 400%;
+            height: 100%;
+            transition: transform 0.7s ease-in-out;
+        }
+        .slide {
+            width: 25%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .slide::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .quote-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 40px;
+            padding: 30px 50px;
+            max-width: 800px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.3);
+            z-index: 2;
+            margin: 0 20px;
+        }
+        .quote-text {
+            color: #0f172a;
+            font-size: 28px;
+            font-weight: 500;
+            line-height: 1.5;
+            font-style: italic;
+            margin: 0;
+        }
+        .quote-author {
+            margin-top: 20px;
+            color: #334155;
+            font-size: 16px;
+            font-weight: 400;
+        }
+    </style>
+    </head>
+    <body>
+    <div class="carousel-container">
+        <div class="carousel-track" id="carouselTrack">
+            <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2100&auto=format&fit=crop');">
+                <div class="quote-card">
+                    <p class="quote-text">“Healing takes time, and asking for help is a courageous step.”</p>
+                    <p class="quote-author">— MindCare AI</p>
+                </div>
+            </div>
+            <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=2100&auto=format&fit=crop');">
+                <div class="quote-card">
+                    <p class="quote-text">“Your mental health is a priority. Your happiness is essential.”</p>
+                    <p class="quote-author">— MindCare AI</p>
+                </div>
+            </div>
+            <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2100&auto=format&fit=crop');">
+                <div class="quote-card">
+                    <p class="quote-text">“It’s okay to not be okay. Just don’t give up.”</p>
+                    <p class="quote-author">— MindCare AI</p>
+                </div>
+            </div>
+            <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2100&auto=format&fit=crop');">
+                <div class="quote-card">
+                    <p class="quote-text">“Healing takes time, and asking for help is a courageous step.”</p>
+                    <p class="quote-author">— MindCare AI</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-</div>
+    <script>
+        const track = document.getElementById('carouselTrack');
+        let currentIndex = 0;
+        const totalSlides = 3;
+        const slideWidth = 25;
 
-<script>
-const box = document.getElementById('chat-box');
+        function moveToNext() {
+            currentIndex++;
+            track.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
 
-const msgs = [
- {u: "I'm really stressed about my project deadlines.", a: "That sounds overwhelming. Let's break it into smaller tasks."},
- {u: "I can't focus at all.", a: "Try a short 2-minute breathing pause. It helps reset your focus."},
- {u: "I feel tired all the time.", a: "Your mind might be overloaded. Rest is just as important as work."},
- {u: "I don't know where to start.", a: "Start small. Even one completed task builds momentum."}
-];
+            if (currentIndex === totalSlides) {
+                setTimeout(() => {
+                    track.style.transition = 'none';
+                    track.style.transform = `translateX(0%)`;
+                    currentIndex = 0;
+                    track.getBoundingClientRect();
+                    track.style.transition = 'transform 0.7s ease-in-out';
+                }, 700);
+            }
+        }
+        setInterval(moveToNext, 5000);
+    </script>
+    </body>
+    </html>
+    """, height=350)
 
-let i = 0;
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-function createMsg(text, isUser) {
-    const msg = document.createElement('div');
-    msg.style.display = 'flex';
-    msg.style.marginBottom = '12px';
-    msg.style.justifyContent = isUser ? 'flex-start' : 'flex-end';
-
-    const bubble = document.createElement('div');
-    bubble.innerText = text;
-    bubble.style.padding = '10px 14px';
-    bubble.style.borderRadius = isUser 
-        ? '0 15px 15px 15px' 
-        : '15px 0 15px 15px';
-    bubble.style.fontSize = '14px';
-    bubble.style.maxWidth = '70%';
-    bubble.style.lineHeight = '1.4';
-    bubble.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
-    bubble.style.transition = 'all 0.3s ease';
-
-    if (isUser) {
-        bubble.style.background = '#F1F5F9';
-        bubble.innerText = "👤 " + text;
-    } else {
-        bubble.style.background = '#1E40AF';
-        bubble.style.color = 'white';
-        bubble.innerText = "🧠 " + text;
-    }
-
-    msg.appendChild(bubble);
-
-    // Animation
-    msg.style.opacity = '0';
-    msg.style.transform = 'translateY(10px)';
-    setTimeout(() => {
-        msg.style.opacity = '1';
-        msg.style.transform = 'translateY(0)';
-    }, 50);
-
-    return msg;
-}
-
-function play() {
-    const m = msgs[i];
-
-    // User message
-    const userMsg = createMsg(m.u, true);
-    box.appendChild(userMsg);
-    box.scrollTop = box.scrollHeight;
-
-    // Bot response
-    setTimeout(() => {
-        const botMsg = createMsg(m.a, false);
-        box.appendChild(botMsg);
-        box.scrollTop = box.scrollHeight;
-    }, 1500);
-
-    i = (i + 1) % msgs.length;
-
-    setTimeout(play, 4500);
-}
-
-play();
-</script>
-""", height=380)
 
     # ================= MENTAL WELLNESS EXERCISES (VERTICALLY) =================
     st.markdown('<h2 class="section-title">🧘 Mental Wellness Exercises</h2>', unsafe_allow_html=True)
