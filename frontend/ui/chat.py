@@ -1,16 +1,31 @@
+# ========== FORCE FFMPEG PATH ==========
+import os
+import sys
+
+# Set environment variable BEFORE importing pydub
+os.environ["PATH"] = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin" + os.pathsep + os.environ.get("PATH", "")
+
+# Now import pydub and force it to use our path
+from pydub import AudioSegment
+
+# Explicitly set the paths
+AudioSegment.converter = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin\ffmpeg.exe"
+AudioSegment.ffprobe = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin\ffprobe.exe"
+
+# Force pydub to re-initialize
+from pydub.utils import which
+AudioSegment._ffmpeg = which("ffmpeg")
+AudioSegment._ffprobe = which("ffprobe")
+
+# Rest of your imports
 import streamlit as st
 import tempfile
 import speech_recognition as sr
-from pydub import AudioSegment
 from streamlit_mic_recorder import mic_recorder
 from gtts import gTTS
 from db import add_message
 from utils.ai_engine import generate_response
 import time
-
-# ---------------- FFmpeg setup ----------------
-AudioSegment.converter = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin\ffmpeg.exe"
-AudioSegment.ffprobe = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin\ffprobe.exe"
 
 # ---------------- SESSION ----------------
 if 'chat_history' not in st.session_state:
