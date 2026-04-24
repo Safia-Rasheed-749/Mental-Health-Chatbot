@@ -55,7 +55,7 @@ from ui.games import show_aesthetic_game_selector  # ADD THIS IMPORT
 # if st.session_state.page in pages_with_navbar:
 #     render_navbar()
 # ---------------- RENDER NAVBAR (Only for public pages, not dashboard) ----------------
-public_pages = ["landing", "about", "games"]
+public_pages = ["landing", "games", "demo"]
 if st.session_state.page in public_pages:
     render_navbar()
 # ---------------- ROUTING FIX ----------------

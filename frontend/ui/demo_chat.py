@@ -4,7 +4,7 @@ import tempfile
 import random
 from gtts import gTTS
 from utils.ai_engine import generate_response
-from components.navbar import render_navbar
+# from components.navbar import render_navbar
 
 def speak(text):
     try:
@@ -58,7 +58,7 @@ def show_demo_chat():
     """, unsafe_allow_html=True)
 
     # ================= SHARED NAVBAR =================
-    render_navbar()
+    #render_navbar()
 
     # ================= DEMO PAGE CONTENT =================
     st.markdown("""
