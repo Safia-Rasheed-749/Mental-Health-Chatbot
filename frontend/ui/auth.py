@@ -1,27 +1,26 @@
 # ui/auth.py
-import sys
-import os
-# Add the parent directory (frontend/) to Python's path
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 import streamlit as st
 import re
-from .email_utils import send_reset_email          # email_utils is inside ui/
-from db import add_user, check_login, get_user_by_email, create_reset_token, reset_password_with_code  # db is in frontend/
+from db import add_user, check_login, get_user_by_email, create_reset_token, reset_password_with_code
 from components.navbar import render_navbar
+from ui.email_utils import send_reset_email
 
 def show_auth_page():
-    # If already logged in, go to dashboard
+    # If already logged in, redirect based on user type
     if st.session_state.get("user") is not None:
-        st.session_state.page = "dashboard"
-        st.session_state.current_page = "Dashboard"
+        user = st.session_state.user
+        is_admin = len(user) > 3 and user[3]
+        if is_admin:
+            st.session_state.page = "admin_panel"
+            st.session_state.current_page = "Admin Panel"
+        else:
+            st.session_state.page = "dashboard"
+            st.session_state.current_page = "Dashboard"
         st.rerun()
         return
 
-    # ================= SHARED NAVBAR =================
     render_navbar()
 
-    # ================= AUTH PAGE SPECIFIC STYLES (NO BUTTON OVERRIDES) =================
     st.markdown("""
     <style>
     /* Background Animation */
@@ -83,11 +82,9 @@ def show_auth_page():
         color: #64748b !important;
         margin-right: 10px !important;
     }
-    /* ===== NO BUTTON OVERRIDES HERE – uses global navbar button styles ===== */
     </style>
     """, unsafe_allow_html=True)
 
-    # ================= CENTER LAYOUT =================
     _, center_col, _ = st.columns([1, 2, 1])
     with center_col:
         st.markdown("""
@@ -111,8 +108,14 @@ def show_auth_page():
                 user = check_login(email, password)
                 if user:
                     st.session_state.user = user
-                    st.session_state.current_page = "Dashboard"
-                    st.session_state.page = "dashboard"
+                    # Check admin flag (user[3] is is_admin)
+                    is_admin = len(user) > 3 and user[3]
+                    if is_admin:
+                        st.session_state.current_page = "Admin Panel"
+                        st.session_state.page = "admin_panel"
+                    else:
+                        st.session_state.current_page = "Dashboard"
+                        st.session_state.page = "dashboard"
                     st.rerun()
                 else:
                     st.error("❌ Invalid email or password")
@@ -121,6 +124,7 @@ def show_auth_page():
 
             # ================= FORGOT PASSWORD EXPANDER =================
             with st.expander("🔐 Forgot Password?", expanded=False):
+                # ... (unchanged password reset code)
                 st.markdown("#### Reset Your Password")
                 reset_email_input = st.text_input("Enter your registered email", key="reset_email_widget")
 
@@ -150,7 +154,6 @@ def show_auth_page():
                     if st.button("I have a code", key="have_code_btn", use_container_width=True):
                         st.session_state['show_reset_form'] = True
 
-                # ================= RESET PASSWORD FORM =================
                 if st.session_state.get('show_reset_form', False):
                     st.markdown("---")
                     st.markdown("#### Enter Reset Code")

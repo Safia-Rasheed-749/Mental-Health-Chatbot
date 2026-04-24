@@ -3,8 +3,16 @@ import pandas as pd
 from db import get_all_users, get_messages_by_user, get_moods_by_user, get_journals_by_user
 
 def show_admin_panel():
+    # Remove default Streamlit top padding/margin
     st.markdown("""
     <style>
+        /* Remove white space at top of page */
+        .main .block-container {
+            padding-top: 0rem !important;
+            padding-bottom: 0rem !important;
+            margin-top: -1rem !important;
+        }
+        /* Optional: adjust header spacing */
         .admin-header {
             background: linear-gradient(90deg, #1e3c72, #2a5298);
             padding: 1rem;
@@ -93,9 +101,10 @@ def show_admin_panel():
             else:
                 st.info("No journal entries.")
 
-    # FIXED BACK BUTTON: uses query params to force dashboard
+    # FIXED BACK BUTTON: directly change session state to dashboard
     if st.button("🔙 Back to Main App", key="admin_back"):
-        st.query_params["back"] = "true"
+        st.session_state.page = "dashboard"
+        st.session_state.current_page = "Dashboard"
         st.rerun()
 
 if __name__ == "__main__":
