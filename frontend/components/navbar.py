@@ -89,6 +89,12 @@ def render_navbar():
         button[key^="nav_getstarted"]:hover {
             background: #ff4444 !important;
         }
+        button[key^="nav_games"] {
+            background: linear-gradient(135deg, #A8E6CF, #3B82F6) !important;
+        }
+        button[key^="nav_games"]:hover {
+            background: #3B82F6 !important;
+        }
         .stColumn {
             display: flex;
             justify-content: center;
@@ -98,7 +104,8 @@ def render_navbar():
     """, unsafe_allow_html=True)
 
     # Layout: logo on left, buttons on right
-    col1, col2 = st.columns([1, 1])
+    col1, col2 = st.columns([1, 1.2])  # Increased right column width for 4 buttons
+    
     with col1:
         st.markdown("""
             <div class="logo">
@@ -108,22 +115,24 @@ def render_navbar():
         """, unsafe_allow_html=True)
 
     with col2:
+        # Now 4 buttons: Home, Games, About, Get Started
         nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([1, 1, 1, 1.2])
+        
         with nav_col1:
             if st.button("🏠 Home", key="nav_home_shared", use_container_width=False):
                 st.session_state.page = "landing"
                 st.rerun()
+        
         with nav_col2:
+            if st.button("🎮 Games", key="nav_games_shared", use_container_width=False):
+                st.session_state.page = "games"
+                st.rerun()
+        
+        with nav_col3:
             if st.button("📖 About", key="nav_about_shared", use_container_width=False):
                 st.session_state.page = "about"
                 st.rerun()
-        with nav_col3:
-            if st.button("🚀 Demo", key="nav_demo_shared", use_container_width=False):
-                # reset demo state when going to demo page
-                st.session_state.demo_messages = []
-                st.session_state.demo_count = 0
-                st.session_state.page = "demo"
-                st.rerun()
+        
         with nav_col4:
             if st.button("🚀 Get Started", key="nav_getstarted_shared", use_container_width=False):
                 st.session_state.page = "auth"

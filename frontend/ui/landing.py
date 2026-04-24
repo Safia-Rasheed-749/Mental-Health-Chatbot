@@ -187,7 +187,7 @@ def show_landing_page():
     """, unsafe_allow_html=True)
 
     # ================= SHARED NAVBAR =================
-    render_navbar()
+    # render_navbar()
 
     # ================= HERO SECTION =================
     col_t, col_v = st.columns([1, 1.2], gap="large")
