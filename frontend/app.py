@@ -51,7 +51,7 @@ from ui_pages.admin import show_admin_panel
 from ui.games import show_aesthetic_game_selector
 
 # ---------------- NAVBAR FOR PUBLIC PAGES ----------------
-public_pages = ["landing", "games", "demo"]
+public_pages = ["landing", "games", "demo","about","auth"]
 if st.session_state.page in public_pages:
     render_navbar()
 

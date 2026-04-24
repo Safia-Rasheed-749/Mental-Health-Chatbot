@@ -4,8 +4,6 @@ import tempfile
 import random
 from gtts import gTTS
 from utils.ai_engine import generate_response
-# from components.navbar import render_navbar
-
 def speak(text):
     try:
         tts = gTTS(text=text, lang="en")

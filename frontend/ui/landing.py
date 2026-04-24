@@ -2,7 +2,6 @@
 import streamlit as st
 import streamlit.components.v1 as components
 from components.navbar import render_navbar   # import shared navbar
-
 def show_landing_page():
     # ================= STYLE ENGINE (page‑specific CSS only) =================
     st.markdown("""
@@ -187,7 +186,7 @@ def show_landing_page():
     """, unsafe_allow_html=True)
 
     # ================= SHARED NAVBAR =================
-    # render_navbar()
+   # render_navbar()
 
     # ================= HERO SECTION =================
     col_t, col_v = st.columns([1, 1.2], gap="large")
