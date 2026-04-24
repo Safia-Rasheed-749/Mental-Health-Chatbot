@@ -1,7 +1,9 @@
 # landing.py
 import streamlit as st
 import streamlit.components.v1 as components
+import base64
 from components.navbar import render_navbar   # import shared navbar
+
 def show_landing_page():
     # ================= STYLE ENGINE (page‑specific CSS only) =================
     st.markdown("""
@@ -104,6 +106,18 @@ def show_landing_page():
     }
     .exercise-image-small { font-size: 1.2rem; margin-left: 5px; }
     
+    /* Video styles */
+    .exercise-video {
+        min-width: 300px;
+        max-width: 350px;
+    }
+    
+    .exercise-video video {
+        width: 100%;
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
     /* Feature card */
     .feature-card-custom {
         background: #FFFFFF;
@@ -186,7 +200,7 @@ def show_landing_page():
     """, unsafe_allow_html=True)
 
     # ================= SHARED NAVBAR =================
-   # render_navbar()
+    # render_navbar()  # Uncomment if you have navbar component
 
     # ================= HERO SECTION =================
     col_t, col_v = st.columns([1, 1.2], gap="large")
@@ -269,10 +283,10 @@ def show_landing_page():
     </style></head>
     <body>
     <div class="carousel-container"><div class="carousel-track" id="carouselTrack">
-        <div class="slide" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2100&auto=format&fit=crop');"><div class="quote-card"><p class="quote-text">“Healing takes time, and asking for help is a courageous step.”</p><p class="quote-author">— MindCare AI</p></div></div>
-        <div class="slide" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url('https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=2100&auto=format&fit=crop');"><div class="quote-card"><p class="quote-text">“Your mental health is a priority. Your happiness is essential.”</p><p class="quote-author">— MindCare AI</p></div></div>
-        <div class="slide" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2100&auto=format&fit=crop');"><div class="quote-card"><p class="quote-text">“It’s okay to not be okay. Just don’t give up.”</p><p class="quote-author">— MindCare AI</p></div></div>
-        <div class="slide" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2100&auto=format&fit=crop');"><div class="quote-card"><p class="quote-text">“Healing takes time, and asking for help is a courageous step.”</p><p class="quote-author">— MindCare AI</p></div></div>
+        <div class="slide" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2100&auto=format&fit=crop');"><div class="quote-card"><p class="quote-text">"Healing takes time, and asking for help is a courageous step."</p><p class="quote-author">— MindCare AI</p></div></div>
+        <div class="slide" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url('https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=2100&auto=format&fit=crop');"><div class="quote-card"><p class="quote-text">"Your mental health is a priority. Your happiness is essential."</p><p class="quote-author">— MindCare AI</p></div></div>
+        <div class="slide" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2100&auto=format&fit=crop');"><div class="quote-card"><p class="quote-text">"It's okay to not be okay. Just don't give up."</p><p class="quote-author">— MindCare AI</p></div></div>
+        <div class="slide" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2100&auto=format&fit=crop');"><div class="quote-card"><p class="quote-text">"Healing takes time, and asking for help is a courageous step."</p><p class="quote-author">— MindCare AI</p></div></div>
     </div></div>
     <script>
         const track = document.getElementById('carouselTrack');
@@ -298,32 +312,146 @@ def show_landing_page():
     """, height=350)
     st.markdown('</div></div>', unsafe_allow_html=True)
 
-    # ================= EXERCISES =================
+    # ================= MENTAL WELLNESS EXERCISES WITH VIDEOS =================
     st.markdown('<h2 class="section-title">🧘 Mental Wellness Exercises</h2>', unsafe_allow_html=True)
-    st.markdown('<p style="text-align:center;color:#64748B;font-size:1.1rem;margin-bottom:40px;">Try these evidence-based exercises to support your mental well-being</p>', unsafe_allow_html=True)
+    
     st.markdown("""
-    <div class="exercise-card exercise-card-1">
-        <div class="exercise-icon-large">🌬️</div>
-        <div class="exercise-content">
-            <div class="exercise-title">Breathing Exercise</div>
-            <div class="exercise-quote">"Feelings come and go like clouds in a windy sky. Conscious breathing is my anchor."<div class="exercise-quote-author">— Thich Nhat Hanh</div></div>
-            <ul class="exercise-steps"><li><span class="step-number">1</span> Inhale deeply through your nose for 4 seconds</li><li><span class="step-number">2</span> Hold your breath for 4 seconds</li><li><span class="step-number">3</span> Exhale slowly through your mouth for 6 seconds</li><li><span class="step-number">4</span> Repeat 5-10 times <span class="exercise-image-small">🧘</span></li></ul>
+    <p style="text-align: center; color: #64748B; font-size: 1.1rem; margin-bottom: 40px;">
+    Try these evidence-based exercises to support your mental well-being
+    </p>
+    """, unsafe_allow_html=True)
+    
+    # Read and encode first video (Breathing Exercise)
+    video_path_1 = r"C:\Users\HP\Desktop\Mental-Health-Chatbot\assets\videos\fdc9691b2636acbc174610f97f618f6b.mp4"
+    
+    try:
+        with open(video_path_1, "rb") as video_file:
+            video_base64_1 = base64.b64encode(video_file.read()).decode()
+        video_available_1 = True
+    except FileNotFoundError:
+        video_available_1 = False
+        st.warning(f"Video file not found at: {video_path_1}")
+        video_base64_1 = ""
+    
+    # Read and encode second video (Mindfulness - Nature video)
+    video_path_2 = r"C:\Users\HP\Desktop\Mental-Health-Chatbot\assets\videos\87513738abcee839311bbacc5319746b.mp4"
+    
+    try:
+        with open(video_path_2, "rb") as video_file:
+            video_base64_2 = base64.b64encode(video_file.read()).decode()
+        video_available_2 = True
+    except FileNotFoundError:
+        video_available_2 = False
+        st.warning(f"Video file not found at: {video_path_2}")
+        video_base64_2 = ""
+    
+    # Exercise 1 - Breathing WITH VIDEO ON THE RIGHT SIDE
+    if video_available_1:
+        st.markdown(f"""
+        <div class="exercise-card exercise-card-1">
+            <div class="exercise-icon-large">🌬️</div>
+            <div class="exercise-content">
+                <div class="exercise-title">Breathing Exercise</div>
+                <div class="exercise-quote">
+                    "Feelings come and go like clouds in a windy sky. Conscious breathing is my anchor."
+                    <div class="exercise-quote-author">— Thich Nhat Hanh</div>
+                </div>
+                <ul class="exercise-steps">
+                    <li><span class="step-number">1</span> Inhale deeply through your nose for 4 seconds</li>
+                    <li><span class="step-number">2</span> Hold your breath for 4 seconds</li>
+                    <li><span class="step-number">3</span> Exhale slowly through your mouth for 6 seconds</li>
+                    <li><span class="step-number">4</span> Repeat 5-10 times <span class="exercise-image-small">🧘</span></li>
+                </ul>
+            </div>
+            <div class="exercise-video">
+                <video autoplay muted loop playsinline>
+                    <source src="data:video/mp4;base64,{video_base64_1}" type="video/mp4">
+                </video>
+            </div>
         </div>
-    </div>
-    <div class="exercise-card exercise-card-2">
-        <div class="exercise-icon-large">🧠</div>
-        <div class="exercise-content">
-            <div class="exercise-title">Mindfulness</div>
-            <div class="exercise-quote">"The present moment is filled with joy and happiness. If you are attentive, you will see it."<div class="exercise-quote-author">— Thich Nhat Hanh</div></div>
-            <ul class="exercise-steps"><li><span class="step-number">1</span> Sit comfortably and close your eyes</li><li><span class="step-number">2</span> Focus on your breath without judgment</li><li><span class="step-number">3</span> Notice thoughts and let them pass</li><li><span class="step-number">4</span> Practice for 5-10 minutes daily <span class="exercise-image-small">🧠</span></li></ul>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("""
+        <div class="exercise-card exercise-card-1">
+            <div class="exercise-icon-large">🌬️</div>
+            <div class="exercise-content">
+                <div class="exercise-title">Breathing Exercise</div>
+                <div class="exercise-quote">
+                    "Feelings come and go like clouds in a windy sky. Conscious breathing is my anchor."
+                    <div class="exercise-quote-author">— Thich Nhat Hanh</div>
+                </div>
+                <ul class="exercise-steps">
+                    <li><span class="step-number">1</span> Inhale deeply through your nose for 4 seconds</li>
+                    <li><span class="step-number">2</span> Hold your breath for 4 seconds</li>
+                    <li><span class="step-number">3</span> Exhale slowly through your mouth for 6 seconds</li>
+                    <li><span class="step-number">4</span> Repeat 5-10 times <span class="exercise-image-small">🧘</span></li>
+                </ul>
+            </div>
         </div>
-    </div>
+        """, unsafe_allow_html=True)
+    
+    # Exercise 2 - Mindfulness WITH NATURE VIDEO ON THE RIGHT SIDE
+    if video_available_2:
+        st.markdown(f"""
+        <div class="exercise-card exercise-card-2">
+            <div class="exercise-icon-large">🧠</div>
+            <div class="exercise-content">
+                <div class="exercise-title">Mindfulness</div>
+                <div class="exercise-quote">
+                    "The present moment is filled with joy and happiness. If you are attentive, you will see it."
+                    <div class="exercise-quote-author">— Thich Nhat Hanh</div>
+                </div>
+                <ul class="exercise-steps">
+                    <li><span class="step-number">1</span> Sit comfortably and close your eyes</li>
+                    <li><span class="step-number">2</span> Focus on your breath without judgment</li>
+                    <li><span class="step-number">3</span> Notice thoughts and let them pass</li>
+                    <li><span class="step-number">4</span> Practice for 5-10 minutes daily <span class="exercise-image-small">🧠</span></li>
+                </ul>
+            </div>
+            <div class="exercise-video">
+                <video autoplay muted loop playsinline>
+                    <source src="data:video/mp4;base64,{video_base64_2}" type="video/mp4">
+                </video>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("""
+        <div class="exercise-card exercise-card-2">
+            <div class="exercise-icon-large">🧠</div>
+            <div class="exercise-content">
+                <div class="exercise-title">Mindfulness</div>
+                <div class="exercise-quote">
+                    "The present moment is filled with joy and happiness. If you are attentive, you will see it."
+                    <div class="exercise-quote-author">— Thich Nhat Hanh</div>
+                </div>
+                <ul class="exercise-steps">
+                    <li><span class="step-number">1</span> Sit comfortably and close your eyes</li>
+                    <li><span class="step-number">2</span> Focus on your breath without judgment</li>
+                    <li><span class="step-number">3</span> Notice thoughts and let them pass</li>
+                    <li><span class="step-number">4</span> Practice for 5-10 minutes daily <span class="exercise-image-small">🧠</span></li>
+                </ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Exercise 3 - Grounding (No video for this one)
+    st.markdown("""
     <div class="exercise-card exercise-card-3">
         <div class="exercise-icon-large">🌍</div>
         <div class="exercise-content">
             <div class="exercise-title">5-4-3-2-1 Grounding</div>
-            <div class="exercise-quote">"Grounding is a powerful way to calm anxiety and return to the present moment."<div class="exercise-quote-author">— MindCare AI</div></div>
-            <ul class="exercise-steps"><li><span class="step-number">👁️</span> Acknowledge 5 things you see</li><li><span class="step-number">🫂</span> Acknowledge 4 things you can touch</li><li><span class="step-number">👂</span> Acknowledge 3 things you hear</li><li><span class="step-number">👃</span> Acknowledge 2 things you can smell</li><li><span class="step-number">👅</span> Acknowledge 1 thing you can taste <span class="exercise-image-small">🌿</span></li></ul>
+            <div class="exercise-quote">
+                "Grounding is a powerful way to calm anxiety and return to the present moment."
+                <div class="exercise-quote-author">— MindCare AI</div>
+            </div>
+            <ul class="exercise-steps">
+                <li><span class="step-number">👁️</span> Acknowledge 5 things you see</li>
+                <li><span class="step-number">🫂</span> Acknowledge 4 things you can touch</li>
+                <li><span class="step-number">👂</span> Acknowledge 3 things you hear</li>
+                <li><span class="step-number">👃</span> Acknowledge 2 things you can smell</li>
+                <li><span class="step-number">👅</span> Acknowledge 1 thing you can taste <span class="exercise-image-small">🌿</span></li>
+            </ul>
         </div>
     </div>
     """, unsafe_allow_html=True)
