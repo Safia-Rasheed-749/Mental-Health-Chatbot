@@ -7,7 +7,24 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 🔴 IMPORTANT: HIDE STREAMLIT AUTO SIDEBAR NAV (App/About/Admin links)
+# ---------------- SESSION INIT ----------------
+def init_session():
+    defaults = {
+        "user": None,
+        "page": "landing",   # ✅ START HERE ALWAYS
+        "current_page": "Dashboard",
+        "chat_history": [],
+        "demo_messages": [],
+        "demo_count": 0,
+    }
+
+    for k, v in defaults.items():
+        if k not in st.session_state:
+            st.session_state[k] = v
+
+init_session()
+
+# ---------------- HIDE SIDEBAR NAV ----------------
 st.markdown("""
     <style>
         [data-testid="stSidebarNav"] {
@@ -16,7 +33,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ---------------- IMPORT MODULES ----------------
+# ---------------- IMPORTS ----------------
 from ui.landing import show_landing_page
 from ui.auth import show_auth_page
 from ui.sidebar import show_sidebar
@@ -25,33 +42,18 @@ from ui_pages.about import show_about_page
 from ui import dashboard, chat, history, mood, journal
 from ui_pages.admin import show_admin_panel
 
-# ---------------- SESSION STATE ----------------
-if "user" not in st.session_state:
-    st.session_state.user = None
+# ---------------- ROUTING FIX ----------------
+page = st.session_state.page
 
-if "page" not in st.session_state:
-    st.session_state.page = "landing"
-
-if "current_page" not in st.session_state:
-    st.session_state.current_page = "Dashboard"
-
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
-
-if "demo_messages" not in st.session_state:
-    st.session_state.demo_messages = []
-
-if "demo_count" not in st.session_state:
-    st.session_state.demo_count = 0
-
-# ---------------- DEMO PAGE ----------------
-if st.session_state.page == "demo":
+# ================= DEMO =================
+if page == "demo":
     show_demo_chat()
     st.stop()
 
-# ---------------- PUBLIC PAGES ----------------
+# ================= PUBLIC ROUTES =================
 if st.session_state.user is None:
 
+    # hide sidebar when not logged in
     st.markdown("""
         <style>
             section[data-testid="stSidebar"] { display: none !important; }
@@ -59,18 +61,18 @@ if st.session_state.user is None:
         </style>
     """, unsafe_allow_html=True)
 
-    if st.session_state.page == "landing":
+    if page == "landing":
         show_landing_page()
 
-    elif st.session_state.page == "about":
+    elif page == "about":
         show_about_page()
 
-    elif st.session_state.page == "auth":
+    elif page == "auth":
         show_auth_page()
 
     st.stop()
 
-# ---------------- LOGGED IN AREA ----------------
+# ================= LOGGED IN AREA =================
 st.markdown("""
     <style>
         section[data-testid="stSidebar"] { display: block !important; }
@@ -78,15 +80,12 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Sidebar
 show_sidebar()
 
-# ---------------- USER INFO ----------------
 user = st.session_state.user
 user_id = user[0]
 is_admin = len(user) > 3 and user[3]
 
-# ---------------- ROUTING ----------------
 current = st.session_state.current_page
 
 if current == "Dashboard":
