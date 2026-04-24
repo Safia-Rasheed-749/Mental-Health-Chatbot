@@ -56,7 +56,7 @@ def show_landing_page():
         display: flex;
         align-items: center;
         gap: 12px;
-        font-size: 26px;
+        font-size: 36px;
         font-weight: 700;
         color: #6D9EEB !important;
         text-shadow: 0 2px 10px rgba(0,0,0,0.2);
@@ -363,7 +363,7 @@ def show_landing_page():
     # ================= HERO SECTION =================
     col_t, col_v = st.columns([1, 1.2], gap="large")
     with col_t:
-        st.markdown('<div style="margin-top: 10px;"><h1 style="font-size:3.5rem; font-weight:800; color:#1E293B; line-height:1.1;">AI Powered <span style="color:#1E40AF;">Emotional Care</span></h1><p style="color: #64748B; font-size: 1.1rem; margin-bottom:30px;">Your personal space for mental calm. Designed at NUML to provide intelligent, empathetic support whenever you need it.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div style="margin-top: 10px;"><h1 style="font-size:3.5rem; font-weight:800; color:#1E293B; line-height:1.1;"> AI Powered <span style="color:#1E40AF;">Emotional Care</span></h1><p style="color: #64748B; font-size: 1.1rem; margin-bottom:30px;">Your personal space for mental calm. Designed at NUML to provide intelligent, empathetic support whenever you need it.</p></div>', unsafe_allow_html=True)
         if st.button("✨ Try It Yourself", use_container_width=True, key="hero_try"):
             st.session_state.page = "demo"; st.rerun()
 

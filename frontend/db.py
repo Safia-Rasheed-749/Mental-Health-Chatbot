@@ -5,6 +5,7 @@ from psycopg2 import errors
 import json
 from datetime import datetime, timedelta
 import secrets
+
 # -----------------------------
 # CONNECTION POOL
 # -----------------------------
@@ -46,18 +47,14 @@ def user_exists(email):
     try:
         conn = get_connection()
         cur = conn.cursor()
-
         cur.execute(
             "SELECT id FROM users WHERE LOWER(email) = LOWER(%s)",
             (email,)
         )
-
         return cur.fetchone() is not None
-
     except Exception as e:
         print("User exists check error:", e)
         return True
-
     finally:
         if cur:
             cur.close()
@@ -65,24 +62,16 @@ def user_exists(email):
             release_connection(conn)
 
 
-import psycopg2
-from psycopg2 import errors
 def add_user(username, email, password):
-
     conn = None
     cur = None
-
     try:
         conn = get_connection()
-
         if conn is None:
             return False, "Database connection failed."
-
         cur = conn.cursor()
-
         email = email.strip().lower()
         username = username.strip()
-
         cur.execute(
             """
             INSERT INTO users (username, email, password_hash)
@@ -90,22 +79,17 @@ def add_user(username, email, password):
             """,
             (username, email, hash_password(password))
         )
-
         conn.commit()
-
         return True, "Account created successfully. Please login."
-
     except psycopg2.errors.UniqueViolation:
         if conn:
             conn.rollback()
         return False, "This email is already registered."
-
     except Exception as e:
         if conn:
             conn.rollback()
         print("Signup error:", e)
         return False, "Signup failed."
-
     finally:
         if cur:
             cur.close()
@@ -114,29 +98,27 @@ def add_user(username, email, password):
 
 
 def check_login(email, password):
+    """
+    Returns (id, username, email, is_admin) if successful, else None
+    """
     conn = None
     cur = None
-
     try:
         conn = get_connection()
         cur = conn.cursor()
-
         cur.execute(
             """
-            SELECT id, username, email
+            SELECT id, username, email, is_admin
             FROM users
             WHERE LOWER(email)=LOWER(%s)
             AND password_hash=%s
             """,
             (email, hash_password(password))
         )
-
         return cur.fetchone()
-
     except Exception as e:
         print("Login error:", e)
         return None
-
     finally:
         if cur:
             cur.close()
@@ -147,11 +129,9 @@ def check_login(email, password):
 def update_password(email, new_password):
     conn = None
     cur = None
-
     try:
         conn = get_connection()
         cur = conn.cursor()
-
         cur.execute(
             """
             UPDATE users
@@ -160,40 +140,27 @@ def update_password(email, new_password):
             """,
             (hash_password(new_password), email)
         )
-
         conn.commit()
-
-        if cur.rowcount == 0:
-            return False
-
-        return True
-
+        return cur.rowcount > 0
     except Exception as e:
         print("Password update error:", e)
         return False
-
     finally:
         if cur:
             cur.close()
         if conn:
             release_connection(conn)
+
+
 def create_reset_token(user_id):
-    """
-    Create a password reset token for user
-    Returns token dict or None
-    """
     conn = None
     cur = None
     try:
-        # Generate secure token
         reset_code = ''.join(secrets.choice('0123456789') for _ in range(6))
         reset_token = secrets.token_urlsafe(32)
         expires_at = datetime.now() + timedelta(hours=1)
-        
         conn = get_connection()
         cur = conn.cursor()
-        
-        # Invalidate any existing unused tokens
         cur.execute(
             """
             UPDATE password_reset_tokens 
@@ -202,8 +169,6 @@ def create_reset_token(user_id):
             """,
             (user_id,)
         )
-        
-        # Insert new token
         cur.execute(
             """
             INSERT INTO password_reset_tokens 
@@ -213,17 +178,14 @@ def create_reset_token(user_id):
             """,
             (user_id, reset_code, reset_token, expires_at)
         )
-        
         token_data = cur.fetchone()
         conn.commit()
-        
         return {
             'id': token_data[0],
             'reset_code': token_data[1],
             'reset_token': token_data[2],
             'expires_at': token_data[3]
         }
-        
     except Exception as e:
         print(f"Error creating reset token: {e}")
         if conn:
@@ -237,16 +199,11 @@ def create_reset_token(user_id):
 
 
 def verify_reset_token(email, reset_code):
-    """
-    Verify if reset token is valid
-    Returns user_id if valid, None otherwise
-    """
     conn = None
     cur = None
     try:
         conn = get_connection()
         cur = conn.cursor()
-        
         cur.execute(
             """
             SELECT u.id, u.email
@@ -261,10 +218,8 @@ def verify_reset_token(email, reset_code):
             """,
             (email, reset_code)
         )
-        
         result = cur.fetchone()
         return result[0] if result else None
-        
     except Exception as e:
         print(f"Error verifying reset token: {e}")
         return None
@@ -276,23 +231,14 @@ def verify_reset_token(email, reset_code):
 
 
 def reset_password_with_code(email, reset_code, new_password):
-    """
-    Reset password using reset code
-    Returns (success, message)
-    """
     conn = None
     cur = None
     try:
-        # First verify the token
         user_id = verify_reset_token(email, reset_code)
-        
         if not user_id:
             return False, "Invalid or expired reset code"
-        
         conn = get_connection()
         cur = conn.cursor()
-        
-        # Update password
         cur.execute(
             """
             UPDATE users 
@@ -301,8 +247,6 @@ def reset_password_with_code(email, reset_code, new_password):
             """,
             (hash_password(new_password), user_id)
         )
-        
-        # Mark token as used
         cur.execute(
             """
             UPDATE password_reset_tokens 
@@ -311,10 +255,8 @@ def reset_password_with_code(email, reset_code, new_password):
             """,
             (user_id, reset_code)
         )
-        
         conn.commit()
         return True, "Password reset successfully"
-        
     except Exception as e:
         print(f"Error resetting password: {e}")
         if conn:
@@ -328,16 +270,11 @@ def reset_password_with_code(email, reset_code, new_password):
 
 
 def get_user_by_email(email):
-    """
-    Get user details by email
-    Returns user dict or None
-    """
     conn = None
     cur = None
     try:
         conn = get_connection()
         cur = conn.cursor()
-        
         cur.execute(
             """
             SELECT id, username, email
@@ -346,7 +283,6 @@ def get_user_by_email(email):
             """,
             (email,)
         )
-        
         result = cur.fetchone()
         if result:
             return {
@@ -355,7 +291,6 @@ def get_user_by_email(email):
                 'email': result[2]
             }
         return None
-        
     except Exception as e:
         print(f"Error getting user by email: {e}")
         return None
@@ -363,7 +298,7 @@ def get_user_by_email(email):
         if cur:
             cur.close()
         if conn:
-            release_connection(conn)         
+            release_connection(conn)
 
 
 # -----------------------------
@@ -372,11 +307,9 @@ def get_user_by_email(email):
 def add_message(user_id, role, content):
     conn = None
     cur = None
-
     try:
         conn = get_connection()
         cur = conn.cursor()
-
         cur.execute(
             """
             INSERT INTO messages (user_id, role, content)
@@ -384,12 +317,9 @@ def add_message(user_id, role, content):
             """,
             (user_id, role, content)
         )
-
         conn.commit()
-
     except Exception as e:
         print("Add message error:", e)
-
     finally:
         if cur:
             cur.close()
@@ -400,11 +330,9 @@ def add_message(user_id, role, content):
 def get_messages(user_id):
     conn = None
     cur = None
-
     try:
         conn = get_connection()
         cur = conn.cursor()
-
         cur.execute(
             """
             SELECT role, content
@@ -414,13 +342,10 @@ def get_messages(user_id):
             """,
             (user_id,)
         )
-
         return cur.fetchall()
-
     except Exception as e:
         print("Get messages error:", e)
         return []
-
     finally:
         if cur:
             cur.close()
@@ -434,11 +359,9 @@ def get_messages(user_id):
 def add_mood(user_id, mood):
     conn = None
     cur = None
-
     try:
         conn = get_connection()
         cur = conn.cursor()
-
         cur.execute(
             """
             INSERT INTO mood (user_id, mood)
@@ -446,12 +369,9 @@ def add_mood(user_id, mood):
             """,
             (user_id, mood)
         )
-
         conn.commit()
-
     except Exception as e:
         print("Add mood error:", e)
-
     finally:
         if cur:
             cur.close()
@@ -462,11 +382,9 @@ def add_mood(user_id, mood):
 def get_moods(user_id):
     conn = None
     cur = None
-
     try:
         conn = get_connection()
         cur = conn.cursor()
-
         cur.execute(
             """
             SELECT mood
@@ -475,13 +393,10 @@ def get_moods(user_id):
             """,
             (user_id,)
         )
-
         return [row[0] for row in cur.fetchall()]
-
     except Exception as e:
         print("Get moods error:", e)
         return []
-
     finally:
         if cur:
             cur.close()
@@ -495,11 +410,9 @@ def get_moods(user_id):
 def add_journal(user_id, entry):
     conn = None
     cur = None
-
     try:
         conn = get_connection()
         cur = conn.cursor()
-
         cur.execute(
             """
             INSERT INTO journal (user_id, entry)
@@ -507,12 +420,9 @@ def add_journal(user_id, entry):
             """,
             (user_id, entry)
         )
-
         conn.commit()
-
     except Exception as e:
         print("Add journal error:", e)
-
     finally:
         if cur:
             cur.close()
@@ -523,11 +433,9 @@ def add_journal(user_id, entry):
 def get_journals(user_id):
     conn = None
     cur = None
-
     try:
         conn = get_connection()
         cur = conn.cursor()
-
         cur.execute(
             """
             SELECT entry
@@ -537,13 +445,114 @@ def get_journals(user_id):
             """,
             (user_id,)
         )
-
         return [row[0] for row in cur.fetchall()]
-
     except Exception as e:
         print("Get journals error:", e)
         return []
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
 
+
+# -----------------------------
+# ADMIN FUNCTIONS
+# -----------------------------
+def get_all_users():
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT id, username, email, is_admin, created_at
+            FROM users
+            ORDER BY id
+        """)
+        rows = cur.fetchall()
+        users = []
+        for row in rows:
+            users.append({
+                'id': row[0],
+                'username': row[1],
+                'email': row[2],
+                'is_admin': row[3],
+                'created_at': row[4] if len(row) > 4 else None
+            })
+        return users
+    except Exception as e:
+        print("Error fetching all users:", e)
+        return []
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+def get_messages_by_user(user_id):
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT role, content, created_at
+            FROM messages
+            WHERE user_id = %s
+            ORDER BY id
+        """, (user_id,))
+        return cur.fetchall()
+    except Exception as e:
+        print("Error fetching user messages:", e)
+        return []
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+def get_moods_by_user(user_id):
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT mood, created_at
+            FROM mood
+            WHERE user_id = %s
+            ORDER BY id
+        """, (user_id,))
+        return cur.fetchall()
+    except Exception as e:
+        print("Error fetching user moods:", e)
+        return []
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+def get_journals_by_user(user_id):
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT entry, created_at
+            FROM journal
+            WHERE user_id = %s
+            ORDER BY id DESC
+        """, (user_id,))
+        return cur.fetchall()
+    except Exception as e:
+        print("Error fetching user journals:", e)
+        return []
     finally:
         if cur:
             cur.close()

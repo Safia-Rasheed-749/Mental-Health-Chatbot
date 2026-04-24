@@ -1,99 +1,117 @@
 import streamlit as st
 
-def init_sidebar_state():
-    if "sidebar_visible" not in st.session_state:
-        st.session_state.sidebar_visible = True
-
-
 def show_sidebar():
 
-    init_sidebar_state()
+    if not st.session_state.get("user"):
+        return
 
-    # ✅ FIX: minimal safe CSS (NO width override)
-    st.markdown("""
-        <style>
-        /* Ensure sidebar is visible */
-        section[data-testid="stSidebar"] {
-            visibility: visible !important;
-        }
-
-        /* Hide default navigation */
-        [data-testid="stSidebarNav"] {
-            display: none !important;
-        }
-
-        /* Fix collapse button */
-        button[kind="header"] {
-            display: flex !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-
-        /* 🔥 IMPORTANT: Fix button text clipping */
-        section[data-testid="stSidebar"] .stButton button {
-            width: 100% !important;
-            white-space: nowrap !important;
-            overflow: visible !important;
-        }
-
-        </style>
-    """, unsafe_allow_html=True)
-
-    if "user" not in st.session_state or st.session_state.user is None:
-        st.error("Please login first")
-        return False
-
-    try:
-        username = st.session_state.user[1] if len(st.session_state.user) > 1 else "User"
-    except:
-        username = "User"
+    user = st.session_state.user
+    username = user[1] if len(user) > 1 else "User"
+    is_admin = len(user) > 3 and user[3]
 
     with st.sidebar:
-        st.markdown("## 🧠 MindCare AI")
-        st.write(f"Welcome **{username}**")
+
+        # ================= HEADER (PROFESSIONAL) =================
+        st.markdown("""
+            <div style="
+                padding: 15px 10px;
+                border-radius: 12px;
+                background: linear-gradient(135deg, #a8d8ff, #d6ecff);
+                text-align: center;
+                margin-bottom: 15px;
+            ">
+                <h2 style="color:white; margin:0;">🧠 MindCare AI</h2>
+            </div>
+        """, unsafe_allow_html=True)
+
+        # ================= WELCOME USER =================
+        st.markdown(f"""
+            <div style="
+                padding: 10px;
+                border-radius: 10px;
+                background: #f5f7fa;
+                text-align: center;
+                margin-bottom: 10px;
+            ">
+                <h4 style="margin:0;">👋 Welcome, <b>{username}</b></h4>
+            </div>
+        """, unsafe_allow_html=True)
 
         st.markdown("---")
 
-        menu_options = ["Dashboard", "Chat", "History", "Mood Analytics", "Journal"]
+        # ================= MENU =================
+        menu = [
+            "🏠 Dashboard",
+            "💬 Chat",
+            "📜 History",
+            "😊 Mood Analytics",
+            "📓 Journal"
+        ]
 
-        current_page = st.session_state.get("current_page", "Dashboard")
+        if is_admin:
+            menu.append("🛡️ Admin Panel")
 
-        if current_page not in menu_options:
-            current_page = "Dashboard"
-            st.session_state.current_page = current_page
+        current = st.session_state.get("current_page", "Dashboard")
 
-        default_index = menu_options.index(current_page)
+        # normalize current selection
+        mapping = {
+            "Dashboard": "🏠 Dashboard",
+            "Chat": "💬 Chat",
+            "History": "📜 History",
+            "Mood Analytics": "😊 Mood Analytics",
+            "Journal": "📓 Journal",
+            "Admin Panel": "🛡️ Admin Panel"
+        }
 
-        menu = st.radio(
-            "Navigation",
-            menu_options,
-            index=default_index,
-            key="sidebar_navigation"
+        reverse_map = {v: k for k, v in mapping.items()}
+
+        if current in mapping:
+            current_ui = mapping[current]
+        else:
+            current_ui = "🏠 Dashboard"
+
+        # ================= NAVIGATION TITLE =================
+        st.markdown("""
+            <div style="
+                font-size:18px;
+                font-weight:700;
+                margin-bottom:8px;
+                color:#333;
+            ">
+                Navigation
+            </div>
+        """, unsafe_allow_html=True)
+
+        choice = st.radio(
+            " ",
+            menu,
+            index=menu.index(current_ui),
+            key="nav"
         )
 
-        if menu != st.session_state.current_page:
-            st.session_state.current_page = menu
+        if choice != current_ui:
+            st.session_state.current_page = reverse_map[choice]
             st.rerun()
 
         st.markdown("---")
 
-        # ✅ KEEP NORMAL BUTTON (no width hacks here)
-        if st.button("🚪 Logout", type="primary"):
-            logout_and_cleanup()
+        # ================= LOGOUT BUTTON =================
+        st.markdown("""
+        <style>
+        div.stButton > button {
+            background-color: #e74c3c !important;
+            color: white !important;
+            font-weight: bold !important;
+            border-radius: 10px !important;
+            border: none !important;
+            padding: 10px !important;
+        }
+        div.stButton > button:hover {
+            background-color: #c0392b !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+        if st.button("🚪 Logout", use_container_width=True):
+            st.session_state.clear()
             st.rerun()
-            return False
-
-    return True
-
-
-def logout_and_cleanup():
-    st.session_state.user = None
-    st.session_state.current_page = "Dashboard"
-    st.session_state.page = "landing"
-
-    keys_to_clear = ['chat_history', 'demo_messages', 'demo_count']
-    for key in keys_to_clear:
-        if key in st.session_state:
-            st.session_state[key] = [] if key == 'chat_history' else ([] if 'messages' in key else 0)
-
-    st.session_state.sidebar_visible = False

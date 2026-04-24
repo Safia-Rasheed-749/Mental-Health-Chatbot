@@ -28,11 +28,21 @@ def speak(text):
         pass
 
 def show_demo_chat():
-    # ================= BACK TO HOME BUTTON - EXACT MATCH TO AUTH.PY =================
-    # Target the button by its key to avoid any CSS conflicts
+    # ================= PAGE BACKGROUND: SOFT BLUE =================
     st.markdown("""
     <style>
-    /* Fixed position container */
+    .stApp {
+        background: linear-gradient(135deg, #e6f0fa, #b8d4e8) !important;
+    }
+    .main .block-container {
+        background: transparent !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # ================= BACK TO HOME BUTTON (BLUE, NO HOVER DRAMA) =================
+    st.markdown("""
+    <style>
     .back-home-btn {
         position: fixed;
         top: 20px;
@@ -40,38 +50,28 @@ def show_demo_chat():
         z-index: 1000;
     }
     
-    /* Target button with key="back_to_home_demo" specifically */
-    button[kind="secondary"][data-testid="baseButton-secondary"] {
-        /* Reset any inherited styles */
-        all: initial;
-    }
-    
-    /* Use the exact key selector */
     button[key="back_to_home_demo"] {
-        background: linear-gradient(135deg, #667eea, #764ba2) !important;
+        background: linear-gradient(135deg, #3b82f6, #1e40af) !important;
         color: white !important;
         border: none !important;
-        border-radius: 30px !important;
-        padding: 8px 20px !important;
+        border-radius: 40px !important;
+        padding: 8px 24px !important;
         font-size: 14px !important;
         font-weight: 600 !important;
         cursor: pointer !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3) !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 2px 8px rgba(59,130,246,0.3) !important;
         width: auto !important;
-        min-width: auto !important;
         display: inline-flex !important;
         align-items: center !important;
-        justify-content: center !important;
-        line-height: normal !important;
-        height: auto !important;
-        font-family: 'Inter', sans-serif !important;
+        gap: 6px !important;
+        font-family: 'Inter', system-ui, sans-serif !important;
     }
     
     button[key="back_to_home_demo"]:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 10px 20px -10px #4A90E2 !important;
-        background: linear-gradient(135deg, #667eea, #764ba2) !important; /* No color change */
+        background: linear-gradient(135deg, #3b82f6, #1e40af) !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 12px rgba(59,130,246,0.4) !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -82,89 +82,103 @@ def show_demo_chat():
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # Rest of demo page styling (unchanged, professional)
+    # ================= REST OF STYLES (POLISHED FOR BLUE BACKGROUND) =================
     st.markdown("""
     <style>
     .demo-header {
         text-align: center;
-        padding: 24px;
-        background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
-        border-radius: 24px;
-        margin-bottom: 30px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        border: 1px solid #94a3b8;
+        padding: 28px 24px;
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(2px);
+        border-radius: 32px;
+        margin-bottom: 32px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        border: 1px solid rgba(59,130,246,0.2);
     }
     .demo-header h1 {
-        color: #0f172a;
-        font-size: 2.5rem;
-        margin-bottom: 10px;
+        color: #1e3a8a;
+        font-size: 2.2rem;
+        margin-bottom: 12px;
         font-weight: 700;
+        letter-spacing: -0.3px;
     }
     .demo-header p {
-        color: #1e293b;
+        color: #2c3e66;
         font-size: 1rem;
+        opacity: 0.9;
     }
     .counter-badge {
-        background: #475569;
-        color: #f1f5f9;
-        padding: 6px 18px;
-        border-radius: 40px;
-        font-size: 0.9rem;
-        font-weight: 600;
+        background: #1e40af;
+        color: white;
+        padding: 6px 20px;
+        border-radius: 60px;
+        font-size: 0.85rem;
+        font-weight: 500;
         display: inline-block;
-        margin-top: 10px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-top: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     .limit-box {
-        background: #fef3c7;
-        border: 1px solid #f59e0b;
-        border-radius: 24px;
-        padding: 40px;
+        background: #fffbeb;
+        border: 1px solid #fbbf24;
+        border-radius: 28px;
+        padding: 48px 24px;
         text-align: center;
         margin: 40px 0;
     }
     .limit-box h3 {
-        color: #92400e;
-        font-size: 1.8rem;
-        margin-bottom: 20px;
+        color: #b45309;
+        font-size: 1.6rem;
+        margin-bottom: 16px;
     }
     .limit-box p {
         color: #92400e;
         font-size: 1rem;
-        margin-bottom: 30px;
     }
-    .stChatMessage {
-        margin: 12px 0;
-    }
+    /* Chat bubbles – soft and modern */
     .stChatMessage-user > div[data-testid="stMarkdownContainer"] {
-        background-color: #e2e8f0;
-        border-radius: 20px;
-        padding: 12px 18px;
-        color: #0f172a;
+        background: #e2f0ff;
+        border-radius: 24px 24px 8px 24px;
+        padding: 12px 20px;
+        color: #0b2b42;
         box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        border: 1px solid rgba(59,130,246,0.15);
     }
     .stChatMessage-assistant > div[data-testid="stMarkdownContainer"] {
-        background-color: #dbeafe;
-        border-radius: 20px;
-        padding: 12px 18px;
-        color: #1e3a8a;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        background: white;
+        border-radius: 24px 24px 24px 8px;
+        padding: 12px 20px;
+        color: #1e3a5f;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        border: 1px solid rgba(100,116,139,0.1);
     }
+    /* Signup button */
     div.stButton > button[key="demo_signup"] {
-        background: linear-gradient(135deg, #B8D9FF, #6D9EEB) !important;
+        background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
         color: white !important;
-        font-weight: 500 !important;
-        padding: 8px 28px !important;
-        border-radius: 40px !important;
-        font-size: 16px !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+        font-weight: 600 !important;
+        padding: 10px 32px !important;
+        border-radius: 60px !important;
+        font-size: 1rem !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 4px 12px rgba(59,130,246,0.3) !important;
         border: none !important;
     }
     div.stButton > button[key="demo_signup"]:hover {
-        background: #6D9EEB !important;
-        transform: translateY(-3px) !important;
-        box-shadow: 0 10px 30px rgba(109, 158, 235, 0.3) !important;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 20px rgba(59,130,246,0.4) !important;
+    }
+    /* Chat input styling */
+    .stChatInputContainer {
+        background: white;
+        border-radius: 60px;
+        padding: 4px;
+        border: 1px solid #cbd5e1;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .stChatInputContainer textarea {
+        background: transparent;
     }
     </style>
     """, unsafe_allow_html=True)
