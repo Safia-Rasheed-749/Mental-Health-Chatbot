@@ -4,6 +4,10 @@ import re
 from db import add_user, check_login, get_user_by_email, create_reset_token, reset_password_with_code
 from components.navbar import render_navbar
 from ui.email_utils import send_reset_email
+# ========== MUST BE FIRST ==========
+render_navbar()   # call right at the top of the script
+# ===================================
+
 
 def show_auth_page():
     # If already logged in, redirect based on user type

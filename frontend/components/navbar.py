@@ -3,45 +3,63 @@ import streamlit as st
 
 def render_navbar():
     """
-    Renders the same styled navigation bar on any page.
-    Manages page switching via session_state.
+    Renders a consistent, edge-to-top navigation bar on any page.
+    Call this function as the very first thing in your page script.
     """
-    # Navbar HTML/CSS – identical to what you already have
+    # Global CSS to remove ALL default top white space from Streamlit
     st.markdown("""
     <style>
-        /* Remove ALL default padding from top */
+        /* 1. Remove padding/margins from the outermost containers */
+        html, body, [data-testid="stAppViewContainer"], 
+        .main, .block-container, section.main > div {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* 2. Remove default top padding from the block container */
         .main .block-container {
             padding-top: 0rem !important;
-            padding-bottom: 2rem !important;
             padding-left: 2rem !important;
             padding-right: 2rem !important;
+            padding-bottom: 2rem !important;
         }
-        section.main > div {
-            padding-top: 0rem !important;
+
+        /* 3. Make the root app container start at the very top */
+        .stApp {
+            margin-top: 0 !important;
         }
+
+        /* 4. Hide Streamlit's default header, menu, footer */
+        header, #MainMenu, footer {
+            visibility: hidden;
+            height: 0;
+        }
+
+        /* 5. Background gradient (consistent across pages) */
         html, body, [data-testid="stAppViewContainer"] {
             background: linear-gradient(to bottom right, #ffffff, #eaf6fb, #d6ecf7);
         }
-        header, #MainMenu, footer {visibility: hidden;}
-        .stApp {
-            margin-top: -80px !important;
-        }
+
+        /* 6. Navbar container style — sits flush at the top */
         .nav-container {
             background: purple !important;
             padding: 12px 30px !important;
             border-radius: 60px !important;
             box-shadow: 0 8px 32px 0 rgba(102, 126, 234, 0.3) !important;
-            margin: 10px 0 30px 0 !important;
+            margin: 0 0 30px 0 !important;   /* no top margin, only bottom margin */
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
             width: 100% !important;
             animation: slideDown 0.8s ease-out;
         }
+
         @keyframes slideDown {
             from { transform: translateY(-100px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
+
+        /* Logo styling */
         .logo {
             display: flex;
             align-items: center;
@@ -55,7 +73,8 @@ def render_navbar():
             font-size: 36px;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
         }
-        /* Shared navbar button style */
+
+        /* Navbar button styles (shared) */
         div.stButton > button {
             all: unset !important;
             display: inline-flex !important;
@@ -79,7 +98,7 @@ def render_navbar():
         div.stButton > button:hover {
             background: #6D9EEB !important;
             transform: translateY(-3px) !important;
-            box-shadow: 0 10px 30px rgba(255, 68, 68, 0.3) !important;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
         }
         button[key^="nav_getstarted"] {
             background: purple !important;
@@ -89,15 +108,10 @@ def render_navbar():
         button[key^="nav_getstarted"]:hover {
             background: #ff4444 !important;
         }
-        .stColumn {
-            display: flex;
-            justify-content: center;
-            gap: 0;
-        }
     </style>
     """, unsafe_allow_html=True)
 
-    # Layout: logo on left, buttons on right
+    # Layout: logo left, buttons right
     col1, col2 = st.columns([1, 1])
     with col1:
         st.markdown("""
@@ -119,7 +133,7 @@ def render_navbar():
                 st.rerun()
         with nav_col3:
             if st.button("🚀 Demo", key="nav_demo_shared", use_container_width=False):
-                # reset demo state when going to demo page
+                # Reset demo state when going to demo page
                 st.session_state.demo_messages = []
                 st.session_state.demo_count = 0
                 st.session_state.page = "demo"
