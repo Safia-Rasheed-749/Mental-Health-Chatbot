@@ -7,14 +7,13 @@ def show_sidebar():
     user = st.session_state.user
     username = user[1] if len(user) > 1 else "User"
 
-    # ===== GLOBAL SIDEBAR STYLING =====
+    # ===== GLOBAL SIDEBAR STYLING (no fixed width) =====
     st.markdown("""
         <style>
-            /* Reduce sidebar width */
+            /* REMOVED: fixed width constraints – allows proper collapse */
+            /* section[data-testid="stSidebar"] { width: 250px... } */
+
             section[data-testid="stSidebar"] {
-                width: 250px !important;
-                min-width: 250px !important;
-                max-width: 250px !important;
                 background-color: #ffffff;
                 border-right: 1px solid #e6e6e6;
             }
