@@ -322,7 +322,7 @@ def show_landing_page():
     """, unsafe_allow_html=True)
     
     # Read and encode first video (Breathing Exercise)
-    video_path_1 = r"C:\Users\HP\Desktop\Mental-Health-Chatbot\assets\videos\fdc9691b2636acbc174610f97f618f6b.mp4"
+    video_path_1 = r"C:\Users\shams\OneDrive\Documents\FYP_Mental_Health_Chatbot\assets\videos\fdc9691b2636acbc174610f97f618f6b.mp4"
     
     try:
         with open(video_path_1, "rb") as video_file:
@@ -334,7 +334,7 @@ def show_landing_page():
         video_base64_1 = ""
     
     # Read and encode second video (Mindfulness - Nature video)
-    video_path_2 = r"C:\Users\HP\Desktop\Mental-Health-Chatbot\assets\videos\87513738abcee839311bbacc5319746b.mp4"
+    video_path_2 = r"C:\Users\shams\OneDrive\Documents\FYP_Mental_Health_Chatbot\assets\videos\87513738abcee839311bbacc5319746b.mp4"
     
     try:
         with open(video_path_2, "rb") as video_file:

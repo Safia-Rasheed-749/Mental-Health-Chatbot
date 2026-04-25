@@ -2,22 +2,16 @@
 import os
 import sys
 
-# Set environment variable BEFORE importing pydub
 os.environ["PATH"] = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin" + os.pathsep + os.environ.get("PATH", "")
 
-# Now import pydub and force it to use our path
 from pydub import AudioSegment
-
-# Explicitly set the paths
 AudioSegment.converter = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin\ffmpeg.exe"
 AudioSegment.ffprobe = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin\ffprobe.exe"
 
-# Force pydub to re-initialize
 from pydub.utils import which
 AudioSegment._ffmpeg = which("ffmpeg")
 AudioSegment._ffprobe = which("ffprobe")
 
-# Rest of your imports
 import streamlit as st
 import tempfile
 import speech_recognition as sr
@@ -27,22 +21,28 @@ from db import add_message
 from utils.ai_engine import generate_response
 import time
 
-# ---------------- SESSION ----------------
 if 'chat_history' not in st.session_state:
     st.session_state['chat_history'] = []
 
-# ---------------- TEXT TO SPEECH (FIXED STREAMLIT METHOD) ----------------
 def speak(text):
     tts = gTTS(text=text, lang="en")
-
     audio_path = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3").name
     tts.save(audio_path)
-
-    # store file in session instead of autoplay (IMPORTANT FIX)
     st.session_state["audio_file"] = audio_path
 
-# ---------------- CHAT APP ----------------
 def show_chat(user_id):
+    # --- Remove top white space (safe, keeps header) ---
+    st.markdown("""
+        <style>
+        .main .block-container {
+            padding-top: 0rem !important;
+            margin-top: -0.5rem !important;
+        }
+        .main .block-container > :first-child {
+            margin-top: 0rem !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
     # TITLE
     st.title("💬 Chat with MindCare AI")
@@ -61,7 +61,7 @@ def show_chat(user_id):
                     unsafe_allow_html=True
                 )
 
-    # ---------------- AUDIO PLAYER (IMPORTANT FIX) ----------------
+    # ---------------- AUDIO PLAYER ----------------
     if "audio_file" in st.session_state:
         audio_file = open(st.session_state["audio_file"], "rb").read()
         st.audio(audio_file, format="audio/mp3")
@@ -97,48 +97,33 @@ def show_chat(user_id):
     if send_clicked and user_text.strip():
         st.session_state['chat_history'].append(("user", user_text))
         add_message(user_id, "user", user_text)
-
         context = st.session_state['chat_history'][-5:]
         response = generate_response(user_text, context)
-
         st.session_state['chat_history'].append(("assistant", response))
         add_message(user_id, "assistant", response)
-
         st.rerun()
 
     # ---------------- VOICE INPUT ----------------
     if audio:
         recognizer = sr.Recognizer()
-
         try:
             with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp:
                 tmp.write(audio["bytes"])
                 tmp_path = tmp.name
-
             wav_path = tmp_path.replace(".webm", ".wav")
             AudioSegment.from_file(tmp_path).export(wav_path, format="wav")
-
             with sr.AudioFile(wav_path) as source:
                 audio_data = recognizer.record(source)
                 voice_text = recognizer.recognize_google(audio_data)
-
-            # USER MESSAGE
             st.session_state['chat_history'].append(("user", voice_text))
             add_message(user_id, "user", voice_text)
-
-            # AI RESPONSE
             context = st.session_state['chat_history'][-5:]
             response = generate_response(voice_text, context)
-
             st.session_state['chat_history'].append(("assistant", response))
             add_message(user_id, "assistant", response)
-
-            # 🔊 SPEAK (SAFE STREAMLIT METHOD)
             speak(response)
-
             time.sleep(0.5)
             st.rerun()
-
         except Exception as e:
             st.error(f"Speech not recognized. {str(e)}")
 
@@ -153,24 +138,20 @@ def show_chat(user_id):
     # ---------------- STYLING ----------------
     st.markdown("""
     <style>
-
     .stChatMessage {
         border: none !important;
         background: transparent !important;
     }
-
     .stChatMessage-user > div[data-testid="stMarkdownContainer"] {
         background-color: #f1f8e9 !important;
         border-radius: 12px;
         padding: 10px;
     }
-
     .stChatMessage-assistant > div[data-testid="stMarkdownContainer"] {
         background-color: #e0f7fa !important;
         border-radius: 12px;
         padding: 10px;
     }
-
     .fixed-bottom {
         position: fixed;
         bottom: 0;
@@ -181,41 +162,28 @@ def show_chat(user_id):
         border-top: 1px solid #ddd;
         z-index: 100;
     }
-
     .fixed-bottom div[data-testid="stHorizontalBlock"] {
         border: 2px solid black;
         border-radius: 25px;
         padding: 8px;
         background: white;
     }
-
     .stTextInput input {
         border: none !important;
         outline: none !important;
         box-shadow: none !important;
     }
-
-   /* Apply button styling ONLY inside chat input area */
-.fixed-bottom .stButton button {
-    border: none !important;
-    background: transparent !important;
-    font-size: 20px;
-}
-
-.fixed-bottom .stButton button:hover {
-    background: #f0f0f0 !important;
-    border-radius: 50%;
-}
+    .fixed-bottom .stButton button {
+        border: none !important;
+        background: transparent !important;
+        font-size: 20px;
     }
-
-    .stButton button:hover {
+    .fixed-bottom .stButton button:hover {
         background: #f0f0f0 !important;
         border-radius: 50%;
     }
-
     .block-container {
         padding-bottom: 100px;
     }
-
     </style>
     """, unsafe_allow_html=True)

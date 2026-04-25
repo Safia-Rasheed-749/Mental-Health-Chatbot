@@ -33,6 +33,16 @@ def show_admin_panel():
             font-weight: bold;
             color: #1e3c72;
         }
+        /* Style for the Back button only */
+        .back-button-wrapper div.stButton > button {
+            background-color: #4CAF50 !important;
+            color: white !important;
+            border: none !important;
+            font-weight: 600 !important;
+        }
+        .back-button-wrapper div.stButton > button:hover {
+            background-color: #45a049 !important;
+        }
     </style>
     """, unsafe_allow_html=True)
 
@@ -101,11 +111,13 @@ def show_admin_panel():
             else:
                 st.info("No journal entries.")
 
-    # FIXED BACK BUTTON: directly change session state to dashboard
+    # FIXED BACK BUTTON with custom wrapper to change its color
+    st.markdown('<div class="back-button-wrapper">', unsafe_allow_html=True)
     if st.button("🔙 Back to Main App", key="admin_back"):
         st.session_state.page = "dashboard"
         st.session_state.current_page = "Dashboard"
         st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     show_admin_panel()

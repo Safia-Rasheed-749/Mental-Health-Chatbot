@@ -3,19 +3,25 @@ import matplotlib.pyplot as plt
 from db import add_mood, get_moods
 
 def show_mood_analytics(user_id):
-    # ---------------- HIDE DEFAULT UI (BUT NOT HEADER!) ----------------
+    # ---------------- Remove top white space (keeps header & sidebar) ----------------
     st.markdown("""
         <style>
+        /* Remove default top padding/margin from main content */
+        .main .block-container {
+            padding-top: 0rem !important;
+            margin-top: -0.5rem !important;
+        }
+        .main .block-container > :first-child {
+            margin-top: 0rem !important;
+        }
+
         /* Hide only the hamburger menu (top-right) */
         #MainMenu {visibility: hidden;}
         
         /* Hide the footer */
         footer {visibility: hidden;}
         
-        /* DO NOT hide header - it contains the sidebar collapse button! */
-        /* header {visibility: hidden;}  ← REMOVED THIS LINE */
-        
-        /* Optional: Make header transparent but keep functionality */
+        /* Make header transparent but keep functionality */
         header {
             background: transparent !important;
             backdrop-filter: blur(0px) !important;
@@ -65,28 +71,33 @@ def show_mood_analytics(user_id):
 
         if mood_counts:
             st.markdown("### Mood Overview")
-            fig, ax = plt.subplots(figsize=(6, 4))
+            # --- Minimized, professional graph size ---
+            fig, ax = plt.subplots(figsize=(3.2, 2.0), dpi=100)
 
-            # Modern colored bar chart
             colors = {
-                "Happy": "#ffd700",      # gold
-                "Neutral": "#90a4ae",    # greyish
-                "Sad": "#2196f3",        # blue
-                "Anxious": "#ff9800",    # orange
-                "Angry": "#f44336"       # red
+                "Happy": "#ffd700",
+                "Neutral": "#90a4ae",
+                "Sad": "#2196f3",
+                "Anxious": "#ff9800",
+                "Angry": "#f44336"
             }
             bar_colors = [colors[m] for m in mood_counts.keys()]
 
-            ax.bar(mood_counts.keys(), mood_counts.values(), color=bar_colors, edgecolor='black')
-            ax.set_ylabel("Count")
-            ax.set_title("Mood Analytics")
+            bars = ax.bar(mood_counts.keys(), mood_counts.values(),
+                          color=bar_colors, edgecolor='black', linewidth=0.5, width=0.6)
+            ax.set_ylabel("Count", fontsize=7)
+            ax.set_title("Mood Analytics", fontsize=8, fontweight='medium')
             ax.spines['top'].set_visible(False)
             ax.spines['right'].set_visible(False)
+            ax.tick_params(axis='both', labelsize=6)
 
-            # Add counts on top of bars
-            for i, v in enumerate(mood_counts.values()):
-                ax.text(i, v + 0.1, str(v), ha='center', fontweight='bold')
+            # Add value labels on top of bars
+            for bar in bars:
+                height = bar.get_height()
+                ax.text(bar.get_x() + bar.get_width()/2., height + 0.1, f'{int(height)}',
+                        ha='center', va='bottom', fontsize=6, fontweight='bold')
 
-            st.pyplot(fig)
+            plt.tight_layout()
+            st.pyplot(fig, use_container_width=False)
     else:
         st.info("No moods logged yet. Log your mood above to see the analytics.")
