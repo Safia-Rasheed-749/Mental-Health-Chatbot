@@ -108,7 +108,7 @@ def show_about_page():
     """, unsafe_allow_html=True)
 
     # ================= SHARED NAVBAR =================
-  #  render_navbar()
+    render_navbar()
 
     # ================= PAGE CONTENT =================
     st.markdown("""
