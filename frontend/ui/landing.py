@@ -2,6 +2,7 @@
 import streamlit as st
 import streamlit.components.v1 as components
 import base64
+import os
 from components.navbar import render_navbar   # import shared navbar
 
 def show_landing_page():
@@ -322,8 +323,10 @@ def show_landing_page():
     """, unsafe_allow_html=True)
     
     # Read and encode first video (Breathing Exercise)
-    video_path_1 = r"C:\Users\shams\OneDrive\Documents\FYP_Mental_Health_Chatbot\assets\videos\fdc9691b2636acbc174610f97f618f6b.mp4"
-    
+    # video_path_1 = r"C:\Users\shams\OneDrive\Documents\FYP_Mental_Health_Chatbot\assets\videos\fdc9691b2636acbc174610f97f618f6b.mp4"
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+    video_path_1 = os.path.join(BASE_DIR, "../../assets/videos/videobreathe.mp4")
     try:
         with open(video_path_1, "rb") as video_file:
             video_base64_1 = base64.b64encode(video_file.read()).decode()
@@ -334,11 +337,13 @@ def show_landing_page():
         video_base64_1 = ""
     
     # Read and encode second video (Mindfulness - Nature video)
-<<<<<<< HEAD
-    video_path_2 = r"C:\Users\shams\OneDrive\Documents\FYP_Mental_Health_Chatbot\assets\videos\87513738abcee839311bbacc5319746b.mp4"
-=======
-    video_path_2 = r"C:\Users\HP\Desktop\Mental-Health-Chatbot\assets\videos\8712234-hd_1080_1920_25fps.mp4"
->>>>>>> a74193bbe2cdcc5da92f7329082d7b36099cf0fc
+# <<<<<<< HEAD
+#     video_path_2 = r"C:\Users\shams\OneDrive\Documents\FYP_Mental_Health_Chatbot\assets\videos\87513738abcee839311bbacc5319746b.mp4"
+# =======
+#     video_path_2 = r"C:\Users\HP\Desktop\Mental-Health-Chatbot\assets\videos\8712234-hd_1080_1920_25fps.mp4"
+# >>>>>>> a74193bbe2cdcc5da92f7329082d7b36099cf0fc
+    video_path_2 = os.path.join(BASE_DIR, "../../assets/videos/video1.mp4")
+
     
     try:
         with open(video_path_2, "rb") as video_file:
