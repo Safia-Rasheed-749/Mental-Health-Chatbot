@@ -334,7 +334,11 @@ def show_landing_page():
         video_base64_1 = ""
     
     # Read and encode second video (Mindfulness - Nature video)
+<<<<<<< HEAD
     video_path_2 = r"C:\Users\shams\OneDrive\Documents\FYP_Mental_Health_Chatbot\assets\videos\87513738abcee839311bbacc5319746b.mp4"
+=======
+    video_path_2 = r"C:\Users\HP\Desktop\Mental-Health-Chatbot\assets\videos\8712234-hd_1080_1920_25fps.mp4"
+>>>>>>> a74193bbe2cdcc5da92f7329082d7b36099cf0fc
     
     try:
         with open(video_path_2, "rb") as video_file:
