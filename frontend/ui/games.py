@@ -7,10 +7,6 @@ from layout_utils import apply_clean_layout
 def show_calm_colors_game():
     apply_clean_layout(hide_header_completely=True)
     st.markdown('<div style="height: 70px;"></div>', unsafe_allow_html=True) 
-    """
-    Memory & Focus Game - Calm Colors Edition
-    Fully working Simon Says style game
-    """
     
     # Game styling
     st.markdown("""
@@ -52,11 +48,15 @@ def show_calm_colors_game():
         color: #475569;
         margin: 5px 0 0 0;
     }
-    .color-button {
-        transition: all 0.2s ease;
+    /* Button spacing improvement */
+    div[data-testid="column"] button {
+        margin: 8px 0 !important;
+        padding: 25px 10px !important;
+        font-size: 20px !important;
+        transition: transform 0.2s;
     }
-    .color-button:active {
-        transform: scale(0.95);
+    div[data-testid="column"] button:hover {
+        transform: scale(1.02);
     }
     </style>
     """, unsafe_allow_html=True)
@@ -90,7 +90,6 @@ def show_calm_colors_game():
         st.session_state.game_score = 0
         st.session_state.is_playing_sequence = True
         st.session_state.waiting_for_player = False
-        # Add first random color
         first_color = random.randint(0, 3)
         st.session_state.game_sequence.append(first_color)
         st.session_state.game_message = "🎵 Watch the sequence carefully... 🎵"
@@ -123,11 +122,9 @@ def show_calm_colors_game():
         expected_color = st.session_state.game_sequence[st.session_state.player_index]
         
         if color_id == expected_color:
-            # Correct move
             st.session_state.player_index += 1
             
             if st.session_state.player_index == len(st.session_state.game_sequence):
-                # Round completed successfully
                 round_points = 10 * st.session_state.game_level
                 st.session_state.game_score += round_points
                 st.session_state.game_level += 1
@@ -135,17 +132,20 @@ def show_calm_colors_game():
                 st.session_state.waiting_for_player = False
                 st.session_state.is_playing_sequence = True
                 
-                # Add new color for next round
-                new_color = random.randint(0, 3)
-                st.session_state.game_sequence.append(new_color)
+                # Generate completely new sequence for next round
+                new_sequence_length = st.session_state.game_level
+                new_sequence = []
+                for _ in range(new_sequence_length):
+                    new_color = random.randint(0, 3)
+                    new_sequence.append(new_color)
+                st.session_state.game_sequence = new_sequence
                 
                 st.session_state.game_message = f"✅ Round complete! +{round_points} points! Watch next sequence..."
         else:
-            # Wrong move - Game Over
             end_game()
     
     # ========== UI ==========
-    st.markdown('<div class="game-wrapper">', unsafe_allow_html=True)
+    # st.markdown('<div class="game-wrapper">', unsafe_allow_html=True)
     
     # Title
     st.markdown("""
@@ -190,44 +190,95 @@ def show_calm_colors_game():
                 reset_game()
                 st.rerun()
     
-    # ========== SHOW SEQUENCE (Auto-play) ==========
+    # ========== NEW AND IMPROVED SEQUENCE DISPLAY ==========
     if st.session_state.game_active and st.session_state.is_playing_sequence:
         sequence = st.session_state.game_sequence
         if sequence:
-            st.info(f"🎵 Watching sequence length: {len(sequence)}...")
+            # Show header with progress
+            st.markdown(f"""
+            <div style="text-align: center; margin: 10px 0;">
+                <div style="background: #F0F9FF; padding: 10px; border-radius: 15px;">
+                    🎵 <strong>Watching Sequence</strong> - Length: {len(sequence)} 🎵
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
             
-            # Create placeholder for flashing colors
-            flash_placeholder = st.empty()
+            # Create horizontal chips layout
+            cols = st.columns(len(sequence))
             
-            for color_idx in sequence:
+            # Animate each chip one by one
+            for idx, color_idx in enumerate(sequence):
                 color_data = colors[color_idx]
-                flash_placeholder.markdown(f"""
-                    <div style="
-                        background-color: {color_data['color']};
-                        padding: 60px;
-                        border-radius: 30px;
-                        text-align: center;
-                        margin: 20px 0;
-                        animation: pulse 0.5s ease-in-out;
-                        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-                    ">
-                        <div style="font-size: 64px;">{color_data['emoji']}</div>
-                        <div style="color: white; font-size: 24px; font-weight: bold; margin-top: 10px;">
-                            {color_data['name']}
+                
+                with cols[idx]:
+                    # Create placeholder for this chip
+                    chip_placeholder = st.empty()
+                    
+                    # Show chip with animation
+                    chip_placeholder.markdown(f"""
+                        <div style="
+                            background: {color_data['color']};
+                            padding: 20px 10px;
+                            border-radius: 15px;
+                            text-align: center;
+                            margin: 5px;
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                            animation: glow 0.6s ease-in-out;
+                        ">
+                            <div style="font-size: 48px;">{color_data['emoji']}</div>
+                            <div style="color: white; font-size: 14px; font-weight: bold; margin-top: 5px;">
+                                {color_data['name']}
+                            </div>
                         </div>
-                    </div>
-                    <style>
-                    @keyframes pulse {{
-                        0% {{ transform: scale(0.8); opacity: 0.5; }}
-                        100% {{ transform: scale(1); opacity: 1; }}
-                    }}
-                    </style>
-                """, unsafe_allow_html=True)
-                time.sleep(1)
-                flash_placeholder.empty()
-                time.sleep(0.4)
+                        <style>
+                        @keyframes glow {{
+                            0% {{ 
+                                transform: scale(0.9);
+                                opacity: 0.5;
+                            }}
+                            50% {{
+                                transform: scale(1.05);
+                                opacity: 1;
+                            }}
+                            100% {{ 
+                                transform: scale(1);
+                                opacity: 1;
+                            }}
+                        }}
+                        </style>
+                    """, unsafe_allow_html=True)
+                    
+                    # Wait before moving to next chip
+                    time.sleep(0.8)
+                    
+                    # Dim the chip after showing
+                    chip_placeholder.markdown(f"""
+                        <div style="
+                            background: {color_data['color']};
+                            padding: 20px 10px;
+                            border-radius: 15px;
+                            text-align: center;
+                            margin: 5px;
+                            opacity: 0.6;
+                        ">
+                            <div style="font-size: 48px;">{color_data['emoji']}</div>
+                            <div style="color: white; font-size: 14px; font-weight: bold; margin-top: 5px;">
+                                {color_data['name']}
+                            </div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    
+                    time.sleep(0.2)
             
-            flash_placeholder.empty()
+            # Give a moment to review
+            time.sleep(0.5)
+            
+            # Show transition message
+            st.markdown("""
+            <div style="text-align: center; padding: 10px; background: #E0F2FE; border-radius: 15px; margin: 10px 0;">
+                🎯 Sequence completed! Your turn now! 🎯
+            </div>
+            """, unsafe_allow_html=True)
             
             # Switch to player's turn
             st.session_state.is_playing_sequence = False
@@ -237,7 +288,6 @@ def show_calm_colors_game():
     
     # ========== GAME PLAY AREA ==========
     if st.session_state.game_active:
-        # Show waiting or playing status
         if st.session_state.waiting_for_player:
             st.markdown("""
                 <div style="text-align: center; padding: 15px; background: #F0FDF4; border-radius: 15px; margin: 10px 0;">
@@ -246,55 +296,35 @@ def show_calm_colors_game():
                 </div>
             """, unsafe_allow_html=True)
             
-            # Show progress
             total = len(st.session_state.game_sequence)
             progress = st.session_state.player_index
             if total > 0:
                 st.progress(progress / total)
                 st.caption(f"🎯 Progress: {progress} / {total}")
         
-        # Color buttons in 2x2 grid
         st.markdown("### 🎨 Click colors:")
         
-        # Row 1
+        # Color buttons in 2x2 grid with improved spacing
         row1_col1, row1_col2 = st.columns(2)
         
         with row1_col1:
-            # Blue button
-            btn_style = f"""
-                <div style="
-                    background: linear-gradient(135deg, {colors[0]['color']}, {colors[0]['color']}dd);
-                    padding: 30px;
-                    border-radius: 20px;
-                    text-align: center;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                ">
-                    <div style="font-size: 48px;">{colors[0]['emoji']}</div>
-                    <div style="color: white; font-size: 20px; font-weight: bold;">{colors[0]['name']}</div>
-                </div>
-            """
             if st.button(f"{colors[0]['emoji']} {colors[0]['name']}", key="color_blue", use_container_width=True):
                 handle_player_move(0)
                 st.rerun()
         
         with row1_col2:
-            # Green button
             if st.button(f"{colors[1]['emoji']} {colors[1]['name']}", key="color_green", use_container_width=True):
                 handle_player_move(1)
                 st.rerun()
         
-        # Row 2
         row2_col1, row2_col2 = st.columns(2)
         
         with row2_col1:
-            # Purple button
             if st.button(f"{colors[2]['emoji']} {colors[2]['name']}", key="color_purple", use_container_width=True):
                 handle_player_move(2)
                 st.rerun()
         
         with row2_col2:
-            # Orange button
             if st.button(f"{colors[3]['emoji']} {colors[3]['name']}", key="color_orange", use_container_width=True):
                 handle_player_move(3)
                 st.rerun()
@@ -320,15 +350,15 @@ def show_calm_colors_game():
         st.markdown("""
         **🎮 Game Rules:**
         1. Click **Start New Game** to begin
-        2. **Watch carefully** as colored squares flash in a sequence
+        2. **Watch carefully** as colored squares flash in a sequence horizontally
         3. **Repeat** the sequence by clicking the colors in the same order
-        4. **Level Up** after each correct round (sequence gets longer)
+        4. **Level Up** after each correct round (completely new sequence each time!)
         5. **Game Over** if you click the wrong color
         
         🧘 **Mindfulness Tip:** Breathe in while watching the sequence, breathe out while repeating it.
         """)
     
-    st.markdown('</div>', unsafe_allow_html=True)
+    # st.markdown('</div>', unsafe_allow_html=True)
 
 
 def show_aesthetic_game_selector():
