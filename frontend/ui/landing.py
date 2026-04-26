@@ -1,32 +1,45 @@
-# landing.py
+# landing.py (FULLY FIXED - Video 3 Removed)
 import streamlit as st
 import streamlit.components.v1 as components
 import base64
 import os
-from components.navbar import render_navbar
-from layout_utils import apply_clean_layout   # ← IMPORT ADDED BACK
 
 def show_landing_page():
-    # Apply clean layout – removes header/footer, sets top padding
-    apply_clean_layout(hide_header_completely=True)
-    #st.markdown('<div style="height: 70px;"></div>', unsafe_allow_html=True) 
-
-    # ================= PROFESSIONAL CSS (no conflicting padding) =================
+    # ================= PROFESSIONAL CSS WITH REDUCED FONT SIZES =================
     st.markdown("""
     <style>
+        /* 🔥 REMOVE STREAMLIT TOP SPACE */
+        header {
+            visibility: hidden;
+            height: 0px;
+        }
+
+        [data-testid="stHeader"] {
+            display: none;
+        }
+
+        /* 🔥 REMOVE EXTRA GAP ABOVE CONTENT */
+        .main {
+            padding-top: 0rem !important;
+        }
         /* Remove footer */
         footer, .stApp footer, .css-1lsmgbg, .egzxvld0, .viewerFooter, [data-testid="stFooter"] {
             display: none !important;
         }
         
         /* Enable scrolling */
-        .stApp {
+       .stApp {
             overflow-y: auto !important;
             height: 100vh !important;
+            background: #EAF3FF !important;
         }
 
-        /* Only max-width and margins - padding handled by layout_utils */
+        body {
+            background: #EAF3FF !important;
+        }
+        
         .main .block-container {
+            padding: 1rem 2rem 4rem 2rem !important;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -67,110 +80,94 @@ def show_landing_page():
             font-family: 'Inter', sans-serif;
         }
         
-        /* ================= PROFESSIONAL COLOR SCHEME ================= */
-        /* Hero section */
+        /* ================= REDUCED FONT SIZES ================= */
         .hero-text {
             color: #2C3E50;
-            font-size: 1.2rem;
-            line-height: 1.7;
-            margin-bottom: 30px;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
         }
         
-        /* Carousel heading */
         .carousel-heading {
             text-align: center;
             margin: 20px 0;
         }
         
         .carousel-heading h2 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             background: linear-gradient(135deg, #1E3A5F 0%, #4A6FA5 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         
         .carousel-heading p {
             color: #4A6FA5;
-            font-size: 1.15rem;
-            line-height: 1.7;
+            font-size: 0.95rem;
+            line-height: 1.6;
             max-width: 800px;
             margin: 0 auto;
         }
         
-        /* Section titles */
         .section-title {
             text-align: center;
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             background: linear-gradient(135deg, #1E3A5F 0%, #4A6FA5 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin: 40px 0 20px 0;
+            margin: 35px 0 15px 0;
             position: relative;
         }
         
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, #4A6FA5, #7899C7);
-            margin: 15px auto 0;
-            border-radius: 2px;
-        }
-        
-        /* Section description */
         .section-description {
             text-align: center;
             color: #5A6E7A;
-            font-size: 1.1rem;
-            line-height: 1.7;
+            font-size: 0.9rem;
+            line-height: 1.6;
             max-width: 800px;
-            margin: 0 auto 40px auto;
+            margin: 0 auto 35px auto;
             padding: 0 20px;
         }
         
-        /* Exercise description */
         .exercise-description {
             text-align: center;
             color: #5A6E7A;
-            font-size: 1.05rem;
-            line-height: 1.7;
+            font-size: 0.9rem;
+            line-height: 1.6;
             max-width: 800px;
-            margin: 0 auto 40px auto;
+            margin: 0 auto 35px auto;
             padding: 0 20px;
         }
         
-        /* Exercise cards */
         .exercise-card {
             border-radius: 20px;
-            padding: 32px;
+            padding: 28px;
             width: 100%;
             transition: all 0.3s ease;
             display: flex;
             flex-direction: row;
             align-items: center;
-            gap: 40px;
-            margin-bottom: 30px;
+            gap: 30px;
+            margin-bottom: 45px;
             border: none;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             flex-wrap: wrap;
         }
         
         .exercise-card-1 { 
-            background: linear-gradient(135deg, #F5F7FA 0%, #FFFFFF 100%); 
+            background: #E6E6FA;
             border-left: 4px solid #5B8C5A;
         }
         .exercise-card-2 { 
-            background: linear-gradient(135deg, #F5F7FA 0%, #FFFFFF 100%); 
+            background: #E6E6FA;
             border-left: 4px solid #4A6FA5;
         }
         .exercise-card-3 { 
-            background: linear-gradient(135deg, #F5F7FA 0%, #FFFFFF 100%); 
+            background: #E6E6FA; 
             border-left: 4px solid #C17A5B;
         }
         
@@ -180,8 +177,8 @@ def show_landing_page():
         }
         
         .exercise-icon-large {
-            font-size: 4.5rem;
-            min-width: 100px;
+            font-size: 3.8rem;
+            min-width: 85px;
             text-align: center;
             animation: gentleBounce 3s ease-in-out infinite;
         }
@@ -194,30 +191,30 @@ def show_landing_page():
         .exercise-content { flex: 1; }
         
         .exercise-title {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             color: #1E3A5F;
         }
         
         .exercise-quote {
             font-style: italic;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             color: #5A6E7A;
-            margin-bottom: 20px;
-            padding: 14px 18px;
+            margin-bottom: 15px;
+            padding: 12px 15px;
             background: #F8F9FB;
             border-radius: 12px;
             border-left: 3px solid #7899C7;
-            line-height: 1.6;
+            line-height: 1.5;
         }
         
         .exercise-description-text {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             color: #5A6E7A;
-            margin-bottom: 18px;
-            padding: 8px 0;
-            line-height: 1.6;
+            margin-bottom: 15px;
+            padding: 6px 0;
+            line-height: 1.5;
         }
         
         .exercise-description-text strong {
@@ -225,7 +222,7 @@ def show_landing_page():
         }
         
         .exercise-quote-author {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: #7899C7;
             text-align: right;
             margin-top: 6px;
@@ -236,17 +233,17 @@ def show_landing_page():
             padding: 0;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         
         .exercise-steps li {
             background: #FFFFFF;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 0.95rem;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             border: 1px solid #E8EEF2;
             transition: all 0.2s ease;
             color: #2C3E50;
@@ -261,74 +258,74 @@ def show_landing_page():
         .step-number {
             background: #4A6FA5;
             color: white;
-            width: 26px;
-            height: 26px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             flex-shrink: 0;
         }
         
         .exercise-video {
-            min-width: 300px;
-            max-width: 360px;
+            min-width: 280px;
+            max-width: 320px;
         }
         
         .exercise-video video {
             width: 100%;
-            border-radius: 16px;
+            border-radius: 14px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
         
-        /* Feature cards */
         .feature-card-custom {
-            background: #FFFFFF;
-            padding: 28px 20px;
-            border-radius: 16px;
+            background: #E6E6FA;
+            padding: 22px 15px;
+            border-radius: 14px;
             border: 1px solid #E8EEF2;
             transition: all 0.3s ease;
             text-align: center;
             height: 100%;
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            margin-bottom: 30px;
         }
         
         .feature-card-custom:hover {
-            transform: translateY(-6px);
+            transform: translateY(-5px);
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
             border-color: #7899C7;
         }
         
         .feature-card-custom div:first-child {
-            font-size: 42px;
-            margin-bottom: 12px;
+            font-size: 36px;
+            margin-bottom: 10px;
         }
         
         .feature-card-custom div:nth-child(2) {
             font-weight: 700;
-            margin: 12px 0 8px;
-            font-size: 1.15rem;
+            margin: 10px 0 6px;
+            font-size: 1rem;
             color: #1E3A5F;
         }
         
         .feature-card-custom div:last-child {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #5A6E7A;
-            line-height: 1.5;
+            line-height: 1.4;
         }
         
-        /* Tech cards */
         .tech-card-custom {
-            background: #F8F9FB;
-            border-radius: 16px;
-            padding: 24px 16px;
+            background: #E6E6FA;
+            border-radius: 14px;
+            padding: 20px 12px;
             text-align: center;
             transition: all 0.3s ease;
             border: 1px solid #E8EEF2;
             height: 100%;
+            margin-bottom: 30px;
         }
         
         .tech-card-custom:hover {
@@ -339,26 +336,25 @@ def show_landing_page():
         }
         
         .tech-card-custom div:first-child {
-            font-size: 2.5rem;
+            font-size: 2rem;
         }
         
         .tech-card-custom div:nth-child(2) {
             font-weight: 700;
-            margin: 12px 0 6px;
-            font-size: 1rem;
-            color: #1E3A5F;
+            margin: 10px 0 5px;
+            font-size: 0.9rem;
+            color: Black;
         }
         
         .tech-card-custom div:last-child {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: #7899C7;
         }
         
-        /* Impact cards */
         .impact-card-custom {
-            background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FB 100%);
-            border-radius: 16px;
-            padding: 24px 16px;
+            background: #E6E6FA;
+            border-radius: 14px;
+            padding: 20px 12px;
             text-align: center;
             transition: all 0.3s ease;
             border: 1px solid #E8EEF2;
@@ -372,25 +368,24 @@ def show_landing_page():
         }
         
         .stat-number-custom {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             color: #4A6FA5;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         
         .stat-label-custom {
             color: #5A6E7A;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         
-        /* Custom footer */
         .custom-footer {
             text-align: center;
-            padding: 40px 0 30px;
+            padding: 35px 0 25px;
             border-top: 1px solid #E8EEF2;
-            margin: 50px 0 0 0;
-            background: #F8F9FB;
+            margin: 45px 0 0 0;
+            background: #E6E6FA;
             border-radius: 20px;
             width: 100%;
             clear: both;
@@ -398,14 +393,14 @@ def show_landing_page():
         
         .custom-footer p {
             color: #5A6E7A;
-            font-size: 0.85rem;
-            margin: 8px 0;
-            line-height: 1.5;
+            font-size: 0.75rem;
+            margin: 6px 0;
+            line-height: 1.4;
         }
         
         .carousel-wrapper {
             max-width: 1400px;
-            margin: 40px auto;
+            margin: 35px auto;
             padding: 0 20px;
         }
         
@@ -419,24 +414,23 @@ def show_landing_page():
             .exercise-card {
                 flex-direction: column;
                 text-align: center;
-                padding: 24px;
+                padding: 20px;
             }
             .exercise-video {
                 width: 100%;
                 min-width: auto;
             }
             .section-title {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
             .hero-text {
-                font-size: 1rem;
+                font-size: 0.9rem;
             }
             .section-description {
-                font-size: 0.95rem;
+                font-size: 0.85rem;
             }
         }
         
-        /* Scroll to top button */
         .scroll-top {
             position: fixed;
             bottom: 25px;
@@ -444,14 +438,14 @@ def show_landing_page():
             background: #4A6FA5;
             color: white;
             border-radius: 50%;
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             text-align: center;
-            line-height: 44px;
+            line-height: 40px;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             z-index: 1000;
-            font-size: 20px;
+            font-size: 18px;
             transition: all 0.3s ease;
         }
         
@@ -465,10 +459,10 @@ def show_landing_page():
             background: #4A6FA5;
             color: white;
             border: none;
-            padding: 12px 28px;
-            border-radius: 12px;
+            padding: 10px 24px;
+            border-radius: 10px;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
             width: 100%;
             cursor: pointer;
@@ -480,7 +474,6 @@ def show_landing_page():
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
         
-        /* General text colors */
         p, li, .stMarkdown {
             color: #2C3E50;
         }
@@ -497,28 +490,34 @@ def show_landing_page():
     col_t, col_v = st.columns([1, 1.2], gap="large")
     with col_t:
         st.markdown(
-            '<div style="margin-top: 10px;">'
-            '<h1 style="font-size:2.5rem; font-weight:800; background:linear-gradient(135deg, #1E3A5F 0%, #4A6FA5 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1.2;">'
+            '<div style="margin-top: 50px;">'
+            '<h1 style="font-size:2rem; font-weight:800; background:linear-gradient(135deg, #1E3A5F 0%, #4A6FA5 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1.2;">'
             'AI Powered <span style="color:#4A6FA5; -webkit-text-fill-color:#4A6FA5;">Emotional Care</span>'
             '</h1>'
             '<p class="hero-text">'
             'Your compassionate AI companion for mental wellness, available 24/7.<br>'
-            'Providing intelligent, stigma-free emotional support whenever you need it.<br>'
-            'Experience a safe space where technology meets empathy, helping you navigate life\'s challenges with confidence.'
+            'Providing intelligent, stigma-free emotional support whenever you need it.Experience a safe space where technology meets empathy, helping you navigate life\'s challenges with confidence.'
             '</p>'
             '</div>',
             unsafe_allow_html=True
         )
+        st.markdown("""
+        <style>
+            .hero-button-space {
+            margin-top: 45px;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+        st.markdown('<div class="hero-button-space"></div>', unsafe_allow_html=True)
         if st.button("✨ Try It Yourself", use_container_width=True, key="hero_try"):
             st.session_state.page = "demo"
             st.rerun()
 
     # ================= CHAT DEMO =================
     with col_v:
-        # Wrap the chat demo to prevent layout shift
-        st.markdown('<div style="min-height: 460px;">', unsafe_allow_html=True)
         components.html("""
-        <div style="background: white; border-radius: 20px; padding: 20px; border: 1px solid #E8EEF2; box-shadow: 0 8px 20px rgba(0,0,0,0.06); height: 380px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 10px;">
+        <div style="background: white; border-radius: 30px; padding: 20px; border: 1px solid #E8EEF2; box-shadow: 0 8px 20px rgba(0,0,0,0.06); height: 380px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 10px;">
             <div id="chat-box" style="flex: 1; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column;"></div>
         </div>
         <script>
@@ -559,7 +558,7 @@ def show_landing_page():
                 var bubble = document.createElement('div');
                 bubble.style.padding = '10px 14px';
                 bubble.style.borderRadius = isUser ? '0 15px 15px 15px' : '15px 0 15px 15px';
-                bubble.style.fontSize = '14px';
+                bubble.style.fontSize = '13px';
                 bubble.style.maxWidth = '80%';
                 bubble.style.wordWrap = 'break-word';
                 
@@ -618,8 +617,7 @@ def show_landing_page():
             setTimeout(playConversation, 500);
         })();
         </script>
-        """, height=460)
-        st.markdown('</div>', unsafe_allow_html=True)
+        """, height=450)
 
     # ================= CAROUSEL HEADING =================
     st.markdown("""
@@ -632,18 +630,19 @@ def show_landing_page():
 
     # ================= QUOTE CAROUSEL =================
     st.markdown('<div class="carousel-wrapper"><div class="carousel-outer">', unsafe_allow_html=True)
+
     components.html("""
     <!DOCTYPE html>
     <html>
     <head>
         <style>
             body { margin: 0; background: transparent; font-family: 'Inter', sans-serif; }
-            .carousel-container { width: 100%; overflow: hidden; position: relative; height: 450px; background: transparent; }
+            .carousel-container { width: 100%; overflow: hidden; position: relative; height: 400px; background: transparent; }
             .carousel-track { display: flex; width: 400%; height: 100%; transition: transform 0.7s ease-in-out; }
             .slide { width: 25%; height: 100%; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; }
-            .quote-card { background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); border-radius: 32px; padding: 32px 48px; max-width: 680px; box-shadow: 0 20px 40px -12px rgba(0,0,0,0.25); text-align: center; border: 1px solid rgba(255,255,255,0.5); z-index: 2; margin: 0 20px; }
-            .quote-text { color: #1E3A5F; font-size: 24px; font-weight: 500; line-height: 1.5; font-style: italic; margin: 0; text-shadow: 1px 1px 2px rgba(255,255,255,0.5); }
-            .quote-author { margin-top: 20px; color: #4A6FA5; font-size: 15px; font-weight: 600; }
+            .quote-card { background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); border-radius: 32px; padding: 28px 45px; max-width: 650px; box-shadow: 0 20px 40px -12px rgba(0,0,0,0.25); text-align: center; border: 1px solid rgba(255,255,255,0.5); z-index: 2; margin: 0 20px; }
+            .quote-text { color: #1E3A5F; font-size: 22px; font-weight: 500; line-height: 1.5; font-style: italic; margin: 0; text-shadow: 1px 1px 2px rgba(255,255,255,0.5); }
+            .quote-author { margin-top: 30px; color: #4A6FA5; font-size: 14px; font-weight: 600; }
             @media (max-width: 768px) {
                 .quote-card { padding: 20px 24px; margin: 0 15px; }
                 .quote-text { font-size: 18px; }
@@ -701,11 +700,13 @@ def show_landing_page():
     </script>
     </body>
     </html>
-    """, height=470)
+    """, height=420)
+
     st.markdown('</div></div>', unsafe_allow_html=True)
 
     # ================= MENTAL WELLNESS EXERCISES =================
     st.markdown('<h2 class="section-title">🧘 Mental Wellness Exercises</h2>', unsafe_allow_html=True)
+    
     st.markdown("""
     <div class="exercise-description">
         <strong>🧠 Evidence-based practices for emotional balance</strong><br><br>
@@ -715,31 +716,28 @@ def show_landing_page():
     </div>
     """, unsafe_allow_html=True)
 
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    video_path_1 = os.path.join(BASE_DIR, "../../assets/videos/videobreathe.mp4")
-    video_path_2 = os.path.join(BASE_DIR, "../../assets/videos/video1.mp4")
+    # ================= FIXED VIDEO PATHS (ONLY 2 VIDEOS) =================
+    # Direct paths to your video files
+    video_path_1 = r"C:\Users\HP\Desktop\Mental-Health-Chatbot\assets\videos\fdc9691b2636acbc174610f97f618f6b.mp4"
+    video_path_2 = r"C:\Users\HP\Desktop\Mental-Health-Chatbot\assets\videos\8712234-hd_1080_1920_25fps.mp4"
+    
+    def get_video_base64(video_path):
+        """Convert video file to base64 string"""
+        try:
+            if os.path.exists(video_path):
+                with open(video_path, "rb") as video_file:
+                    video_base64 = base64.b64encode(video_file.read()).decode()
+                    return video_base64, True
+            else:
+                return "", False
+        except Exception:
+            return "", False
+    
+    # Load videos
+    video_base64_1, video_available_1 = get_video_base64(video_path_1)
+    video_base64_2, video_available_2 = get_video_base64(video_path_2)
 
-    video_available_1 = False
-    video_base64_1 = ""
-    try:
-        if os.path.exists(video_path_1):
-            with open(video_path_1, "rb") as video_file:
-                video_base64_1 = base64.b64encode(video_file.read()).decode()
-            video_available_1 = True
-    except Exception:
-        pass
-
-    video_available_2 = False
-    video_base64_2 = ""
-    try:
-        if os.path.exists(video_path_2):
-            with open(video_path_2, "rb") as video_file:
-                video_base64_2 = base64.b64encode(video_file.read()).decode()
-            video_available_2 = True
-    except Exception:
-        pass
-
-    # Exercise 1
+    # Exercise 1 - Mindful Breathing (Video 1)
     if video_available_1:
         st.markdown(f"""
         <div class="exercise-card exercise-card-1">
@@ -766,7 +764,7 @@ def show_landing_page():
         </div>
         """, unsafe_allow_html=True)
 
-    # Exercise 2
+    # Exercise 2 - Mindfulness Meditation (Video 2)
     if video_available_2:
         st.markdown(f"""
         <div class="exercise-card exercise-card-2">
@@ -793,7 +791,7 @@ def show_landing_page():
         </div>
         """, unsafe_allow_html=True)
 
-    # Exercise 3
+    # Exercise 3 - Grounding Technique (No Video)
     st.markdown("""
     <div class="exercise-card exercise-card-3">
         <div class="exercise-icon-large">🌍</div>
@@ -808,6 +806,7 @@ def show_landing_page():
 
     # ================= FEATURES SECTION =================
     st.markdown('<h2 class="section-title">🎯 Core Capabilities</h2>', unsafe_allow_html=True)
+    
     st.markdown("""
     <div class="section-description">
         <strong>🤖 Intelligent features designed for your emotional well-being</strong><br><br>
@@ -817,17 +816,24 @@ def show_landing_page():
     """, unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns(3)
-    with col1: st.markdown('<div class="feature-card-custom"><div>💬</div><div>Sentiment Analysis</div><div>Real-time emotion detection</div></div>', unsafe_allow_html=True)
-    with col2: st.markdown('<div class="feature-card-custom"><div>📊</div><div>Mood Tracking</div><div>Visual progress analytics</div></div>', unsafe_allow_html=True)
-    with col3: st.markdown('<div class="feature-card-custom"><div>🛡️</div><div>Crisis Guard</div><div>High-risk keyword detection</div></div>', unsafe_allow_html=True)
+    with col1:
+        st.markdown('<div class="feature-card-custom"><div>💬</div><div>Sentiment Analysis</div><div>Real-time emotion detection</div></div>', unsafe_allow_html=True)
+    with col2:
+        st.markdown('<div class="feature-card-custom"><div>📊</div><div>Mood Tracking</div><div>Visual progress analytics</div></div>', unsafe_allow_html=True)
+    with col3:
+        st.markdown('<div class="feature-card-custom"><div>🛡️</div><div>Crisis Guard</div><div>High-risk keyword detection</div></div>', unsafe_allow_html=True)
 
     col4, col5, col6 = st.columns(3)
-    with col4: st.markdown('<div class="feature-card-custom"><div>🎤</div><div>Voice Support</div><div>Speech-to-text interaction</div></div>', unsafe_allow_html=True)
-    with col5: st.markdown('<div class="feature-card-custom"><div>📚</div><div>RAG Knowledge</div><div>WHO verified guidelines</div></div>', unsafe_allow_html=True)
-    with col6: st.markdown('<div class="feature-card-custom"><div>🧘</div><div>Coping Tools</div><div>Meditation & CBT techniques</div></div>', unsafe_allow_html=True)
+    with col4:
+        st.markdown('<div class="feature-card-custom"><div>🎤</div><div>Voice Support</div><div>Speech-to-text interaction</div></div>', unsafe_allow_html=True)
+    with col5:
+        st.markdown('<div class="feature-card-custom"><div>📚</div><div>RAG Knowledge</div><div>WHO verified guidelines</div></div>', unsafe_allow_html=True)
+    with col6:
+        st.markdown('<div class="feature-card-custom"><div>🧘</div><div>Coping Tools</div><div>Meditation & CBT techniques</div></div>', unsafe_allow_html=True)
 
     # ================= TECH STACK SECTION =================
     st.markdown('<h2 class="section-title">🔧 Technology Stack</h2>', unsafe_allow_html=True)
+    
     st.markdown("""
     <div class="section-description">
         <strong>⚙️ Built with cutting-edge technology for reliability and scale</strong><br><br>
@@ -837,13 +843,18 @@ def show_landing_page():
     """, unsafe_allow_html=True)
 
     tech_col1, tech_col2, tech_col3, tech_col4 = st.columns(4)
-    with tech_col1: st.markdown('<div class="tech-card-custom"><div>⚡</div><div>Frontend</div><div>Streamlit</div></div>', unsafe_allow_html=True)
-    with tech_col2: st.markdown('<div class="tech-card-custom"><div>🤖</div><div>AI Engine</div><div>LLM + RAG</div></div>', unsafe_allow_html=True)
-    with tech_col3: st.markdown('<div class="tech-card-custom"><div>🗄️</div><div>Backend</div><div>FastAPI</div></div>', unsafe_allow_html=True)
-    with tech_col4: st.markdown('<div class="tech-card-custom"><div>🎤</div><div>Voice</div><div>Whisper</div></div>', unsafe_allow_html=True)
+    with tech_col1:
+        st.markdown('<div class="tech-card-custom"><div>⚡</div><div>Frontend</div><div>Streamlit</div></div>', unsafe_allow_html=True)
+    with tech_col2:
+        st.markdown('<div class="tech-card-custom"><div>🤖</div><div>AI Engine</div><div>LLM + RAG</div></div>', unsafe_allow_html=True)
+    with tech_col3:
+        st.markdown('<div class="tech-card-custom"><div>🗄️</div><div>Backend</div><div>FastAPI</div></div>', unsafe_allow_html=True)
+    with tech_col4:
+        st.markdown('<div class="tech-card-custom"><div>🎤</div><div>Voice</div><div>Whisper</div></div>', unsafe_allow_html=True)
 
     # ================= IMPACT SECTION =================
     st.markdown('<h2 class="section-title">📊 Impact</h2>', unsafe_allow_html=True)
+    
     st.markdown("""
     <div class="section-description">
         <strong>📈 Making mental health support accessible to everyone</strong><br><br>
@@ -853,10 +864,14 @@ def show_landing_page():
     """, unsafe_allow_html=True)
 
     imp_col1, imp_col2, imp_col3, imp_col4 = st.columns(4)
-    with imp_col1: st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">24/7</div><div class="stat-label-custom">Availability</div></div>', unsafe_allow_html=True)
-    with imp_col2: st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">100%</div><div class="stat-label-custom">Anonymous</div></div>', unsafe_allow_html=True)
-    with imp_col3: st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">50+</div><div class="stat-label-custom">Sources</div></div>', unsafe_allow_html=True)
-    with imp_col4: st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">Real-time</div><div class="stat-label-custom">Detection</div></div>', unsafe_allow_html=True)
+    with imp_col1:
+        st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">24/7</div><div class="stat-label-custom">Availability</div></div>', unsafe_allow_html=True)
+    with imp_col2:
+        st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">100%</div><div class="stat-label-custom">Anonymous</div></div>', unsafe_allow_html=True)
+    with imp_col3:
+        st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">50+</div><div class="stat-label-custom">Sources</div></div>', unsafe_allow_html=True)
+    with imp_col4:
+        st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">Real-time</div><div class="stat-label-custom">Detection</div></div>', unsafe_allow_html=True)
 
     # ================= CUSTOM FOOTER =================
     st.markdown("""
@@ -864,7 +879,7 @@ def show_landing_page():
         <p>© 2026 Mind Care AI | National University of Modern Languages, Islamabad</p>
         <p>Final Year Project | Department of Computer Science</p>
         <p>Supervised by Faisal Hussain</p>
-        <p style="margin-top: 16px;">🌟 Your mental well-being is our priority. Reach out anytime.</p>
+        <p style="margin-top: 60px;">🌟 Your mental well-being is our priority. Reach out anytime.</p>
     </div>
     """, unsafe_allow_html=True)
     
