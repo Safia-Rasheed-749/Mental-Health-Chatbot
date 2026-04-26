@@ -1,22 +1,14 @@
+# journal.py (modified)
 import streamlit as st
 from db import add_journal, get_journals
 from datetime import datetime
+from layout_utils import apply_clean_layout   # add
 
 def show_journal(user_id):
-    # --- Remove top white space ---
-    st.markdown("""
-        <style>
-        .main .block-container {
-            padding-top: 0rem !important;
-            margin-top: -0.5rem !important;
-        }
-        .main .block-container > :first-child {
-            margin-top: 0rem !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
+    apply_clean_layout(hide_header_completely=False)   # <--- ADDED
+    
     st.title("📝 Personal Journal")
+    # ... rest unchanged (remove old padding CSS)
     st.markdown("### Write your thoughts here:")
     entry = st.text_area("", placeholder="Type your journal entry...", height=150)
 

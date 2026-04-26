@@ -1,13 +1,20 @@
 # about.py
 import streamlit as st
-from components.navbar import render_navbar
+from layout_utils import apply_clean_layout
+
 def show_about_page():
+    # Apply global layout – removes header/footer, sets zero top padding
+    apply_clean_layout(hide_header_completely=True)
+    
+    # --- ADDED: Top spacer to push content away from navbar buttons ---
+    st.markdown('<div style="height: 60px;"></div>', unsafe_allow_html=True)
+
+    # About page CSS (no layout overrides, only styling)
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
     .stApp { background: #ffffff; }
-    .block-container { padding: 2rem !important; max-width: 1200px !important; margin: 0 auto !important; }
     
     /* Hero Section */
     .hero-section {
@@ -107,10 +114,7 @@ def show_about_page():
     </style>
     """, unsafe_allow_html=True)
 
-    # ================= SHARED NAVBAR =================
-    render_navbar()
-
-    # ================= PAGE CONTENT =================
+    # Page content
     st.markdown("""
     <div class="hero-section">
         <h1>About MindCareAI</h1>

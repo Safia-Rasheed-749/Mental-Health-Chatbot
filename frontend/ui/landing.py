@@ -1,12 +1,17 @@
-# landing.py (FINAL - Professional Color Scheme + Fixed Videos)
+# landing.py
 import streamlit as st
 import streamlit.components.v1 as components
 import base64
 import os
 from components.navbar import render_navbar
+from layout_utils import apply_clean_layout   # ← IMPORT ADDED BACK
 
 def show_landing_page():
-    # ================= PROFESSIONAL CSS WITH BETTER TYPOGRAPHY =================
+    # Apply clean layout – removes header/footer, sets top padding
+    apply_clean_layout(hide_header_completely=True)
+    #st.markdown('<div style="height: 70px;"></div>', unsafe_allow_html=True) 
+
+    # ================= PROFESSIONAL CSS (no conflicting padding) =================
     st.markdown("""
     <style>
         /* Remove footer */
@@ -19,9 +24,9 @@ def show_landing_page():
             overflow-y: auto !important;
             height: 100vh !important;
         }
-        
+
+        /* Only max-width and margins - padding handled by layout_utils */
         .main .block-container {
-            padding: 1rem 2rem 4rem 2rem !important;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -493,7 +498,7 @@ def show_landing_page():
     with col_t:
         st.markdown(
             '<div style="margin-top: 10px;">'
-            '<h1 style="font-size:3.5rem; font-weight:800; background:linear-gradient(135deg, #1E3A5F 0%, #4A6FA5 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1.2;">'
+            '<h1 style="font-size:2.5rem; font-weight:800; background:linear-gradient(135deg, #1E3A5F 0%, #4A6FA5 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1.2;">'
             'AI Powered <span style="color:#4A6FA5; -webkit-text-fill-color:#4A6FA5;">Emotional Care</span>'
             '</h1>'
             '<p class="hero-text">'
@@ -510,6 +515,8 @@ def show_landing_page():
 
     # ================= CHAT DEMO =================
     with col_v:
+        # Wrap the chat demo to prevent layout shift
+        st.markdown('<div style="min-height: 460px;">', unsafe_allow_html=True)
         components.html("""
         <div style="background: white; border-radius: 20px; padding: 20px; border: 1px solid #E8EEF2; box-shadow: 0 8px 20px rgba(0,0,0,0.06); height: 380px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 10px;">
             <div id="chat-box" style="flex: 1; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column;"></div>
@@ -612,6 +619,7 @@ def show_landing_page():
         })();
         </script>
         """, height=460)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     # ================= CAROUSEL HEADING =================
     st.markdown("""
@@ -624,7 +632,6 @@ def show_landing_page():
 
     # ================= QUOTE CAROUSEL =================
     st.markdown('<div class="carousel-wrapper"><div class="carousel-outer">', unsafe_allow_html=True)
-
     components.html("""
     <!DOCTYPE html>
     <html>
@@ -695,12 +702,10 @@ def show_landing_page():
     </body>
     </html>
     """, height=470)
-
     st.markdown('</div></div>', unsafe_allow_html=True)
 
     # ================= MENTAL WELLNESS EXERCISES =================
     st.markdown('<h2 class="section-title">🧘 Mental Wellness Exercises</h2>', unsafe_allow_html=True)
-    
     st.markdown("""
     <div class="exercise-description">
         <strong>🧠 Evidence-based practices for emotional balance</strong><br><br>
@@ -710,10 +715,7 @@ def show_landing_page():
     </div>
     """, unsafe_allow_html=True)
 
-    # Get the directory of the current file
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    
-    # Video paths - Using relative paths from your working code
     video_path_1 = os.path.join(BASE_DIR, "../../assets/videos/videobreathe.mp4")
     video_path_2 = os.path.join(BASE_DIR, "../../assets/videos/video1.mp4")
 
@@ -737,7 +739,7 @@ def show_landing_page():
     except Exception:
         pass
 
-    # Exercise 1 - Breathing Exercise
+    # Exercise 1
     if video_available_1:
         st.markdown(f"""
         <div class="exercise-card exercise-card-1">
@@ -764,7 +766,7 @@ def show_landing_page():
         </div>
         """, unsafe_allow_html=True)
 
-    # Exercise 2 - Mindfulness
+    # Exercise 2
     if video_available_2:
         st.markdown(f"""
         <div class="exercise-card exercise-card-2">
@@ -791,7 +793,7 @@ def show_landing_page():
         </div>
         """, unsafe_allow_html=True)
 
-    # Exercise 3 - Grounding
+    # Exercise 3
     st.markdown("""
     <div class="exercise-card exercise-card-3">
         <div class="exercise-icon-large">🌍</div>
@@ -806,7 +808,6 @@ def show_landing_page():
 
     # ================= FEATURES SECTION =================
     st.markdown('<h2 class="section-title">🎯 Core Capabilities</h2>', unsafe_allow_html=True)
-    
     st.markdown("""
     <div class="section-description">
         <strong>🤖 Intelligent features designed for your emotional well-being</strong><br><br>
@@ -816,24 +817,17 @@ def show_landing_page():
     """, unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown('<div class="feature-card-custom"><div>💬</div><div>Sentiment Analysis</div><div>Real-time emotion detection</div></div>', unsafe_allow_html=True)
-    with col2:
-        st.markdown('<div class="feature-card-custom"><div>📊</div><div>Mood Tracking</div><div>Visual progress analytics</div></div>', unsafe_allow_html=True)
-    with col3:
-        st.markdown('<div class="feature-card-custom"><div>🛡️</div><div>Crisis Guard</div><div>High-risk keyword detection</div></div>', unsafe_allow_html=True)
+    with col1: st.markdown('<div class="feature-card-custom"><div>💬</div><div>Sentiment Analysis</div><div>Real-time emotion detection</div></div>', unsafe_allow_html=True)
+    with col2: st.markdown('<div class="feature-card-custom"><div>📊</div><div>Mood Tracking</div><div>Visual progress analytics</div></div>', unsafe_allow_html=True)
+    with col3: st.markdown('<div class="feature-card-custom"><div>🛡️</div><div>Crisis Guard</div><div>High-risk keyword detection</div></div>', unsafe_allow_html=True)
 
     col4, col5, col6 = st.columns(3)
-    with col4:
-        st.markdown('<div class="feature-card-custom"><div>🎤</div><div>Voice Support</div><div>Speech-to-text interaction</div></div>', unsafe_allow_html=True)
-    with col5:
-        st.markdown('<div class="feature-card-custom"><div>📚</div><div>RAG Knowledge</div><div>WHO verified guidelines</div></div>', unsafe_allow_html=True)
-    with col6:
-        st.markdown('<div class="feature-card-custom"><div>🧘</div><div>Coping Tools</div><div>Meditation & CBT techniques</div></div>', unsafe_allow_html=True)
+    with col4: st.markdown('<div class="feature-card-custom"><div>🎤</div><div>Voice Support</div><div>Speech-to-text interaction</div></div>', unsafe_allow_html=True)
+    with col5: st.markdown('<div class="feature-card-custom"><div>📚</div><div>RAG Knowledge</div><div>WHO verified guidelines</div></div>', unsafe_allow_html=True)
+    with col6: st.markdown('<div class="feature-card-custom"><div>🧘</div><div>Coping Tools</div><div>Meditation & CBT techniques</div></div>', unsafe_allow_html=True)
 
     # ================= TECH STACK SECTION =================
     st.markdown('<h2 class="section-title">🔧 Technology Stack</h2>', unsafe_allow_html=True)
-    
     st.markdown("""
     <div class="section-description">
         <strong>⚙️ Built with cutting-edge technology for reliability and scale</strong><br><br>
@@ -843,18 +837,13 @@ def show_landing_page():
     """, unsafe_allow_html=True)
 
     tech_col1, tech_col2, tech_col3, tech_col4 = st.columns(4)
-    with tech_col1:
-        st.markdown('<div class="tech-card-custom"><div>⚡</div><div>Frontend</div><div>Streamlit</div></div>', unsafe_allow_html=True)
-    with tech_col2:
-        st.markdown('<div class="tech-card-custom"><div>🤖</div><div>AI Engine</div><div>LLM + RAG</div></div>', unsafe_allow_html=True)
-    with tech_col3:
-        st.markdown('<div class="tech-card-custom"><div>🗄️</div><div>Backend</div><div>FastAPI</div></div>', unsafe_allow_html=True)
-    with tech_col4:
-        st.markdown('<div class="tech-card-custom"><div>🎤</div><div>Voice</div><div>Whisper</div></div>', unsafe_allow_html=True)
+    with tech_col1: st.markdown('<div class="tech-card-custom"><div>⚡</div><div>Frontend</div><div>Streamlit</div></div>', unsafe_allow_html=True)
+    with tech_col2: st.markdown('<div class="tech-card-custom"><div>🤖</div><div>AI Engine</div><div>LLM + RAG</div></div>', unsafe_allow_html=True)
+    with tech_col3: st.markdown('<div class="tech-card-custom"><div>🗄️</div><div>Backend</div><div>FastAPI</div></div>', unsafe_allow_html=True)
+    with tech_col4: st.markdown('<div class="tech-card-custom"><div>🎤</div><div>Voice</div><div>Whisper</div></div>', unsafe_allow_html=True)
 
     # ================= IMPACT SECTION =================
     st.markdown('<h2 class="section-title">📊 Impact</h2>', unsafe_allow_html=True)
-    
     st.markdown("""
     <div class="section-description">
         <strong>📈 Making mental health support accessible to everyone</strong><br><br>
@@ -864,14 +853,10 @@ def show_landing_page():
     """, unsafe_allow_html=True)
 
     imp_col1, imp_col2, imp_col3, imp_col4 = st.columns(4)
-    with imp_col1:
-        st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">24/7</div><div class="stat-label-custom">Availability</div></div>', unsafe_allow_html=True)
-    with imp_col2:
-        st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">100%</div><div class="stat-label-custom">Anonymous</div></div>', unsafe_allow_html=True)
-    with imp_col3:
-        st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">50+</div><div class="stat-label-custom">Sources</div></div>', unsafe_allow_html=True)
-    with imp_col4:
-        st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">Real-time</div><div class="stat-label-custom">Detection</div></div>', unsafe_allow_html=True)
+    with imp_col1: st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">24/7</div><div class="stat-label-custom">Availability</div></div>', unsafe_allow_html=True)
+    with imp_col2: st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">100%</div><div class="stat-label-custom">Anonymous</div></div>', unsafe_allow_html=True)
+    with imp_col3: st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">50+</div><div class="stat-label-custom">Sources</div></div>', unsafe_allow_html=True)
+    with imp_col4: st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">Real-time</div><div class="stat-label-custom">Detection</div></div>', unsafe_allow_html=True)
 
     # ================= CUSTOM FOOTER =================
     st.markdown("""

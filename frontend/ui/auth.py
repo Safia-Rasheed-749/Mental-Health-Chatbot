@@ -2,11 +2,13 @@
 import streamlit as st
 import re
 from db import add_user, check_login, get_user_by_email, create_reset_token, reset_password_with_code
-from components.navbar import render_navbar
 from ui.email_utils import send_reset_email
+from layout_utils import apply_clean_layout
 
 def show_auth_page():
-    # If already logged in, redirect based on user type
+    apply_clean_layout(hide_header_completely=True)
+
+    # Redirect if already logged in
     if st.session_state.get("user") is not None:
         user = st.session_state.user
         is_admin = len(user) > 3 and user[3]
@@ -19,11 +21,12 @@ def show_auth_page():
         st.rerun()
         return
 
-    #render_navbar()
+    # ----- VISUAL SPACER (to push doctor image down) -----
+    st.markdown('<div style="height: 80px;"></div>', unsafe_allow_html=True)
 
     st.markdown("""
     <style>
-    /* Background Animation */
+    /* Background animation */
     .stApp {
         background: linear-gradient(120deg, #ffffff, #f1f5f9, #e2e8f0, #f8fafc);
         background-size: 300% 300%;
@@ -34,9 +37,12 @@ def show_auth_page():
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
     }
-    .main .block-container {
-        padding-top: 2rem;
-        max-width: 1200px;
+
+    /* Doctor image animation */
+    .doctor-img {
+        text-align: center;
+        animation: slideFromLeft 1s ease-out forwards, float 3s ease-in-out 0.8s infinite;
+        margin-bottom: 20px;
     }
     @keyframes slideFromLeft {
         0% { transform: translateX(-100px); opacity: 0; }
@@ -47,16 +53,15 @@ def show_auth_page():
         50% { transform: translateY(-15px); }
         100% { transform: translateY(0px); }
     }
-    .doctor-img {
-        text-align: center;
-        animation: slideFromLeft 1s ease-out forwards, float 3s ease-in-out 0.8s infinite;
-    }
     .doctor-img img {
         width: 95px;
         height: auto;
     }
+
     h1 { color: #1e293b !important; font-size: 1.8rem !important; text-align: center; }
     p { color: #475569 !important; font-size: 1rem !important; text-align: center; }
+
+    /* Input fields styling */
     div[data-testid="stTextInput"] > div[data-testid="stTextInputRootElement"] {
         border-radius: 12px !important;
         border: 1.5px solid #cbd5e1 !important;
@@ -82,6 +87,12 @@ def show_auth_page():
         color: #64748b !important;
         margin-right: 10px !important;
     }
+
+    /* Ensure main block has no top padding (spacer handles it) */
+    .main .block-container {
+        padding-top: 0rem !important;
+        max-width: 1200px;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -104,11 +115,12 @@ def show_auth_page():
             email = st.text_input("Email Address", key="login_email", placeholder="Enter your email")
             password = st.text_input("Password", type="password", key="login_password", placeholder="Enter your password")
 
+            # Explicit spacer above Sign In button
+            st.markdown('<div style="height: 25px;"></div>', unsafe_allow_html=True)
             if st.button("Sign In", key="signin_btn", use_container_width=True):
                 user = check_login(email, password)
                 if user:
                     st.session_state.user = user
-                    # Check admin flag (user[3] is is_admin)
                     is_admin = len(user) > 3 and user[3]
                     if is_admin:
                         st.session_state.current_page = "Admin Panel"
@@ -124,7 +136,6 @@ def show_auth_page():
 
             # ================= FORGOT PASSWORD EXPANDER =================
             with st.expander("🔐 Forgot Password?", expanded=False):
-                # ... (unchanged password reset code)
                 st.markdown("#### Reset Your Password")
                 reset_email_input = st.text_input("Enter your registered email", key="reset_email_widget")
 
@@ -193,9 +204,8 @@ def show_auth_page():
             reg_email = st.text_input("Email", key="reg_email", placeholder="example@mail.com")
             reg_password = st.text_input("Password", type="password", key="reg_password", placeholder="Choose a strong password")
 
-            def is_valid_email(email):
-                return re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email)
-
+            # Explicit spacer above Create Account button
+            st.markdown('<div style="height: 25px;"></div>', unsafe_allow_html=True)
             if st.button("Create Account", key="signup_btn", use_container_width=True):
                 if name and reg_email and reg_password:
                     if not is_valid_email(reg_email):
@@ -208,6 +218,9 @@ def show_auth_page():
                             st.error(message)
                 else:
                     st.warning("⚠️ Please fill all fields")
+
+def is_valid_email(email):
+    return re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email)
 
 if __name__ == "__main__":
     show_auth_page()

@@ -1,33 +1,25 @@
+# mood.py (modified)
 import streamlit as st
 import matplotlib.pyplot as plt
 from db import add_mood, get_moods
+from layout_utils import apply_clean_layout   # add
 
 def show_mood_analytics(user_id):
-    # ---------------- Remove top white space (keeps header & sidebar) ----------------
+    apply_clean_layout(hide_header_completely=False)   # <--- ADDED
+    
+    # Remove the old .main .block-container CSS – keep only button gradient and header transparency.
     st.markdown("""
         <style>
-        /* Remove default top padding/margin from main content */
-        .main .block-container {
-            padding-top: 0rem !important;
-            margin-top: -0.5rem !important;
-        }
-        .main .block-container > :first-child {
-            margin-top: 0rem !important;
-        }
-
         /* Hide only the hamburger menu (top-right) */
         #MainMenu {visibility: hidden;}
-        
         /* Hide the footer */
         footer {visibility: hidden;}
-        
         /* Make header transparent but keep functionality */
         header {
             background: transparent !important;
             backdrop-filter: blur(0px) !important;
             box-shadow: none !important;
         }
-
         /* Gradient Log Mood button */
         div.stButton > button:first-child {
             background: linear-gradient(90deg, #4facfe, #00f2fe) !important;
@@ -37,7 +29,6 @@ def show_mood_analytics(user_id):
             height: 50px;
             width: 100%;
         }
-
         div.stButton > button:hover {
             opacity: 0.9;
         }
@@ -45,6 +36,7 @@ def show_mood_analytics(user_id):
     """, unsafe_allow_html=True)
 
     st.title("📈 Mood Tracker")
+    # ... rest unchanged
 
     # ---------------- Mood Input ----------------
     st.markdown("### How are you feeling today?")

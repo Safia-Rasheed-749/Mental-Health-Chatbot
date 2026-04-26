@@ -1,5 +1,8 @@
+# app.py
 import streamlit as st
+import streamlit.components.v1 as components  # ADDED for scroll fix
 from components.navbar import render_navbar
+from layout_utils import apply_clean_layout
 
 st.set_page_config(
     page_title="MindCareAI",
@@ -8,21 +11,69 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ---------------- GLOBAL CSS TO REMOVE TOP WHITE SPACING ----------------
+# ================= GLOBAL CSS: PERMANENTLY HIDE HEADER/FOOTER =================
 st.markdown("""
-    <style>
-        /* Remove default Streamlit top padding/margin */
-        .main .block-container {
-            padding-top: 0rem !important;
-            padding-bottom: 0rem !important;
-            margin-top: -1rem !important;
-        }
-        /* Hide default sidebar navigation (we use custom sidebar) */
-        [data-testid="stSidebarNav"] {
-            display: none !important;
-        }
-    </style>
+<style>
+    /* Reset body margins */
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Keep header height for sidebar toggle, but make background transparent */
+    header[data-testid="stHeader"] {
+        background: rgba(0,0,0,0) !important;
+        height: 2.875rem !important;  /* preserve space for hamburger icon */
+        backdrop-filter: none !important;
+    }
+    
+    /* Hide only the deploy button and "Made with Streamlit" menu */
+    .stDeployButton {
+        display: none !important;
+    }
+    #MainMenu {
+        visibility: hidden !important;
+    }
+    footer {
+        visibility: hidden !important;
+    }
+    
+    /* Remove extra top padding from main content */
+    .main .block-container {
+        padding-top: 0.5rem !important;
+    }
+    
+    /* Ensure the sidebar toggle is visible and clickable */
+    button[kind="header"] {
+        display: flex !important;
+        visibility: visible !important;
+        background: transparent !important;
+    }
+</style>
 """, unsafe_allow_html=True)
+
+# ================= SCROLL TO TOP ON EVERY NAVIGATION =================
+# Using components.html with height=0 (invisible) to force scroll on every render
+components.html(
+    """
+    <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        // Run on initial load
+        scrollToTop();
+        // Listen for DOM changes (Streamlit navigation)
+        const observer = new MutationObserver(function(mutations) {
+            scrollToTop();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+        // Also catch browser back/forward
+        window.addEventListener('popstate', scrollToTop);
+    </script>
+    """,
+    height=0,
+    scrolling=False
+)
 
 # ---------------- SESSION INIT ----------------
 def init_session():
@@ -50,9 +101,12 @@ from ui import dashboard, chat, history, mood, journal
 from ui_pages.admin import show_admin_panel
 from ui.games import show_aesthetic_game_selector
 
-# ---------------- NAVBAR FOR PUBLIC PAGES ----------------
-public_pages = ["landing", "games", "demo","auth"]
-if st.session_state.page in public_pages:
+# ---------------- PUBLIC PAGES LIST ----------------
+public_pages_list = ["landing", "games", "demo", "auth", "about"]
+
+# ---------------- APPLY CLEAN LAYOUT AND RENDER NAVBAR FOR PUBLIC PAGES ----------------
+if st.session_state.get("page") in public_pages_list:
+    apply_clean_layout(hide_header_completely=True)
     render_navbar()
 
 # ---------------- ROUTING ----------------
@@ -87,10 +141,12 @@ if st.session_state.user is None:
     st.stop()
 
 # ================= LOGGED IN AREA =================
+# Apply clean layout for logged-in pages (keeps sidebar icon, removes white space)
+apply_clean_layout(hide_header_completely=False)
+
 # Show sidebar only for non-Admin pages
 current = st.session_state.current_page
 if current != "Admin Panel":
-    # Ensure sidebar is visible
     st.markdown("""
         <style>
             section[data-testid="stSidebar"] { display: block !important; }
@@ -99,7 +155,6 @@ if current != "Admin Panel":
     """, unsafe_allow_html=True)
     show_sidebar()
 else:
-    # For Admin Panel: completely hide sidebar
     st.markdown("""
         <style>
             section[data-testid="stSidebar"] { display: none !important; }

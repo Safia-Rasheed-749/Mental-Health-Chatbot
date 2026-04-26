@@ -1,28 +1,48 @@
 import streamlit as st
+import streamlit.components.v1 as components
+from layout_utils import apply_clean_layout
 
 def show_dashboard():
-    # --- Remove top white space ---
-    st.markdown("""
-        <style>
-        .main .block-container {
-            padding-top: 0rem !important;
-            margin-top: -0.5rem !important;
-        }
-        .main .block-container > :first-child {
-            margin-top: 0rem !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+    # Invisible anchor at the very top of the dashboard
+    st.markdown('<div id="dashboard-top-anchor" style="position: absolute; top: 0;"></div>', unsafe_allow_html=True)
+    
+    # Force scroll to top using multiple attempts (works after login)
+    components.html(
+        """
+        <script>
+            function scrollToTop() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                var anchor = document.getElementById('dashboard-top-anchor');
+                if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            scrollToTop();
+            for (var i = 1; i <= 20; i++) {
+                setTimeout(scrollToTop, i * 80);
+            }
+            window.addEventListener('load', function() { scrollToTop(); });
+        </script>
+        """,
+        height=0,
+        scrolling=False
+    )
+    
+    apply_clean_layout(hide_header_completely=False)
 
-    # --- Dashboard styling with soft pastel cards ---
+    # Custom CSS (unchanged)
     st.markdown("""
         <style>
-        #MainMenu, footer {visibility: hidden !important;}
-        
+        .main .block-container > :first-child {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+        .element-container:first-child,
+        .stMarkdown:first-child {
+            margin-top: 0 !important;
+        }
         .dashboard-title {
             text-align: center !important;
-            margin-bottom: 0px !important;
-            display: block !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
         .title-emoji {
             font-size: 45px !important;
@@ -35,39 +55,35 @@ def show_dashboard():
             background: linear-gradient(90deg, #4facfe, #00f2fe);
             background-clip: text;
             -webkit-background-clip: text;
-            color: #333;
+            color: transparent;
             display: inline-block !important;
         }
-        @supports (background-clip: text) or (-webkit-background-clip: text) {
-            .gradient-text {
-                color: transparent;
-            }
-        }
-
         .dashboard-sub {
             text-align: center !important;
             font-size: 18px !important;
             color: #555 !important;
-            margin-bottom: 40px !important;
+            margin-bottom: 30px !important;
+            margin-top: 0 !important;
         }
-
-        /* Card base styling */
         .card {
             padding: 30px !important;
             border-radius: 15px !important;
             text-align: center !important;
             box-shadow: 0px 4px 10px rgba(0,0,0,0.1) !important;
             margin: 15px !important;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
         }
         .icon { font-size: 40px !important; margin-bottom: 15px !important; }
         .title { font-size: 20px !important; font-weight: 600 !important; color: #0077b6 !important; }
         .text { font-size: 14px !important; color: #444 !important; }
 
-        /* Soft, calm pastel colors */
-        .card-chat { background-color: #FADADD !important; }      /* very light pink */
-        .card-mood { background-color: #D4F1F9 !important; }      /* very light blue */
-        .card-history { background-color: #FEE3D4 !important; }    /* very light peach */
-        .card-journal { background-color: #E6D5F5 !important; }    /* very light lavender */
+        .card-chat { background-color: #FADADD !important; }
+        .card-mood { background-color: #D4F1F9 !important; }
+        .card-history { background-color: #FEE3D4 !important; }
+        .card-journal { background-color: #E6D5F5 !important; }
         </style>
     """, unsafe_allow_html=True)
 
@@ -80,6 +96,7 @@ def show_dashboard():
         <div class="dashboard-sub">Your Personal AI Mental Wellness Companion</div>
     """, unsafe_allow_html=True)
 
+    # Cards layout
     col1, col2 = st.columns(2)
     col3, col4 = st.columns(2)
 

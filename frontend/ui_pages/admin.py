@@ -1,17 +1,16 @@
+# admin.py (modified)
 import streamlit as st
 import pandas as pd
 from db import get_all_users, get_messages_by_user, get_moods_by_user, get_journals_by_user
+from layout_utils import apply_clean_layout   # add
 
 def show_admin_panel():
-    # Remove default Streamlit top padding/margin
+    apply_clean_layout(hide_header_completely=False)   # <--- ADDED
+    
+    # Remove the old CSS block that sets .main .block-container padding/margin.
+    # Keep only the custom styling for cards and back button.
     st.markdown("""
     <style>
-        /* Remove white space at top of page */
-        .main .block-container {
-            padding-top: 0rem !important;
-            padding-bottom: 0rem !important;
-            margin-top: -1rem !important;
-        }
         /* Optional: adjust header spacing */
         .admin-header {
             background: linear-gradient(90deg, #1e3c72, #2a5298);
@@ -33,7 +32,6 @@ def show_admin_panel():
             font-weight: bold;
             color: #1e3c72;
         }
-        /* Style for the Back button only */
         .back-button-wrapper div.stButton > button {
             background-color: #4CAF50 !important;
             color: white !important;
@@ -45,6 +43,8 @@ def show_admin_panel():
         }
     </style>
     """, unsafe_allow_html=True)
+    
+    # ... rest unchanged
 
     st.markdown('<div class="admin-header"><h1>🛡️ Admin Dashboard</h1><p>Manage users and view platform data</p></div>', unsafe_allow_html=True)
 

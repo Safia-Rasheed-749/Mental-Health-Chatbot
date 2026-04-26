@@ -2,8 +2,11 @@
 import streamlit as st
 import time
 import random
+from layout_utils import apply_clean_layout
 
 def show_calm_colors_game():
+    apply_clean_layout(hide_header_completely=True)
+    st.markdown('<div style="height: 70px;"></div>', unsafe_allow_html=True) 
     """
     Memory & Focus Game - Calm Colors Edition
     Fully working Simon Says style game

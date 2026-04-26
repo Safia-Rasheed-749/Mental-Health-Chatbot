@@ -1,21 +1,13 @@
+# history.py (modified)
 import streamlit as st
 from db import get_messages
+from layout_utils import apply_clean_layout    # add
 
 def show_history(user_id):
-    # --- Remove top white space ---
-    st.markdown("""
-        <style>
-        .main .block-container {
-            padding-top: 0rem !important;
-            margin-top: -0.5rem !important;
-        }
-        .main .block-container > :first-child {
-            margin-top: 0rem !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
+    apply_clean_layout(hide_header_completely=False)   # <--- ADDED
+    
     st.title("📜 Chat History")
+    # ... rest unchanged (no custom padding CSS needed)
 
     messages = get_messages(user_id)
     if not messages:

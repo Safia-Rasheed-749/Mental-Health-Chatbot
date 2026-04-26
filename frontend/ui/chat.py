@@ -1,17 +1,5 @@
 # ========== FORCE FFMPEG PATH ==========
-import os
-import sys
-
-os.environ["PATH"] = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin" + os.pathsep + os.environ.get("PATH", "")
-
-from pydub import AudioSegment
-AudioSegment.converter = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin\ffmpeg.exe"
-AudioSegment.ffprobe = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin\ffprobe.exe"
-
-from pydub.utils import which
-AudioSegment._ffmpeg = which("ffmpeg")
-AudioSegment._ffprobe = which("ffprobe")
-
+# chat.py (modified)
 import streamlit as st
 import tempfile
 import speech_recognition as sr
@@ -19,6 +7,7 @@ from streamlit_mic_recorder import mic_recorder
 from gtts import gTTS
 from db import add_message
 from utils.ai_engine import generate_response
+from layout_utils import apply_clean_layout    # add
 import time
 
 if 'chat_history' not in st.session_state:
@@ -31,21 +20,65 @@ def speak(text):
     st.session_state["audio_file"] = audio_path
 
 def show_chat(user_id):
-    # --- Remove top white space (safe, keeps header) ---
+    apply_clean_layout(hide_header_completely=False)   # <--- ADDED
+    
+    # Remove the old CSS that set padding-top:0rem
+    # Keep only the styling for chat bubbles and fixed input bar.
     st.markdown("""
-        <style>
-        .main .block-container {
-            padding-top: 0rem !important;
-            margin-top: -0.5rem !important;
-        }
-        .main .block-container > :first-child {
-            margin-top: 0rem !important;
-        }
-        </style>
+    <style>
+    .stChatMessage {
+        border: none !important;
+        background: transparent !important;
+    }
+    .stChatMessage-user > div[data-testid="stMarkdownContainer"] {
+        background-color: #f1f8e9 !important;
+        border-radius: 12px;
+        padding: 10px;
+    }
+    .stChatMessage-assistant > div[data-testid="stMarkdownContainer"] {
+        background-color: #e0f7fa !important;
+        border-radius: 12px;
+        padding: 10px;
+    }
+    .fixed-bottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 10px 20px;
+        border-top: 1px solid #ddd;
+        z-index: 100;
+    }
+    .fixed-bottom div[data-testid="stHorizontalBlock"] {
+        border: 2px solid black;
+        border-radius: 25px;
+        padding: 8px;
+        background: white;
+    }
+    .stTextInput input {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    .fixed-bottom .stButton button {
+        border: none !important;
+        background: transparent !important;
+        font-size: 20px;
+    }
+    .fixed-bottom .stButton button:hover {
+        background: #f0f0f0 !important;
+        border-radius: 50%;
+    }
+    .block-container {
+        padding-bottom: 100px;
+    }
+    </style>
     """, unsafe_allow_html=True)
 
-    # TITLE
     st.title("💬 Chat with MindCare AI")
+
+    # ... rest unchanged (chat history display, input, etc.)
 
     # ---------------- CHAT HISTORY ----------------
     for role, content in st.session_state['chat_history']:

@@ -7,23 +7,22 @@ def show_sidebar():
     user = st.session_state.user
     username = user[1] if len(user) > 1 else "User"
 
-    # ===== SIDEBAR STYLING (removed extra spacing, slightly wider) =====
     st.markdown("""
         <style>
-            /* Increase sidebar width a bit so "Mood Analytics" fits on one line */
+            /* Sidebar width */
             section[data-testid="stSidebar"] {
                 width: 280px !important;
                 background-color: #ffffff;
                 border-right: 1px solid #e6e6e6;
             }
 
-            /* Remove default top padding from sidebar container (move content up) */
+            /* Add top padding to sidebar content (move content down from top) */
             section[data-testid="stSidebar"] .block-container {
-                padding-top: 0rem !important;
-                margin-top: -0.5rem !important;
+                padding-top: 1rem !important;
+                padding-bottom: 1rem !important;
             }
 
-            /* Header (LEFT aligned) – reduced bottom margin */
+            /* Logo header */
             .sidebar-header {
                 display: flex;
                 align-items: center;
@@ -31,19 +30,19 @@ def show_sidebar():
                 font-size: 18px;
                 font-weight: 700;
                 color: #2c3e50;
-                margin-bottom: 6px;   /* was 12px */
-                margin-top: 0px;
+                margin-bottom: 15px;
+                margin-top: 0;
             }
 
-            /* Welcome box – reduced padding and margin */
+            /* Welcome box */
             .welcome-box {
                 display: flex;
                 align-items: center;
                 gap: 10px;
-                padding: 8px 10px;    /* was 10px */
+                padding: 10px 12px;
                 border-radius: 10px;
                 background: #f8f9fb;
-                margin-bottom: 8px;    /* was 15px */
+                margin-bottom: 20px;
                 border: 1px solid #eee;
                 font-size: 14px;
             }
@@ -52,26 +51,27 @@ def show_sidebar():
                 font-weight: 600;
             }
 
-            /* Reduce separator margins */
+            /* Separator */
             hr {
-                margin-top: 6px !important;
-                margin-bottom: 6px !important;
+                margin-top: 10px !important;
+                margin-bottom: 15px !important;
             }
 
-            /* Navigation title – reduced bottom space */
+            /* Navigation title */
             .nav-title {
                 font-size: 16px;
                 font-weight: 600;
-                margin-bottom: 4px;   /* was 6px */
+                margin-bottom: 8px;
+                margin-top: 10px;
                 color: #444;
             }
 
-            /* Radio items – tighter spacing */
+            /* Radio items spacing */
             div[role="radiogroup"] > label {
-                margin-bottom: 4px !important;   /* was 8px */
+                margin-bottom: 6px !important;
             }
 
-            /* Logout button – consistent with others */
+            /* Logout button */
             div.stButton > button {
                 background-color: #e74c3c !important;
                 color: white !important;
