@@ -718,8 +718,12 @@ def show_landing_page():
 
     # ================= FIXED VIDEO PATHS (ONLY 2 VIDEOS) =================
     # Direct paths to your video files
-    video_path_1 = r"C:\Users\HP\Desktop\Mental-Health-Chatbot\assets\videos\fdc9691b2636acbc174610f97f618f6b.mp4"
-    video_path_2 = r"C:\Users\HP\Desktop\Mental-Health-Chatbot\assets\videos\8712234-hd_1080_1920_25fps.mp4"
+    import os
+
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+    video_path_1 = os.path.join(BASE_DIR, "../../assets/videos/video1.mp4")
+    video_path_2 = os.path.join(BASE_DIR, "../../assets/videos/video2.mp4")
     
     def get_video_base64(video_path):
         """Convert video file to base64 string"""
