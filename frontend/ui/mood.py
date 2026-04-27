@@ -4,7 +4,8 @@ from db import add_mood, get_moods
 from layout_utils import apply_clean_layout
 
 def show_mood_analytics(user_id):
-    apply_clean_layout(hide_header_completely=False)
+    # apply_clean_layout(hide_header_completely=False)
+    # show_sidebar(user_id, "Mood Analytics")
 
     st.markdown("""
     <style>
@@ -34,9 +35,9 @@ def show_mood_analytics(user_id):
         border-radius: 8px !important;
     }
 
-    /* Spacing below the selectbox container */
+    /* Spacing below the selectbox */
     .selectbox-spacing {
-        margin-bottom: 80px;
+        margin-bottom: 40px;
     }
 
     /* Insight card */
@@ -64,13 +65,13 @@ def show_mood_analytics(user_id):
         transition: 0.2s ease;
     }
     .stat-card:hover { transform: translateY(-4px); }
-    .stat-card:nth-child(1) { background: #e0f7f4; }
-    .stat-card:nth-child(2) { background: #ede9fe; }
-    .stat-card:nth-child(3) { background: #ffe4ec; }
+    .stat-card:nth-child(1) { background: #c8eae6; }
+    .stat-card:nth-child(2) { background: #d8c8f8; }
+    .stat-card:nth-child(3) { background: #f0c8d4; }
     .stat-value { font-size: 20px; font-weight: 700; color: #0f172a; }
     .stat-label { font-size: 12px; color: #64748b; }
 
-    /* Quick Mood Log – centered, wider */
+    /* Quick Mood Log container */
     .center-container {
         display: flex;
         flex-direction: column;
@@ -84,12 +85,15 @@ def show_mood_analytics(user_id):
         padding: 20px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
+    /* Center the heading inside the container */
+    .center-container h3 {
+        text-align: center !important;
+        width: 100%;
+    }
+    /* Make radio buttons horizontal and centered */
     .center-container .stRadio label {
         font-size: 1.3rem !important;
         font-weight: 500;
-    }
-    .center-container .stRadio label div {
-        font-size: 1.5rem !important;
     }
     .center-container .stRadio > div {
         display: flex !important;
@@ -98,22 +102,26 @@ def show_mood_analytics(user_id):
         margin: 15px 0 25px 0 !important;
         flex-wrap: wrap;
     }
-    .center-container div.stButton > button:first-child {
-        background: linear-gradient(90deg, #4facfe, #00f2fe) !important;
+    /* Log Mood button - rectangular, centered, text on one line */
+    div[data-testid="stButton"] button {
+        background: #1e3a8a !important;
         color: white !important;
-        font-weight: 700;
-        font-size: 1.1rem;
-        border-radius: 40px;
-        height: 55px;
-        width: 70%;
-        margin: 15px auto 5px auto;
-        display: block;
-        border: none;
-        transition: 0.2s;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+        border-radius: 8px !important;   /* less rounded, rectangular */
+        height: 48px !important;
+        width: auto !important;
+        min-width: 150px !important;
+        padding: 0 24px !important;
+        margin: 15px auto 5px auto !important;
+        display: inline-block !important;
+        border: none !important;
+        white-space: nowrap !important;   /* keep text on one line */
+        transition: 0.2s !important;
     }
-    .center-container div.stButton > button:first-child:hover {
+    div[data-testid="stButton"] button:hover {
+        background: #2563eb !important;
         transform: scale(1.02);
-        background: linear-gradient(90deg, #3e9cdb, #00d4e0) !important;
     }
 
     /* Timeline graph wrapper */
@@ -133,7 +141,6 @@ def show_mood_analytics(user_id):
     # Timeline header
     st.markdown("### 📅 Mood Trend Timeline")
 
-    # Wrap selectbox in a div for spacing, but border is applied directly to the select widget
     st.markdown('<div class="selectbox-spacing">', unsafe_allow_html=True)
     range_option = st.selectbox(
         "Select time range",
@@ -163,7 +170,6 @@ def show_mood_analytics(user_id):
     most_common = max(mood_counts, key=mood_counts.get) if mood_counts else "N/A"
     variety = len(set(filtered)) if filtered else 0
 
-    # Insight card
     if filtered:
         st.markdown(f"""
         <div class='insight-card'>
@@ -172,7 +178,6 @@ def show_mood_analytics(user_id):
         </div>
         """, unsafe_allow_html=True)
 
-    # Stats cards
     if filtered:
         st.markdown(f"""
         <div class='stats-wrapper'>
@@ -191,9 +196,9 @@ def show_mood_analytics(user_id):
         </div>
         """, unsafe_allow_html=True)
 
-    # Quick Mood Log (centered)
+    # Quick Mood Log (centered heading, horizontal radio, rectangular button)
     st.markdown('<div class="center-container">', unsafe_allow_html=True)
-    st.markdown("### 😊 Quick Mood Log")
+    st.markdown("### 😊 Quick Mood Log")   # this heading is now centered by CSS
     mood = st.radio(
         "Select your mood",
         ["😄 Happy", "😐 Neutral", "😔 Sad", "😰 Anxious", "😡 Angry"],

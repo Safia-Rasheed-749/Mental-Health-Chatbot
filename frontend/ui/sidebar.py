@@ -67,20 +67,17 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             transform: translateX(4px);
         }
         /* Force logout button to be DARK BLUE by default and on all pages */
-        section[data-testid="stSidebar"] .logout-btn .stButton button,
-        section[data-testid="stSidebar"] div:has(> .logout-btn) .stButton button,
-        div[data-testid="stSidebar"] button:has(> div:contains("Logout")) {
-            background-color: #1e3a8a !important;
-            color: white !important;
-            font-weight: 700 !important;
-            text-align: center !important;
-            justify-content: center !important;
-        }
-        /* Hover effect: lighter dark blue */
-        section[data-testid="stSidebar"] .logout-btn .stButton button:hover {
-            background-color: #2563eb !important;
-            transform: scale(1.02);
-        }
+        /* Force primary button (logout) to dark blue */
+section[data-testid="stSidebar"] .stButton button[kind="primary"] {
+    background-color: #1e3a8a !important;
+    color: white !important;
+    font-weight: 700 !important;
+    justify-content: center !important;
+}
+
+section[data-testid="stSidebar"] .stButton button[kind="primary"]:hover {
+    background-color: #2563eb !important;
+}
         </style>
     """, unsafe_allow_html=True)
 
@@ -135,7 +132,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         # ================= LOGOUT BUTTON (DARK BLUE) =================
         st.markdown("---")
         st.markdown('<div class="logout-btn">', unsafe_allow_html=True)
-        if st.button("🚪 Logout", key="logout_btn"):
+        if st.button("🚪 Logout", key="logout_btn", type="primary"):
             st.session_state.clear()
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)

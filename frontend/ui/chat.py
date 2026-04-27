@@ -8,6 +8,7 @@ from utils.ai_engine import generate_response
 from layout_utils import apply_clean_layout
 from pydub import AudioSegment
 import time
+import base64
 
 # ---------------- SESSION ----------------
 if "chat_history" not in st.session_state:
@@ -19,79 +20,67 @@ if "conversation_id" not in st.session_state:
 if "last_loaded_chat" not in st.session_state:
     st.session_state["last_loaded_chat"] = None
 
-# ---------------- SPEAK ----------------
+if "voice_processed" not in st.session_state:
+    st.session_state["voice_processed"] = False
+
+if "pending_audio" not in st.session_state:
+    st.session_state["pending_audio"] = None
+
+# ---------------- SPEAK & PLAY (using HTML autoplay) ----------------
 def speak(text):
     tts = gTTS(text=text, lang="en")
     path = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3").name
     tts.save(path)
-    st.session_state["audio_file"] = path
-
-# ---------------- STREAM RESPONSE (if you want, but currently not used) ----------------
-def stream_response(full_text, placeholder):
-    output = ""
-    for word in full_text.split():
-        output += word + " "
-        placeholder.markdown(f"""
-        <div style="
-            background-color:#ffffff;
-            color:#111;
-            padding:14px 18px;
-            border-radius:18px;
-            max-width:100%;
-            font-size:18px;
-            line-height:1.7;
-            box-shadow:0 2px 8px rgba(0,0,0,0.08);
-        ">
-            🧠 {output}
-        </div>
-        """, unsafe_allow_html=True)
-        time.sleep(0.03)
+    # Encode audio file to base64 for HTML autoplay
+    with open(path, "rb") as f:
+        audio_bytes = f.read()
+    b64 = base64.b64encode(audio_bytes).decode()
+    st.session_state["pending_audio"] = b64
 
 # ---------------- CHAT ----------------
 def show_chat(user_id):
     apply_clean_layout(hide_header_completely=False)
 
-    # ========== FIXED LAYOUT WITH STICKY INPUT ==========
+    # Play pending audio if exists
+    if st.session_state["pending_audio"]:
+        st.markdown(
+            f'<audio autoplay="true" style="display:none;"><source src="data:audio/mp3;base64,{st.session_state["pending_audio"]}" type="audio/mp3"></audio>',
+            unsafe_allow_html=True
+        )
+        st.session_state["pending_audio"] = None
+
     st.markdown("""
     <style>
+    /* Keep normal Streamlit flow */
     html, body {
         height: 100%;
-        overflow: hidden !important;
     }
-
-    /* Remove default Streamlit padding */
+    /* Page spacing fix */
     .block-container {
-        padding: 0 !important;
+        padding-top: 1rem !important;
+        padding-bottom: 90px !important;
         max-width: 100% !important;
     }
-
-    /* Title fixed at top */
+    /* Title (centered + larger) */
     .title {
         text-align: center;
-        font-size: 28px;
-        font-weight: 600;
-        margin-top: 8px;
-        margin-bottom: 8px;
+        font-size: 44px;
+        font-weight: 700;
+        margin-top: 0px;
+        margin-bottom: 25px;
+        color: #1e293b;
     }
-
-    /* Chat area scrollable between title and input */
+    /* Chat area scrollable */
     .chat-area {
-        position: absolute;
-        top: 60px;
-        bottom: 80px;
-        left: 0;
-        right: 0;
+        height: calc(100vh - 200px);
         overflow-y: auto;
-        padding: 10px 15px;
+        padding-right: 10px;
     }
-
-    /* Message row */
     .chat-row {
         display: flex;
         margin-bottom: 14px;
     }
-
-    /* User bubble (light blue) */
+    /* User bubble */
     .user-bubble {
         background-color: #dbeafe;
         padding: 10px 14px;
@@ -100,8 +89,7 @@ def show_chat(user_id):
         max-width: 40%;
         word-wrap: break-word;
     }
-
-    /* Assistant bubble (white with shadow) */
+    /* Assistant bubble */
     .assistant-bubble {
         background-color: #ffffff;
         padding: 14px 18px;
@@ -111,20 +99,18 @@ def show_chat(user_id):
         max-width: 85%;
         word-wrap: break-word;
     }
-
-    /* Sticky input bar at bottom */
+    /* Fixed input bar */
     .input-bar {
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
         background: white;
-        padding: 10px;
+        padding: 10px 15px;
         border-top: 1px solid #ddd;
-        z-index: 9999;
+        z-index: 1000;
     }
-
-    /* Dark outline on input field */
+    /* Input style */
     div[data-testid="stTextInput"] input {
         border: 2px solid #333 !important;
         border-radius: 20px !important;
@@ -135,8 +121,9 @@ def show_chat(user_id):
 
     # Title
     st.markdown('<div class="title">💬 Chat with MindCare AI</div>', unsafe_allow_html=True)
+    st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
 
-    # ---------------- CONVERSATION ----------------
+    # Conversation management
     if not st.session_state.get("conversation_id"):
         st.session_state["conversation_id"] = create_conversation(user_id)
 
@@ -146,7 +133,7 @@ def show_chat(user_id):
         st.session_state["chat_history"] = get_messages_by_conversation(cid)
         st.session_state["last_loaded_chat"] = cid
 
-    # Chat messages area
+    # Display chat history
     st.markdown('<div class="chat-area">', unsafe_allow_html=True)
     for role, msg in st.session_state["chat_history"]:
         if role == "user":
@@ -163,9 +150,8 @@ def show_chat(user_id):
             """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # ========== STICKY INPUT BAR WITH FORM ==========
+    # Input bar
     st.markdown('<div class="input-bar">', unsafe_allow_html=True)
-    # Use a form to automatically clear input after submit
     with st.form(key=f"chat_form_{cid}", clear_on_submit=True):
         col1, col2, col3 = st.columns([10, 1, 1])
         with col1:
@@ -178,13 +164,13 @@ def show_chat(user_id):
         with col2:
             submitted = st.form_submit_button("➤")
         with col3:
-            # mic_recorder must be outside the form? Actually it can be inside, but to keep same layout we put inside
-            # However mic_recorder is not a form submit button; it's safe to put inside form.
             audio = mic_recorder(start_prompt="🎤", stop_prompt="⏹️", key=f"mic_{cid}")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # ================= TEXT SEND =================
+    # Text input handling
     if submitted and user_input.strip():
+        st.session_state["voice_processed"] = False  # Reset voice flag
+
         st.session_state["chat_history"].append(("user", user_input))
         add_message(user_id, "user", user_input, cid)
 
@@ -193,10 +179,13 @@ def show_chat(user_id):
         st.session_state["chat_history"].append(("assistant", response))
         add_message(user_id, "assistant", response, cid)
 
+        speak(response)   # Trigger TTS and store audio in session
         st.rerun()
 
-    # ================= VOICE INPUT =================
-    if audio:
+    # Voice input handling – automatically sent when recording stops
+    if audio and not st.session_state["voice_processed"]:
+        st.session_state["voice_processed"] = True
+
         r = sr.Recognizer()
         try:
             with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp:
@@ -210,16 +199,22 @@ def show_chat(user_id):
                 data = r.record(source)
                 text = r.recognize_google(data)
 
+            # Add user message
             st.session_state["chat_history"].append(("user", text))
             add_message(user_id, "user", text, cid)
 
+            # Generate AI response
             response = generate_response(text, st.session_state["chat_history"][-5:])
 
+            # Add assistant message
             st.session_state["chat_history"].append(("assistant", response))
             add_message(user_id, "assistant", response, cid)
 
+            # Speak the response (will be played on next rerun)
             speak(response)
+
             st.rerun()
 
         except Exception as e:
             st.error(f"Voice not recognized: {e}")
+            st.session_state["voice_processed"] = False  # Allow retry

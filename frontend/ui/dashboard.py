@@ -3,15 +3,22 @@ import streamlit.components.v1 as components
 from layout_utils import apply_clean_layout
 
 
+
+
 def show_dashboard():
+   # apply_clean_layout(hide_header_completely=False)
+    user_id = st.session_state.user[0]
+    #show_sidebar(user_id, "Dashboard")   # or pass current_page from session
+    # ... rest of the dashboard
     # Invisible anchor at the very top of the dashboard
     st.markdown('<div id="dashboard-top-anchor" style="position: absolute; top: 0;"></div>', unsafe_allow_html=True)
     
      # ===== CSS (SAFE - NO NAVBAR BREAK) =====
     st.markdown("""
     <style>
-        header, footer, .stDeployButton {
-            display: none !important;
+        footer, .stDeployButton {
+    display: none !important;
+}
         }
 
         .block-container {
