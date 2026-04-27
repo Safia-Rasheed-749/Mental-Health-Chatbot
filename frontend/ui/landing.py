@@ -26,13 +26,6 @@ def show_landing_page():
         footer, .stApp footer, .css-1lsmgbg, .egzxvld0, .viewerFooter, [data-testid="stFooter"] {
             display: none !important;
         }
-        #  header, footer, .stDeployButton {
-        #     display: none !important;
-        # }
-
-        # .block-container {
-        #     padding-top: 1.8rem !important;
-        # }
         /* Enable scrolling */
        .stApp {
             overflow-y: auto !important;
@@ -84,6 +77,41 @@ def show_landing_page():
         
         * {
             font-family: 'Inter', sans-serif;
+        }
+         /* ================= HERO SECTION STYLING ================= */
+        .hero-container {
+            margin-top: 30px;
+            padding-right: 20px;
+        }
+        
+        .hero-title {
+            font-size: 1.8rem !important;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1E3A5F 0%, #4A6FA5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+        
+        # .hero-highlight {
+        #     color: #4A6FA5;
+        #     -webkit-text-fill-color: #4A6FA5;
+        #     background: none;
+        #     display: inline-block;
+        # }
+        
+        .hero-description {
+            color: #2C3E50;
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 35px;
+            text-align: justify;
+        }
+        
+        .hero-button-wrapper {
+            margin-top: 10px;
         }
         
         /* ================= REDUCED FONT SIZES ================= */
@@ -505,33 +533,30 @@ def show_landing_page():
     </style>
     """, unsafe_allow_html=True)
 
-    # ================= HERO SECTION =================
+        # ================= HERO SECTION =================
     col_t, col_v = st.columns([1, 1.2], gap="large")
     with col_t:
-        st.markdown(
-            '<div style="margin-top: 50px;">'
-            '<h1 style="font-size:2rem; font-weight:800; background:linear-gradient(135deg, #1E3A5F 0%, #4A6FA5 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1.2;">'
-            'AI Powered <span style="color:#4A6FA5; -webkit-text-fill-color:#4A6FA5;">Emotional Care</span>'
-            '</h1>'
-            '<p class="hero-text">'
-            'Your compassionate AI companion for mental wellness, available 24/7.<br>'
-            'Providing intelligent, stigma-free emotional support whenever you need it.Experience a safe space where technology meets empathy, helping you navigate life\'s challenges with confidence.'
-            '</p>'
-            '</div>',
-            unsafe_allow_html=True
-        )
         st.markdown("""
-        <style>
-            .hero-button-space {
-            margin-top: 45px;
-        }
-        </style>
+        <div class="hero-container">
+            <h1 class="hero-title">
+                AI Powered Emotional Care
+            </h1>
+            <p class="hero-description">
+            Your mental health journey is unique — and so is our approach. MindCare AI listens without judgment, 
+            learns from your needs, and grows with you. Whether you're feeling overwhelmed, anxious, or just need 
+            someone to talk to, even at 3 AM, we're here for you.Because everyone deserves compassionate care, 
+            anytime, anywhere.
+        </p>
+            <div class="hero-button-wrapper">
+        </div>
         """, unsafe_allow_html=True)
-
-        st.markdown('<div class="hero-button-space"></div>', unsafe_allow_html=True)
-        if st.button("✨ Try It Yourself", use_container_width=True, key="hero_try"):
+        
+        # Button with custom class
+        if st.button("✨ Try It Yourself", key="hero_try", use_container_width=True):
             st.session_state.page = "demo"
             st.rerun()
+        
+        st.markdown('</div>', unsafe_allow_html=True)
 
     # ================= CHAT DEMO =================
     with col_v:
