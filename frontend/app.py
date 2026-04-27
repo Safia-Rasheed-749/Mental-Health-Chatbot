@@ -11,63 +11,46 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ================= GLOBAL CSS: PERMANENTLY HIDE HEADER/FOOTER =================
+# ================= GLOBAL CSS =================
 st.markdown("""
 <style>
-    /* Reset body margins */
     body {
         margin: 0 !important;
         padding: 0 !important;
     }
-    
-    /* Keep header height for sidebar toggle, but make background transparent */
+
     header[data-testid="stHeader"] {
         background: rgba(0,0,0,0) !important;
-        height: 2.875rem !important;  /* preserve space for hamburger icon */
-        backdrop-filter: none !important;
+        height: 2.875rem !important;
     }
-    
-    /* Hide only the deploy button and "Made with Streamlit" menu */
-    .stDeployButton {
-        display: none !important;
-    }
-    #MainMenu {
-        visibility: hidden !important;
-    }
-    footer {
-        visibility: hidden !important;
-    }
-    
-    /* Remove extra top padding from main content */
+
+    .stDeployButton { display: none !important; }
+    #MainMenu { visibility: hidden !important; }
+    footer { visibility: hidden !important; }
+
     .main .block-container {
         padding-top: 0.5rem !important;
     }
-    
-    /* Ensure the sidebar toggle is visible and clickable */
+
     button[kind="header"] {
         display: flex !important;
-        visibility: visible !important;
-        background: transparent !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# ================= SCROLL TO TOP ON EVERY NAVIGATION =================
-# Using components.html with height=0 (invisible) to force scroll on every render
+# ================= SCROLL FIX =================
 components.html(
     """
     <script>
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        // Run on initial load
+
         scrollToTop();
-        // Listen for DOM changes (Streamlit navigation)
-        const observer = new MutationObserver(function(mutations) {
-            scrollToTop();
-        });
+
+        const observer = new MutationObserver(scrollToTop);
         observer.observe(document.body, { childList: true, subtree: true });
-        // Also catch browser back/forward
+
         window.addEventListener('popstate', scrollToTop);
     </script>
     """,
@@ -75,7 +58,7 @@ components.html(
     scrolling=False
 )
 
-# ---------------- SESSION INIT ----------------
+# ================= SESSION INIT =================
 def init_session():
     defaults = {
         "user": None,
@@ -84,14 +67,16 @@ def init_session():
         "chat_history": [],
         "demo_messages": [],
         "demo_count": 0,
+        "last_loaded_chat": None,   # ← add this
+        "conversation_id": None,    # ← add this (used in chat/history)
+        "history_selected": None,   # ← optional, for history page
     }
     for k, v in defaults.items():
         if k not in st.session_state:
             st.session_state[k] = v
-
 init_session()
 
-# ---------------- IMPORTS ----------------
+# ================= IMPORTS =================
 from ui.landing import show_landing_page
 from ui.auth import show_auth_page
 from ui.sidebar import show_sidebar
@@ -101,25 +86,27 @@ from ui import dashboard, chat, history, mood, journal
 from ui_pages.admin import show_admin_panel
 from ui.games import show_aesthetic_game_selector
 
-# ---------------- PUBLIC PAGES LIST ----------------
+# ================= PUBLIC PAGES =================
 public_pages_list = ["landing", "games", "demo", "auth", "about"]
 
-# ---------------- APPLY CLEAN LAYOUT AND RENDER NAVBAR FOR PUBLIC PAGES ----------------
+# ================= CLEAN LAYOUT FOR PUBLIC =================
 if st.session_state.get("page") in public_pages_list:
     apply_clean_layout(hide_header_completely=True)
     render_navbar()
 
-# ---------------- ROUTING ----------------
-page = st.session_state.page
+# ================= SYNC FIX (IMPORTANT) =================
+# Keep BOTH systems aligned safely (prevents dashboard bug)
+if st.session_state.current_page is None:
+    st.session_state.current_page = "Dashboard"
 
-# ================= DEMO =================
-if page == "demo":
+# ================= DEMO ROUTE =================
+if st.session_state.page == "demo":
     show_demo_chat()
     st.stop()
 
-# ================= PUBLIC ROUTES (NOT LOGGED IN) =================
+# ================= PUBLIC ROUTING =================
 if st.session_state.user is None:
-    # hide sidebar completely when not logged in
+
     st.markdown("""
         <style>
             section[data-testid="stSidebar"] { display: none !important; }
@@ -127,59 +114,83 @@ if st.session_state.user is None:
         </style>
     """, unsafe_allow_html=True)
 
-    if page == "landing":
+    if st.session_state.page == "landing":
         show_landing_page()
-    elif page == "about":
+
+    elif st.session_state.page == "about":
         show_about_page()
-    elif page == "games":
+
+    elif st.session_state.page == "games":
         show_aesthetic_game_selector()
-    elif page == "auth":
+
+    elif st.session_state.page == "auth":
         show_auth_page()
+
     else:
         st.session_state.page = "landing"
         st.rerun()
+
     st.stop()
 
 # ================= LOGGED IN AREA =================
-# Apply clean layout for logged-in pages (keeps sidebar icon, removes white space)
 apply_clean_layout(hide_header_completely=False)
-
-# Show sidebar only for non-Admin pages
-current = st.session_state.current_page
-if current != "Admin Panel":
-    st.markdown("""
-        <style>
-            section[data-testid="stSidebar"] { display: block !important; }
-            button[kind="header"] { display: flex !important; }
-        </style>
-    """, unsafe_allow_html=True)
-    show_sidebar()
-else:
-    st.markdown("""
-        <style>
-            section[data-testid="stSidebar"] { display: none !important; }
-            button[kind="header"] { display: none !important; }
-        </style>
-    """, unsafe_allow_html=True)
 
 user = st.session_state.user
 user_id = user[0]
 is_admin = len(user) > 3 and user[3]
 
-# ================= PAGE ROUTING (LOGGED IN) =================
+current = st.session_state.get("current_page", "Dashboard")
+
+# ================= SIDEBAR CONTROL =================
+if current != "Admin Panel":
+    show_sidebar(user_id, current)
+else:
+    st.markdown("""
+        <style>
+            section[data-testid="stSidebar"] { display: none !important; }
+            button[kind="header"] { display: none !important; }
+        </style>
+    """, unsafe_allow_html=True)
+
+# ================= FINAL ROUTING (FIXED) =================
+# IMPORTANT: ONLY current_page drives navigation now
+
+# ================= SAFE ROUTER =================
+
+# FORCE DEFAULT
+if "current_page" not in st.session_state:
+    st.session_state["current_page"] = "Dashboard"
+
+# READ ONLY ONCE
+current = st.session_state["current_page"]
+
+# DEBUG (REMOVE LATER IF YOU WANT)
+# st.write("DEBUG PAGE:", current)
+
+
+# ================= ROUTING =================
+
 if current == "Dashboard":
     dashboard.show_dashboard()
+
 elif current == "Chat":
     chat.show_chat(user_id)
+
 elif current == "History":
     history.show_history(user_id)
+
 elif current == "Mood Analytics":
     mood.show_mood_analytics(user_id)
+
 elif current == "Journal":
     journal.show_journal(user_id)
+
 elif current == "Games":
     show_aesthetic_game_selector()
+
 elif current == "Admin Panel" and is_admin:
     show_admin_panel()
+
 else:
+    st.session_state["current_page"] = "Dashboard"
     dashboard.show_dashboard()

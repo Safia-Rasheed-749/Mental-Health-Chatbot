@@ -1,165 +1,111 @@
 import streamlit as st
-from db import get_messages
+from datetime import datetime, date, timedelta
+from db import get_all_user_messages, get_messages_by_conversation
 from layout_utils import apply_clean_layout
-
-
-def detect_emotion(text):
-    text = text.lower()
-
-    if any(w in text for w in ["stress", "worried", "anxious", "tired", "sad", "bad"]):
-        return "😟 Anxious"
-    elif any(w in text for w in ["happy", "good", "great", "love", "nice", "better"]):
-        return "😊 Positive"
-    elif any(w in text for w in ["angry", "hate", "annoyed"]):
-        return "😡 Angry"
-    else:
-        return "⚖ Neutral"
-
 
 def show_history(user_id):
     apply_clean_layout(hide_header_completely=False)
 
-    # ---------------- TITLE ----------------
-    st.markdown("""
-        <h1 style="
-            text-align:center;
-            font-size:34px;
-            font-weight:600;
-            color:#1e293b;
-            margin-bottom:6px;
-        ">
-        📜 Chat History
-        </h1>
-    """, unsafe_allow_html=True)
+    st.title("📜 Chat History")
 
-    st.markdown("<div style='height:15px'></div>", unsafe_allow_html=True)
-
-    # ---------------- DATA ----------------
-    messages = get_messages(user_id)
-
-    if not messages:
-        st.info("No chat history found.")
+    # If a specific conversation is selected (from sidebar), show that full conversation
+    selected_convo = st.session_state.get("selected_history_conversation")
+    if selected_convo is not None:
+        messages = get_messages_by_conversation(selected_convo)
+        if messages:
+            st.markdown("### Conversation")
+            for role, content in messages:
+                if role == "user":
+                    # User bubble (light blue, right-aligned, 👤 inside)
+                    st.markdown(f"""
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                        <div style="background-color: #dbeafe; padding: 10px 14px; border-radius: 18px; max-width: 70%; word-wrap: break-word;">
+                            👤 {content}
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    # Assistant bubble (white with shadow, left-aligned, 🧠 inside)
+                    st.markdown(f"""
+                    <div style="display: flex; justify-content: flex-start; margin-bottom: 20px;">
+                        <div style="background-color: #ffffff; padding: 14px 18px; border-radius: 18px; max-width: 85%; word-wrap: break-word; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                            🧠 {content}
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+            # Back button to return to default view
+            if st.button("← Back to Today & Yesterday"):
+                st.session_state.pop("selected_history_conversation", None)
+                st.rerun()
+        else:
+            st.info("No messages in this conversation.")
         return
 
-    # ---------------- SEARCH ----------------
-    search = st.text_input("🔍 Search chat history")
+    # DEFAULT VIEW: only Today and Yesterday messages (from all conversations)
+    all_msgs = get_all_user_messages(user_id)
+    if not all_msgs:
+        st.info("No messages yet. Start a conversation in Chat.")
+        return
 
-    if search:
-        messages = [(r, c) for r, c in messages if search.lower() in c.lower()]
+    today = date.today()
+    yesterday = today - timedelta(days=1)
 
-    # ---------------- AI SUMMARY ----------------
-    sentiments = [detect_emotion(c) for _, c in messages]
+    today_msgs = []
+    yesterday_msgs = []
 
-    stress = sentiments.count("😟 Anxious")
-    positive = sentiments.count("😊 Positive")
-
-    if messages:
-        if stress > positive:
-            summary = "⚠ Your conversations show stress patterns."
-        elif positive > stress:
-            summary = "😊 Positive interaction detected."
+    for role, content, ts, conv_id in all_msgs:
+        if isinstance(ts, datetime):
+            msg_date = ts.date()
         else:
-            summary = "⚖ Balanced conversation tone."
+            msg_date = today
 
-        st.markdown(f"""
-        <div style="
-            background: linear-gradient(135deg,#e0f7f4,#ede9fe);
-            padding:16px;
-            border-radius:16px;
-            margin-bottom:20px;
-            box-shadow:0 6px 18px rgba(0,0,0,0.05);
-        ">
-            <b>🧠 AI Chat Insight</b><br><br>
-            {summary}
-        </div>
-        """, unsafe_allow_html=True)
+        if msg_date == today:
+            today_msgs.append((role, content, ts))
+        elif msg_date == yesterday:
+            yesterday_msgs.append((role, content, ts))
 
-    # ---------------- STYLING ----------------
-    st.markdown("""
-    <style>
+    if not today_msgs and not yesterday_msgs:
+        st.info("No messages from today or yesterday. Click a session on the left to see older chats.")
+        return
 
-    /* USER (LEFT SIDE) */
-    .user-bubble {
-        background: #f1f5f9;
-        padding: 10px 14px;
-        border-radius: 16px 16px 16px 4px;
-        margin: 6px 0;
-        max-width: 75%;
-        margin-right: auto;
-        font-size: 15px;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-    }
-
-    /* ASSISTANT (RIGHT BLUE BOX - FIXED AS REQUESTED) */
-    .assistant-bubble {
-        background: linear-gradient(135deg, #4facfe, #00c6ff);
-        color: white;
-        padding: 10px 14px;
-        border-radius: 16px 16px 4px 16px;
-        margin: 6px 0;
-        max-width: 75%;
-        margin-left: auto;
-        font-size: 15px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-    }
-
-    .emotion-tag {
-        font-size: 11px;
-        margin-top: 4px;
-        opacity: 0.8;
-    }
-
-    .date-group {
-        margin-top: 18px;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: #334155;
-    }
-
-    </style>
-    """, unsafe_allow_html=True)
-
-    # ---------------- GROUPING (SAME LOGIC) ----------------
-    grouped = {
-        "Today": [],
-        "Yesterday": [],
-        "Earlier": []
-    }
-
-    for i, (role, content) in enumerate(messages):
-        if i < 5:
-            grouped["Today"].append((role, content))
-        elif i < 10:
-            grouped["Yesterday"].append((role, content))
-        else:
-            grouped["Earlier"].append((role, content))
-
-    # ---------------- DISPLAY ----------------
-    for group, msgs in grouped.items():
-
-        if not msgs:
-            continue
-
-        st.markdown(f"<div class='date-group'>📅 {group}</div>", unsafe_allow_html=True)
-
-        for role, content in msgs:
-
-            emotion = detect_emotion(content)
-
-            # 👤 USER (with icon restored)
+    # Display Today messages
+    if today_msgs:
+        st.markdown("### Today")
+        for role, content, ts in today_msgs:
             if role == "user":
                 st.markdown(f"""
-                <div class='user-bubble'>
-                    👤 {content}
-                    <div class='emotion-tag'>{emotion}</div>
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                    <div style="background-color: #dbeafe; padding: 10px 14px; border-radius: 18px; max-width: 70%; word-wrap: break-word;">
+                        👤 {content}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown(f"""
+                <div style="display: flex; justify-content: flex-start; margin-bottom: 20px;">
+                    <div style="background-color: #ffffff; padding: 14px 18px; border-radius: 18px; max-width: 85%; word-wrap: break-word; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                        🧠 {content}
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
 
-            # 🤖 ASSISTANT (blue box + icon restored)
+    # Display Yesterday messages
+    if yesterday_msgs:
+        st.markdown("### Yesterday")
+        for role, content, ts in yesterday_msgs:
+            if role == "user":
+                st.markdown(f"""
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                    <div style="background-color: #dbeafe; padding: 10px 14px; border-radius: 18px; max-width: 70%; word-wrap: break-word;">
+                        👤 {content}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
             else:
                 st.markdown(f"""
-                <div class='assistant-bubble'>
-                    🤖 {content}
-                    <div class='emotion-tag'>{emotion}</div>
+                <div style="display: flex; justify-content: flex-start; margin-bottom: 20px;">
+                    <div style="background-color: #ffffff; padding: 14px 18px; border-radius: 18px; max-width: 85%; word-wrap: break-word; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                        🧠 {content}
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)

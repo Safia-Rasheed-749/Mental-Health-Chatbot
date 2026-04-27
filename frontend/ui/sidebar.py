@@ -1,143 +1,141 @@
 import streamlit as st
+from db import get_conversations, get_messages_by_conversation
 
-def show_sidebar():
+def short_title(text, max_len=26):
+    text = text.strip()
+    return text if len(text) <= max_len else text[:max_len] + "..."
+
+def show_sidebar(user_id=None, current_page="Dashboard"):
     if not st.session_state.get("user"):
         return
 
     user = st.session_state.user
     username = user[1] if len(user) > 1 else "User"
+    user_id = user[0]
 
+    # ================= STRONG SIDEBAR STYLES =================
     st.markdown("""
         <style>
-            /* Sidebar width */
-            section[data-testid="stSidebar"] {
-                width: 280px !important;
-                background-color: #ffffff;
-                border-right: 1px solid #e6e6e6;
-            }
-
-            /* Add top padding to sidebar content (move content down from top) */
-            section[data-testid="stSidebar"] .block-container {
-                padding-top: 1rem !important;
-                padding-bottom: 1rem !important;
-            }
-
-            /* Logo header */
-            .sidebar-header {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                font-size: 18px;
-                font-weight: 700;
-                color: #2c3e50;
-                margin-bottom: 15px;
-                margin-top: 0;
-            }
-
-            /* Welcome box */
-            .welcome-box {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                padding: 10px 12px;
-                border-radius: 10px;
-                background: #f8f9fb;
-                margin-bottom: 20px;
-                border: 1px solid #eee;
-                font-size: 14px;
-            }
-
-            .welcome-box span {
-                font-weight: 600;
-            }
-
-            /* Separator */
-            hr {
-                margin-top: 10px !important;
-                margin-bottom: 15px !important;
-            }
-
-            /* Navigation title */
-            .nav-title {
-                font-size: 16px;
-                font-weight: 600;
-                margin-bottom: 8px;
-                margin-top: 10px;
-                color: #444;
-            }
-
-            /* Radio items spacing */
-            div[role="radiogroup"] > label {
-                margin-bottom: 6px !important;
-            }
-
-            /* Logout button */
-            div.stButton > button {
-                background-color: #e74c3c !important;
-                color: white !important;
-                font-weight: 600 !important;
-                border-radius: 8px !important;
-                border: none !important;
-                padding: 10px !important;
-            }
-
-            div.stButton > button:hover {
-                background-color: #c0392b !important;
-            }
+        section[data-testid="stSidebar"] {
+            width: 280px !important;
+            background-color: #ffffff;
+            border-right: 1px solid #e6e6e6;
+        }
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .welcome-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fb;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin: 10px 0;
+            color: #555;
+        }
+        /* Default button style (grey) for all sidebar buttons */
+        section[data-testid="stSidebar"] .stButton button {
+            background-color: #f0f2f6 !important;
+            border-radius: 30px !important;
+            padding: 8px 16px !important;
+            margin: 6px 0 !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            text-align: left !important;
+            border: none !important;
+            transition: all 0.2s ease !important;
+            color: #1e2a3a !important;
+            width: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+        section[data-testid="stSidebar"] .stButton button:hover {
+            background-color: #e2e6ea !important;
+            transform: translateX(4px);
+        }
+        /* Force logout button to be DARK BLUE by default and on all pages */
+        section[data-testid="stSidebar"] .logout-btn .stButton button,
+        section[data-testid="stSidebar"] div:has(> .logout-btn) .stButton button,
+        div[data-testid="stSidebar"] button:has(> div:contains("Logout")) {
+            background-color: #1e3a8a !important;
+            color: white !important;
+            font-weight: 700 !important;
+            text-align: center !important;
+            justify-content: center !important;
+        }
+        /* Hover effect: lighter dark blue */
+        section[data-testid="stSidebar"] .logout-btn .stButton button:hover {
+            background-color: #2563eb !important;
+            transform: scale(1.02);
+        }
         </style>
     """, unsafe_allow_html=True)
 
+    # ================= PAGE MAP =================
+    menu_map = {
+        "🏠 Dashboard": "Dashboard",
+        "💬 Chat": "Chat",
+        "📜 History": "History",
+        "😊 Mood Analytics": "Mood Analytics",
+        "📓 Journal": "Journal"
+    }
+    reverse_map = {v: k for k, v in menu_map.items()}
+    current_label = reverse_map.get(current_page, "🏠 Dashboard")
+
     with st.sidebar:
-        st.markdown(f"""
-            <div class="sidebar-header">
-                <div style="font-size:22px;">🧠</div>
-                <div>MindCare AI</div>
-            </div>
-        """, unsafe_allow_html=True)
-
-        st.markdown(f"""
-            <div class="welcome-box">
-                <div style="font-size:18px;">👤</div>
-                <div>Welcome, <span>{username}</span></div>
-            </div>
-        """, unsafe_allow_html=True)
-
+        st.markdown('<div class="sidebar-header">🧠 MindCare AI</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="welcome-box">👤 Welcome, <b>{username}</b></div>', unsafe_allow_html=True)
         st.markdown("---")
+        st.markdown('<div class="section-title">Navigation</div>', unsafe_allow_html=True)
 
-        menu = [
-            "🏠 Dashboard",
-            "💬 Chat",
-            "📜 History",
-            "😊 Mood Analytics",
-            "📓 Journal"
-        ]
+        menu = list(menu_map.keys())
+        choice = st.radio("", menu, index=menu.index(current_label), key="nav")
 
-        current = st.session_state.get("current_page", "Dashboard")
-        mapping = {
-            "Dashboard": "🏠 Dashboard",
-            "Chat": "💬 Chat",
-            "History": "📜 History",
-            "Mood Analytics": "😊 Mood Analytics",
-            "Journal": "📓 Journal"
-        }
-        reverse_map = {v: k for k, v in mapping.items()}
-        current_ui = mapping.get(current, "🏠 Dashboard")
-
-        st.markdown('<div class="nav-title">Navigation</div>', unsafe_allow_html=True)
-
-        choice = st.radio(
-            " ",
-            menu,
-            index=menu.index(current_ui),
-            key="nav"
-        )
-
-        if choice != current_ui:
-            st.session_state.current_page = reverse_map[choice]
+        new_page = menu_map[choice]
+        if st.session_state.get("current_page") != new_page:
+            st.session_state["current_page"] = new_page
             st.rerun()
 
         st.markdown("---")
 
-        if st.button("🚪 Logout", use_container_width=True):
+        # ================= RECENT SESSIONS (ONLY ON HISTORY, STAY ON HISTORY PAGE) =================
+        if st.session_state["current_page"] == "History":
+            st.markdown('<div class="section-title">📌 Recent Sessions</div>', unsafe_allow_html=True)
+            conversations = get_conversations(user_id)
+            if not conversations:
+                st.caption("No chats yet. Start a conversation in Chat 💬")
+            else:
+                for i, convo in enumerate(conversations):
+                    convo_id = str(convo[0])
+                    messages = get_messages_by_conversation(convo_id)
+                    if not messages:
+                        continue
+                    title = next((m[1] for m in messages if m[0] == "user"), "New Chat")
+                    title = short_title(title, 28)
+                    if st.button(f"💬 {title}", key=f"sb_{convo_id}_{i}"):
+                        # Store selected conversation and stay on History page
+                        st.session_state["selected_history_conversation"] = convo_id
+                        st.session_state["chat_history"] = messages
+                        # DO NOT change current_page – remain on History
+                        st.rerun()
+
+        # ================= LOGOUT BUTTON (DARK BLUE) =================
+        st.markdown("---")
+        st.markdown('<div class="logout-btn">', unsafe_allow_html=True)
+        if st.button("🚪 Logout", key="logout_btn"):
             st.session_state.clear()
             st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)

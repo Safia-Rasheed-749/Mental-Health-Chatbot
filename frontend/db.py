@@ -302,20 +302,85 @@ def get_user_by_email(email):
 
 
 # -----------------------------
-# MESSAGES
+# MESSAGES & CONVERSATIONS
 # -----------------------------
-def add_message(user_id, role, content):
+def get_or_create_current_conversation(user_id):
+    """
+    Returns the most recent conversation ID for the user.
+    If none exists, creates a new conversation and returns its ID.
+    """
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        # Get the latest conversation
+        cur.execute(
+            "SELECT id FROM conversations WHERE user_id = %s ORDER BY created_at DESC LIMIT 1",
+            (user_id,)
+        )
+        row = cur.fetchone()
+        if row:
+            return row[0]
+        # No conversation exists – create one
+        cur.execute(
+            "INSERT INTO conversations (user_id, title) VALUES (%s, %s) RETURNING id",
+            (user_id, "New Chat")
+        )
+        new_id = cur.fetchone()[0]
+        conn.commit()
+        return new_id
+    except Exception as e:
+        print("Error in get_or_create_current_conversation:", e)
+        return None
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+def rename_conversation(conversation_id, new_title):
+    """Update the title of a conversation (optional)."""
     conn = None
     cur = None
     try:
         conn = get_connection()
         cur = conn.cursor()
         cur.execute(
+            "UPDATE conversations SET title = %s WHERE id = %s",
+            (new_title, conversation_id)
+        )
+        conn.commit()
+        return cur.rowcount > 0
+    except Exception as e:
+        print("Error renaming conversation:", e)
+        return False
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+def add_message(user_id, role, content, conversation_id=None):
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        # If no conversation_id provided, get or create one
+        if conversation_id is None:
+            conversation_id = get_or_create_current_conversation(user_id)
+            if conversation_id is None:
+                raise Exception("Could not obtain conversation ID")
+        
+        cur.execute(
             """
-            INSERT INTO messages (user_id, role, content)
-            VALUES (%s, %s, %s)
+            INSERT INTO messages (user_id, role, content, conversation_id)
+            VALUES (%s, %s, %s, %s)
             """,
-            (user_id, role, content)
+            (user_id, role, content, conversation_id)
         )
         conn.commit()
     except Exception as e:
@@ -345,6 +410,118 @@ def get_messages(user_id):
         return cur.fetchall()
     except Exception as e:
         print("Get messages error:", e)
+        return []
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+# -----------------------------
+# CONVERSATIONS
+# -----------------------------
+def create_conversation(user_id, title="New Chat"):
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute(
+            """
+            INSERT INTO conversations (user_id, title)
+            VALUES (%s, %s)
+            RETURNING id
+            """,
+            (user_id, title)
+        )
+        convo_id = cur.fetchone()[0]
+        conn.commit()
+        return convo_id
+    except Exception as e:
+        print("Create conversation error:", e)
+        return None
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+def get_conversations(user_id):
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute(
+            """
+            SELECT id, title, created_at
+            FROM conversations
+            WHERE user_id=%s
+            ORDER BY created_at DESC
+            """,
+            (user_id,)
+        )
+        return cur.fetchall()
+    except Exception as e:
+        print("Get conversations error:", e)
+        return []
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+def get_messages_by_conversation(conversation_id):
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute(
+            """
+            SELECT role, content
+            FROM messages
+            WHERE conversation_id=%s
+            ORDER BY id
+            """,
+            (conversation_id,)
+        )
+        return cur.fetchall()
+    except Exception as e:
+        print("Get messages by conversation error:", e)
+        return []
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+# -----------------------------
+# NEW FUNCTION FOR HISTORY PAGE (all messages with timestamps)
+# -----------------------------
+def get_all_user_messages(user_id):
+    """
+    Returns a list of tuples (role, content, created_at, conversation_id)
+    for all messages of the user, ordered from oldest to newest.
+    """
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT role, content, created_at, conversation_id
+            FROM messages
+            WHERE user_id = %s
+            ORDER BY created_at ASC
+        """, (user_id,))
+        return cur.fetchall()
+    except Exception as e:
+        print("Error fetching all user messages:", e)
         return []
     finally:
         if cur:

@@ -2,6 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 from layout_utils import apply_clean_layout
 
+
 def show_dashboard():
     # Invisible anchor at the very top of the dashboard
     st.markdown('<div id="dashboard-top-anchor" style="position: absolute; top: 0;"></div>', unsafe_allow_html=True)
