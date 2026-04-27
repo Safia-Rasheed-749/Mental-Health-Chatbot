@@ -26,7 +26,13 @@ def show_landing_page():
         footer, .stApp footer, .css-1lsmgbg, .egzxvld0, .viewerFooter, [data-testid="stFooter"] {
             display: none !important;
         }
-        
+        #  header, footer, .stDeployButton {
+        #     display: none !important;
+        # }
+
+        # .block-container {
+        #     padding-top: 1.8rem !important;
+        # }
         /* Enable scrolling */
        .stApp {
             overflow-y: auto !important;
@@ -494,7 +500,7 @@ def show_landing_page():
         }
 
         .block-container {
-            padding-top: 1rem !important;
+            padding-top: 1.8rem !important;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -530,8 +536,8 @@ def show_landing_page():
     # ================= CHAT DEMO =================
     with col_v:
         components.html("""
-        <div style="background: white; border-radius: 40px; padding: 20px; margin-top:45px; border: 1px solid #E8EEF2; box-shadow: 0 8px 20px rgba(0,0,0,0.06); height: 280px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 10px;">
-            <div id="chat-box" style="flex: 1; overflow-y: auto;padding-right: 10px; display: flex; flex-direction: column;"></div>
+        <div style="background: white; border-radius: 40px; padding: 20px; border: 1px solid #E8EEF2; box-shadow: 0 8px 20px rgba(0,0,0,0.06); height: 280px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 30px 10px 10px 10px;">
+            <div id="chat-box" style="flex: 1; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column;"></div>
         </div>
         <script>
         (function() {
@@ -631,6 +637,17 @@ def show_landing_page():
         })();
         </script>
         """, height=350)
+        st.markdown('<div style="margin-top: 25px;"></div>', unsafe_allow_html=True)
+    
+        # Centered button using columns
+        btn_col1, btn_col2, btn_col3 = st.columns([1, 1.5, 1])
+        with btn_col2:
+            if st.button("✨ Try Yourself ✨", use_container_width=True, key="chat_try_btn"):
+                st.session_state.page = "demo"
+                st.rerun()
+        
+        # Optional: Extra spacing after button
+        st.markdown('<div style="margin-bottom: 10px;"></div>', unsafe_allow_html=True)
 
     # ================= CAROUSEL HEADING =================
     st.markdown("""
