@@ -8,6 +8,18 @@ def show_about_page():
     
     # --- ADDED: Top spacer to push content away from navbar buttons ---
     st.markdown('<div style="height: 60px;"></div>', unsafe_allow_html=True)
+     # ===== CSS (SAFE - NO NAVBAR BREAK) =====
+    st.markdown("""
+    <style>
+        header, footer, .stDeployButton {
+            display: none !important;
+        }
+
+        .block-container {
+            padding-top: 1rem !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
 
     # About page CSS (no layout overrides, only styling)
     st.markdown("""

@@ -6,6 +6,18 @@ def show_dashboard():
     # Invisible anchor at the very top of the dashboard
     st.markdown('<div id="dashboard-top-anchor" style="position: absolute; top: 0;"></div>', unsafe_allow_html=True)
     
+     # ===== CSS (SAFE - NO NAVBAR BREAK) =====
+    st.markdown("""
+    <style>
+        header, footer, .stDeployButton {
+            display: none !important;
+        }
+
+        .block-container {
+            padding-top: 1rem !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
     # Force scroll to top using multiple attempts (works after login)
     components.html(
         """

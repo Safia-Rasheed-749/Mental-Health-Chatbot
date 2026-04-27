@@ -7,7 +7,24 @@ from layout_utils import apply_clean_layout
 def show_calm_colors_game():
     apply_clean_layout(hide_header_completely=True)
     
+<<<<<<< Updated upstream
     # ========== CSS STYLING ==========
+=======
+     # ===== CSS (SAFE - NO NAVBAR BREAK) =====
+    st.markdown("""
+    <style>
+        header, footer, .stDeployButton {
+            display: none !important;
+        }
+
+        .block-container {
+            padding-top: 1rem !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Game styling
+>>>>>>> Stashed changes
     st.markdown("""
     <style>
     /* Main container - center everything */

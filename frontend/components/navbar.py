@@ -21,10 +21,10 @@ def render_navbar():
             gap: 12px;
             font-size: 36px;
             font-weight: 700;
-            color: #6D9EEB !important;
+            color: Black !important;
         }
         .logo-icon {
-            font-size: 36px;
+            font-size: 40px;
         }
         div.stButton > button {
             all: unset !important;

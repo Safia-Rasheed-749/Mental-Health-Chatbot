@@ -485,6 +485,19 @@ def show_landing_page():
     
     <div class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">↑</div>
     """, unsafe_allow_html=True)
+    
+     # ===== CSS (SAFE - NO NAVBAR BREAK) =====
+    st.markdown("""
+    <style>
+        header, footer, .stDeployButton {
+            display: none !important;
+        }
+
+        .block-container {
+            padding-top: 1rem !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
 
     # ================= HERO SECTION =================
     col_t, col_v = st.columns([1, 1.2], gap="large")
@@ -517,8 +530,8 @@ def show_landing_page():
     # ================= CHAT DEMO =================
     with col_v:
         components.html("""
-        <div style="background: white; border-radius: 30px; padding: 20px; border: 1px solid #E8EEF2; box-shadow: 0 8px 20px rgba(0,0,0,0.06); height: 380px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 10px;">
-            <div id="chat-box" style="flex: 1; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column;"></div>
+        <div style="background: white; border-radius: 40px; padding: 20px; margin-top:45px; border: 1px solid #E8EEF2; box-shadow: 0 8px 20px rgba(0,0,0,0.06); height: 280px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 10px;">
+            <div id="chat-box" style="flex: 1; overflow-y: auto;padding-right: 10px; display: flex; flex-direction: column;"></div>
         </div>
         <script>
         (function() {
@@ -617,7 +630,7 @@ def show_landing_page():
             setTimeout(playConversation, 500);
         })();
         </script>
-        """, height=450)
+        """, height=350)
 
     # ================= CAROUSEL HEADING =================
     st.markdown("""
