@@ -22,10 +22,17 @@ def show_auth_page():
         return
 
     # ----- VISUAL SPACER (to push doctor image down) -----
-    st.markdown('<div style="height: 80px;"></div>', unsafe_allow_html=True)
+    st.markdown('<div style="height: 50px;"></div>', unsafe_allow_html=True)
 
     st.markdown("""
     <style>
+         header, footer, .stDeployButton {
+            display: none !important;
+        }
+
+        .block-container {
+            padding-top: 1.8rem !important;
+        }
     /* Background animation */
     .stApp {
         background: linear-gradient(120deg, #ffffff, #f1f5f9, #e2e8f0, #f8fafc);
@@ -42,7 +49,7 @@ def show_auth_page():
     .doctor-img {
         text-align: center;
         animation: slideFromLeft 1s ease-out forwards, float 3s ease-in-out 0.8s infinite;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
     @keyframes slideFromLeft {
         0% { transform: translateX(-100px); opacity: 0; }
@@ -88,11 +95,11 @@ def show_auth_page():
         margin-right: 10px !important;
     }
 
-    /* Ensure main block has no top padding (spacer handles it) */
-    .main .block-container {
-        padding-top: 0rem !important;
-        max-width: 1200px;
-    }
+    # /* Ensure main block has no top padding (spacer handles it) */
+    # .main .block-container {
+    #     padding-top: 0rem !important;
+    #     max-width: 1200px;
+    # }
     </style>
     """, unsafe_allow_html=True)
 

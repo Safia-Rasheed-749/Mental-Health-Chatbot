@@ -16,7 +16,7 @@ def show_about_page():
         }
 
         .block-container {
-            padding-top: 1rem !important;
+            padding-top: 1.8rem !important;
         }
     </style>
     """, unsafe_allow_html=True)

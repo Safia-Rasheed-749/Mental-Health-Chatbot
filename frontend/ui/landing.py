@@ -20,7 +20,7 @@ def show_landing_page():
 
         /* 🔥 REMOVE EXTRA GAP ABOVE CONTENT */
         .main {
-            padding-top: 0rem !important;
+            padding-top: 1.8rem !important;
         }
         /* Remove footer */
         footer, .stApp footer, .css-1lsmgbg, .egzxvld0, .viewerFooter, [data-testid="stFooter"] {

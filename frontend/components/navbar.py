@@ -4,24 +4,38 @@ import streamlit as st
 def render_navbar():
     st.markdown("""
     <style>
-        .nav-container {
+                .nav-container {
             background: linear-gradient(135deg, #9FC6F0, #4F84D9) !important;
-            padding: 12px 30px !important;
+            padding: 8px 30px !important;  /* ← padding kam kiya */
             border-radius: 60px !important;
             box-shadow: 0 8px 32px 0 rgba(102, 126, 234, 0.3) !important;
-            margin: 10px 0 20px 0 !important;   /* top margin reduced to 10px (was maybe larger) */
+            margin: 10px 0 20px 0 !important;
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
             width: 100% !important;
+             animation: slideDown 0.8s ease-out;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
         .logo {
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 36px;
+            font-size: 26px;  /* ← size thoda kam */
             font-weight: 700;
-            color: Black !important;
+            color: #6D9EEB !important;
+            line-height: 1;  /* ← add this */
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Buttons ko vertically center karne ke liye */
+        div[data-testid="column"] button {
+            padding: 6px 14px !important;  /* ← padding kam */
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
         }
         .logo-icon {
             font-size: 40px;
