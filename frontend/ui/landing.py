@@ -1,4 +1,4 @@
-# landing.py (FULLY FIXED - Video 3 Removed)
+# landing.py (FULLY FIXED - Footer Covers Full Width)
 import streamlit as st
 import streamlit.components.v1 as components
 import base64
@@ -22,12 +22,14 @@ def show_landing_page():
         .main {
             padding-top: 1.8rem !important;
         }
+        
         /* Remove footer */
         footer, .stApp footer, .css-1lsmgbg, .egzxvld0, .viewerFooter, [data-testid="stFooter"] {
             display: none !important;
         }
+        
         /* Enable scrolling */
-       .stApp {
+        .stApp {
             overflow-y: auto !important;
             height: 100vh !important;
             background: #EAF3FF !important;
@@ -38,7 +40,7 @@ def show_landing_page():
         }
         
         .main .block-container {
-            padding: 1rem 2rem 4rem 2rem !important;
+            padding: 1rem 2rem 0rem 2rem !important;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -78,48 +80,62 @@ def show_landing_page():
         * {
             font-family: 'Inter', sans-serif;
         }
-         /* ================= HERO SECTION STYLING ================= */
+        
+        /* ================= HERO SECTION STYLING ================= */
         .hero-container {
-            margin-top: 30px;
+            margin-top: 70px;
             padding-right: 20px;
         }
         
         .hero-title {
             font-size: 1.8rem !important;
             font-weight: 800;
-            background: linear-gradient(135deg, #1E3A5F 0%, #4A6FA5 100%);
+            background: darkblue;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             line-height: 1.3;
             margin-bottom: 20px;
+            margin-top: 60px !important;
         }
         
-        # .hero-highlight {
-        #     color: #4A6FA5;
-        #     -webkit-text-fill-color: #4A6FA5;
-        #     background: none;
-        #     display: inline-block;
-        # }
-        
         .hero-description {
-            color: #2C3E50;
-            font-size: 1rem;
-            line-height: 1.7;
-            margin-bottom: 35px;
-            text-align: justify;
+            color: #334155;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 14px;
+            max-width: 750px;
+            letter-spacing: 0.2px;
+        }
+
+         .hero-description b {
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .highlight-text {
+            background: linear-gradient(90deg, #e0f2fe, #ede9fe);
+            padding: 10px 14px;
+            border-left: 4px solid #3b82f6;
+            border-radius: 8px;
+            display: inline-block;
         }
         
         .hero-button-wrapper {
-            margin-top: 10px;
+            margin-top: 15px;
         }
         
         /* ================= REDUCED FONT SIZES ================= */
         .hero-text {
-            color: #2C3E50;
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 25px;
+            color: #334155;
+            font-size: 1.1rem;
+            line-height: 1.9;
+            margin-bottom: 28px;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            max-width: 720px;
+            opacity: 0.9;
+            text-shadow: 0px 1px 1px rgba(0,0,0,0.04);
         }
         
         .carousel-heading {
@@ -414,24 +430,6 @@ def show_landing_page():
             font-size: 0.8rem;
         }
         
-        .custom-footer {
-            text-align: center;
-            padding: 35px 0 25px;
-            border-top: 1px solid #E8EEF2;
-            margin: 45px 0 0 0;
-            background: #E6E6FA;
-            border-radius: 20px;
-            width: 100%;
-            clear: both;
-        }
-        
-        .custom-footer p {
-            color: #5A6E7A;
-            font-size: 0.75rem;
-            margin: 6px 0;
-            line-height: 1.4;
-        }
-        
         .carousel-wrapper {
             max-width: 1400px;
             margin: 35px auto;
@@ -515,12 +513,64 @@ def show_landing_page():
         strong {
             color: #1E3A5F;
         }
+        
+        .footer-container {
+            background: linear-gradient(135deg, #1E3A5F 0%, #4A6FA5 100%);
+            color: white;
+            padding: 60px 40px 30px 40px;
+            margin-top: 60px;
+            margin-bottom: 0;
+            margin-left: -2rem;
+            margin-right: -2rem;
+            width: calc(100% + 4rem);
+            border-radius: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .footer-container {
+                margin-left: -1rem;
+                margin-right: -1rem;
+                width: calc(100% + 2rem);
+                padding: 60px 20px 30px 20px;
+            }
+        }
+        
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .footer-col {
+            flex: 1;
+            min-width: 220px;
+        }
+        
+        .footer-title {
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .footer-text {
+            font-size: 13px;
+            color: #ddd;
+            margin-bottom: 8px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 12px;
+            color: #ddd;
+        }
     </style>
     
     <div class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">↑</div>
     """, unsafe_allow_html=True)
     
-     # ===== CSS (SAFE - NO NAVBAR BREAK) =====
+    # ===== CSS (SAFE - NO NAVBAR BREAK) =====
     st.markdown("""
     <style>
         header, footer, .stDeployButton {
@@ -533,27 +583,36 @@ def show_landing_page():
     </style>
     """, unsafe_allow_html=True)
 
-        # ================= HERO SECTION =================
+    # ================= HERO SECTION =================
     col_t, col_v = st.columns([1, 1.2], gap="large")
     with col_t:
         st.markdown("""
-        <div class="hero-container">
-            <h1 class="hero-title">
-                AI Powered Emotional Care
-            </h1>
-            <p class="hero-description">
-            Your mental health journey is unique — and so is our approach. MindCare AI listens without judgment, 
-            learns from your needs, and grows with you. Whether you're feeling overwhelmed, anxious, or just need 
-            someone to talk to, even at 3 AM, we're here for you.Because everyone deserves compassionate care, 
-            anytime, anywhere.
+        <h1 class="hero-title">
+            AI Powered Emotional Care
+        </h1>
+
+        <p class="hero-description">
+            Your mental health journey is <b>unique</b> — and so is our approach.
+        </p>
+
+        <p class="hero-description">
+            <b>MindCare AI</b> listens without judgment, learns from your needs, and grows with you.
+        </p>
+
+        <p class="hero-description">
+            Whether you're feeling overwhelmed, anxious, or just need someone to talk to — even at <b>3 AM</b>, we're here for you.
+        </p>
+
+        <p class="hero-description highlight-text">
+            Because everyone deserves <b>compassionate care</b>, anytime, anywhere.
         </p>
             <div class="hero-button-wrapper">
         </div>
         """, unsafe_allow_html=True)
         
-        # Button with custom class
-        if st.button("✨ Try It Yourself", key="hero_try", use_container_width=True):
-            st.session_state.page = "demo"
+        # Button changed to "Learn More" and goes to about page
+        if st.button("📖 Learn More", key="hero_learn_more", use_container_width=True):
+            st.session_state.page = "about"
             st.rerun()
         
         st.markdown('</div>', unsafe_allow_html=True)
@@ -561,7 +620,7 @@ def show_landing_page():
     # ================= CHAT DEMO =================
     with col_v:
         components.html("""
-        <div style="background: white; border-radius: 40px; padding: 20px; border: 1px solid #E8EEF2; box-shadow: 0 8px 20px rgba(0,0,0,0.06); height: 280px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 30px 10px 10px 10px;">
+        <div style="background: white; border-radius: 40px; padding: 20px; border: 1px solid #E8EEF2; box-shadow: 0 8px 20px rgba(0,0,0,0.06); height: 280px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 80px 10px 10px 10px;">
             <div id="chat-box" style="flex: 1; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column;"></div>
         </div>
         <script>
@@ -661,18 +720,18 @@ def show_landing_page():
             setTimeout(playConversation, 500);
         })();
         </script>
-        """, height=350)
+        """, height=410)
         st.markdown('<div style="margin-top: 25px;"></div>', unsafe_allow_html=True)
     
         # Centered button using columns
         btn_col1, btn_col2, btn_col3 = st.columns([1, 1.5, 1])
         with btn_col2:
-            if st.button("✨ Try Yourself ✨", use_container_width=True, key="chat_try_btn"):
+            if st.button(" Try it Yourself ", use_container_width=True, key="chat_try_btn"):
                 st.session_state.page = "demo"
                 st.rerun()
         
         # Optional: Extra spacing after button
-        st.markdown('<div style="margin-bottom: 10px;"></div>', unsafe_allow_html=True)
+        st.markdown('<div style="margin-bottom: 30px;"></div>', unsafe_allow_html=True)
 
     # ================= CAROUSEL HEADING =================
     st.markdown("""
@@ -773,8 +832,6 @@ def show_landing_page():
 
     # ================= FIXED VIDEO PATHS (ONLY 2 VIDEOS) =================
     # Direct paths to your video files
-    import os
-
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
     video_path_1 = os.path.join(BASE_DIR, "../../assets/videos/video1.mp4")
@@ -934,15 +991,42 @@ def show_landing_page():
 
     # ================= CUSTOM FOOTER =================
     st.markdown("""
-    <div class="custom-footer">
-        <p>© 2026 Mind Care AI | National University of Modern Languages, Islamabad</p>
-        <p>Final Year Project | Department of Computer Science</p>
-        <p>Supervised by Faisal Hussain</p>
-        <p style="margin-top: 60px;">🌟 Your mental well-being is our priority. Reach out anytime.</p>
+    <div class="footer-container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-title">About MindCare AI</div>
+                <div class="footer-text">AI-powered emotional support</div>
+                <div class="footer-text">24/7 mental wellness companion</div>
+                <div class="footer-text">Evidence-based techniques</div>
+                <div class="footer-text">Anonymous & secure</div>
+            </div>
+            <div class="footer-col">
+                <div class="footer-title">Resources</div>
+                <div class="footer-text">Mental Wellness Guide</div>
+                <div class="footer-text">Coping Strategies</div>
+                <div class="footer-text">Emergency Helplines</div>
+                <div class="footer-text">Research & Articles</div>
+            </div>
+            <div class="footer-col">
+                <div class="footer-title">Support</div>
+                <div class="footer-text">FAQs</div>
+                <div class="footer-text">Privacy Policy</div>
+                <div class="footer-text">Terms of Service</div>
+                <div class="footer-text">Contact Us</div>
+            </div>
+            <div class="footer-col">
+                <div class="footer-title">Contact</div>
+                <div class="footer-text">MindCare AI</div>
+                <div class="footer-text">Email: mindcareai@305@gmail.com</div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 MindCare AI — Your mental well-being matters 💜
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown('<div style="height: 30px;"></div>', unsafe_allow_html=True)
+    st.markdown('<div style="height: 0px;"></div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     if 'page' not in st.session_state:
