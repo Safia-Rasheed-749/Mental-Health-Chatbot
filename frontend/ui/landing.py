@@ -592,19 +592,19 @@ def show_landing_page():
         </h1>
 
         <p class="hero-description">
-            Your mental health journey is <b>unique</b> — and so is our approach.
+            Your mental health journey is unique and so is our approach.
         </p>
 
         <p class="hero-description">
-            <b>MindCare AI</b> listens without judgment, learns from your needs, and grows with you.
+            MindCare AI listens without judgment, learns from your needs, and grows with you.
         </p>
 
         <p class="hero-description">
-            Whether you're feeling overwhelmed, anxious, or just need someone to talk to — even at <b>3 AM</b>, we're here for you.
+            Whether you're feeling overwhelmed, anxious, or just need someone to talk to, even at midnight, we're here for you.
         </p>
 
         <p class="hero-description highlight-text">
-            Because everyone deserves <b>compassionate care</b>, anytime, anywhere.
+            Because everyone deserves compassionate care, anytime, anywhere.
         </p>
             <div class="hero-button-wrapper">
         </div>

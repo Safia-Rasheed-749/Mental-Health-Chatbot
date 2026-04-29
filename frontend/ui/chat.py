@@ -70,9 +70,29 @@ def show_chat(user_id):
         # ========== COMPLETE CSS FIX - STRICTLY STICKY BOTTOM ==========
     st.markdown("""
     <style>
-    /* Hide Streamlit default elements */
-    header, footer, .stDeployButton {
+    /* FIX: Remove header hiding - preserve sidebar collapse button */
+    /* Hide ONLY the hamburger menu and deploy button, NOT the header */
+    .stDeployButton {
         display: none !important;
+    }
+    
+    /* Hide hamburger menu only */
+    #MainMenu {
+        visibility: hidden !important;
+    }
+    
+    /* Make header transparent but KEEP IT VISIBLE for sidebar toggle */
+    header {
+        background: transparent !important;
+        backdrop-filter: blur(0px) !important;
+        box-shadow: none !important;
+        visibility: visible !important;
+        display: block !important;
+    }
+    
+    /* Hide footer */
+    footer {
+        visibility: hidden !important;
     }
     /* Keep normal Streamlit flow */
     html, body {
@@ -102,14 +122,7 @@ def show_chat(user_id):
     
     /* Chat area - scrollable */
     .chat-area {
-        # position: fixed;
-        # top: 65px;
-        # bottom: 75px;
-        # left: 0;
-        # right: 0;
-        # overflow-y: auto;
-        # padding: 15px 20px;
-        # background: #F5F7FB;
+        
         height: calc(100vh - 130px);
         overflow-y: auto;
         padding-right: 10px;
@@ -120,7 +133,7 @@ def show_chat(user_id):
     /* Message row */
     .chat-row {
         display: flex;
-        margin-bottom: 15px;
+        margin-bottom: 25px;
         animation: fadeIn 0.3s ease;
     }
     
@@ -131,8 +144,8 @@ def show_chat(user_id):
     
     /* User bubble */
     .user-bubble {
-        background: #4A6FA5;
-        color: white;
+        background-color: rgb(219, 234, 254);     
+        color: black;
         padding: 10px 16px;
         border-radius: 20px;
         font-size: 14px;
@@ -186,8 +199,8 @@ def show_chat(user_id):
         background: #4A6FA5 !important;
         color: white !important;
         border-radius: 50% !important;
-        width: 46px !important;
-        height: 46px !important;
+        width: 40px !important;
+        height: 36px !important;
         padding: 0 !important;
         border: none !important;
         font-size: 18px !important;
@@ -223,7 +236,7 @@ def show_chat(user_id):
     .thinking-dots span {
         width: 8px;
         height: 8px;
-        background: #4A6FA5;
+        background-color: #4A6FA5;
         border-radius: 50%;
         animation: bounce 1.4s infinite ease-in-out;
     }
@@ -270,7 +283,7 @@ def show_chat(user_id):
         if role == "user":
             st.markdown(f"""
             <div class="chat-row" style="justify-content:flex-end;">
-                <div class="user-bubble">{msg}</div>
+                <div class="user-bubble">👤 {msg}</div>
             </div>
             """, unsafe_allow_html=True)
         else:
