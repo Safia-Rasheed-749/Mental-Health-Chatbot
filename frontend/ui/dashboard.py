@@ -51,7 +51,7 @@ def show_dashboard():
         .welcome-section {
             background: #4A6FA5;
             border-radius: 28px; padding: 20px 28px; margin: 10px 0 30px 0;
-            text-align: center; box-shadow: 0 12px 24px -8px rgba(16,185,129,0.3);
+            text-align: center; box-shadow: 0 12px 24px -8px rgba(74, 111, 165, 0.4);
         }
         .welcome-greeting { font-size: 28px; font-weight: 800; color: white; }
         .welcome-note { font-size: 16px; color: white; font-weight: 600; }

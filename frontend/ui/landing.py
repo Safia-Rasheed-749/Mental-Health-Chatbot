@@ -4,6 +4,7 @@ import streamlit.components.v1 as components
 import base64
 import os
 
+
 def show_landing_page():
     # ================= PROFESSIONAL CSS WITH ANIMATIONS & GRADIENTS =================
     st.markdown("""
@@ -88,7 +89,7 @@ def show_landing_page():
         }
         
         .hero-title {
-            font-size: 2.0rem !important;
+            font-size: 1.4rem !important;
             font-weight: 800;
             background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #8b5cf6 100%);
             -webkit-background-clip: text;
@@ -101,7 +102,7 @@ def show_landing_page():
         }
         
         .hero-description {
-            color: #475569;
+            color: #1e293b;
             font-size: 1.05rem;
             line-height: 1.8;
             margin-bottom: 7px;
@@ -700,7 +701,7 @@ def show_landing_page():
 
         <p class="hero-description">
             Whether you're feeling overwhelmed, anxious, or just need someone to talk to, 
-            we're here for you — anytime, anywhere.
+            we're here for you anytime, anywhere.
         </p>
 
         <p class="hero-description highlight-text">
@@ -1159,6 +1160,8 @@ def show_landing_page():
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+
     
     st.markdown('<div style="height: 0px;"></div>', unsafe_allow_html=True)
 
