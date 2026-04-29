@@ -79,7 +79,8 @@ def show_calm_colors_game():
         margin: 10px 0 0 0;
         text-align: center;
         width: 100%;
-        font-size: 1.1rem;
+        font-size: 1.5rem;
+        font-weight: bold;
     }
     
     /* Center and style buttons */
@@ -219,7 +220,7 @@ def show_calm_colors_game():
     st.markdown("""
     <div class="game-title">
         <h1>🎨 Calm Colors Game</h1>
-        <p>🧘 Watch the sequence & repeat it to calm your mind</p>
+        <p> Watch the sequence & repeat it to calm your mind</p>
     </div>
     """, unsafe_allow_html=True)
     
