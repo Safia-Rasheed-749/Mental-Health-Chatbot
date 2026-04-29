@@ -36,9 +36,9 @@ def show_dashboard():
         }
         .hero-subtitle { text-align: center; font-size: 18px; color: #2c3e66; margin-bottom: 20px; }
 
-        /* Greenish banner */
+        /*  banner */
         .welcome-section {
-            background: linear-gradient(105deg, #d1fae5, #a7f3d0, #6ee7b7);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             border-radius: 28px; padding: 20px 28px; margin: 10px 0 30px 0;
             text-align: center; box-shadow: 0 12px 24px -8px rgba(16,185,129,0.3);
         }
@@ -88,6 +88,12 @@ def show_dashboard():
             transform: translateY(-8px) !important;
             box-shadow: 0 30px 40px -12px rgba(0,0,0,0.2) !important;
         }
+        .stButton > button {
+            background: #4A6FA5;
+            color: white;}
+        .stButton > button:hover {
+            background: white;
+            color: black;}
 
         /* Color classes that will be added by JavaScript */
         .dash-card-chat {
@@ -109,7 +115,8 @@ def show_dashboard():
 
         /* Sidebar reset */
         section[data-testid="stSidebar"] .stButton button {
-            all: revert !important;
+            display: block !important;
+            width: 100% !important;
             background-color: #f0f2f6 !important;
             border-radius: 30px !important;
             padding: 8px 16px !important;
@@ -118,10 +125,11 @@ def show_dashboard():
             font-weight: 500 !important;
             text-align: left !important;
             color: #1e2a3a !important;
-            width: 100% !important;
             gap: 8px !important;
             min-height: auto !important;
             box-shadow: none !important;
+            cursor: pointer !important;
+            transition: background-color 0.2s !important;
         }
         .dashboard-footer { text-align: center; color: #6c86a3; padding: 56px 0 24px; font-size: 14px; }
     </style>
