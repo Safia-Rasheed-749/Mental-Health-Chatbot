@@ -24,20 +24,6 @@ def show_about_page():
     </style>
     """, unsafe_allow_html=True)
 
-    # Get video path for hero background
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    # Your video path
-    video_path = os.path.join(BASE_DIR, "../../assets/48dcfb31bd0a11f3103eb452fc51733c_720w (1).mp4")
-    
-    # Check if video exists
-    video_exists = os.path.exists(video_path)
-    
-    if video_exists:
-        with open(video_path, "rb") as video_file:
-            video_base64 = base64.b64encode(video_file.read()).decode()
-    else:
-        video_base64 = ""
-    
     # About page CSS with animations and professional styling
     st.markdown(f"""
     <style>
@@ -101,7 +87,18 @@ def show_about_page():
         50% {{ transform: scale(1.05); }}
     }}
     
-    /* Hero Section with Video Background - NO OVERLAY */
+    @keyframes gradientShift {{
+        0% {{ background-position: 0% 50%; }}
+        50% {{ background-position: 100% 50%; }}
+        100% {{ background-position: 0% 50%; }}
+    }}
+    
+    @keyframes shine {{
+        0% {{ background-position: -100% 0; }}
+        100% {{ background-position: 200% 0; }}
+    }}
+    
+    /* Hero Section with Animated Gradient Background */
     .hero-section {{
         position: relative;
         text-align: center;
@@ -114,45 +111,46 @@ def show_about_page():
         display: flex;
         align-items: center;
         justify-content: center;
+        background: linear-gradient(90deg, #56CCF2 0%, #2F80ED 100%);
+        background-size: 300% 300%;
+        animation: gradientShift 8s ease infinite, fadeInUp 0.8s ease-out;
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
     }}
     
-    .hero-video {{
+    .hero-section::before {{
+        content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: 0;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: pulse 4s ease-in-out infinite;
     }}
     
-    /* NO OVERLAY - Completely removed */
     .hero-content {{
         position: relative;
         z-index: 1;
-        color: Black;
+        color: white;
         max-width: 800px;
         margin: 0 auto;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }}
     
     .hero-section h1 {{
         font-size: 3.5rem;
         font-weight: 800;
-        color: #FFFFFF;
-        background: rgba(0,0,0,0.4);
+        color: white;
         margin-bottom: 20px;
         animation: fadeInUp 0.8s ease-out;
-        text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
     }}
     
     .hero-section p {{
         font-size: 1.2rem;
         line-height: 1.7;
-        color: #FFFFFF;
-        background: rgba(0,0,0,0.4);
+        color: white;
         animation: fadeInUp 0.8s ease-out 0.2s both;
-        text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
     }}
     
     .section-title {{
@@ -165,7 +163,11 @@ def show_about_page():
         -webkit-text-fill-color: transparent;
         background-clip: text;
         animation: fadeInUp 0.8s ease-out;
+        position: relative;
+        display: inline-block;
+        width: 100%;
     }}
+    
     
     /* Mission Cards - Equal Height Fixed */
     .row-container {{
@@ -186,18 +188,36 @@ def show_about_page():
         display: flex;
         flex-direction: column;
         height: 320px;
+        position: relative;
+        overflow: hidden;
     }}
+    
+    .mission-card::before {{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s ease;
+    }}
+    
+    .mission-card:hover::before {{
+        left: 100%;
+    }}
+    
     .mission-card-1 {{ background: linear-gradient(135deg, #e0f2fe, #bae6fd); }}
     .mission-card-2 {{ background: linear-gradient(135deg, #e0e7ff, #c7d2fe); }}
     .mission-card-3 {{ background: linear-gradient(135deg, #f3e8ff, #e9d5ff); }}
     .mission-card:hover {{ transform: translateY(-8px); box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15); }}
-    .mission-icon {{ font-size: 3rem; margin-bottom: 20px; display: inline-block; }}
+    .mission-icon {{ font-size: 3rem; margin-bottom: 20px; display: inline-block; animation: pulse 3s ease-in-out infinite; }}
     .mission-title {{ font-size: 1.5rem; font-weight: 700; margin-bottom: 15px; color: #0f172a; }}
     .mission-text {{ color: #334155; line-height: 1.6; flex: 1; }}
     
     /* Architecture Grid - Equal Height */
     .arch-grid {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin: 30px 0; }}
-    .arch-item {{ border-radius: 20px; padding: 25px 20px; text-align: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); height: 180px; display: flex; flex-direction: column; justify-content: center; }}
+    .arch-item {{ border-radius: 20px; padding: 25px 20px; text-align: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); height: 180px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }}
     .arch-item-1 {{ background: linear-gradient(135deg, #dbeafe, #bfdbfe); }}
     .arch-item-2 {{ background: linear-gradient(135deg, #e0e7ff, #c7d2fe); }}
     .arch-item-3 {{ background: linear-gradient(135deg, #f3e8ff, #e9d5ff); }}
@@ -208,12 +228,26 @@ def show_about_page():
     .arch-desc {{ color: #475569; font-size: 0.9rem; }}
     
     /* Flow Card */
-    .flow-card {{ background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 24px; padding: 30px; margin: 30px 0; border: 1px solid rgba(102, 126, 234, 0.2); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); text-align: center; animation: fadeInUp 0.8s ease-out; }}
+    .flow-card {{ background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 24px; padding: 30px; margin: 30px 0; border: 1px solid rgba(102, 126, 234, 0.2); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); text-align: center; animation: fadeInUp 0.8s ease-out; transition: all 0.3s ease; }}
+    .flow-card:hover {{ transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); }}
     .flow-card h3 {{ color: #0f172a; margin-bottom: 20px; font-size: 1.8rem; }}
     
     /* SDG Cards - Equal Height */
     .sdg-container {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin: 30px 0; }}
-    .sdg-card {{ border-radius: 24px; padding: 30px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); animation: fadeInUp 0.8s ease-out; text-decoration: none !important; display: flex; flex-direction: column; height: 340px; cursor: pointer; }}
+    .sdg-card {{ border-radius: 24px; padding: 30px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); animation: fadeInUp 0.8s ease-out; text-decoration: none !important; display: flex; flex-direction: column; height: 340px; cursor: pointer; position: relative; overflow: hidden; }}
+    .sdg-card::before {{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s ease;
+    }}
+    .sdg-card:hover::before {{
+        left: 100%;
+    }}
     .sdg-card-1 {{ background: linear-gradient(135deg, #d1fae5, #a7f3d0); }}
     .sdg-card-2 {{ background: linear-gradient(135deg, #fed7aa, #fdba74); }}
     .sdg-card-3 {{ background: linear-gradient(135deg, #fce7f3, #fbcfe8); }}
@@ -245,22 +279,23 @@ def show_about_page():
     .team-avatar {{ font-size: 4rem; margin-bottom: 15px; display: inline-block; animation: pulse 3s ease-in-out infinite; }}
     .team-name {{ font-size: 1.3rem; font-weight: 700; margin-bottom: 5px; color: #0f172a; }}
     .team-id {{ color: #475569; font-size: 1rem; margin-bottom: 10px; }}
-    .team-role {{ background: linear-gradient(135deg, #667eea, #764ba2); display: inline-block; padding: 5px 18px; border-radius: 30px; font-size: 0.9rem; font-weight: 600; color: white; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3); }}
+    .team-role {{ background: linear-gradient(135deg, #667eea, #764ba2); display: inline-block; padding: 5px 18px; border-radius: 30px; font-size: 0.9rem; font-weight: 600; color: white; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3); transition: all 0.3s ease; }}
+    .team-role:hover {{ transform: scale(1.05); }}
     
     /* Supervisor Card */
     .supervisor-card {{ background: linear-gradient(135deg, #f1f5f9, #e2e8f0); border-radius: 20px; padding: 25px; text-align: center; margin: 40px 0; border: 1px solid rgba(102, 126, 234, 0.3); font-weight: 500; color: #1e293b; font-size: 1.05rem; transition: all 0.3s ease; animation: fadeInUp 0.8s ease-out; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }}
     .supervisor-card:hover {{ transform: scale(1.01); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }}
-    .supervisor-icon {{ font-size: 3.5rem; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; padding: 10px; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; color: white; }}
+    .supervisor-icon {{ font-size: 3.5rem; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; padding: 10px; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; color: white; animation: pulse 2s ease-in-out infinite; }}
     .supervisor-info {{ text-align: left; }}
     .supervisor-name {{ font-size: 1.3rem; font-weight: 700; color: #0f172a; }}
     .supervisor-dept {{ color: #475569; font-size: 1rem; margin-top: 5px; }}
     
     /* References Card */
     .references-card {{ background: linear-gradient(135deg, #f8fafc, #f1f5f9); border-radius: 24px; padding: 30px; margin: 30px 0; border: 1px solid #e2e8f0; transition: all 0.3s ease; animation: fadeInUp 0.8s ease-out; }}
-    .references-card:hover {{ box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); }}
+    .references-card:hover {{ box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); transform: translateY(-3px); }}
     .references-card ul li {{ color: #475569; margin-bottom: 12px; line-height: 1.5; transition: transform 0.2s ease; padding: 8px 0; border-bottom: 1px solid #e2e8f0; list-style: none; }}
     .references-card ul li:hover {{ transform: translateX(5px); color: #667eea; }}
-    .references-card ul li a {{ color: #4f46e5; text-decoration: none; font-weight: 500; }}
+    .references-card ul li a {{ color: #4f46e5; text-decoration: none; font-weight: 500; transition: color 0.3s ease; }}
     .references-card ul li a:hover {{ text-decoration: underline; color: #7c3aed; }}
     
     /* Responsive */
@@ -345,28 +380,15 @@ def show_about_page():
     </style>
     """, unsafe_allow_html=True)
 
-    # Hero section with video background (NO OVERLAY)
-    if video_exists:
-        st.markdown(f"""
-        <div class="hero-section">
-            <video class="hero-video" autoplay muted loop playsinline>
-                <source src="data:video/mp4;base64,{video_base64}" type="video/mp4">
-            </video>
-            <div class="hero-content">
-                <h1> 🧠AI Assistant for Mental Health</h1>
-                <p>Your intelligent, compassionate companion designed to provide empathetic, accessible, and personalized mental health support using cutting-edge artificial intelligence technology.</p>
-            </div>
+    # Hero section with animated gradient background
+    st.markdown("""
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>🧠 AI Assistant for Mental Health</h1>
+            <p>Your intelligent, compassionate companion designed to provide empathetic, accessible, and personalized mental health support using cutting-edge artificial intelligence technology.</p>
         </div>
-        """, unsafe_allow_html=True)
-    else:
-        st.markdown("""
-        <div class="hero-section" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-            <div class="hero-content">
-                <h1> 🧠 AI Assistant for Mental Health</h1>
-                <p>Your intelligent, compassionate companion designed to provide empathetic, accessible, and personalized mental health support using cutting-edge artificial intelligence technology.</p>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
 
     st.markdown('<div class="section-title">🎯 Our Mission</div>', unsafe_allow_html=True)
     
@@ -453,9 +475,9 @@ def show_about_page():
     st.markdown('<div class="section-title">👥 Development Team</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="team-grid">
-        <div class="team-card team-card-1"><div class="team-avatar">👩‍💻</div><div class="team-name">Safia Rasheed</div><div class="team-id">BSCS-MC-215</div><div class="team-role"> Developer</div></div>
-        <div class="team-card team-card-2"><div class="team-avatar">👩‍💻</div><div class="team-name">Maria Akram</div><div class="team-id">BSCS-MC-207</div><div class="team-role"> Developer</div></div>
-        <div class="team-card team-card-3"><div class="team-avatar">👩‍💻</div><div class="team-name">Shamsa Akram</div><div class="team-id">BSCS-MC-208</div><div class="team-role"> Developer</div></div>
+        <div class="team-card team-card-1"><div class="team-avatar">👩‍💻</div><div class="team-name">Safia Rasheed</div><div class="team-id">BSCS-MC-215</div><div class="team-role">Developer</div></div>
+        <div class="team-card team-card-2"><div class="team-avatar">👩‍💻</div><div class="team-name">Maria Akram</div><div class="team-id">BSCS-MC-207</div><div class="team-role">Developer</div></div>
+        <div class="team-card team-card-3"><div class="team-avatar">👩‍💻</div><div class="team-name">Shamsa Akram</div><div class="team-id">BSCS-MC-208</div><div class="team-role">Developer</div></div>
     </div>
     """, unsafe_allow_html=True)
 
