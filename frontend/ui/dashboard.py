@@ -5,13 +5,6 @@ from db import get_messages_by_user, get_moods_by_user, get_journals_by_user
 def show_dashboard():
     # ---------- Force scroll to top & remove top padding ----------
     st.markdown("""
-        <style>
-            /* Remove all top padding/margin so title sticks to top */
-            .main .block-container {
-                padding-top: 0rem !important;
-                margin-top: -1rem !important;
-            }
-        </style>
         <script>
             // Scroll main content to top instantly
             window.parent.document.querySelector('.main').scrollTo({ top: 0, behavior: 'instant' });
@@ -21,10 +14,28 @@ def show_dashboard():
     # ---------- CSS for background, stat cards, banner, etc. ----------
     st.markdown("""
     <style>
+        /* REMOVE ALL TOP SPACE - GUARANTEED */
+            header, .stHeader, [data-testid="stHeader"] {
+                display: none !important;
+                height: 0px !important;
+            }
+            
+            .block-container {
+                padding-top: 0rem !important;
+                margin-top: -0.5rem !important;
+                background-color: #f5f9ff !important;
+            }
+            
+            .stMarkdown:first-of-type {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+            }
+            
+            footer, #MainMenu, .stDeployButton {
+                display: none !important;
+            }
         /* Soft background */
         .stApp { background-color: #f5f9ff !important; }
-        .main .block-container { background-color: #f5f9ff !important; }
-        footer, .stDeployButton, #MainMenu { display: none !important; }
 
         /* Title styling */
         .hero-title { text-align: center; margin: 0; padding: 0; }
@@ -38,12 +49,12 @@ def show_dashboard():
 
         /*  banner */
         .welcome-section {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #4A6FA5;
             border-radius: 28px; padding: 20px 28px; margin: 10px 0 30px 0;
             text-align: center; box-shadow: 0 12px 24px -8px rgba(16,185,129,0.3);
         }
-        .welcome-greeting { font-size: 28px; font-weight: 800; color: #064e3b; }
-        .welcome-note { font-size: 16px; color: #065f46; font-weight: 600; }
+        .welcome-greeting { font-size: 28px; font-weight: 800; color: white; }
+        .welcome-note { font-size: 16px; color: white; font-weight: 600; }
 
         /* Stat cards (white, with slight top margin) */
         .stat-card {
@@ -92,8 +103,8 @@ def show_dashboard():
             background: #4A6FA5;
             color: white;}
         .stButton > button:hover {
-            background: white;
-            color: black;}
+            background: #1E3A5F;
+            color: white;}
 
         /* Color classes that will be added by JavaScript */
         .dash-card-chat {
