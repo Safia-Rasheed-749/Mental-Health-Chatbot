@@ -1,11 +1,11 @@
-# landing.py (FULLY FIXED - Footer Covers Full Width)
+# landing.py - With 3 New Images in Carousel (No Overlay)
 import streamlit as st
 import streamlit.components.v1 as components
 import base64
 import os
 
 def show_landing_page():
-    # ================= PROFESSIONAL CSS WITH REDUCED FONT SIZES =================
+    # ================= PROFESSIONAL CSS WITH ANIMATIONS & GRADIENTS =================
     st.markdown("""
     <style>
         /* 🔥 REMOVE STREAMLIT TOP SPACE */
@@ -32,11 +32,11 @@ def show_landing_page():
         .stApp {
             overflow-y: auto !important;
             height: 100vh !important;
-            background: #EAF3FF !important;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
         }
 
         body {
-            background: #EAF3FF !important;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
         }
         
         .main .block-container {
@@ -71,7 +71,7 @@ def show_landing_page():
         }
         
         ::-webkit-scrollbar-thumb {
-            background: #4A6FA5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 10px;
         }
         
@@ -88,49 +88,101 @@ def show_landing_page():
         }
         
         .hero-title {
-            font-size: 1.8rem !important;
+            font-size: 2.0rem !important;
             font-weight: 800;
-            background: darkblue;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #8b5cf6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             line-height: 1.3;
-            margin-bottom: 20px;
+            margin-bottom: 11px;
             margin-top: 60px !important;
+            animation: fadeInUp 0.8s ease-out;
         }
         
         .hero-description {
-            color: #334155;
+            color: #475569;
             font-size: 1.05rem;
             line-height: 1.8;
-            margin-bottom: 14px;
+            margin-bottom: 7px;
             max-width: 750px;
             letter-spacing: 0.2px;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
         }
 
          .hero-description b {
-            color: #1e3a8a;
+            color: #3b82f6;
             font-weight: 600;
         }
 
         .highlight-text {
-            background: linear-gradient(90deg, #e0f2fe, #ede9fe);
+            background: linear-gradient(90deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1));
             padding: 10px 14px;
             border-left: 4px solid #3b82f6;
             border-radius: 8px;
             display: inline-block;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
         
         .hero-button-wrapper {
             margin-top: 15px;
         }
         
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
         /* ================= REDUCED FONT SIZES ================= */
         .hero-text {
-            color: #334155;
-            font-size: 1.1rem;
+            color: #475569;
+            font-size: 1.0rem;
             line-height: 1.9;
-            margin-bottom: 28px;
+            margin-bottom: 20px;
             font-weight: 400;
             letter-spacing: 0.3px;
             max-width: 720px;
@@ -146,15 +198,16 @@ def show_landing_page():
         .carousel-heading h2 {
             font-size: 2rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #1E3A5F 0%, #4A6FA5 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #8b5cf6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 12px;
+            animation: fadeInUp 0.8s ease-out;
         }
         
         .carousel-heading p {
-            color: #4A6FA5;
+            color: #64748b;
             font-size: 0.95rem;
             line-height: 1.6;
             max-width: 800px;
@@ -165,17 +218,18 @@ def show_landing_page():
             text-align: center;
             font-size: 2rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #1E3A5F 0%, #4A6FA5 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #8b5cf6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin: 35px 0 15px 0;
             position: relative;
+            animation: fadeInUp 0.8s ease-out;
         }
         
         .section-description {
             text-align: center;
-            color: #5A6E7A;
+            color: #64748b;
             font-size: 0.9rem;
             line-height: 1.6;
             max-width: 800px;
@@ -185,7 +239,7 @@ def show_landing_page():
         
         .exercise-description {
             text-align: center;
-            color: #5A6E7A;
+            color: #64748b;
             font-size: 0.9rem;
             line-height: 1.6;
             max-width: 800px;
@@ -197,40 +251,43 @@ def show_landing_page():
             border-radius: 20px;
             padding: 28px;
             width: 100%;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: row;
             align-items: center;
             gap: 30px;
             margin-bottom: 45px;
             border: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
         }
         
         .exercise-card-1 { 
-            background: #E6E6FA;
-            border-left: 4px solid #5B8C5A;
+            background: linear-gradient(135deg, rgba(167, 243, 208, 0.15), rgba(16, 185, 129, 0.05));
+            border-left: 4px solid #10b981;
         }
         .exercise-card-2 { 
-            background: #E6E6FA;
-            border-left: 4px solid #4A6FA5;
+            background: linear-gradient(135deg, rgba(147, 197, 253, 0.15), rgba(59, 130, 246, 0.05));
+            border-left: 4px solid #3b82f6;
         }
         .exercise-card-3 { 
-            background: #E6E6FA; 
-            border-left: 4px solid #C17A5B;
+            background: linear-gradient(135deg, rgba(253, 186, 116, 0.15), rgba(245, 158, 11, 0.05));
+            border-left: 4px solid #f59e0b;
         }
         
         .exercise-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
         }
         
         .exercise-icon-large {
             font-size: 3.8rem;
             min-width: 85px;
             text-align: center;
-            animation: gentleBounce 3s ease-in-out infinite;
+            animation: float 3s ease-in-out infinite;
         }
         
         @keyframes gentleBounce {
@@ -244,36 +301,42 @@ def show_landing_page():
             font-size: 1.4rem;
             font-weight: 700;
             margin-bottom: 10px;
-            color: #1E3A5F;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .exercise-quote {
             font-style: italic;
             font-size: 0.85rem;
-            color: #5A6E7A;
+            color: #64748b;
             margin-bottom: 15px;
             padding: 12px 15px;
-            background: #F8F9FB;
+            background: rgba(255, 255, 255, 0.7);
             border-radius: 12px;
-            border-left: 3px solid #7899C7;
+            border-left: 3px solid #3b82f6;
             line-height: 1.5;
         }
         
         .exercise-description-text {
             font-size: 0.85rem;
-            color: #5A6E7A;
+            color: #64748b;
             margin-bottom: 15px;
             padding: 6px 0;
             line-height: 1.5;
         }
         
         .exercise-description-text strong {
-            color: #1E3A5F;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .exercise-quote-author {
             font-size: 0.75rem;
-            color: #7899C7;
+            color: #94a3b8;
             text-align: right;
             margin-top: 6px;
         }
@@ -287,26 +350,26 @@ def show_landing_page():
         }
         
         .exercise-steps li {
-            background: #FFFFFF;
+            background: rgba(255, 255, 255, 0.8);
             padding: 8px 12px;
             border-radius: 10px;
             font-size: 0.85rem;
             display: flex;
             align-items: center;
             gap: 10px;
-            border: 1px solid #E8EEF2;
-            transition: all 0.2s ease;
-            color: #2C3E50;
+            border: 1px solid rgba(203, 213, 225, 0.5);
+            transition: all 0.3s ease;
+            color: #334155;
         }
         
         .exercise-steps li:hover {
-            transform: translateX(4px);
-            border-color: #7899C7;
-            background: #FAFCFE;
+            transform: translateX(6px);
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
         }
         
         .step-number {
-            background: #4A6FA5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             width: 24px;
             height: 24px;
@@ -328,104 +391,129 @@ def show_landing_page():
             width: 100%;
             border-radius: 14px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .exercise-video video:hover {
+            transform: scale(1.02);
         }
         
         .feature-card-custom {
-            background: #E6E6FA;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
             padding: 22px 15px;
             border-radius: 14px;
-            border: 1px solid #E8EEF2;
-            transition: all 0.3s ease;
+            border: 1px solid rgba(203, 213, 225, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
             height: 100%;
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
             margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease-out;
         }
         
         .feature-card-custom:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-            border-color: #7899C7;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+            border-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.95);
         }
         
         .feature-card-custom div:first-child {
-            font-size: 36px;
+            font-size: 42px;
             margin-bottom: 10px;
+            animation: pulse 2s ease-in-out infinite;
+            display: inline-block;
         }
         
         .feature-card-custom div:nth-child(2) {
             font-weight: 700;
             margin: 10px 0 6px;
             font-size: 1rem;
-            color: #1E3A5F;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .feature-card-custom div:last-child {
             font-size: 0.8rem;
-            color: #5A6E7A;
+            color: #64748b;
             line-height: 1.4;
         }
         
         .tech-card-custom {
-            background: #E6E6FA;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
             border-radius: 14px;
             padding: 20px 12px;
             text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid #E8EEF2;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(203, 213, 225, 0.3);
             height: 100%;
             margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease-out;
         }
         
         .tech-card-custom:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-            background: #FFFFFF;
-            border-color: #7899C7;
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+            border-color: #3b82f6;
         }
         
         .tech-card-custom div:first-child {
-            font-size: 2rem;
+            font-size: 2.2rem;
+            animation: float 3s ease-in-out infinite;
+            display: inline-block;
         }
         
         .tech-card-custom div:nth-child(2) {
             font-weight: 700;
             margin: 10px 0 5px;
             font-size: 0.9rem;
-            color: Black;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .tech-card-custom div:last-child {
             font-size: 0.75rem;
-            color: #7899C7;
+            color: #64748b;
         }
         
         .impact-card-custom {
-            background: #E6E6FA;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
             border-radius: 14px;
             padding: 20px 12px;
             text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid #E8EEF2;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(203, 213, 225, 0.3);
             height: 100%;
+            animation: fadeInUp 0.8s ease-out;
         }
         
         .impact-card-custom:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-            border-color: #7899C7;
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-color: #3b82f6;
         }
         
         .stat-number-custom {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 800;
-            color: #4A6FA5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 6px;
         }
         
         .stat-label-custom {
-            color: #5A6E7A;
+            color: #64748b;
             font-weight: 500;
             font-size: 0.8rem;
         }
@@ -467,55 +555,55 @@ def show_landing_page():
             position: fixed;
             bottom: 25px;
             right: 25px;
-            background: #4A6FA5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             text-align: center;
-            line-height: 40px;
+            line-height: 45px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             z-index: 1000;
-            font-size: 18px;
+            font-size: 20px;
             transition: all 0.3s ease;
+            animation: pulse 2s ease-in-out infinite;
         }
         
         .scroll-top:hover {
-            background: #1E3A5F;
-            transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
         
         .stButton > button {
-            background: #4A6FA5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 10px 24px;
-            border-radius: 10px;
+            padding: 12px 28px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             transition: all 0.3s ease;
             width: 100%;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
         
         .stButton > button:hover {
-            background: #1E3A5F;
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
         
         p, li, .stMarkdown {
-            color: #2C3E50;
+            color: #334155;
         }
         
         strong {
-            color: #1E3A5F;
+            color: #3b82f6;
         }
         
         .footer-container {
-            background: linear-gradient(135deg, #1E3A5F 0%, #4A6FA5 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
             color: white;
             padding: 60px 40px 30px 40px;
             margin-top: 60px;
@@ -551,19 +639,29 @@ def show_landing_page():
             font-weight: 700;
             margin-bottom: 15px;
             font-size: 16px;
+            background: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .footer-text {
             font-size: 13px;
-            color: #ddd;
+            color: #cbd5e1;
             margin-bottom: 8px;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .footer-text:hover {
+            color: #a5b4fc;
         }
         
         .footer-bottom {
             text-align: center;
             margin-top: 40px;
             font-size: 12px;
-            color: #ddd;
+            color: #94a3b8;
         }
     </style>
     
@@ -588,30 +686,32 @@ def show_landing_page():
     with col_t:
         st.markdown("""
         <h1 class="hero-title">
-            AI Powered Emotional Care
+            AI Assistant for Mental Health
         </h1>
 
         <p class="hero-description">
-            Your mental health journey is unique and so is our approach.
+            Your compassionate AI companion, available 24/7 to support your mental wellness journey.
         </p>
 
         <p class="hero-description">
-            MindCare AI listens without judgment, learns from your needs, and grows with you.
+            Experience personalized emotional support that understands you, grows with you, 
+            and helps you navigate life's challenges with empathy and care.
         </p>
 
         <p class="hero-description">
-            Whether you're feeling overwhelmed, anxious, or just need someone to talk to, even at midnight, we're here for you.
+            Whether you're feeling overwhelmed, anxious, or just need someone to talk to, 
+            we're here for you — anytime, anywhere.
         </p>
 
         <p class="hero-description highlight-text">
-            Because everyone deserves compassionate care, anytime, anywhere.
+             Because everyone deserves compassionate mental health care.
         </p>
             <div class="hero-button-wrapper">
         </div>
         """, unsafe_allow_html=True)
         
         # Button changed to "Learn More" and goes to about page
-        if st.button("📖 Learn More", key="hero_learn_more", use_container_width=True):
+        if st.button(" Learn more", key="hero_learn_more", use_container_width=True):
             st.session_state.page = "about"
             st.rerun()
         
@@ -620,7 +720,7 @@ def show_landing_page():
     # ================= CHAT DEMO =================
     with col_v:
         components.html("""
-        <div style="background: white; border-radius: 40px; padding: 20px; border: 1px solid #E8EEF2; box-shadow: 0 8px 20px rgba(0,0,0,0.06); height: 280px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 80px 10px 10px 10px;">
+        <div style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border-radius: 40px; padding: 20px; border: 1px solid rgba(203,213,225,0.5); box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1); height: 280px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 80px 10px 10px 10px;">
             <div id="chat-box" style="flex: 1; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column;"></div>
         </div>
         <script>
@@ -666,13 +766,13 @@ def show_landing_page():
                 bubble.style.wordWrap = 'break-word';
                 
                 if (isUser) { 
-                    bubble.style.background = '#F0F3F7'; 
-                    bubble.style.color = '#1E3A5F';
+                    bubble.style.background = '#f1f5f9'; 
+                    bubble.style.color = '#1e293b';
                     bubble.innerText = "👤 " + text; 
                 } else { 
-                    bubble.style.background = '#4A6FA5'; 
+                    bubble.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
                     bubble.style.color = 'white'; 
-                    bubble.innerText = "🧠 " + text; 
+                    bubble.innerText = "🧠" + text; 
                 }
                 
                 msg.appendChild(bubble);
@@ -733,61 +833,92 @@ def show_landing_page():
         # Optional: Extra spacing after button
         st.markdown('<div style="margin-bottom: 30px;"></div>', unsafe_allow_html=True)
 
-    # ================= CAROUSEL HEADING =================
+    # ================= CAROUSEL FIRST (UPPER) =================
     st.markdown("""
     <div class="carousel-heading">
-        <h2>🤖 AI-Powered Mental Wellness Journey</h2>
+        <h2>✨ Your AI-Powered Mental Wellness Journey</h2>
         <p>Experience compassionate AI support that understands your emotions, provides evidence-based guidance, 
         and helps you navigate life's challenges with empathy and care.</p>
     </div>
     """, unsafe_allow_html=True)
 
-    # ================= QUOTE CAROUSEL =================
+    # ================= QUOTE CAROUSEL WITH 3 NEW IMAGES (NO OVERLAY) =================
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    
+    # NEW IMAGE PATHS - Updated with your 3 new images
+    image_path_1 = os.path.join(BASE_DIR, "../../assets/images/WhatsApp Image 2026-04-29 at 7.58.14 PM.jpeg")
+    image_path_2 = os.path.join(BASE_DIR, "../../assets/images/WhatsApp Image 2026-04-29 at 7.58.15 PM.jpeg")
+    image_path_3 = os.path.join(BASE_DIR, "../../assets/images/WhatsApp Image 2026-04-29 at 8.00.27 PM.jpeg")
+    
+    def get_image_base64(image_path):
+        """Convert image file to base64 string"""
+        try:
+            if os.path.exists(image_path):
+                with open(image_path, "rb") as image_file:
+                    image_base64 = base64.b64encode(image_file.read()).decode()
+                    return f"data:image/jpeg;base64,{image_base64}", True
+            else:
+                return "", False
+        except Exception:
+            return "", False
+    
+    img_base64_1, img_available_1 = get_image_base64(image_path_1)
+    img_base64_2, img_available_2 = get_image_base64(image_path_2)
+    img_base64_3, img_available_3 = get_image_base64(image_path_3)
+    
+    # Use first image as fallback if others not available
+    fallback_img = img_base64_1 if img_available_1 else ""
+    
     st.markdown('<div class="carousel-wrapper"><div class="carousel-outer">', unsafe_allow_html=True)
 
-    components.html("""
+    components.html(f"""
     <!DOCTYPE html>
     <html>
     <head>
         <style>
-            body { margin: 0; background: transparent; font-family: 'Inter', sans-serif; }
-            .carousel-container { width: 100%; overflow: hidden; position: relative; height: 400px; background: transparent; }
-            .carousel-track { display: flex; width: 400%; height: 100%; transition: transform 0.7s ease-in-out; }
-            .slide { width: 25%; height: 100%; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; }
-            .quote-card { background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); border-radius: 32px; padding: 28px 45px; max-width: 650px; box-shadow: 0 20px 40px -12px rgba(0,0,0,0.25); text-align: center; border: 1px solid rgba(255,255,255,0.5); z-index: 2; margin: 0 20px; }
-            .quote-text { color: #1E3A5F; font-size: 22px; font-weight: 500; line-height: 1.5; font-style: italic; margin: 0; text-shadow: 1px 1px 2px rgba(255,255,255,0.5); }
-            .quote-author { margin-top: 30px; color: #4A6FA5; font-size: 14px; font-weight: 600; }
-            @media (max-width: 768px) {
-                .quote-card { padding: 20px 24px; margin: 0 15px; }
-                .quote-text { font-size: 18px; }
-            }
+            body {{ margin: 0; background: transparent; font-family: 'Inter', sans-serif; }}
+            .carousel-container {{ width: 100%; overflow: hidden; position: relative; height: 400px; background: transparent; }}
+            .carousel-track {{ display: flex; width: 400%; height: 100%; transition: transform 0.7s ease-in-out; }}
+            .slide {{ width: 25%; height: 100%; background-size: cover; background-position: center; background-repeat: no-repeat; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; }}
+            .quote-card {{ background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-radius: 32px; padding: 28px 45px; max-width: 650px; box-shadow: 0 20px 40px -12px rgba(0,0,0,0.25); text-align: center; border: 1px solid rgba(255,255,255,0.5); z-index: 2; margin: 0 20px; position: relative; animation: fadeInUp 0.8s ease-out; }}
+            .quote-text {{ background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 22px; font-weight: 500; line-height: 1.5; font-style: italic; margin: 0; }}
+            .quote-author {{ margin-top: 30px; color: #667eea; font-size: 14px; font-weight: 600; }}
+            @keyframes fadeInUp {{
+                from {{ opacity: 0; transform: translateY(30px); }}
+                to {{ opacity: 1; transform: translateY(0); }}
+            }}
+            @media (max-width: 768px) {{
+                .carousel-container {{ height: 350px; }}
+                .quote-card {{ padding: 20px 24px; margin: 0 15px; }}
+                .quote-text {{ font-size: 18px; }}
+            }}
         </style>
     </head>
     <body>
     <div class="carousel-container">
         <div class="carousel-track" id="carouselTrack">
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1559757175-5700dde675bc?q=80&w=2069&auto=format&fit=crop');">
+            <div class="slide" style="background-image: url('{img_base64_1 if img_available_1 else fallback_img}');">
                 <div class="quote-card">
                     <p class="quote-text">"Mental health is not a destination, but a journey of self-discovery and healing."</p>
-                    <p class="quote-author">— MindCare AI</p>
+                    <p class="quote-author">— AI Assistant for Mental Health</p>
                 </div>
             </div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1932&auto=format&fit=crop');">
+            <div class="slide" style="background-image: url('{img_base64_2 if img_available_2 else fallback_img}');">
                 <div class="quote-card">
                     <p class="quote-text">"AI-powered emotional support is transforming mental healthcare, making it accessible 24/7 for everyone."</p>
-                    <p class="quote-author">— MindCare AI Research</p>
+                    <p class="quote-author">— AI Assistant Research</p>
                 </div>
             </div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1999&auto=format&fit=crop');">
+            <div class="slide" style="background-image: url('{img_base64_3 if img_available_3 else fallback_img}');">
                 <div class="quote-card">
                     <p class="quote-text">"Your mental health journey matters. Let AI be your compassionate companion along the way."</p>
-                    <p class="quote-author">— MindCare AI</p>
+                    <p class="quote-author">— AI Assistant Team</p>
                 </div>
             </div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=2070&auto=format&fit=crop');">
+            <div class="slide" style="background-image: url('{img_base64_1 if img_available_1 else fallback_img}');">
                 <div class="quote-card">
-                    <p class="quote-text">"Technology meets empathy. Our AI chatbot understands, listens, and supports your emotional well-being."</p>
-                    <p class="quote-author">— MindCare AI Team</p>
+                    <p class="quote-text">"Technology meets empathy. Our AI understands, listens, and supports your emotional well-being."</p>
+                    <p class="quote-author">— AI Assistant</p>
                 </div>
             </div>
         </div>
@@ -797,19 +928,19 @@ def show_landing_page():
         var currentIndex = 0;
         var totalSlides = 3;
         var slideWidth = 25;
-        function moveToNext() {
+        function moveToNext() {{
             currentIndex++;
             track.style.transform = 'translateX(-' + (currentIndex * slideWidth) + '%)';
-            if (currentIndex === totalSlides) {
-                setTimeout(function() {
+            if (currentIndex === totalSlides) {{
+                setTimeout(function() {{
                     track.style.transition = 'none';
                     track.style.transform = 'translateX(0%)';
                     currentIndex = 0;
                     track.offsetHeight;
                     track.style.transition = 'transform 0.7s ease-in-out';
-                }, 700);
-            }
-        }
+                }}, 700);
+            }}
+        }}
         setInterval(moveToNext, 5000);
     </script>
     </body>
@@ -818,116 +949,13 @@ def show_landing_page():
 
     st.markdown('</div></div>', unsafe_allow_html=True)
 
-    # ================= MENTAL WELLNESS EXERCISES =================
-    st.markdown('<h2 class="section-title">🧘 Mental Wellness Exercises</h2>', unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="exercise-description">
-        <strong>🧠 Evidence-based practices for emotional balance</strong><br><br>
-        These scientifically-backed exercises are designed to reduce anxiety, improve focus, 
-        and build emotional resilience. Our AI companion guides you through each practice 
-        with personalized tips and gentle encouragement.
-    </div>
-    """, unsafe_allow_html=True)
-
-    # ================= FIXED VIDEO PATHS (ONLY 2 VIDEOS) =================
-    # Direct paths to your video files
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-    video_path_1 = os.path.join(BASE_DIR, "../../assets/videos/video1.mp4")
-    video_path_2 = os.path.join(BASE_DIR, "../../assets/videos/video2.mp4")
-    
-    def get_video_base64(video_path):
-        """Convert video file to base64 string"""
-        try:
-            if os.path.exists(video_path):
-                with open(video_path, "rb") as video_file:
-                    video_base64 = base64.b64encode(video_file.read()).decode()
-                    return video_base64, True
-            else:
-                return "", False
-        except Exception:
-            return "", False
-    
-    # Load videos
-    video_base64_1, video_available_1 = get_video_base64(video_path_1)
-    video_base64_2, video_available_2 = get_video_base64(video_path_2)
-
-    # Exercise 1 - Mindful Breathing (Video 1)
-    if video_available_1:
-        st.markdown(f"""
-        <div class="exercise-card exercise-card-1">
-            <div class="exercise-icon-large">🌬️</div>
-            <div class="exercise-content">
-                <div class="exercise-title">Mindful Breathing Exercise</div>
-                <div class="exercise-quote">"Feelings come and go like clouds in a windy sky. Conscious breathing is my anchor."<div class="exercise-quote-author">— Thich Nhat Hanh</div></div>
-                <div class="exercise-description-text"><strong>🌿 Why it helps:</strong> Deep breathing activates your parasympathetic nervous system, reducing cortisol levels and calming anxiety. Regular practice improves emotional regulation and stress resilience.</div>
-                <ul class="exercise-steps"><li><span class="step-number">1</span> Inhale deeply through your nose for 4 seconds</li><li><span class="step-number">2</span> Hold your breath for 4 seconds</li><li><span class="step-number">3</span> Exhale slowly through your mouth for 6 seconds</li><li><span class="step-number">4</span> Repeat 5-10 times</li></ul>
-            </div>
-            <div class="exercise-video"><video autoplay muted loop playsinline><source src="data:video/mp4;base64,{video_base64_1}" type="video/mp4"></video></div>
-        </div>
-        """, unsafe_allow_html=True)
-    else:
-        st.markdown("""
-        <div class="exercise-card exercise-card-1">
-            <div class="exercise-icon-large">🌬️</div>
-            <div class="exercise-content">
-                <div class="exercise-title">Mindful Breathing Exercise</div>
-                <div class="exercise-quote">"Feelings come and go like clouds in a windy sky. Conscious breathing is my anchor."<div class="exercise-quote-author">— Thich Nhat Hanh</div></div>
-                <div class="exercise-description-text"><strong>🌿 Why it helps:</strong> Deep breathing activates your parasympathetic nervous system, reducing cortisol levels and calming anxiety. Regular practice improves emotional regulation and stress resilience.</div>
-                <ul class="exercise-steps"><li><span class="step-number">1</span> Inhale deeply through your nose for 4 seconds</li><li><span class="step-number">2</span> Hold your breath for 4 seconds</li><li><span class="step-number">3</span> Exhale slowly through your mouth for 6 seconds</li><li><span class="step-number">4</span> Repeat 5-10 times</li></ul>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # Exercise 2 - Mindfulness Meditation (Video 2)
-    if video_available_2:
-        st.markdown(f"""
-        <div class="exercise-card exercise-card-2">
-            <div class="exercise-icon-large">🧠</div>
-            <div class="exercise-content">
-                <div class="exercise-title">Mindfulness Meditation</div>
-                <div class="exercise-quote">"The present moment is filled with joy and happiness. If you are attentive, you will see it."<div class="exercise-quote-author">— Thich Nhat Hanh</div></div>
-                <div class="exercise-description-text"><strong>🎯 Why it helps:</strong> Mindfulness rewires your brain for greater emotional regulation and reduces stress. Studies show it decreases anxiety by 40% and improves focus and self-awareness.</div>
-                <ul class="exercise-steps"><li><span class="step-number">1</span> Sit comfortably and close your eyes</li><li><span class="step-number">2</span> Focus on your breath without judgment</li><li><span class="step-number">3</span> Notice thoughts and let them pass</li><li><span class="step-number">4</span> Practice for 5-10 minutes daily</li></ul>
-            </div>
-            <div class="exercise-video"><video autoplay muted loop playsinline><source src="data:video/mp4;base64,{video_base64_2}" type="video/mp4"></video></div>
-        </div>
-        """, unsafe_allow_html=True)
-    else:
-        st.markdown("""
-        <div class="exercise-card exercise-card-2">
-            <div class="exercise-icon-large">🧠</div>
-            <div class="exercise-content">
-                <div class="exercise-title">Mindfulness Meditation</div>
-                <div class="exercise-quote">"The present moment is filled with joy and happiness. If you are attentive, you will see it."<div class="exercise-quote-author">— Thich Nhat Hanh</div></div>
-                <div class="exercise-description-text"><strong>🎯 Why it helps:</strong> Mindfulness rewires your brain for greater emotional regulation and reduces stress. Studies show it decreases anxiety by 40% and improves focus and self-awareness.</div>
-                <ul class="exercise-steps"><li><span class="step-number">1</span> Sit comfortably and close your eyes</li><li><span class="step-number">2</span> Focus on your breath without judgment</li><li><span class="step-number">3</span> Notice thoughts and let them pass</li><li><span class="step-number">4</span> Practice for 5-10 minutes daily</li></ul>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # Exercise 3 - Grounding Technique (No Video)
-    st.markdown("""
-    <div class="exercise-card exercise-card-3">
-        <div class="exercise-icon-large">🌍</div>
-        <div class="exercise-content">
-            <div class="exercise-title">5-4-3-2-1 Grounding Technique</div>
-            <div class="exercise-quote">"Grounding is a powerful way to calm anxiety and return to the present moment."<div class="exercise-quote-author">— MindCare AI</div></div>
-            <div class="exercise-description-text"><strong>⚡ Why it helps:</strong> This evidence-based technique interrupts anxiety spirals by engaging all five senses. Provides immediate relief during panic attacks or overwhelming emotions. Perfect for high-stress situations.</div>
-            <ul class="exercise-steps"><li><span class="step-number">👁️</span> Acknowledge 5 things you see around you</li><li><span class="step-number">🫂</span> Acknowledge 4 things you can physically touch</li><li><span class="step-number">👂</span> Acknowledge 3 distinct sounds you hear</li><li><span class="step-number">👃</span> Acknowledge 2 different smells in your environment</li><li><span class="step-number">👅</span> Acknowledge 1 thing you can taste or focus on your breath</li></ul>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # ================= FEATURES SECTION =================
+    # ================= CORE CAPABILITIES =================
     st.markdown('<h2 class="section-title">🎯 Core Capabilities</h2>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="section-description">
-        <strong>🤖 Intelligent features designed for your emotional well-being</strong><br><br>
-        Our AI-powered chatbot combines cutting-edge technology with compassionate care. From real-time emotion detection 
-        to personalized coping strategies, every feature is crafted to support your mental health journey.
+        <strong>⚡ Intelligent features designed for your emotional well-being</strong><br><br>
+        Our AI-powered assistant combines cutting-edge technology with compassionate care for personalized support.
     </div>
     """, unsafe_allow_html=True)
 
@@ -947,14 +975,124 @@ def show_landing_page():
     with col6:
         st.markdown('<div class="feature-card-custom"><div>🧘</div><div>Coping Tools</div><div>Meditation & CBT techniques</div></div>', unsafe_allow_html=True)
 
+    # ================= MENTAL WELLNESS EXERCISES =================
+    st.markdown('<h2 class="section-title">🧘 Mental Wellness Exercises</h2>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="exercise-description">
+        <strong>✨ Evidence-based practices for emotional balance</strong><br><br>
+        These scientifically-backed exercises help reduce anxiety, improve focus, and build emotional resilience.
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ================= FIXED VIDEO PATHS =================
+    video_path_1 = os.path.join(BASE_DIR, "../../assets/videos/video1.mp4")
+    video_path_2 = os.path.join(BASE_DIR, "../../assets/videos/video2.mp4")
+    video_path_3 = os.path.join(BASE_DIR, "../../assets/videos/Ins_-359471723.mp4")
+    
+    def get_video_base64(video_path):
+        try:
+            if os.path.exists(video_path):
+                with open(video_path, "rb") as video_file:
+                    video_base64 = base64.b64encode(video_file.read()).decode()
+                    return video_base64, True
+            else:
+                return "", False
+        except Exception:
+            return "", False
+    
+    video_base64_1, video_available_1 = get_video_base64(video_path_1)
+    video_base64_2, video_available_2 = get_video_base64(video_path_2)
+    video_base64_3, video_available_3 = get_video_base64(video_path_3)
+
+    # Exercise 1 - Mindful Breathing
+    if video_available_1:
+        st.markdown(f"""
+        <div class="exercise-card exercise-card-1">
+            <div class="exercise-icon-large">🌬️</div>
+            <div class="exercise-content">
+                <div class="exercise-title">Mindful Breathing Exercise</div>
+                <div class="exercise-quote">"Feelings come and go like clouds in a windy sky. Conscious breathing is my anchor."<div class="exercise-quote-author">— Thich Nhat Hanh</div></div>
+                <div class="exercise-description-text"><strong>🌿 Why it helps:</strong> Deep breathing activates your parasympathetic nervous system, reducing cortisol levels and calming anxiety.</div>
+                <ul class="exercise-steps"><li><span class="step-number">1</span> Inhale deeply through your nose for 4 seconds</li><li><span class="step-number">2</span> Hold your breath for 4 seconds</li><li><span class="step-number">3</span> Exhale slowly through your mouth for 6 seconds</li><li><span class="step-number">4</span> Repeat 5-10 times</li></ul>
+            </div>
+            <div class="exercise-video"><video autoplay muted loop playsinline><source src="data:video/mp4;base64,{video_base64_1}" type="video/mp4"></video></div>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("""
+        <div class="exercise-card exercise-card-1">
+            <div class="exercise-icon-large">🌬️</div>
+            <div class="exercise-content">
+                <div class="exercise-title">Mindful Breathing Exercise</div>
+                <div class="exercise-quote">"Feelings come and go like clouds in a windy sky. Conscious breathing is my anchor."<div class="exercise-quote-author">— Thich Nhat Hanh</div></div>
+                <div class="exercise-description-text"><strong>🌿 Why it helps:</strong> Deep breathing activates your parasympathetic nervous system, reducing cortisol levels and calming anxiety.</div>
+                <ul class="exercise-steps"><li><span class="step-number">1</span> Inhale deeply through your nose for 4 seconds</li><li><span class="step-number">2</span> Hold your breath for 4 seconds</li><li><span class="step-number">3</span> Exhale slowly through your mouth for 6 seconds</li><li><span class="step-number">4</span> Repeat 5-10 times</li></ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Exercise 2 - Mindfulness Meditation
+    if video_available_2:
+        st.markdown(f"""
+        <div class="exercise-card exercise-card-2">
+            <div class="exercise-icon-large">🧠</div>
+            <div class="exercise-content">
+                <div class="exercise-title">Mindfulness Meditation</div>
+                <div class="exercise-quote">"The present moment is filled with joy and happiness. If you are attentive, you will see it."<div class="exercise-quote-author">— Thich Nhat Hanh</div></div>
+                <div class="exercise-description-text"><strong>🎯 Why it helps:</strong> Mindfulness rewires your brain for greater emotional regulation and reduces stress.</div>
+                <ul class="exercise-steps"><li><span class="step-number">1</span> Sit comfortably and close your eyes</li><li><span class="step-number">2</span> Focus on your breath without judgment</li><li><span class="step-number">3</span> Notice thoughts and let them pass</li><li><span class="step-number">4</span> Practice for 5-10 minutes daily</li></ul>
+            </div>
+            <div class="exercise-video"><video autoplay muted loop playsinline><source src="data:video/mp4;base64,{video_base64_2}" type="video/mp4"></video></div>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("""
+        <div class="exercise-card exercise-card-2">
+            <div class="exercise-icon-large">🧠</div>
+            <div class="exercise-content">
+                <div class="exercise-title">Mindfulness Meditation</div>
+                <div class="exercise-quote">"The present moment is filled with joy and happiness. If you are attentive, you will see it."<div class="exercise-quote-author">— Thich Nhat Hanh</div></div>
+                <div class="exercise-description-text"><strong>🎯 Why it helps:</strong> Mindfulness rewires your brain for greater emotional regulation and reduces stress.</div>
+                <ul class="exercise-steps"><li><span class="step-number">1</span> Sit comfortably and close your eyes</li><li><span class="step-number">2</span> Focus on your breath without judgment</li><li><span class="step-number">3</span> Notice thoughts and let them pass</li><li><span class="step-number">4</span> Practice for 5-10 minutes daily</li></ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Exercise 3 - Grounding Technique
+    if video_available_3:
+        st.markdown(f"""
+        <div class="exercise-card exercise-card-3">
+            <div class="exercise-icon-large">🌍</div>
+            <div class="exercise-content">
+                <div class="exercise-title">5-4-3-2-1 Grounding Technique</div>
+                <div class="exercise-quote">"Grounding is a powerful way to calm anxiety and return to the present moment."<div class="exercise-quote-author">— AI Assistant</div></div>
+                <div class="exercise-description-text"><strong>⚡ Why it helps:</strong> This evidence-based technique interrupts anxiety spirals by engaging all five senses.</div>
+                <ul class="exercise-steps"><li><span class="step-number">👁️</span> Acknowledge 5 things you see around you</li><li><span class="step-number">🫂</span> Acknowledge 4 things you can physically touch</li><li><span class="step-number">👂</span> Acknowledge 3 distinct sounds you hear</li><li><span class="step-number">👃</span> Acknowledge 2 different smells in your environment</li><li><span class="step-number">👅</span> Acknowledge 1 thing you can taste or focus on your breath</li></ul>
+            </div>
+            <div class="exercise-video"><video autoplay muted loop playsinline><source src="data:video/mp4;base64,{video_base64_3}" type="video/mp4"></video></div>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("""
+        <div class="exercise-card exercise-card-3">
+            <div class="exercise-icon-large">🌍</div>
+            <div class="exercise-content">
+                <div class="exercise-title">5-4-3-2-1 Grounding Technique</div>
+                <div class="exercise-quote">"Grounding is a powerful way to calm anxiety and return to the present moment."<div class="exercise-quote-author">— AI Assistant</div></div>
+                <div class="exercise-description-text"><strong>⚡ Why it helps:</strong> This evidence-based technique interrupts anxiety spirals by engaging all five senses.</div>
+                <ul class="exercise-steps"><li><span class="step-number">👁️</span> Acknowledge 5 things you see around you</li><li><span class="step-number">🫂</span> Acknowledge 4 things you can physically touch</li><li><span class="step-number">👂</span> Acknowledge 3 distinct sounds you hear</li><li><span class="step-number">👃</span> Acknowledge 2 different smells in your environment</li><li><span class="step-number">👅</span> Acknowledge 1 thing you can taste or focus on your breath</li></ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
     # ================= TECH STACK SECTION =================
     st.markdown('<h2 class="section-title">🔧 Technology Stack</h2>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="section-description">
         <strong>⚙️ Built with cutting-edge technology for reliability and scale</strong><br><br>
-        Our platform leverages modern AI architectures and industry-standard frameworks to deliver fast, 
-        secure, and intelligent emotional support.
+        Our platform leverages modern AI architectures and industry-standard frameworks.
     </div>
     """, unsafe_allow_html=True)
 
@@ -974,8 +1112,7 @@ def show_landing_page():
     st.markdown("""
     <div class="section-description">
         <strong>📈 Making mental health support accessible to everyone</strong><br><br>
-        Our platform breaks barriers in mental healthcare by providing 24/7 anonymous support, 
-        reducing stigma, and reaching underserved communities.
+        24/7 anonymous support reducing stigma and reaching underserved communities.
     </div>
     """, unsafe_allow_html=True)
 
@@ -989,12 +1126,12 @@ def show_landing_page():
     with imp_col4:
         st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">Real-time</div><div class="stat-label-custom">Detection</div></div>', unsafe_allow_html=True)
 
-    # ================= CUSTOM FOOTER =================
+    # ================= FULL FOOTER =================
     st.markdown("""
     <div class="footer-container">
         <div class="footer-grid">
             <div class="footer-col">
-                <div class="footer-title">About MindCare AI</div>
+                <div class="footer-title">About AI Assistant</div>
                 <div class="footer-text">AI-powered emotional support</div>
                 <div class="footer-text">24/7 mental wellness companion</div>
                 <div class="footer-text">Evidence-based techniques</div>
@@ -1004,24 +1141,21 @@ def show_landing_page():
                 <div class="footer-title">Resources</div>
                 <div class="footer-text">Mental Wellness Guide</div>
                 <div class="footer-text">Coping Strategies</div>
-                <div class="footer-text">Emergency Helplines</div>
                 <div class="footer-text">Research & Articles</div>
             </div>
             <div class="footer-col">
                 <div class="footer-title">Support</div>
-                <div class="footer-text">FAQs</div>
                 <div class="footer-text">Privacy Policy</div>
-                <div class="footer-text">Terms of Service</div>
-                <div class="footer-text">Contact Us</div>
+                <div class="footer-text">About</div>
             </div>
             <div class="footer-col">
                 <div class="footer-title">Contact</div>
-                <div class="footer-text">MindCare AI</div>
-                <div class="footer-text">Email: mindcareai@305@gmail.com</div>
+                <div class="footer-text">AI Assistant for Mental Health</div>
+                <div class="footer-text">Email: support@aiassistant.com</div>
             </div>
         </div>
         <div class="footer-bottom">
-            © 2026 MindCare AI — Your mental well-being matters 💜
+            © 2026 AI Assistant for Mental Health — Your well-being matters 
         </div>
     </div>
     """, unsafe_allow_html=True)
