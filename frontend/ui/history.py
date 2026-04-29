@@ -72,6 +72,9 @@ def show_history(user_id):
         padding-top: 1rem !important;
         padding-bottom: 2rem;
     }
+    .stApp{
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%) !important;
+        }
 
     .history-title {
         text-align: center;

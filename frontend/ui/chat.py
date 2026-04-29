@@ -104,6 +104,9 @@ def show_chat(user_id):
         padding-bottom: 90px !important;
         max-width: 100% !important;
     }
+    .stApp{
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%) !important;
+        }
     
     /* Title fixed at top */
     .chat-title {

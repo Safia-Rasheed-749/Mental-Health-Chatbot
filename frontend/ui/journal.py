@@ -21,9 +21,12 @@ def show_journal(user_id):
         padding-bottom: 2rem;
     }
 
-    .main {
-        background: linear-gradient(135deg, #e3f2fd, #fce4ec);
-    }
+    # .main {
+    #     background: linear-gradient(135deg, #e3f2fd, #fce4ec);
+    # }
+    .stApp{
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%) !important;
+        }
 
     /* TITLE (LESS GAP ABOVE + BELOW) */
     .journal-title {

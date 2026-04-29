@@ -34,8 +34,9 @@ def show_dashboard():
             footer, #MainMenu, .stDeployButton {
                 display: none !important;
             }
-        /* Soft background */
-        .stApp { background-color: #f5f9ff !important; }
+        .stApp{
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%) !important;
+        }
 
         /* Title styling */
         .hero-title { text-align: center; margin: 0; padding: 0; }

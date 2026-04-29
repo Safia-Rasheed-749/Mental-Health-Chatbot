@@ -19,6 +19,9 @@ def show_mood_analytics(user_id):
         padding-top: 0.5rem !important;
         padding-bottom: 2rem !important;
     }
+    .stApp{
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%) !important;
+        }
 
     .mood-title {
         text-align: center;
