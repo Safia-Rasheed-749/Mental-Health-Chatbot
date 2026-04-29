@@ -3,259 +3,312 @@ from datetime import datetime, timedelta
 from db import get_messages_by_user, get_moods_by_user, get_journals_by_user
 
 def show_dashboard():
-    # ---------- Force scroll to top & remove top padding ----------
-    st.markdown("""
-        <script>
-            // Scroll main content to top instantly
-            window.parent.document.querySelector('.main').scrollTo({ top: 0, behavior: 'instant' });
-        </script>
-    """, unsafe_allow_html=True)
-
-    # ---------- CSS for background, stat cards, banner, etc. ----------
     st.markdown("""
     <style>
-        /* REMOVE ALL TOP SPACE - GUARANTEED */
-            header, .stHeader, [data-testid="stHeader"] {
-                display: none !important;
-                height: 0px !important;
-            }
-            
-            .block-container {
-                padding-top: 0rem !important;
-                margin-top: -0.5rem !important;
-                background-color: #f5f9ff !important;
-            }
-            
-            .stMarkdown:first-of-type {
-                margin-top: 0 !important;
-                padding-top: 0 !important;
-            }
-            
-            footer, #MainMenu, .stDeployButton {
-                display: none !important;
-            }
-        .stApp{
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%) !important;
-        }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-        /* Title styling */
-        .hero-title { text-align: center; margin: 0; padding: 0; }
-        .hero-title span:first-child { font-size: 48px; }
-        .hero-title span:last-child {
-            font-size: 40px; font-weight: 900;
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-            background-clip: text; -webkit-background-clip: text; color: transparent;
-        }
-        .hero-subtitle { text-align: center; font-size: 18px; color: #2c3e66; margin-bottom: 20px; }
+    html, body, .stApp {
+        font-family: 'Inter','Segoe UI',sans-serif !important;
+        background: linear-gradient(135deg, #ece9f7 0%, #dff0f5 50%, #d9f0e8 100%) !important;
+        min-height: 100vh !important;
+    }
 
-        /*  banner */
-        .welcome-section {
-            background: #4A6FA5;
-            border-radius: 28px; padding: 20px 28px; margin: 10px 0 30px 0;
-            text-align: center; box-shadow: 0 12px 24px -8px rgba(74, 111, 165, 0.4);
-        }
-        .welcome-greeting { font-size: 28px; font-weight: 800; color: white; }
-        .welcome-note { font-size: 16px; color: white; font-weight: 600; }
+    header[data-testid="stHeader"] { background:transparent !important; box-shadow:none !important; border-bottom:none !important; }
+    .stDeployButton { display:none !important; }
+    #MainMenu       { visibility:hidden !important; }
+    footer          { visibility:hidden !important; }
 
-        /* Stat cards (white, with slight top margin) */
-        .stat-card {
-            background: white; border-radius: 28px; padding: 1.2rem 0.8rem;
-            text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.04);
-            height: 130px; display: flex; flex-direction: column; justify-content: center;
-            border: 1px solid #e2e8f0; transition: all 0.2s;
-            margin-top: 10px;
-        }
-        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1); }
-        .stat-num { font-size: 36px; font-weight: 800; color: #1e40af; }
-        .stat-num-sm { font-size: 26px; font-weight: 800; color: #1e40af; }
-        .stat-label { color: #475569; font-size: 15px; font-weight: 600; margin-top: 6px; }
-        
-        .nav-title {
-            text-align: center; font-size: 28px; font-weight: 800;
-            color: #0f172a; margin: 48px 0 28px 0;
-        }
+    .block-container {
+        padding-top: 1.6rem !important;
+        padding-bottom: 3rem !important;
+        background: transparent !important;
+        max-width: 1060px !important;
+    }
 
-        /* Base button styling (size, shadow, etc.) */
-        .main .stButton button {
-            width: 100% !important;
-            min-height: 220px !important;
-            border-radius: 32px !important;
-            border: none !important;
-            background: white !important;
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1) !important;
-            transition: all 0.3s ease !important;
-            padding: 2rem 1rem !important;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-            align-items: center !important;
-            gap: 10px !important;
-            font-size: 1.2rem !important;
-            font-weight: 700 !important;
-            color: #0f172a !important;
-            white-space: normal !important;
-            cursor: pointer !important;
-        }
-        .main .stButton button:hover {
-            transform: translateY(-8px) !important;
-            box-shadow: 0 30px 40px -12px rgba(0,0,0,0.2) !important;
-        }
-        .stButton > button {
-            background: #4A6FA5;
-            color: white;}
-        .stButton > button:hover {
-            background: #1E3A5F;
-            color: white;}
+    /* ── HERO ── */
+    .dash-hero {
+        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%);
+        border-radius: 24px;
+        padding: 28px 32px 24px;
+        margin-bottom: 28px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 8px 28px rgba(74,127,212,0.30);
+    }
+    .dash-hero::before { content:''; position:absolute; top:-50px; right:-50px; width:180px; height:180px; background:rgba(255,255,255,0.10); border-radius:50%; }
+    .dash-hero::after  { content:''; position:absolute; bottom:-35px; left:28%; width:130px; height:130px; background:rgba(255,255,255,0.07); border-radius:50%; }
+    .hero-top      { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+    .hero-greeting { font-size:25px; font-weight:800; color:#ffffff; line-height:1.25; margin:0; }
+    .hero-sub      { font-size:14px; color:rgba(255,255,255,0.88); margin-top:5px; }
+    .hero-badge    { background:rgba(255,255,255,0.22); border:1px solid rgba(255,255,255,0.35); border-radius:50px; padding:6px 16px; font-size:12px; font-weight:600; color:#fff; white-space:nowrap; margin-top:2px; }
+    .hero-divider  { height:1px; background:rgba(255,255,255,0.22); margin:16px 0 14px; }
+    .hero-stats-row { display:flex; gap:28px; flex-wrap:wrap; align-items:center; }
+    .hero-stat     { display:flex; flex-direction:column; }
+    .hero-stat-val { font-size:24px; font-weight:800; color:#ffffff; line-height:1; }
+    .hero-stat-lbl { font-size:11px; color:rgba(255,255,255,0.75); margin-top:3px; font-weight:500; text-transform:uppercase; letter-spacing:0.5px; }
+    .hero-stat-sep { width:1px; height:34px; background:rgba(255,255,255,0.28); }
 
-        /* Color classes that will be added by JavaScript */
-        .dash-card-chat {
-            background: linear-gradient(145deg, #ffffff, #e0f2fe) !important;
-            border-bottom: 5px solid #3b82f6 !important;
-        }
-        .dash-card-mood {
-            background: linear-gradient(145deg, #ffffff, #ccfbf1) !important;
-            border-bottom: 5px solid #14b8a6 !important;
-        }
-        .dash-card-history {
-            background: linear-gradient(145deg, #ffffff, #fce7f3) !important;
-            border-bottom: 5px solid #ec4899 !important;
-        }
-        .dash-card-journal {
-            background: linear-gradient(145deg, #ffffff, #f3e8ff) !important;
-            border-bottom: 5px solid #a855f7 !important;
-        }
+    /* ── SECTION LABEL ── */
+    .section-label { font-size:11px; font-weight:700; letter-spacing:1.1px; text-transform:uppercase; color:#9b8ec4; text-align:center; margin:0 0 14px; }
 
-        /* Sidebar reset */
-        section[data-testid="stSidebar"] .stButton button {
-            display: block !important;
-            width: 100% !important;
-            background-color: #f0f2f6 !important;
-            border-radius: 30px !important;
-            padding: 8px 16px !important;
-            margin: 6px 0 !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-            text-align: left !important;
-            color: #1e2a3a !important;
-            gap: 8px !important;
-            min-height: auto !important;
-            box-shadow: none !important;
-            cursor: pointer !important;
-            transition: background-color 0.2s !important;
-        }
-        .dashboard-footer { text-align: center; color: #6c86a3; padding: 56px 0 24px; font-size: 14px; }
+    /* ── SPACERS ── */
+    .sp-md { height:22px; }
+    .sp-lg { height:32px; }
+
+    /* ── OVERVIEW STAT CARDS ── */
+    .stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .stat-card-pro {
+        border-radius:18px; padding:20px 18px;
+        border:1px solid rgba(255,255,255,0.80);
+        box-shadow:0 4px 18px rgba(160,140,220,0.10);
+        position:relative; overflow:hidden;
+        backdrop-filter: blur(10px);
+    }
+    .sc-blue   { background: linear-gradient(145deg, rgba(220,230,255,0.80), rgba(255,255,255,0.60)); }
+    .sc-teal   { background: linear-gradient(145deg, rgba(210,245,238,0.80), rgba(255,255,255,0.60)); }
+    .sc-purple { background: linear-gradient(145deg, rgba(235,225,255,0.80), rgba(255,255,255,0.60)); }
+
+    .sc-top-bar { height:4px; border-radius:18px 18px 0 0; position:absolute; top:0; left:0; right:0; }
+    .sc-blue   .sc-top-bar { background:linear-gradient(90deg,#7b9ef0,#a5c0f5); }
+    .sc-teal   .sc-top-bar { background:linear-gradient(90deg,#5ecfb8,#7de8c8); }
+    .sc-purple .sc-top-bar { background:linear-gradient(90deg,#a78bfa,#c4b5fd); }
+
+    .sc-icon-wrap { width:40px; height:40px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:18px; margin:8px 0 12px; background:rgba(255,255,255,0.70); }
+    .sc-val    { font-size:28px; font-weight:800; color:#3b2f6e; line-height:1; }
+    .sc-val-sm { font-size:17px; font-weight:700; color:#3b2f6e; line-height:1.3; }
+    .sc-lbl    { font-size:12px; color:#8b7ec0; font-weight:500; margin-top:5px; }
+
+    /* ── INSIGHT PANEL ── */
+    .insight-panel {
+        background: rgba(255,255,255,0.55);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,0.75);
+        border-radius:18px; padding:20px 24px;
+        display:flex; align-items:center; gap:16px;
+        box-shadow: 0 4px 18px rgba(160,140,220,0.10);
+    }
+    .insight-icon    { font-size:34px; flex-shrink:0; }
+    .insight-text h4 { font-size:14px; font-weight:700; color:#3b2f6e; margin:0 0 4px; }
+    .insight-text p  { font-size:13px; color:#6b5fa0; margin:0; line-height:1.6; }
+
+    /* ── NAV CARDS ── */
+    .nav-card {
+        border-radius:20px;
+        border: 1px solid rgba(255,255,255,0.80);
+        box-shadow: 0 4px 18px rgba(160,140,220,0.10);
+        padding: 22px 20px 18px;
+        position: relative; overflow:hidden;
+        margin-bottom: 10px;
+        backdrop-filter: blur(10px);
+    }
+    .nc-chat    { background: linear-gradient(160deg, rgba(220,230,255,0.75) 0%, rgba(255,255,255,0.55) 60%); }
+    .nc-mood    { background: linear-gradient(160deg, rgba(210,245,238,0.75) 0%, rgba(255,255,255,0.55) 60%); }
+    .nc-history { background: linear-gradient(160deg, rgba(235,225,255,0.75) 0%, rgba(255,255,255,0.55) 60%); }
+    .nc-journal { background: linear-gradient(160deg, rgba(255,237,213,0.75) 0%, rgba(255,255,255,0.55) 60%); }
+
+    .nav-card-stripe { height:4px; border-radius:20px 20px 0 0; position:absolute; top:0; left:0; right:0; }
+    .nc-chat    .nav-card-stripe { background:linear-gradient(90deg,#7b9ef0,#a5c0f5); }
+    .nc-mood    .nav-card-stripe { background:linear-gradient(90deg,#5ecfb8,#7de8c8); }
+    .nc-history .nav-card-stripe { background:linear-gradient(90deg,#a78bfa,#c4b5fd); }
+    .nc-journal .nav-card-stripe { background:linear-gradient(90deg,#fb923c,#fbbf24); }
+
+    .nav-card-icon { width:46px; height:46px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:21px; margin:4px 0 12px; background:rgba(255,255,255,0.70); }
+    .nav-card-title { font-size:15px; font-weight:700; color:#3b2f6e; margin-bottom:5px; }
+    .nav-card-desc  { font-size:13px; color:#6b7a99; line-height:1.55; }
+    .nav-card-tag   { display:inline-block; margin-top:12px; padding:4px 11px; border-radius:50px; font-size:11px; font-weight:600; background:rgba(255,255,255,0.70); }
+    .nc-chat    .nav-card-tag { color:#4a6fd4; }
+    .nc-mood    .nav-card-tag { color:#0d9488; }
+    .nc-history .nav-card-tag { color:#7c3aed; }
+    .nc-journal .nav-card-tag { color:#ea580c; }
+
+    /* ── NAV BUTTONS — colored by Streamlit's own key-based data-testid ── */
+    /* Streamlit renders: <div data-testid="stButton"><button ...> */
+    /* We target the button inside each column's stButton by order */
+
+    /* All 4 nav buttons: shared base */
+    [data-testid="stButton"]:has(button[data-testid="baseButton-secondary"]) button {
+        border-radius: 12px !important;
+        border: none !important;
+        height: 42px !important;
+        min-height: 42px !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        cursor: pointer !important;
+        width: 100% !important;
+        transition: filter 0.18s, transform 0.18s !important;
+    }
+
+    /* Target by button text via attribute — Streamlit sets aria-label from button label */
+    button[aria-label="Open AI Chat"],
+    button[data-testid="Open AI Chat"] {
+        background: linear-gradient(135deg, #7b9ef0, #a5c0f5) !important;
+        box-shadow: 0 4px 14px rgba(123,158,240,0.40) !important;
+    }
+    button[aria-label="Open Mood Analytics"],
+    button[data-testid="Open Mood Analytics"] {
+        background: linear-gradient(135deg, #5ecfb8, #7de8c8) !important;
+        box-shadow: 0 4px 14px rgba(94,207,184,0.40) !important;
+    }
+    button[aria-label="Open Chat History"],
+    button[data-testid="Open Chat History"] {
+        background: linear-gradient(135deg, #a78bfa, #c4b5fd) !important;
+        box-shadow: 0 4px 14px rgba(167,139,250,0.40) !important;
+    }
+    button[aria-label="Open Journal"],
+    button[data-testid="Open Journal"] {
+        background: linear-gradient(135deg, #fb923c, #fbbf24) !important;
+        box-shadow: 0 4px 14px rgba(251,146,60,0.40) !important;
+    }
+
+    button[aria-label="Open AI Chat"]:hover,
+    button[aria-label="Open Mood Analytics"]:hover,
+    button[aria-label="Open Chat History"]:hover,
+    button[aria-label="Open Journal"]:hover {
+        filter: brightness(1.08) !important;
+        transform: translateY(-2px) !important;
+    }
+
+    /* ── FOOTER ── */
+    .dash-footer { text-align:center; color:#9b8ec4; font-size:13px; padding:26px 0 8px; border-top:1px solid rgba(160,140,220,0.20); margin-top:10px; }
+
+    /* ── SIDEBAR — untouched ── */
+    section[data-testid="stSidebar"] .stButton > button {
+        display:block !important; width:100% !important; background:transparent !important;
+        border:none !important; border-radius:30px !important; padding:8px 16px !important;
+        margin:4px 0 !important; font-size:14px !important; font-weight:500 !important;
+        text-align:left !important; color:#F8FAFC !important; min-height:auto !important;
+        box-shadow:none !important; cursor:pointer !important; height:auto !important;
+        transition:background-color 0.2s !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button:hover {
+        background-color:rgba(59,130,246,0.15) !important; transform:translateX(4px) !important;
+    }
     </style>
-
-    <!-- JavaScript to add color classes based on button text -->
-    <script>
-        function styleDashboardButtons() {
-            const buttons = document.querySelectorAll('.main .stButton button');
-            buttons.forEach(btn => {
-                // Remove any existing dash-card classes
-                btn.classList.remove('dash-card-chat', 'dash-card-mood', 'dash-card-history', 'dash-card-journal');
-                const text = btn.innerText.toLowerCase();
-                if (text.includes('ai chat') || (text.includes('chat') && !text.includes('history'))) {
-                    btn.classList.add('dash-card-chat');
-                } else if (text.includes('mood')) {
-                    btn.classList.add('dash-card-mood');
-                } else if (text.includes('history')) {
-                    btn.classList.add('dash-card-history');
-                } else if (text.includes('journal')) {
-                    btn.classList.add('dash-card-journal');
-                }
-            });
-        }
-        // Run after DOM is ready
-        setTimeout(styleDashboardButtons, 50);
-        // Watch for DOM changes (Streamlit reruns)
-        const observer = new MutationObserver(() => styleDashboardButtons());
-        observer.observe(document.body, { childList: true, subtree: true });
-    </script>
     """, unsafe_allow_html=True)
 
-    # ---------- DATA ----------
-    user_id = st.session_state.user[0]
+    # ── DATA ──
+    user_id  = st.session_state.user[0]
     username = st.session_state.user[1] if len(st.session_state.user) > 1 else "Friend"
 
     all_messages = get_messages_by_user(user_id)
-    today = datetime.now()
-    yesterday = today - timedelta(days=1)
-    chats_today = sum(1 for msg in all_messages if len(msg) > 2 and msg[2] and msg[2] > yesterday)
+    today_dt     = datetime.now()
+    yesterday    = today_dt - timedelta(days=1)
+    chats_today  = sum(1 for m in all_messages if len(m) > 2 and m[2] and m[2] > yesterday)
+    total_chats  = len([m for m in all_messages if m[0] == "user"])
 
     moods = get_moods_by_user(user_id)
+    mood_emoji_map = {"Happy":"😊","Neutral":"😐","Sad":"😔","Anxious":"😰","Angry":"😡"}
     if moods:
-        last_mood = moods[-1][0]
-        mood_emoji_map = {"Happy": "😊", "Neutral": "😐", "Sad": "😔", "Anxious": "😰", "Angry": "😡"}
-        mood_emoji = mood_emoji_map.get(last_mood, "😊")
-        last_mood_display = f"{mood_emoji} {last_mood}"
+        last_mood_disp = f"{mood_emoji_map.get(moods[-1][0],'😊')} {moods[-1][0]}"
+        mood_streak    = len(moods)
     else:
-        last_mood_display = "😊 Not logged yet"
+        last_mood_disp = "Not logged yet"
+        mood_streak    = 0
 
-    journals = get_journals_by_user(user_id)
-    journal_count = len(journals)
+    journal_count = len(get_journals_by_user(user_id))
 
-    # ---------- TITLE ----------
-    st.markdown("""
-        <div class="hero-title">
-            <span>🧠</span><span>MindCare AI Dashboard</span>
-        </div>
-        <div class="hero-subtitle">Your Personal AI Mental Wellness Companion</div>
-    """, unsafe_allow_html=True)
+    hour = today_dt.hour
+    if hour < 12:   greeting, icon, note = "Good Morning",   "🌅", "Start your day with a moment of mindfulness."
+    elif hour < 17: greeting, icon, note = "Good Afternoon", "☀️", "You're doing great — keep going."
+    else:           greeting, icon, note = "Good Evening",   "🌙", "Wind down and reflect on your day."
 
-    # ---------- WELCOME BANNER ----------
-    hour = datetime.now().hour
-    if hour < 12:
-        greeting, note = "Good morning", "Start your day with a moment of mindfulness. 🌅"
-    elif hour < 17:
-        greeting, note = "Good afternoon", "Take a breath — you're doing great so far. ☀️"
-    else:
-        greeting, note = "Good evening", "Wind down and reflect on your day with care. 🌙"
-
+    # ── HERO ──
     st.markdown(f"""
-        <div class="welcome-section">
-            <div class="welcome-greeting">👋 {greeting}, {username}!</div>
-            <div class="welcome-note">{note}<br>Here's your wellness snapshot — every step matters. 💙</div>
+    <div class="dash-hero">
+        <div class="hero-top">
+            <div>
+                <div class="hero-greeting">{icon} {greeting}, {username}!</div>
+                <div class="hero-sub">{note}</div>
+            </div>
+            <div class="hero-badge">📅 {today_dt.strftime("%A, %B %d")}</div>
         </div>
+        <div class="hero-divider"></div>
+        <div class="hero-stats-row">
+            <div class="hero-stat"><div class="hero-stat-val">{chats_today}</div><div class="hero-stat-lbl">Chats Today</div></div>
+            <div class="hero-stat-sep"></div>
+            <div class="hero-stat"><div class="hero-stat-val">{total_chats}</div><div class="hero-stat-lbl">Total Messages</div></div>
+            <div class="hero-stat-sep"></div>
+            <div class="hero-stat"><div class="hero-stat-val">{mood_streak}</div><div class="hero-stat-lbl">Mood Logs</div></div>
+            <div class="hero-stat-sep"></div>
+            <div class="hero-stat"><div class="hero-stat-val">{journal_count}</div><div class="hero-stat-lbl">Journal Entries</div></div>
+        </div>
+    </div>
     """, unsafe_allow_html=True)
 
-    # ---------- STATS CARDS ----------
-    col1, col2, col3 = st.columns(3, gap="large")
+    # ── OVERVIEW ──
+    st.markdown('<div class="sp-md"></div><p class="section-label">Overview</p>', unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class="stat-grid">
+        <div class="stat-card-pro sc-blue">
+            <div class="sc-top-bar"></div><div class="sc-icon-wrap">💬</div>
+            <div class="sc-val">{chats_today}</div><div class="sc-lbl">Chats Today</div>
+        </div>
+        <div class="stat-card-pro sc-teal">
+            <div class="sc-top-bar"></div><div class="sc-icon-wrap">🎭</div>
+            <div class="sc-val-sm">{last_mood_disp}</div><div class="sc-lbl">Last Mood Logged</div>
+        </div>
+        <div class="stat-card-pro sc-purple">
+            <div class="sc-top-bar"></div><div class="sc-icon-wrap">📓</div>
+            <div class="sc-val">{journal_count}</div><div class="sc-lbl">Journal Entries</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── INSIGHT ──
+    insight_msg = (
+        f"You've logged <b>{mood_streak} mood entries</b> so far — keep tracking to reveal your emotional patterns."
+        if mood_streak > 0 else
+        "Start logging your mood daily to unlock personalized wellness insights."
+    )
+    st.markdown(f"""
+    <div class="sp-lg"></div>
+    <div class="insight-panel">
+        <div class="insight-icon">🌿</div>
+        <div class="insight-text">
+            <h4>Wellness Insight</h4>
+            <p>{insight_msg} Your mental wellness journey is unique — every entry matters. 💙</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── QUICK NAVIGATION ──
+    st.markdown('<div class="sp-lg"></div><p class="section-label">Quick Navigation</p>', unsafe_allow_html=True)
+
+    col1, col2 = st.columns(2, gap="medium")
     with col1:
-        st.markdown(f'<div class="stat-card"><div class="stat-num">{chats_today}</div><div class="stat-label">💬 Chats Today</div></div>', unsafe_allow_html=True)
+        st.markdown("""<div class="nav-card nc-chat"><div class="nav-card-stripe"></div>
+            <div class="nav-card-icon">💬</div><div class="nav-card-title">AI Chat</div>
+            <div class="nav-card-desc">Talk with your AI companion anytime, day or night.</div>
+            <span class="nav-card-tag">Start Chatting →</span></div>""", unsafe_allow_html=True)
+        if st.button("Open AI Chat", key="chat_btn", use_container_width=True):
+            st.session_state.current_page = "Chat"; st.query_params["page"] = "Chat"; st.rerun()
+
     with col2:
-        st.markdown(f'<div class="stat-card"><div class="stat-num-sm">{last_mood_display}</div><div class="stat-label">🎭 Last Mood</div></div>', unsafe_allow_html=True)
+        st.markdown("""<div class="nav-card nc-mood"><div class="nav-card-stripe"></div>
+            <div class="nav-card-icon">📊</div><div class="nav-card-title">Mood Analytics</div>
+            <div class="nav-card-desc">Log your mood and visualize emotional trends over time.</div>
+            <span class="nav-card-tag">Track Mood →</span></div>""", unsafe_allow_html=True)
+        if st.button("Open Mood Analytics", key="mood_btn", use_container_width=True):
+            st.session_state.current_page = "Mood Analytics"; st.query_params["page"] = "Mood Analytics"; st.rerun()
+
+    st.markdown('<div class="sp-md"></div>', unsafe_allow_html=True)
+
+    col3, col4 = st.columns(2, gap="medium")
     with col3:
-        st.markdown(f'<div class="stat-card"><div class="stat-num">{journal_count}</div><div class="stat-label">📓 Journal Entries</div></div>', unsafe_allow_html=True)
+        st.markdown("""<div class="nav-card nc-history"><div class="nav-card-stripe"></div>
+            <div class="nav-card-icon">🕒</div><div class="nav-card-title">Chat History</div>
+            <div class="nav-card-desc">Review past conversations, search and export sessions.</div>
+            <span class="nav-card-tag">View History →</span></div>""", unsafe_allow_html=True)
+        if st.button("Open Chat History", key="history_btn", use_container_width=True):
+            st.session_state.current_page = "History"; st.query_params["page"] = "History"; st.rerun()
 
-    # ---------- NAVIGATION BUTTONS ----------
-    st.markdown('<div class="nav-title">✨ Quick Navigation</div>', unsafe_allow_html=True)
+    with col4:
+        st.markdown("""<div class="nav-card nc-journal"><div class="nav-card-stripe"></div>
+            <div class="nav-card-icon">📖</div><div class="nav-card-title">Journal</div>
+            <div class="nav-card-desc">Write private reflections and build your personal diary.</div>
+            <span class="nav-card-tag">Write Entry →</span></div>""", unsafe_allow_html=True)
+        if st.button("Open Journal", key="journal_btn", use_container_width=True):
+            st.session_state.current_page = "Journal"; st.query_params["page"] = "Journal"; st.rerun()
 
-    # Row 1
-    r1c1, r1c2 = st.columns(2, gap="large")
-    with r1c1:
-        if st.button("💬 **AI Chat**\n\nTalk with your AI companion anytime.", key="chat_btn", use_container_width=True):
-            st.session_state.current_page = "Chat"
-            st.query_params["page"] = "Chat"
-            st.rerun()
-    with r1c2:
-        if st.button("📊 **Mood Log**\n\nTrack daily mood & see trends.", key="mood_btn", use_container_width=True):
-            st.session_state.current_page = "Mood Analytics"
-            st.query_params["page"] = "Mood Analytics"
-            st.rerun()
-
-    st.markdown("<div style='margin-top: 1.5rem'></div>", unsafe_allow_html=True)
-
-    # Row 2
-    r2c1, r2c2 = st.columns(2, gap="large")
-    with r2c1:
-        if st.button("🕒 **Chat History**\n\nReview all conversations.", key="history_btn", use_container_width=True):
-            st.session_state.current_page = "History"
-            st.query_params["page"] = "History"
-            st.rerun()
-    with r2c2:
-        if st.button("📖 **Journal**\n\nWrite private reflections.", key="journal_btn", use_container_width=True):
-            st.session_state.current_page = "Journal"
-            st.query_params["page"] = "Journal"
-            st.rerun()
-
-    st.markdown('<div class="dashboard-footer">🌿 Take care of your mental wellness — one day at a time.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="dash-footer">🌿 MindCare AI &nbsp;·&nbsp; Take care of your mental wellness — one day at a time.</div>', unsafe_allow_html=True)
