@@ -59,8 +59,9 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         <style>
         section[data-testid="stSidebar"] {
             width: 280px !important;
-            background-color: #ffffff;
-            border-right: 1px solid #e6e6e6;
+            background: linear-gradient(145deg, rgba(12,22,48,0.85), rgba(12,22,48,0.55));
+            border-right: 1px solid rgba(148,163,184,0.18);
+            box-shadow: 0 18px 60px rgba(0,0,0,0.25);
         }
 
         /* Move entire sidebar content upward */
@@ -83,12 +84,14 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             justify-content: flex-start;
             gap: 10px;
             font-size: 26px;
-            font-weight: 800;
+            font-weight: 900;
             margin-top: -8px;
             margin-left: -2px;
             margin-bottom: 14px;
             padding: 0;
             line-height: 1.1;
+            color: rgba(196,181,253,0.98);
+            text-shadow: 0 0 18px rgba(124,58,237,0.25);
         }
 
         .welcome-box {
@@ -96,7 +99,8 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             align-items: center;
             gap: 10px;
             padding: 10px;
-            background: #f8f9fb;
+            background: rgba(15,23,42,0.45);
+            border: 1px solid rgba(148,163,184,0.18);
             border-radius: 10px;
             margin-bottom: 15px;
             font-size: 14px;
@@ -108,7 +112,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             font-weight: 700;
             letter-spacing: 0.3px;
             margin: 10px 0 8px 2px;
-            color: #4b5563;
+            color: rgba(226,232,240,0.78);
         }
 
         /* Controlled divider spacing */
@@ -119,7 +123,8 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
         /* Default button style (grey) for all sidebar buttons */
         section[data-testid="stSidebar"] .stButton button {
-            background-color: #f0f2f6 !important;
+            background-color: rgba(15,23,42,0.35) !important;
+            border: 1px solid rgba(148,163,184,0.18) !important;
             border-radius: 30px !important;
             padding: 8px 16px !important;
             margin: 4px 0 !important;
@@ -128,7 +133,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             text-align: left !important;
             border: none !important;
             transition: all 0.2s ease !important;
-            color: #1e2a3a !important;
+            color: #F8FAFC !important;
             width: 100% !important;
             display: flex !important;
             align-items: center !important;
@@ -136,7 +141,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         }
 
         section[data-testid="stSidebar"] .stButton button:hover {
-            background-color: #e2e6ea !important;
+            background-color: rgba(59,130,246,0.10) !important;
             transform: translateX(4px);
         }
 
@@ -147,14 +152,24 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
         /* Force primary button (logout) to dark blue */
         section[data-testid="stSidebar"] .stButton button[kind="primary"] {
-            background-color: #1e3a8a !important;
+            background: linear-gradient(135deg, rgba(59,130,246,0.90), rgba(124,58,237,0.90)) !important;
+            border: 1px solid rgba(255,255,255,0.12) !important;
             color: white !important;
-            font-weight: 700 !important;
+            font-weight: 900 !important;
             justify-content: center !important;
         }
 
         section[data-testid="stSidebar"] .stButton button[kind="primary"]:hover {
-            background-color: #2563eb !important;
+            filter: brightness(1.06);
+        }
+
+        /* Best-effort "active" styling for radio-like buttons */
+        section[data-testid="stSidebar"] .stButton button[aria-checked="true"],
+        section[data-testid="stSidebar"] .stButton button[data-state="checked"] {
+            background: linear-gradient(135deg, rgba(59,130,246,0.25), rgba(124,58,237,0.28)) !important;
+            border: 1px solid rgba(124,58,237,0.55) !important;
+            color: #ffffff !important;
+            box-shadow: 0 18px 60px rgba(124,58,237,0.18);
         }
 
         /* Add balanced spacing above logout */
@@ -163,6 +178,26 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             margin-bottom: -2px !important;
             padding-bottom: 0 !important;
         }
+        /* 1. Make navigation radio labels pure white (target the actual text) */
+section[data-testid="stSidebar"] div[role="radiogroup"] label p {
+    color: #FFFFFF !important;
+}
+
+/* 2. Remove bubble from session buttons (background, border, radius) AND make text white */
+section[data-testid="stSidebar"] .stButton button:not([kind="primary"]) {
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    color: #FFFFFF !important;
+    box-shadow: none !important;
+}
+
+/* 3. Keep a subtle hover effect (optional, does not affect spacing) */
+section[data-testid="stSidebar"] .stButton button:not([kind="primary"]):hover {
+    background-color: rgba(59,130,246,0.15) !important;
+    transform: translateX(4px);
+}
+        
         </style>
     """, unsafe_allow_html=True)
 
@@ -180,7 +215,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
     with st.sidebar:
         st.markdown(
-            '<div class="sidebar-header">🧠 MindCare AI</div>',
+            '<div class="sidebar-header">🧠 <span>MindCare AI</span></div>',
             unsafe_allow_html=True
         )
 

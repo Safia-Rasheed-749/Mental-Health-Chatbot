@@ -1,8 +1,12 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 from db import add_mood, get_moods
+from layout_utils import apply_professional_design_system
+from datetime import datetime, timedelta, date
+from db import get_all_user_messages
 
 def show_mood_analytics(user_id):
+    apply_professional_design_system()
 
     # ================= CSS =================
     st.markdown("""
@@ -20,7 +24,7 @@ def show_mood_analytics(user_id):
         text-align: center;
         font-size: 34px;
         font-weight: 600;
-        color: #1e293b;
+        color: rgba(15,23,42,0.92);
         margin-bottom: 30px;
     }
 
@@ -33,16 +37,21 @@ def show_mood_analytics(user_id):
     }
 
     div[data-testid="stSelectbox"] div[data-baseweb="select"] {
-        border: 2px solid #000 !important;
+        border: 1.5px solid rgba(15,23,42,0.14) !important;
         border-radius: 8px !important;
+        background: #ffffff !important;
     }
 
     .insight-card {
-        background: linear-gradient(135deg, #e0f7f4, #ede9fe);
-        border-left: 5px solid #38bdf8;
+        background: linear-gradient(135deg, rgba(59,130,246,0.10), rgba(124,58,237,0.10));
+        border-left: 5px solid #8b5cf6;
         padding: 20px;
         border-radius: 18px;
         margin: 40px 0;
+        color: rgba(15,23,42,0.82);
+        border-top: 1px solid rgba(15,23,42,0.10);
+        border-right: 1px solid rgba(15,23,42,0.10);
+        border-bottom: 1px solid rgba(15,23,42,0.10);
     }
 
     .stats-wrapper {
@@ -56,18 +65,19 @@ def show_mood_analytics(user_id):
         padding: 18px;
         border-radius: 18px;
         text-align: center;
-        box-shadow: 0 10px 22px rgba(0,0,0,0.07);
+        box-shadow: 0 18px 55px rgba(15,23,42,0.08);
+        border: 1px solid rgba(15,23,42,0.10);
     }
 
-    .stat-card:nth-child(1) { background: #c8eae6; }
-    .stat-card:nth-child(2) { background: #d8c8f8; }
-    .stat-card:nth-child(3) { background: #f0c8d4; }
+    .stat-card:nth-child(1) { background: linear-gradient(145deg, rgba(16,185,129,0.22), rgba(59,130,246,0.14)); }
+    .stat-card:nth-child(2) { background: linear-gradient(145deg, rgba(124,58,237,0.22), rgba(59,130,246,0.14)); }
+    .stat-card:nth-child(3) { background: linear-gradient(145deg, rgba(236,72,153,0.18), rgba(124,58,237,0.14)); }
 
-    .stat-value { font-size: 20px; font-weight: 700; }
-    .stat-label { font-size: 12px; color: #64748b; }
+    .stat-value { font-size: 20px; font-weight: 800; color: rgba(15,23,42,0.92); }
+    .stat-label { font-size: 12px; color: rgba(15,23,42,0.62); }
 
     div[data-testid="stButton"] button {
-        background: #1e3a8a !important;
+        background: linear-gradient(135deg, rgba(59,130,246,0.92), rgba(124,58,237,0.92)) !important;
         color: white !important;
         font-weight: 700 !important;
         border-radius: 8px !important;
@@ -79,10 +89,11 @@ def show_mood_analytics(user_id):
     }
 
     .timeline-wrapper {
-        background: #f8fafc;
+        background: rgba(255,255,255,0.92);
         padding: 20px;
         border-radius: 18px;
         margin-top: 40px;
+        border: 1px solid rgba(15,23,42,0.10);
     }
     </style>
     """, unsafe_allow_html=True)
@@ -184,6 +195,67 @@ def show_mood_analytics(user_id):
 
             st.pyplot(fig)
             st.markdown("</div>", unsafe_allow_html=True)
+
+            # ================= CHAT-BASED TREND (History link) =================
+            # Build a simple daily trendline from previous chats (volume + stress keywords)
+            all_msgs = get_all_user_messages(user_id) or []
+            cutoff_map = {
+                "Last 7 Days": datetime.now() - timedelta(days=7),
+                "Last 30 Days": datetime.now() - timedelta(days=30),
+                "Last 3 Months": datetime.now() - timedelta(days=90),
+                "All Time": None,
+            }
+            cutoff = cutoff_map.get(range_option)
+
+            stress_keywords = [
+                "stress", "stressed", "anxious", "anxiety", "panic", "overwhelmed", "depress",
+                "depressed", "sad", "cry", "lonely", "tired", "can't", "cant", "hopeless",
+                "worthless", "pressure", "worried", "worry", "fear"
+            ]
+
+            daily_count = {}
+            daily_stress = {}
+
+            for role, content, ts, conv_id in all_msgs:
+                if not ts:
+                    continue
+                if isinstance(ts, datetime):
+                    dt = ts
+                else:
+                    try:
+                        # best-effort parsing for string timestamps
+                        dt = datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
+                    except Exception:
+                        continue
+                if cutoff and dt < cutoff:
+                    continue
+
+                d = dt.date()
+                daily_count[d] = daily_count.get(d, 0) + 1
+
+                text = (content or "").lower()
+                score = sum(text.count(k) for k in stress_keywords)
+                daily_stress[d] = daily_stress.get(d, 0) + score
+
+            if daily_count:
+                days_sorted = sorted(daily_count.keys())
+                x2 = list(range(len(days_sorted)))
+                counts = [daily_count[d] for d in days_sorted]
+                stress = [daily_stress.get(d, 0) for d in days_sorted]
+
+                fig2, ax2 = plt.subplots(figsize=(7, 3))
+                ax2.plot(x2, counts, marker='o', linewidth=2, label="Messages/day")
+                ax2.plot(x2, stress, marker='o', linewidth=2, label="Stress keyword score")
+                ax2.set_title("Chat Activity Trend (from History)")
+                ax2.set_xlabel("Date")
+                ax2.set_ylabel("Count / Score")
+                ax2.set_xticks(x2)
+                ax2.set_xticklabels([d.strftime("%b %d") for d in days_sorted], rotation=45, ha="right")
+                ax2.grid(alpha=0.15)
+                ax2.legend()
+                st.pyplot(fig2)
+            else:
+                st.info("No chat history found for the selected range yet.")
 
         else:
             st.info("Only one mood entry so far.")

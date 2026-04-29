@@ -27,3 +27,96 @@ def apply_clean_layout(hide_header_completely=False):
         }
     </style>
     """, unsafe_allow_html=True)
+
+def apply_professional_design_system():
+    """
+    Shared CSS variables + base styling so all *non-admin* pages look consistent.
+    Light, calm, professional wellness palette (admin page keeps its own dark theme).
+    """
+    st.markdown(
+        """
+        <style>
+            :root{
+                --mc-bg0:#f6f7fb;
+                --mc-bg1:#eef2ff;
+                --mc-panel:#ffffff;
+                --mc-surface:#ffffff;
+                --mc-border: rgba(15,23,42,0.10);
+                --mc-text:#0f172a;
+                --mc-muted: rgba(15,23,42,0.62);
+                --mc-accent:#7c3aed;   /* purple */
+                --mc-accent2:#3b82f6;  /* blue */
+                --mc-accent3:#10b981;  /* green */
+                --mc-radius:16px;
+                --mc-shadow: 0 18px 55px rgba(15,23,42,0.10);
+                --mc-font: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+            }
+
+            /* Base page background */
+            html, body, .stApp {
+                background-color: var(--mc-bg0) !important;
+                color: var(--mc-text) !important;
+                font-family: var(--mc-font) !important;
+            }
+
+            /* Main container background (Streamlit) */
+            .main .block-container {
+                background-color: var(--mc-bg0) !important;
+            }
+
+            /* Nice soft page surface for wide layout */
+            .main .block-container > div:first-child{
+                border-radius: 24px;
+            }
+
+            /* Give Streamlit tabs/pills a nicer default */
+            div[role="tablist"] button[role="tab"]{
+                border-radius: 999px !important;
+                border: 1px solid rgba(15,23,42,0.10) !important;
+                background: rgba(255,255,255,0.85) !important;
+                color: rgba(15,23,42,0.70) !important;
+                font-weight: 800 !important;
+                padding: 10px 14px !important;
+                box-shadow: 0 10px 30px rgba(15,23,42,0.06);
+            }
+
+            div[role="tablist"] button[role="tab"][aria-selected="true"]{
+                background: linear-gradient(135deg, rgba(59,130,246,0.85), rgba(124,58,237,0.85)) !important;
+                border-color: rgba(124,58,237,0.55) !important;
+                color: #ffffff !important;
+            }
+
+            /* Primary buttons */
+            .stButton > button[kind="primary"],
+            .stButton > button{
+                border-radius: 14px !important;
+                font-weight: 800 !important;
+                font-family: var(--mc-font) !important;
+            }
+
+            /* Inputs */
+            div[data-testid="stTextInput"] input,
+            div[data-testid="stTextInput"] > div input{
+                border-radius: 14px !important;
+                background-color: #ffffff !important;
+                color: var(--mc-text) !important;
+                border: 1.5px solid rgba(15,23,42,0.14) !important;
+                font-family: var(--mc-font) !important;
+            }
+
+            /* Selectbox / textarea */
+            div[data-baseweb="select"]{
+                background: #ffffff !important;
+                border-radius: 14px !important;
+                border: 1.5px solid rgba(15,23,42,0.14) !important;
+            }
+            div[data-testid="stTextArea"] textarea{
+                background: #ffffff !important;
+                color: var(--mc-text) !important;
+                border-radius: 14px !important;
+                border: 1.5px solid rgba(15,23,42,0.14) !important;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
