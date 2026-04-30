@@ -251,18 +251,6 @@ section[data-testid="stSidebar"] .stButton button:not([kind="primary"]):hover {
                 unsafe_allow_html=True
             )
 
-<<<<<<< HEAD
-            # New Chat button - don't create conversation until user sends first message
-            if st.button("＋  New Chat", key="new_chat_btn"):
-                st.session_state["conversation_id"] = None
-                st.session_state["chat_history"] = []
-                st.session_state["last_loaded_chat"] = None
-                st.session_state.pop("open_dropdown", None)
-                st.session_state.pop("rename_active", None)
-                st.rerun()
-
-=======
->>>>>>> eba4ac8 (update)
             conversations = get_conversations(user_id)
 
             if not conversations:
