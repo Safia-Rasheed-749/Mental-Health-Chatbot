@@ -35,11 +35,6 @@ def show_landing_page():
             height: 100vh !important;
             background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
         }
-
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
-        }
-        
         .main .block-container {
             padding: 1rem 2rem 0rem 2rem !important;
             max-width: 1200px;
@@ -551,9 +546,6 @@ def show_landing_page():
                 font-size: 0.85rem;
             }
         }
-        
-        
-        
         .stButton > button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;

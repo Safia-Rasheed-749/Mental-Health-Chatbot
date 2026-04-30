@@ -72,8 +72,8 @@ def show_admin_panel():
             letter-spacing: 0.4px;
         }
 
-        .back-button-wrapper div.stButton > button {
-            background: linear-gradient(135deg, var(--accent2), var(--accent)) !important;
+        button {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.85), rgba(124, 58, 237, 0.85)) !important;
             color: white !important;
             border: 1px solid rgba(255,255,255,0.10) !important;
             font-weight: 800 !important;
@@ -82,11 +82,11 @@ def show_admin_panel():
             font-size: 1rem !important;
             box-shadow: 0 18px 45px rgba(59,130,246,0.22) !important;
         }
-        .back-button-wrapper div.stButton > button:hover {
+        button:hover {
             transform: translateY(-2px) !important;
             box-shadow: 0 25px 60px rgba(124,58,237,0.25) !important;
         }
-
+         
         /* Professional tables - dark, clean, alternating rows */
         div[data-testid="stMarkdownContainer"] table.professional-table,
         div.element-container table.professional-table,
