@@ -1,17 +1,15 @@
 # about.py
 import streamlit as st
 from layout_utils import apply_clean_layout
-import base64
-import os
 
 def show_about_page():
     # Apply global layout – removes header/footer, sets zero top padding
     apply_clean_layout(hide_header_completely=True)
     
-    # --- ADDED: Top spacer to push content away from navbar buttons ---
+    # --- Top spacer to push content away from navbar buttons ---
     st.markdown('<div style="height: 60px;"></div>', unsafe_allow_html=True)
     
-    # ===== CSS (SAFE - NO NAVBAR BREAK) =====
+    # ===== Professional CSS =====
     st.markdown("""
     <style>
         header, footer, .stDeployButton {
@@ -19,382 +17,593 @@ def show_about_page():
         }
 
         .block-container {
-            padding-top: 1.8rem !important;
+            padding-top: 1rem !important;
+            padding-bottom: 0 !important;
+            max-width: 1200px !important;
+        }
+        
+        .stApp {
+            background: #e6f3ff !important;
+        }
+        
+        /* Main content background */
+        .main {
+            background: #e6f3ff;
+        }
+        
+        /* Professional animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Hero Section - Professional */
+        .hero-section {
+            background: linear-gradient(135deg, #1a3c5e 0%, #2c5f8a 50%, #1a3c5e 100%);
+            border-radius: 16px;
+            padding: 60px 40px;
+            margin-bottom: 48px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .hero-content h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-content p {
+            font-size: 1.1rem;
+            color: #e0e7ff;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Section Headings - Centered - NO LINE */
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 48px 0 24px 0;
+            text-align: center;
+            letter-spacing: -0.01em;
+        }
+        
+        /* Mission Cards with colors */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+        
+        .mission-card {
+            border-radius: 12px;
+            padding: 28px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .mission-card-1 {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 1px solid #93c5fd;
+        }
+        
+        .mission-card-2 {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            border: 1px solid #a5b4fc;
+        }
+        
+        .mission-card-3 {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            border: 1px solid #7dd3fc;
+        }
+        
+        .mission-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        }
+        
+        .mission-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .mission-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+        
+        .mission-text {
+            color: #334155;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        /* Architecture Cards with colors */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 32px 0;
+        }
+        
+        .arch-item {
+            border-radius: 12px;
+            padding: 24px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .arch-item-1 {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 1px solid #93c5fd;
+        }
+        
+        .arch-item-2 {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            border: 1px solid #a5b4fc;
+        }
+        
+        .arch-item-3 {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            border: 1px solid #7dd3fc;
+        }
+        
+        .arch-item-4 {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            border: 1px solid #86efac;
+        }
+        
+        .arch-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+        
+        .arch-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+        
+        .arch-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        
+        .arch-desc {
+            color: #475569;
+            font-size: 0.85rem;
+        }
+        
+        /* Flow Card */
+        .flow-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 32px;
+            margin: 32px 0;
+            border: 1px solid #cbd5e1;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .flow-card h3 {
+            color: #1e293b;
+            margin-bottom: 24px;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .flow-steps {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .flow-step {
+            text-align: center;
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        .flow-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .flow-label {
+            font-size: 0.85rem;
+            color: #475569;
+            font-weight: 500;
+        }
+        
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: #94a3b8;
+        }
+        
+        /* SDG Cards - No underline on text */
+        .sdg-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+        
+        .sdg-card {
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            text-decoration: none !important;
+            display: block;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .sdg-card-1 {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 1px solid #6ee7b7;
+        }
+        
+        .sdg-card-2 {
+            background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+            border: 1px solid #fb923c;
+        }
+        
+        .sdg-card-3 {
+            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+            border: 1px solid #f9a8d4;
+        }
+        
+        .sdg-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        }
+        
+        .sdg-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #065f46;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+        
+        .sdg-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+        
+        .sdg-desc {
+            color: #334155;
+            line-height: 1.5;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+        
+        .sdg-link {
+            color: #2563eb;
+            text-decoration: none !important;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+        
+        .sdg-link:hover {
+            text-decoration: none !important;
+            color: #1d4ed8;
+        }
+        
+        .sdg-card a, .sdg-card a:hover {
+            text-decoration: none !important;
+        }
+        
+        /* Stats Cards with colors */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 32px 0;
+        }
+        
+        .stat-card {
+            border-radius: 12px;
+            padding: 28px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .stat-card-1 {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 1px solid #93c5fd;
+        }
+        
+        .stat-card-2 {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            border: 1px solid #a5b4fc;
+        }
+        
+        .stat-card-3 {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            border: 1px solid #7dd3fc;
+        }
+        
+        .stat-card-4 {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            border: 1px solid #86efac;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            color: #334155;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        /* Team Cards with colors */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+        
+        .team-card {
+            border-radius: 12px;
+            padding: 28px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .team-card-1 {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 1px solid #93c5fd;
+        }
+        
+        .team-card-2 {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            border: 1px solid #a5b4fc;
+        }
+        
+        .team-card-3 {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            border: 1px solid #7dd3fc;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        }
+        
+        .team-avatar {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+        
+        .team-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #0f172a;
+        }
+        
+        .team-id {
+            color: #475569;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+        
+        .team-role {
+            background: #2c5f8a;
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: white;
+        }
+        
+        /* Supervisor Card - Centered */
+        .supervisor-card {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            border-radius: 12px;
+            padding: 24px 32px;
+            margin: 40px auto;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            max-width: 700px;
+            text-align: center;
+        }
+        
+        .supervisor-icon {
+            font-size: 2.5rem;
+            background: #2c5f8a;
+            border-radius: 50%;
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .supervisor-info {
+            flex: 1;
+            text-align: left;
+        }
+        
+        .supervisor-name {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+        
+        .supervisor-dept {
+            color: #475569;
+            font-size: 0.9rem;
+            margin-top: 2px;
+        }
+        
+        /* References Card */
+        .references-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 28px;
+            margin: 32px 0;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .references-card ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .references-card li {
+            color: #334155;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .references-card li a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        
+        .references-card li a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Footer */
+        .footer-container {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 48px 40px 24px 40px;
+            margin-top: 60px;
+            margin-left: -2rem;
+            margin-right: -2rem;
+            width: calc(100% + 4rem);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-title {
+            font-weight: 600;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
+        
+        .footer-text {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            cursor: default;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 40px 24px;
+            }
+            .hero-content h1 {
+                font-size: 1.75rem;
+            }
+            .section-title {
+                font-size: 1.5rem;
+            }
+            .flow-steps {
+                flex-direction: column;
+            }
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+            .supervisor-card {
+                flex-direction: column;
+                text-align: center;
+                max-width: 90%;
+            }
+            .supervisor-info {
+                text-align: center;
+            }
+            .footer-container {
+                margin-left: -1rem;
+                margin-right: -1rem;
+                width: calc(100% + 2rem);
+                padding: 32px 20px 20px 20px;
+            }
         }
     </style>
     """, unsafe_allow_html=True)
 
-    # About page CSS with animations and professional styling
-    st.markdown(f"""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-    * {{ font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }}
-    
-    .stApp {{ background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%); }}
-    
-    /* Animations */
-    @keyframes fadeInUp {{
-        from {{
-            opacity: 0;
-            transform: translateY(30px);
-        }}
-        to {{
-            opacity: 1;
-            transform: translateY(0);
-        }}
-    }}
-    
-    @keyframes fadeIn {{
-        from {{ opacity: 0; }}
-        to {{ opacity: 1; }}
-    }}
-    
-    @keyframes slideInLeft {{
-        from {{
-            opacity: 0;
-            transform: translateX(-40px);
-        }}
-        to {{
-            opacity: 1;
-            transform: translateX(0);
-        }}
-    }}
-    
-    @keyframes slideInRight {{
-        from {{
-            opacity: 0;
-            transform: translateX(40px);
-        }}
-        to {{
-            opacity: 1;
-            transform: translateX(0);
-        }}
-    }}
-    
-    @keyframes zoomIn {{
-        from {{
-            opacity: 0;
-            transform: scale(0.9);
-        }}
-        to {{
-            opacity: 1;
-            transform: scale(1);
-        }}
-    }}
-    
-    @keyframes pulse {{
-        0%, 100% {{ transform: scale(1); }}
-        50% {{ transform: scale(1.05); }}
-    }}
-    
-    @keyframes gradientShift {{
-        0% {{ background-position: 0% 50%; }}
-        50% {{ background-position: 100% 50%; }}
-        100% {{ background-position: 0% 50%; }}
-    }}
-    
-    @keyframes shine {{
-        0% {{ background-position: -100% 0; }}
-        100% {{ background-position: 200% 0; }}
-    }}
-    
-    /* Hero Section with Animated Gradient Background */
-    .hero-section {{
-        position: relative;
-        text-align: center;
-        padding: 80px 20px;
-        margin-bottom: 40px;
-        border-radius: 30px;
-        overflow: hidden;
-        animation: fadeInUp 0.8s ease-out;
-        min-height: 450px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(90deg, #56CCF2 0%, #2F80ED 100%);
-        background-size: 300% 300%;
-        animation: gradientShift 8s ease infinite, fadeInUp 0.8s ease-out;
-        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
-    }}
-    
-    .hero-section::before {{
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        animation: pulse 4s ease-in-out infinite;
-    }}
-    
-    .hero-content {{
-        position: relative;
-        z-index: 1;
-        color: white;
-        max-width: 800px;
-        margin: 0 auto;
-    }}
-    
-    .hero-section h1 {{
-        font-size: 3.5rem;
-        font-weight: 800;
-        color: white;
-        margin-bottom: 20px;
-        animation: fadeInUp 0.8s ease-out;
-        text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
-    }}
-    
-    .hero-section p {{
-        font-size: 1.2rem;
-        line-height: 1.7;
-        color: white;
-        animation: fadeInUp 0.8s ease-out 0.2s both;
-        text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
-    }}
-    
-    .section-title {{
-        text-align: center;
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin: 60px 0 30px;
-        background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #8b5cf6 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        animation: fadeInUp 0.8s ease-out;
-        position: relative;
-        display: inline-block;
-        width: 100%;
-    }}
-    
-    
-    /* Mission Cards - Equal Height Fixed */
-    .row-container {{
-        display: flex;
-        gap: 25px;
-        margin: 30px 0;
-        flex-wrap: wrap;
-    }}
-    
-    .mission-card {{
-        flex: 1;
-        min-width: 250px;
-        border-radius: 24px;
-        padding: 30px 25px;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-        animation: fadeInUp 0.8s ease-out;
-        display: flex;
-        flex-direction: column;
-        height: 320px;
-        position: relative;
-        overflow: hidden;
-    }}
-    
-    .mission-card::before {{
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: left 0.5s ease;
-    }}
-    
-    .mission-card:hover::before {{
-        left: 100%;
-    }}
-    
-    .mission-card-1 {{ background: linear-gradient(135deg, #e0f2fe, #bae6fd); }}
-    .mission-card-2 {{ background: linear-gradient(135deg, #e0e7ff, #c7d2fe); }}
-    .mission-card-3 {{ background: linear-gradient(135deg, #f3e8ff, #e9d5ff); }}
-    .mission-card:hover {{ transform: translateY(-8px); box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15); }}
-    .mission-icon {{ font-size: 3rem; margin-bottom: 20px; display: inline-block; animation: pulse 3s ease-in-out infinite; }}
-    .mission-title {{ font-size: 1.5rem; font-weight: 700; margin-bottom: 15px; color: #0f172a; }}
-    .mission-text {{ color: #334155; line-height: 1.6; flex: 1; }}
-    
-    /* Architecture Grid - Equal Height */
-    .arch-grid {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin: 30px 0; }}
-    .arch-item {{ border-radius: 20px; padding: 25px 20px; text-align: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); height: 180px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }}
-    .arch-item-1 {{ background: linear-gradient(135deg, #dbeafe, #bfdbfe); }}
-    .arch-item-2 {{ background: linear-gradient(135deg, #e0e7ff, #c7d2fe); }}
-    .arch-item-3 {{ background: linear-gradient(135deg, #f3e8ff, #e9d5ff); }}
-    .arch-item-4 {{ background: linear-gradient(135deg, #dcfce7, #bbf7d0); }}
-    .arch-item:hover {{ transform: translateY(-6px) scale(1.02); box-shadow: 0 15px 25px rgba(0, 0, 0, 0.12); }}
-    .arch-icon {{ font-size: 2.5rem; margin-bottom: 15px; display: inline-block; }}
-    .arch-title {{ font-size: 1.2rem; font-weight: 600; margin-bottom: 5px; color: #1e293b; }}
-    .arch-desc {{ color: #475569; font-size: 0.9rem; }}
-    
-    /* Flow Card */
-    .flow-card {{ background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 24px; padding: 30px; margin: 30px 0; border: 1px solid rgba(102, 126, 234, 0.2); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); text-align: center; animation: fadeInUp 0.8s ease-out; transition: all 0.3s ease; }}
-    .flow-card:hover {{ transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); }}
-    .flow-card h3 {{ color: #0f172a; margin-bottom: 20px; font-size: 1.8rem; }}
-    
-    /* SDG Cards - Equal Height */
-    .sdg-container {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin: 30px 0; }}
-    .sdg-card {{ border-radius: 24px; padding: 30px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); animation: fadeInUp 0.8s ease-out; text-decoration: none !important; display: flex; flex-direction: column; height: 340px; cursor: pointer; position: relative; overflow: hidden; }}
-    .sdg-card::before {{
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: left 0.5s ease;
-    }}
-    .sdg-card:hover::before {{
-        left: 100%;
-    }}
-    .sdg-card-1 {{ background: linear-gradient(135deg, #d1fae5, #a7f3d0); }}
-    .sdg-card-2 {{ background: linear-gradient(135deg, #fed7aa, #fdba74); }}
-    .sdg-card-3 {{ background: linear-gradient(135deg, #fce7f3, #fbcfe8); }}
-    .sdg-card:hover {{ transform: translateY(-6px); box-shadow: 0 20px 30px rgba(0, 0, 0, 0.12); }}
-    .sdg-number {{ font-size: 3rem; font-weight: 800; margin-bottom: 15px; color: #1e293b; }}
-    .sdg-title {{ font-size: 1.5rem; font-weight: 700; margin-bottom: 15px; color: #0f172a; text-decoration: none !important; }}
-    .sdg-desc {{ color: #334155; line-height: 1.6; flex: 1; }}
-    .sdg-link {{ color: #4f46e5; text-decoration: none !important; font-weight: 600; display: inline-block; margin-top: 15px; transition: all 0.3s ease; }}
-    .sdg-link:hover {{ color: #7c3aed; transform: translateX(5px); text-decoration: none !important; }}
-    
-    /* Stats Cards - Equal Height */
-    .stats-grid {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin: 40px 0; }}
-    .stat-card {{ border-radius: 20px; padding: 25px; text-align: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); animation: zoomIn 0.6s ease-out; height: 140px; display: flex; flex-direction: column; justify-content: center; }}
-    .stat-card-1 {{ background: linear-gradient(135deg, #dbeafe, #bfdbfe); }}
-    .stat-card-2 {{ background: linear-gradient(135deg, #e0e7ff, #c7d2fe); }}
-    .stat-card-3 {{ background: linear-gradient(135deg, #f3e8ff, #e9d5ff); }}
-    .stat-card-4 {{ background: linear-gradient(135deg, #dcfce7, #bbf7d0); }}
-    .stat-card:hover {{ transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12); }}
-    .stat-number {{ font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, #1e3a8a, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px; }}
-    .stat-label {{ color: #475569; font-size: 1rem; font-weight: 500; }}
-    
-    /* Team Cards - Equal Height */
-    .team-grid {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin: 30px 0; }}
-    .team-card {{ border-radius: 24px; padding: 30px 20px; text-align: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); animation: fadeInUp 0.8s ease-out; height: 300px; display: flex; flex-direction: column; justify-content: center; }}
-    .team-card-1 {{ background: linear-gradient(135deg, #e0e7ff, #c7d2fe); }}
-    .team-card-2 {{ background: linear-gradient(135deg, #fef3c7, #fde68a); }}
-    .team-card-3 {{ background: linear-gradient(135deg, #e0f2fe, #bae6fd); }}
-    .team-card:hover {{ transform: translateY(-6px); box-shadow: 0 20px 30px rgba(0, 0, 0, 0.12); }}
-    .team-avatar {{ font-size: 4rem; margin-bottom: 15px; display: inline-block; animation: pulse 3s ease-in-out infinite; }}
-    .team-name {{ font-size: 1.3rem; font-weight: 700; margin-bottom: 5px; color: #0f172a; }}
-    .team-id {{ color: #475569; font-size: 1rem; margin-bottom: 10px; }}
-    .team-role {{ background: linear-gradient(135deg, #667eea, #764ba2); display: inline-block; padding: 5px 18px; border-radius: 30px; font-size: 0.9rem; font-weight: 600; color: white; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3); transition: all 0.3s ease; }}
-    .team-role:hover {{ transform: scale(1.05); }}
-    
-    /* Supervisor Card */
-    .supervisor-card {{ background: linear-gradient(135deg, #f1f5f9, #e2e8f0); border-radius: 20px; padding: 25px; text-align: center; margin: 40px 0; border: 1px solid rgba(102, 126, 234, 0.3); font-weight: 500; color: #1e293b; font-size: 1.05rem; transition: all 0.3s ease; animation: fadeInUp 0.8s ease-out; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }}
-    .supervisor-card:hover {{ transform: scale(1.01); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }}
-    .supervisor-icon {{ font-size: 3.5rem; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; padding: 10px; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; color: white; animation: pulse 2s ease-in-out infinite; }}
-    .supervisor-info {{ text-align: left; }}
-    .supervisor-name {{ font-size: 1.3rem; font-weight: 700; color: #0f172a; }}
-    .supervisor-dept {{ color: #475569; font-size: 1rem; margin-top: 5px; }}
-    
-    /* References Card */
-    .references-card {{ background: linear-gradient(135deg, #f8fafc, #f1f5f9); border-radius: 24px; padding: 30px; margin: 30px 0; border: 1px solid #e2e8f0; transition: all 0.3s ease; animation: fadeInUp 0.8s ease-out; }}
-    .references-card:hover {{ box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); transform: translateY(-3px); }}
-    .references-card ul li {{ color: #475569; margin-bottom: 12px; line-height: 1.5; transition: transform 0.2s ease; padding: 8px 0; border-bottom: 1px solid #e2e8f0; list-style: none; }}
-    .references-card ul li:hover {{ transform: translateX(5px); color: #667eea; }}
-    .references-card ul li a {{ color: #4f46e5; text-decoration: none; font-weight: 500; transition: color 0.3s ease; }}
-    .references-card ul li a:hover {{ text-decoration: underline; color: #7c3aed; }}
-    
-    /* Responsive */
-    @media (max-width: 768px) {{
-        .arch-grid, .stats-grid, .team-grid, .sdg-container {{ grid-template-columns: 1fr; gap: 15px; }}
-        .row-container {{ flex-direction: column; }}
-        .hero-section h1 {{ font-size: 2rem; }}
-        .section-title {{ font-size: 1.8rem; }}
-        .supervisor-card {{ flex-direction: column; text-align: center; }}
-        .supervisor-info {{ text-align: center; }}
-        .hero-section {{ padding: 50px 20px; min-height: 350px; }}
-        .mission-card, .arch-item, .sdg-card, .stat-card, .team-card {{ height: auto; min-height: auto; }}
-    }}
-    
-    /* Footer Styles */
-    .footer-container {{
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-        color: white;
-        padding: 60px 40px 30px 40px;
-        margin-top: 60px;
-        margin-bottom: 0;
-        margin-left: -2rem;
-        margin-right: -2rem;
-        width: calc(100% + 4rem);
-        border-radius: 0;
-    }}
-    
-    @media (max-width: 768px) {{
-        .footer-container {{
-            margin-left: -1rem;
-            margin-right: -1rem;
-            width: calc(100% + 2rem);
-            padding: 60px 20px 30px 20px;
-        }}
-    }}
-    
-    .footer-grid {{
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 30px;
-    }}
-    
-    .footer-col {{
-        flex: 1;
-        min-width: 200px;
-    }}
-    
-    .footer-title {{
-        font-weight: 700;
-        margin-bottom: 20px;
-        font-size: 18px;
-        background: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        display: inline-block;
-    }}
-    
-    .footer-text {{
-        font-size: 14px;
-        color: #cbd5e1;
-        margin-bottom: 12px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        display: block;
-    }}
-    
-    .footer-text:hover {{
-        color: #a5b4fc;
-        transform: translateX(5px);
-    }}
-    
-    .footer-bottom {{
-        text-align: center;
-        margin-top: 50px;
-        padding-top: 30px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        font-size: 13px;
-        color: #94a3b8;
-    }}
-    </style>
-    """, unsafe_allow_html=True)
-
-    # Hero section with animated gradient background
+    # Hero section
     st.markdown("""
     <div class="hero-section">
         <div class="hero-content">
-            <h1>🧠 AI Assistant for Mental Health</h1>
-            <p>Your intelligent, compassionate companion designed to provide empathetic, accessible, and personalized mental health support using cutting-edge artificial intelligence technology.</p>
+            <h1>AI Assistant for Mental Health</h1>
+            <p>An intelligent, compassionate companion designed to provide empathetic and personalized mental health support using cutting-edge artificial intelligence.</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
+    # Mission Section
     st.markdown('<div class="section-title">🎯 Our Mission</div>', unsafe_allow_html=True)
-    
-    # Mission cards with equal height using flex row
     st.markdown("""
-    <div class="row-container">
+    <div class="cards-grid">
         <div class="mission-card mission-card-1">
             <div class="mission-icon">🎯</div>
             <div class="mission-title">Accessible Support</div>
@@ -413,6 +622,7 @@ def show_about_page():
     </div>
     """, unsafe_allow_html=True)
 
+    # System Architecture
     st.markdown('<div class="section-title">🏗️ System Architecture</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="arch-grid">
@@ -423,45 +633,48 @@ def show_about_page():
     </div>
     """, unsafe_allow_html=True)
 
+    # Architecture Flow
     st.markdown("""
     <div class="flow-card">
-        <h3>🔄 End-to-End Architecture Flow</h3>
-        <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px;">
-            <div style="text-align: center;"><div style="font-size: 2rem;">📱</div><div>User Interface</div></div>
-            <div style="font-size: 2rem; color: #94a3b8;">→</div>
-            <div style="text-align: center;"><div style="font-size: 2rem;">⚡</div><div>FastAPI Backend</div></div>
-            <div style="font-size: 2rem; color: #94a3b8;">→</div>
-            <div style="text-align: center;"><div style="font-size: 2rem;">🧠</div><div>AI Processing</div></div>
-            <div style="font-size: 2rem; color: #94a3b8;">→</div>
-            <div style="text-align: center;"><div style="font-size: 2rem;">🗄️</div><div>Database</div></div>
+        <h3>🔄 End-to-End Data Flow</h3>
+        <div class="flow-steps">
+            <div class="flow-step"><div class="flow-icon">📱</div><div class="flow-label">User Interface</div></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><div class="flow-icon">⚡</div><div class="flow-label">FastAPI Backend</div></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><div class="flow-icon">🧠</div><div class="flow-label">AI Processing</div></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><div class="flow-icon">🗄️</div><div class="flow-label">Database</div></div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
+    # SDG Goals
     st.markdown('<div class="section-title">🌍 UN Sustainable Development Goals</div>', unsafe_allow_html=True)
     st.markdown("""
-    <div class="sdg-container">
+    <div class="sdg-grid">
         <a href="https://sdgs.un.org/goals/goal3" target="_blank" class="sdg-card sdg-card-1">
-            <div class="sdg-number">3</div>
+            <div class="sdg-number">SDG 3</div>
             <div class="sdg-title">Good Health & Well-being</div>
             <div class="sdg-desc">Promoting mental well-being and accessible healthcare for all through AI-powered support.</div>
             <div class="sdg-link">🔗 Learn more about SDG 3 →</div>
         </a>
         <a href="https://sdgs.un.org/goals/goal9" target="_blank" class="sdg-card sdg-card-2">
-            <div class="sdg-number">9</div>
+            <div class="sdg-number">SDG 9</div>
             <div class="sdg-title">Industry, Innovation & Infrastructure</div>
-            <div class="sdg-desc">Leveraging cutting-edge AI and RAG technology for social welfare and mental health innovation.</div>
+            <div class="sdg-desc">Leveraging cutting-edge AI technology for social welfare and mental health innovation.</div>
             <div class="sdg-link">🔗 Learn more about SDG 9 →</div>
         </a>
         <a href="https://sdgs.un.org/goals/goal10" target="_blank" class="sdg-card sdg-card-3">
-            <div class="sdg-number">10</div>
+            <div class="sdg-number">SDG 10</div>
             <div class="sdg-title">Reduced Inequalities</div>
-            <div class="sdg-desc">Making mental healthcare accessible to underserved communities and breaking geographical barriers.</div>
+            <div class="sdg-desc">Making mental healthcare accessible to underserved communities worldwide.</div>
             <div class="sdg-link">🔗 Learn more about SDG 10 →</div>
         </a>
     </div>
     """, unsafe_allow_html=True)
 
+    # Impact Statistics
     st.markdown('<div class="section-title">📊 Impact Statistics</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="stats-grid">
@@ -472,6 +685,7 @@ def show_about_page():
     </div>
     """, unsafe_allow_html=True)
 
+    # Development Team
     st.markdown('<div class="section-title">👥 Development Team</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="team-grid">
@@ -481,21 +695,25 @@ def show_about_page():
     </div>
     """, unsafe_allow_html=True)
 
+    # Supervisor - Centered
     st.markdown("""
-    <div class="supervisor-card">
-        <div class="supervisor-icon">👨‍🏫</div>
-        <div class="supervisor-info">
-            <div class="supervisor-name">Mr. Faisal Hussain</div>
-            <div class="supervisor-dept">Project Supervisor | Department of Computer Science</div>
-            <div class="supervisor-dept">National University of Modern Languages (NUML), Multan Campus</div>
+    <div style="display: flex; justify-content: center;">
+        <div class="supervisor-card">
+            <div class="supervisor-icon">👨‍🏫</div>
+            <div class="supervisor-info">
+                <div class="supervisor-name">Mr. Faisal Hussain</div>
+                <div class="supervisor-dept">Project Supervisor | Department of Computer Science</div>
+                <div class="supervisor-dept">National University of Modern Languages (NUML), Multan Campus</div>
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
+    # References
     st.markdown('<div class="section-title">📚 References & Resources</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="references-card">
-        <ul style="list-style-type: none; padding-left: 0;">
+        <ul>
             <li>📖 <a href="https://www.who.int/health-topics/mental-health" target="_blank">World Health Organization (WHO) - Mental Health Guidelines 2024</a></li>
             <li>📖 <a href="https://www.apa.org/topics/mental-health" target="_blank">American Psychological Association (APA) - Digital Health Standards</a></li>
             <li>📖 <a href="https://www.mayoclinic.org/healthy-lifestyle" target="_blank">Mayo Clinic - Verified Mental Health Resources</a></li>
@@ -513,7 +731,7 @@ def show_about_page():
     <div class="footer-container">
         <div class="footer-grid">
             <div class="footer-col">
-                <div class="footer-title">About AI Assistant</div>
+                <div class="footer-title">About</div>
                 <div class="footer-text">AI-powered emotional support</div>
                 <div class="footer-text">24/7 mental wellness companion</div>
                 <div class="footer-text">Evidence-based techniques</div>
@@ -523,28 +741,23 @@ def show_about_page():
                 <div class="footer-title">Resources</div>
                 <div class="footer-text">Mental Wellness Guide</div>
                 <div class="footer-text">Coping Strategies</div>
-                <div class="footer-text">Emergency Helplines</div>
-                <div class="footer-text">Research & Articles</div>
             </div>
             <div class="footer-col">
-                <div class="footer-title">Support</div>
-                <div class="footer-text">Privacy Policy</div>
+                <div class="footer-title">Legal</div>
                 <div class="footer-text">About</div>
+                <div class="footer-text">Privacy Policy</div>
             </div>
             <div class="footer-col">
                 <div class="footer-title">Contact</div>
                 <div class="footer-text">AI Assistant for Mental Health</div>
-                <div class="footer-text">Email: support@aiassistant.com</div>
-                <div class="footer-text">NUML Multan Campus</div>
+                <div class="footer-text">support@aiassistant.com</div>
             </div>
         </div>
         <div class="footer-bottom">
-            © 2026 AI Assistant for Mental Health — Your well-being matters 💙
+            © 2026 AI Assistant for Mental Health — Your well-being matters 
         </div>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.markdown('<div style="height: 0px;"></div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     show_about_page()

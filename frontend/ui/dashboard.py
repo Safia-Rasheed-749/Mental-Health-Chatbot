@@ -301,7 +301,7 @@ def show_dashboard():
             <div class="nav-card-desc">Review past conversations, search and export sessions.</div>
             <span class="nav-card-tag">View History →</span></div>""", unsafe_allow_html=True)
         if st.button("Open Chat History", key="history_btn", use_container_width=True):
-            st.session_state.current_page = "History"; st.query_params["page"] = "History"; st.rerun()
+            st.session_state.current_page = "Chat"; st.query_params["page"] = "Chat"; st.rerun()
 
     with col4:
         st.markdown("""<div class="nav-card nc-journal"><div class="nav-card-stripe"></div>
