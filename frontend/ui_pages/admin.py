@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from db import get_all_users, get_messages_by_user, get_moods_by_user, get_journals_by_user
+from db import get_all_users, get_messages_by_user, get_moods_by_user, get_journals_by_user,get_last_activity_with_details, get_user_activity_log
 from layout_utils import apply_clean_layout
 from datetime import datetime
 
@@ -196,6 +196,34 @@ def show_admin_panel():
                 font-size: 0.9rem !important;
             }
         }
+        div[data-testid="stSelectbox"] label {
+            color: white !important;
+        }
+        /* Metric labels (Total Actions, Pages Visited, Most Frequent Action) */
+        label[data-testid="stMetricLabel"] {
+            color: white !important;
+            font-weight: bold !important;
+            
+        }
+        
+        /* Metric values (numbers and text) */
+        div[data-testid="stMetricValue"] {
+            color: white !important;
+            font-weight: 700 !important;
+        }
+        
+        /* Metric value text for "Most Frequent Action" */
+        div[data-testid="stMetricValue"] p {
+            color: white !important;
+            font-size: 30px !important;
+        }
+        
+        /* Metric cards background (optional - makes them visible) */
+        div[data-testid="stMetric"] {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.85), rgba(124, 58, 237, 0.85)) !important;
+            border-radius: 12px !important;
+            padding: 16px !important;
+            border: 1px solid #3b82f6 !important;
     </style>
     """, unsafe_allow_html=True)
 
@@ -256,7 +284,7 @@ def show_admin_panel():
 
     st.markdown("---")
 
-    tab1, tab2, tab3, tab4 = st.tabs(["👥 All Users", "💬 User Chats", "😊 User Moods", "📓 User Journals"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["👥 All Users", "💬 User Chats", "😊 User Moods", "📓 User Journals", "📊 Activity Logs"])
 
     def render_styled_table(df, timestamp_cols=None):
         if df.empty:
@@ -300,14 +328,15 @@ def show_admin_panel():
     with tab1:
         users_data = []
         for u in users:
-            last_active = get_last_activity(u['id'])
+            last_active, last_action_details = get_last_activity_with_details(u['id'])
             users_data.append({
                 'ID': u['id'],
                 'Username': u['username'],
                 'Email': u['email'],
                 'Admin': u.get('is_admin', False),
                 'Created': u.get('created_at'),
-                'Last Active': last_active.strftime("%Y-%m-%d %H:%M") if last_active else "Never"
+                'Last Active': last_active.strftime("%Y-%m-%d %H:%M") if last_active and last_active.year > 1970 else "Never",
+                'Last Action': last_action_details  # NEW COLUMN
             })
         users_df = pd.DataFrame(users_data)
         render_styled_table(users_df, timestamp_cols=['Created', 'Last Active'])
@@ -341,7 +370,52 @@ def show_admin_panel():
                 render_styled_table(df, timestamp_cols=['Timestamp'])
             else:
                 st.info("No journal entries for this user.")
+    with tab5:
+        st.markdown("<h3 style='color:white'>📊 Detailed User Activity Timeline</h3>", unsafe_allow_html=True)     
+        st.markdown("<p style='color:#cbd5e1'>Shows every action users perform across the platform</p>", unsafe_allow_html=True)        
+        selected_user_activity = st.selectbox(
+            "Select user to view activity log", 
+            users, 
+            format_func=lambda u: f"{u['username']} ({u['email']})",
+            key="activity_log"
+        )
+        
+        if selected_user_activity:
+            activities = get_user_activity_log(selected_user_activity['id'])
+            
+            if activities:
+                activity_data = []
+                for action_type, page_name, details, timestamp in activities:
+                    # Format details nicely
+                    details_display = details if details and details.strip() else "—"
+                    activity_data.append({
+                        'Action': action_type,
+                        'Page': page_name,
+                        'Details': details_display,
+                        'Timestamp': timestamp.strftime("%Y-%m-%d %H:%M:%S") if timestamp else "Unknown"
+                    })
+                activity_df = pd.DataFrame(activity_data)
+                render_styled_table(activity_df, timestamp_cols=['Timestamp'])
+                
+                # Add summary stats
+                st.markdown("<h3 style='color:white'>📈 Activity Summary</h3>", unsafe_allow_html=True)
 
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    total_actions = len(activities)
+                    st.metric("Total Actions", total_actions)
+                with col2:
+                    unique_pages = len(set(a[1] for a in activities))
+                    st.metric("Pages Visited", unique_pages)
+                with col3:
+                    # Most common action
+                    from collections import Counter
+                    actions = [a[0] for a in activities]
+                    most_common = Counter(actions).most_common(1)
+                    if most_common:
+                        st.metric("Most Frequent Action", most_common[0][0])
+            else:
+                st.markdown("<p style='color:#e2e8f0'>📭 No detailed activity logs yet. Activities will appear as users interact with the platform.</p>", unsafe_allow_html=True)
     # Back button with better spacing
     st.markdown("""
     <div style="margin-top: 3rem; text-align: center;">

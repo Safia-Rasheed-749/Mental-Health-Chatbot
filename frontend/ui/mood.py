@@ -1,6 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
-from db import add_mood, get_moods
+from db import add_mood, get_moods, log_user_activity
 from datetime import datetime, timedelta, date
 from db import get_all_user_messages
 
@@ -342,6 +342,12 @@ def show_mood_analytics(user_id):
     if st.button("✨ Log My Mood", key="log_mood_btn"):
         mood_text = mood.split(" ", 1)[1]
         add_mood(user_id, mood_text)
+        log_user_activity(
+            user_id, 
+            "Log Mood", 
+            "Mood Tracker", 
+            f"Mood: {mood_text}"
+        )
         st.toast(f"🎉 Mood '{mood_text}' logged successfully!", icon="✅")
         st.balloons()
     st.markdown('</div>', unsafe_allow_html=True)

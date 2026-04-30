@@ -23,7 +23,7 @@ import tempfile
 import speech_recognition as sr
 from streamlit_mic_recorder import mic_recorder
 from gtts import gTTS
-from db import add_message, create_conversation, get_messages_by_conversation
+from db import add_message, create_conversation, get_messages_by_conversation, log_user_activity
 from utils.ai_engine import generate_response
 from layout_utils import apply_clean_layout
 import time
@@ -475,6 +475,7 @@ def show_chat(user_id):
 
     with col2:
         send_clicked = st.button("➤", key=f"send_btn_{cid if cid else 'new'}")
+        
 
     with col3:
         # Custom styled mic button wrapper
@@ -526,6 +527,16 @@ def show_chat(user_id):
         
         st.session_state["chat_history"].append(("user", user_input))
         add_message(user_id, "user", user_input, cid)
+        # ✅ ADD ACTIVITY LOGGING HERE (CORRECT PLACE)
+        try:
+            log_user_activity(
+                user_id,  # Use the parameter, not session_state
+                "Send Message", 
+                "Chat", 
+                f"Message: {user_input[:50]}..."  # Use user_input variable
+            )
+        except Exception as e:
+            print(f"Activity logging error: {e}")  # Don't break the chat if logging fails
 
         typing_placeholder = st.empty()
         typing_placeholder.markdown("""

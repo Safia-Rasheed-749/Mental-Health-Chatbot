@@ -1,5 +1,5 @@
 import streamlit as st
-from db import add_journal, get_journals
+from db import add_journal, get_journals, log_user_activity
 from datetime import datetime
 from layout_utils import apply_clean_layout
 
@@ -311,6 +311,12 @@ def show_journal(user_id):
 
     st.markdown('<div style="display: flex; justify-content: center; margin: 20px 0;">', unsafe_allow_html=True)
     save_clicked = st.button("💾 Save Entry", key="save_journal")
+    log_user_activity(
+            st.session_state.user_id, 
+            "Write Journal", 
+            "Journal", 
+            f"Entry length: {len(journal_entry)} characters"
+        )
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("</div>", unsafe_allow_html=True)

@@ -735,3 +735,148 @@ def get_journals_by_user(user_id):
             cur.close()
         if conn:
             release_connection(conn)
+# -----------------------------
+# USER ACTIVITY LOGGING (ADD THIS AT THE END)
+# -----------------------------
+def create_activity_table_if_not_exists():
+    """Create user_activity table if it doesn't exist"""
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS user_activity (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+                action_type VARCHAR(100) NOT NULL,
+                page_name VARCHAR(100) NOT NULL,
+                details TEXT,
+                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        conn.commit()
+        print("User activity table ready")
+    except Exception as e:
+        print(f"Error creating activity table: {e}")
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+def log_user_activity(user_id, action_type, page_name, details=""):
+    """Log user activity - call this from your other pages"""
+    conn = None
+    cur = None
+    try:
+        # Ensure table exists
+        create_activity_table_if_not_exists()
+        
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO user_activity (user_id, action_type, page_name, details, timestamp)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (user_id, action_type, page_name, details, datetime.now()))
+        conn.commit()
+    except Exception as e:
+        print(f"Error logging user activity: {e}")
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+def get_user_activity_log(user_id, limit=50):
+    """Get detailed activity log for a user with action types"""
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT action_type, page_name, details, timestamp 
+            FROM user_activity 
+            WHERE user_id = %s 
+            ORDER BY timestamp DESC 
+            LIMIT %s
+        """, (user_id, limit))
+        return cur.fetchall()
+    except Exception as e:
+        print(f"Error getting user activity log: {e}")
+        return []
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
+def get_last_activity_with_details(user_id):
+    """Get last activity with action details for a user"""
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        
+        # First try to get from activity log
+        cur.execute("""
+            SELECT action_type, page_name, timestamp 
+            FROM user_activity 
+            WHERE user_id = %s 
+            ORDER BY timestamp DESC 
+            LIMIT 1
+        """, (user_id,))
+        
+        result = cur.fetchone()
+        
+        if result:
+            action_type, page_name, timestamp = result
+            return timestamp, f"{action_type} on {page_name}"
+        
+        # Fallback: Check messages, moods, journals tables
+        cur.execute("""
+            SELECT 
+                GREATEST(
+                    COALESCE((SELECT MAX(created_at) FROM messages WHERE user_id = %s), '1970-01-01'::timestamp),
+                    COALESCE((SELECT MAX(created_at) FROM mood WHERE user_id = %s), '1970-01-01'::timestamp),
+                    COALESCE((SELECT MAX(created_at) FROM journal WHERE user_id = %s), '1970-01-01'::timestamp)
+                ) as last_activity
+        """, (user_id, user_id, user_id))
+        
+        last_activity = cur.fetchone()[0]
+        
+        if last_activity and last_activity.year > 1970:
+            # Check which table had the latest activity
+            cur.execute("""
+                SELECT 'message' as type, created_at FROM messages WHERE user_id = %s AND created_at = %s
+                UNION ALL
+                SELECT 'mood' as type, created_at FROM mood WHERE user_id = %s AND created_at = %s
+                UNION ALL
+                SELECT 'journal' as type, created_at FROM journal WHERE user_id = %s AND created_at = %s
+                LIMIT 1
+            """, (user_id, last_activity, user_id, last_activity, user_id, last_activity))
+            
+            activity_type = cur.fetchone()
+            if activity_type:
+                type_map = {
+                    'message': 'Sent message on Chat',
+                    'mood': 'Logged mood on Mood Tracker',
+                    'journal': 'Wrote journal on Journal'
+                }
+                return last_activity, type_map.get(activity_type[0], 'Activity on platform')
+        
+        return None, "No activity"
+        
+    except Exception as e:
+        print(f"Error getting last activity with details: {e}")
+        return None, "Error fetching activity"
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
