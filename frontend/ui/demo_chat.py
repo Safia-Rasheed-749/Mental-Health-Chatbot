@@ -15,7 +15,7 @@ def show_demo_chat():
     if "trial_ended" not in st.session_state:
         st.session_state.trial_ended = False
 
-    # ===== CSS =====
+    # ===== CSS (ORIGINAL PAGE STYLE + NEW CHAT BUBBLES) =====
     st.markdown("""
     <style>
         header, footer, .stDeployButton {
@@ -30,58 +30,77 @@ def show_demo_chat():
             background-color: white !important;
         }
 
-        /* ===== USER MESSAGE (RIGHT) ===== */
+        /* ===== NEW CHAT BUBBLE STYLES (FROM CHAT.PY) ===== */
+        .chat-row {
+            display: flex;
+            margin-bottom: 24px;
+            animation: msgFadeIn 0.35s ease;
+        }
+        @keyframes msgFadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── USER BUBBLE (GRADIENT PURPLE) ── */
         .user-message {
             display: flex;
             justify-content: flex-end;
-            margin: 12px 0;
+            margin: 18px 0;
         }
 
         .user-bubble {
-            background: lightblue;
-            padding: 12px 18px;
-            border-radius: 20px 20px 5px 20px;
-            max-width: 70%;
-            color: #003366;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff;
+            padding: 11px 16px;
+            border-radius: 20px 20px 4px 20px;
             font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            line-height: 1.55;
+            max-width: 68%;
+            word-wrap: break-word;
+            box-shadow: 0 4px 14px rgba(99,102,241,0.30);
         }
 
-        /* ===== BOT MESSAGE (LEFT) ===== */
+        /* ── AI BUBBLE (WHITE WITH AVATAR) ── */
         .assistant-message {
             display: flex;
             justify-content: flex-start;
-            margin: 12px 0;
+            margin: 18px 0;
         }
 
-        .assistant-bubble {
-            background: #f1f3f5;
-            padding: 12px 18px;
-            border-radius: 20px 20px 20px 5px;
-            max-width: 70%;
-            color: #333;
-            font-size: 14px;
+        .ai-bubble-wrap {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            max-width: 82%;
         }
-
-        .user-icon, .assistant-icon {
-            font-size: 18px;
-            width: 32px;
-            height: 32px;
+        
+        .ai-avatar {
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a78bfa);
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(99,102,241,0.35);
+            margin-top: 2px;
+        }
+        
+        .assistant-bubble {
+            background: #ffffff;
+            color: #1e293b;
+            padding: 12px 16px;
+            border-radius: 4px 20px 20px 20px;
+            font-size: 14px;
+            line-height: 1.65;
+            word-wrap: break-word;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            border-left: 3px solid #8b5cf6;
         }
 
-
-        /* ===== TRIAL BOX ===== */
+        /* ===== ORIGINAL TRIAL BOX STYLING ===== */
         .trial-box {
             background: linear-gradient(135deg, #667eea, #764ba2);
             padding: 22px 18px;
@@ -90,7 +109,6 @@ def show_demo_chat():
             margin-top: 30px;
             margin-bottom: 20px;
             color: white;
-            
         }
 
         .trial-title {
@@ -108,9 +126,8 @@ def show_demo_chat():
         .trial-complete-container {
             text-align: center;
             margin: 20px 0;
-            padding-right: 200px;
+            padding: 20px;
             margin-bottom: 20px;
-            background:red;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -137,7 +154,7 @@ def show_demo_chat():
         </div>
         """, unsafe_allow_html=True)
 
-        # ===== CENTERED BUTTON (FIXED) =====
+        # ===== CENTERED BUTTON =====
         col1, col2, col3 = st.columns([1,1,1])
 
         with col2:
@@ -147,23 +164,20 @@ def show_demo_chat():
 
         st.markdown("---")
 
-    # ===== CHAT DISPLAY =====
+    # ===== CHAT DISPLAY (NEW BUBBLE STYLE) =====
     for msg in st.session_state.demo_messages:
         if msg["role"] == "user":
             st.markdown(f"""
             <div class="user-message">
-                <div class="user-bubble">
-                    <div class="user-text">{msg["content"]}</div>
-                    <div class="user-icon">👤</div>
-                </div>
+                <div class="user-bubble">{msg["content"]}</div>
             </div>
             """, unsafe_allow_html=True)
         else:
             st.markdown(f"""
             <div class="assistant-message">
-                <div class="assistant-bubble">
-                    <div class="assistant-icon">🧠</div>
-                    <div class="assistant-text">{msg["content"]}</div>
+                <div class="ai-bubble-wrap">
+                    <div class="ai-avatar">🧠</div>
+                    <div class="assistant-bubble">{msg["content"]}</div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -179,10 +193,10 @@ def show_demo_chat():
             st.session_state.demo_msg_count += 1
 
             responses = [
-                " I'm here for you. It's okay to not feel okay sometimes.I'm here for you. It's okay to not feel okay sometimes. Your feelings are valid and it takes strength to talk about them.",
-                " Tell me more about it. You're doing better than you think.",
-                " You don't have to face this alone. Whatever you're going through, talking helps more than we think. Try breaking your day into tiny steps — one step at a time is still progress.",
-                " Be gentle with yourself today "
+                "I'm here for you. It's okay to not feel okay sometimes. Your feelings are valid and it takes strength to talk about them.",
+                "Tell me more about it. You're doing better than you think.",
+                "You don't have to face this alone. Whatever you're going through, talking helps more than we think. Try breaking your day into tiny steps — one step at a time is still progress.",
+                "Be gentle with yourself today. You deserve compassion and care."
             ]
 
             st.session_state.demo_messages.append(

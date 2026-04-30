@@ -67,179 +67,299 @@ def speak_and_auto_play(text):
 def show_chat(user_id):
     apply_clean_layout(hide_header_completely=False)
 
-        # ========== COMPLETE CSS FIX - STRICTLY STICKY BOTTOM ==========
+    # ========== REDESIGNED CSS ==========
     st.markdown("""
     <style>
-    /* FIX: Remove header hiding - preserve sidebar collapse button */
-    /* Hide ONLY the hamburger menu and deploy button, NOT the header */
-    .stDeployButton {
-        display: none !important;
-    }
-    
-    /* Hide hamburger menu only */
-    #MainMenu {
-        visibility: hidden !important;
-    }
-    
-    /* Make header transparent but KEEP IT VISIBLE for sidebar toggle */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    /* ── HIDE CLUTTER ── */
+    .stDeployButton { display: none !important; }
+    #MainMenu       { visibility: hidden !important; }
+    footer          { visibility: hidden !important; }
     header {
         background: transparent !important;
-        backdrop-filter: blur(0px) !important;
         box-shadow: none !important;
         visibility: visible !important;
-        display: block !important;
     }
-    
-    /* Hide footer */
-    footer {
-        visibility: hidden !important;
-    }
-    /* Keep normal Streamlit flow */
-    html, body {
+
+    /* ── PAGE BACKGROUND ── */
+    html, body, .stApp {
+        font-family: 'Inter', 'Segoe UI', sans-serif !important;
+        background: linear-gradient(160deg, #eef2ff 0%, #f0fdf9 50%, #fdf4ff 100%) !important;
         height: 100%;
     }
-    /* Page spacing fix */
+
+    /* ── BLOCK CONTAINER ── */
     .block-container {
-        padding-top: 1rem !important;
-        padding-bottom: 90px !important;
+        padding-top: 0rem !important;
+        padding-bottom: 100px !important;
         max-width: 100% !important;
     }
-    .stApp{
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%) !important;
-        }
-    
-    /* Title fixed at top */
-    .chat-title {
-        text-align: center;
-        font-size: 24px;
-        font-weight: 600;
-        padding: 15px;
-        background: #EAF3FF;
-        border-bottom: 2px solid #4A6FA5;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 100;
-    }
-    
-    /* Chat area - scrollable */
-    .chat-area {
-        
-        height: calc(100vh - 130px);
-        overflow-y: auto;
-        padding-right: 10px;
-        scroll-behavior: smooth;  /* Add smooth scrolling */
 
+    /* ── HEADER BANNER ── */
+    .chat-header {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%);
+        padding: 18px 28px 16px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-shadow: 0 4px 24px rgba(99,102,241,0.28);
+        border-radius: 20px;
+        margin-bottom: 30px;
+        margin-top: 20px;
     }
-    
-    /* Message row */
+    .chat-header-avatar {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.22);
+        border: 2px solid rgba(255,255,255,0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        flex-shrink: 0;
+        box-shadow: 0 0 0 4px rgba(255,255,255,0.12);
+        animation: headerPulse 3s ease-in-out infinite;
+    }
+    @keyframes headerPulse {
+        0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.12); }
+        50%       { box-shadow: 0 0 0 8px rgba(255,255,255,0.06); }
+    }
+    .chat-header-text h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 1.2;
+    }
+    .chat-header-text p {
+        margin: 2px 0 0;
+        font-size: 12px;
+        color: rgba(255,255,255,0.78);
+        font-weight: 400;
+    }
+    .chat-header-status {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: rgba(255,255,255,0.85);
+        font-weight: 500;
+    }
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #4ade80;
+        box-shadow: 0 0 6px #4ade80;
+        animation: statusBlink 2s ease-in-out infinite;
+    }
+    @keyframes statusBlink {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.4; }
+    }
+
+    /* ── CHAT MESSAGES AREA ── */
+    .chat-area {
+        padding: 20px 16px 10px;
+        min-height: 60px;
+    }
+
+    /* ── MESSAGE ROWS ── */
     .chat-row {
         display: flex;
-        margin-bottom: 25px;
-        animation: fadeIn 0.3s ease;
+        margin-bottom: 24px;
+        animation: msgFadeIn 0.35s ease;
     }
-    
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+    @keyframes msgFadeIn {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
-    
-    /* User bubble */
+
+    /* ── USER BUBBLE ── */
     .user-bubble {
-        background-color: rgb(219, 234, 254);     
-        color: black;
-        padding: 10px 16px;
-        border-radius: 20px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: #ffffff;
+        padding: 11px 16px;
+        border-radius: 20px 20px 4px 20px;
         font-size: 14px;
-        max-width: 70%;
+        line-height: 1.55;
+        max-width: 68%;
         word-wrap: break-word;
-        border-bottom-right-radius: 4px;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 14px rgba(99,102,241,0.30);
     }
-    
-    /* Assistant bubble */
+
+    /* ── AI BUBBLE ── */
+    .ai-bubble-wrap {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        max-width: 82%;
+    }
+    .ai-avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #6366f1, #a78bfa);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+        box-shadow: 0 2px 10px rgba(99,102,241,0.35);
+        margin-top: 2px;
+    }
     .assistant-bubble {
-        background: white;
-        color: #1E3A5F;
-        padding: 14px 16px;
-        border-radius: 20px;
+        background: #ffffff;
+        color: #1e293b;
+        padding: 12px 16px;
+        border-radius: 4px 20px 20px 20px;
         font-size: 14px;
-        max-width: 85%;
+        line-height: 1.65;
         word-wrap: break-word;
-        border-bottom-left-radius: 4px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        border-left: 3px solid #8b5cf6;
     }
-    
-    /* Fixed input bar at bottom */
-    .input-bar {
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px 40px;
+        color: #64748b;
+    }
+    .empty-state-icon {
+        font-size: 56px;
+        margin-bottom: 16px;
+        display: block;
+        animation: floatIcon 3s ease-in-out infinite;
+    }
+    @keyframes floatIcon {
+        0%, 100% { transform: translateY(0px); }
+        50%       { transform: translateY(-8px); }
+    }
+    .empty-state h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #4338ca;
+        margin: 0 0 8px;
+    }
+    .empty-state p {
+        font-size: 14px;
+        color: #94a3b8;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    /* ── STICKY INPUT BAR ── */
+    .input-bar-wrapper {
         position: fixed;
         bottom: 0;
-        left: 0;
-        # right: 0;
-        #background: #EAF3FF;
-        width: 100%;
-        background: white;
-        padding: 10px 15px;
-        border-top: 1px solid #ddd;
+        left: 280px;          /* sidebar width */
+        right: 0;
         z-index: 1000;
+        background: rgba(238,242,255,0.92);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-top: 1px solid rgba(99,102,241,0.18);
+        padding: 12px 20px 14px;
+        box-shadow: 0 -4px 24px rgba(99,102,241,0.10);
     }
-    
-    /* Input field styling */
-    div[data-testid="stTextInput"] input {
-         border: 2px solid #333 !important;
-        border-radius: 20px !important;
-        padding: 8px 15px !important;
+
+    /* ── INPUT FIELD ── */
+    .input-bar-wrapper div[data-testid="stTextInput"] input {
+        border: 2px solid rgba(99,102,241,0.35) !important;
+        border-radius: 24px !important;
+        padding: 10px 18px !important;
+        font-size: 14px !important;
+        background: #ffffff !important;
+        color: #1e293b !important;
+        transition: border-color 0.2s, box-shadow 0.2s !important;
+        box-shadow: 0 2px 8px rgba(99,102,241,0.08) !important;
     }
-    
-    div[data-testid="stTextInput"] input:focus {
+    .input-bar-wrapper div[data-testid="stTextInput"] input:focus {
+        border-color: #6366f1 !important;
+        box-shadow: 0 0 0 3px rgba(99,102,241,0.15) !important;
         outline: none !important;
-        border-color: #3D5A8C !important;
     }
-    
-    /* Send button styling */
-    .stButton > button {
-        background: #4A6FA5 !important;
+    .input-bar-wrapper div[data-testid="stTextInput"] input::placeholder {
+        color: #94a3b8 !important;
+    }
+
+    /* ── SEND BUTTON ── */
+    .input-bar-wrapper .stButton > button {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
         color: white !important;
         border-radius: 50% !important;
-        width: 40px !important;
-        height: 36px !important;
+        width: 44px !important;
+        height: 44px !important;
         padding: 0 !important;
         border: none !important;
         font-size: 18px !important;
+        box-shadow: 0 4px 14px rgba(99,102,241,0.40) !important;
+        transition: transform 0.18s, box-shadow 0.18s !important;
     }
-    
-    .stButton > button:hover {
-        background: #3D5A8C !important;
-        transform: scale(1.02);
+    .input-bar-wrapper .stButton > button:hover {
+        transform: scale(1.08) !important;
+        box-shadow: 0 6px 20px rgba(99,102,241,0.55) !important;
     }
-    
-    /* Hide default audio player */
-    audio {
-        display: none !important;
+
+    /* ── MIC BUTTON (streamlit_mic_recorder renders a button) ── */
+    .input-bar-wrapper div[data-testid="stCustomComponentV1"] button,
+    .input-bar-wrapper iframe {
+        border-radius: 50% !important;
     }
-    
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-        width: 6px;
+    /* Style the mic recorder container */
+    .mic-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
-    ::-webkit-scrollbar-track {
-        background: #E8EEF2;
+    /* Pulse ring around mic area */
+    .mic-pulse-ring {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #10b981, #34d399);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        box-shadow: 0 4px 14px rgba(16,185,129,0.40);
+        animation: micPulse 2.5s ease-in-out infinite;
+        cursor: pointer;
+        position: relative;
     }
-    ::-webkit-scrollbar-thumb {
-        background: #4A6FA5;
-        border-radius: 3px;
+    .mic-pulse-ring::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: rgba(16,185,129,0.30);
+        animation: micRing 2.5s ease-in-out infinite;
     }
-    
-    /* Thinking indicator */
+    @keyframes micPulse {
+        0%, 100% { box-shadow: 0 4px 14px rgba(16,185,129,0.40); }
+        50%       { box-shadow: 0 4px 22px rgba(16,185,129,0.65); }
+    }
+    @keyframes micRing {
+        0%   { transform: scale(1);   opacity: 0.6; }
+        100% { transform: scale(1.6); opacity: 0; }
+    }
+
+    /* ── THINKING DOTS ── */
     .thinking-dots {
         display: inline-flex;
-        gap: 4px;
+        gap: 5px;
+        align-items: center;
+        padding: 4px 0;
     }
     .thinking-dots span {
         width: 8px;
         height: 8px;
-        background-color: #4A6FA5;
+        background: linear-gradient(135deg, #6366f1, #a78bfa);
         border-radius: 50%;
         animation: bounce 1.4s infinite ease-in-out;
     }
@@ -248,13 +368,35 @@ def show_chat(user_id):
     .thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
     @keyframes bounce {
         0%, 60%, 100% { transform: translateY(0); }
-        30% { transform: translateY(-10px); }
+        30%            { transform: translateY(-9px); }
     }
+
+    /* ── AUDIO ── */
+    audio { display: none !important; }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar       { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.30); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.55); }
+
     </style>
     """, unsafe_allow_html=True)
 
-    # Title
-    st.markdown('<div class="chat-title">💬 Chat with MindCare AI</div>', unsafe_allow_html=True)
+    # ── HEADER BANNER ──
+    st.markdown("""
+    <div class="chat-header">
+        <div class="chat-header-avatar">🧠</div>
+        <div class="chat-header-text">
+            <h2>MindCare AI</h2>
+            <p>Your personal mental wellness companion</p>
+        </div>
+        <div class="chat-header-status">
+            <div class="status-dot"></div>
+            Online
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     # Auto-play audio using JavaScript (hidden)
     if "auto_play_audio" in st.session_state:
@@ -271,120 +413,179 @@ def show_chat(user_id):
         del st.session_state["auto_play_audio"]
 
     # ---------------- CONVERSATION ----------------
-    if not st.session_state.get("conversation_id"):
-        st.session_state["conversation_id"] = create_conversation(user_id)
+    # Don't create conversation until user sends first message
+    cid = st.session_state.get("conversation_id")
 
-    cid = st.session_state["conversation_id"]
-
-    if st.session_state["last_loaded_chat"] != cid:
+    if cid and st.session_state["last_loaded_chat"] != cid:
         st.session_state["chat_history"] = get_messages_by_conversation(cid)
         st.session_state["last_loaded_chat"] = cid
 
-    # Display chat messages
+    # ── MESSAGES ──
     st.markdown('<div class="chat-area">', unsafe_allow_html=True)
-    for role, msg in st.session_state["chat_history"]:
-        if role == "user":
-            st.markdown(f"""
-            <div class="chat-row" style="justify-content:flex-end;">
-                <div class="user-bubble">👤 {msg}</div>
-            </div>
-            """, unsafe_allow_html=True)
-        else:
-            st.markdown(f"""
-            <div class="chat-row" style="justify-content:flex-start;">
-                <div class="assistant-bubble">🧠 {msg}</div>
-            </div>
-            """, unsafe_allow_html=True)
+
+    if not st.session_state["chat_history"]:
+        st.markdown("""
+        <div class="empty-state">
+            <span class="empty-state-icon">🌿</span>
+            <h3>Hello, I'm here for you</h3>
+            <p>Feel free to share anything on your mind.<br>This is a safe, judgment-free space.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        for role, msg in st.session_state["chat_history"]:
+            if role == "user":
+                st.markdown(f"""
+                <div class="chat-row" style="justify-content:flex-end;">
+                    <div class="user-bubble">{msg}</div>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown(f"""
+                <div class="chat-row" style="justify-content:flex-start;">
+                    <div class="ai-bubble-wrap">
+                        <div class="ai-avatar">🧠</div>
+                        <div class="assistant-bubble">{msg}</div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # ========== STRICTLY STICKY INPUT BAR ==========
-    st.markdown('<div class="input-bar">', unsafe_allow_html=True)
-    
-    # Create row with input, send button, and voice button
+    # ── AUTO-SCROLL TO BOTTOM ──
+    st.markdown("""
+    <script>
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    </script>
+    """, unsafe_allow_html=True)
+
+    # ── STICKY INPUT BAR ──
+    st.markdown('<div class="input-bar-wrapper">', unsafe_allow_html=True)
+
     col1, col2, col3 = st.columns([10, 1, 1])
-    
+
     with col1:
+        # Use a dynamic key that changes after each message to clear input
+        input_key = f"text_input_{cid if cid else 'new'}_{len(st.session_state['chat_history'])}"
         user_input = st.text_input(
             "",
-            placeholder="Type your message...",
+            placeholder="Share what's on your mind...",
             label_visibility="collapsed",
-            key=f"text_input_{cid}"
+            key=input_key
         )
-    
+
     with col2:
-        send_clicked = st.button("➤", key=f"send_btn_{cid}")
-    
+        send_clicked = st.button("➤", key=f"send_btn_{cid if cid else 'new'}")
+
     with col3:
+        # Custom styled mic button wrapper
+        st.markdown("""
+        <style>
+        /* Mic button custom styling */
+        div[data-testid="stCustomComponentV1"] {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        div[data-testid="stCustomComponentV1"] button {
+            width: 44px !important;
+            height: 44px !important;
+            border-radius: 50% !important;
+            background: linear-gradient(135deg, #10b981, #34d399) !important;
+            border: none !important;
+            box-shadow: 0 4px 14px rgba(16,185,129,0.40) !important;
+            transition: all 0.2s !important;
+            animation: micPulseBtn 2.5s ease-in-out infinite !important;
+        }
+        div[data-testid="stCustomComponentV1"] button:hover {
+            transform: scale(1.08) !important;
+            box-shadow: 0 6px 20px rgba(16,185,129,0.55) !important;
+        }
+        @keyframes micPulseBtn {
+            0%, 100% { box-shadow: 0 4px 14px rgba(16,185,129,0.40); }
+            50%       { box-shadow: 0 4px 22px rgba(16,185,129,0.65), 0 0 0 8px rgba(16,185,129,0.15); }
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
         audio = mic_recorder(
-            start_prompt="🎤", 
-            stop_prompt="⏹️", 
-            key=f"voice_rec_{cid}",
+            start_prompt="🎙️",
+            stop_prompt="⏹️",
+            key=f"voice_rec_{cid if cid else 'new'}",
             just_once=True
         )
-    
+
     st.markdown('</div>', unsafe_allow_html=True)
 
-        # ================= TEXT SEND WITH TYPING ANIMATION =================
+    # ================= TEXT SEND WITH TYPING ANIMATION =================
     if send_clicked and user_input.strip():
-        # Save user message
+        # Create conversation on first message
+        if not cid:
+            cid = create_conversation(user_id)
+            st.session_state["conversation_id"] = cid
+            st.session_state["last_loaded_chat"] = cid
+        
         st.session_state["chat_history"].append(("user", user_input))
         add_message(user_id, "user", user_input, cid)
 
-        # Create placeholder for typing animation
         typing_placeholder = st.empty()
-        
-        # Show typing indicator with correct CSS
         typing_placeholder.markdown("""
         <div class="chat-row" style="justify-content:flex-start;">
-            <div class="assistant-bubble" style="background:#E8EEF2;">
-                🧠 <span class="thinking-dots">
-                    <span></span><span></span><span></span>
-                </span>
+            <div class="ai-bubble-wrap">
+                <div class="ai-avatar">🧠</div>
+                <div class="assistant-bubble">
+                    <span class="thinking-dots">
+                        <span></span><span></span><span></span>
+                    </span>
+                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
-        # Generate AI response
+
         response = generate_response(user_input, st.session_state["chat_history"][-5:])
-        
-        # Remove typing indicator
         typing_placeholder.empty()
-        
-        # Create placeholder for streaming response
+
         response_placeholder = st.empty()
-        
-        # Stream the response word by word
         output = ""
         for word in response.split():
             output += word + " "
             response_placeholder.markdown(f"""
             <div class="chat-row" style="justify-content:flex-start;">
-                <div class="assistant-bubble">🧠 {output}</div>
+                <div class="ai-bubble-wrap">
+                    <div class="ai-avatar">🧠</div>
+                    <div class="assistant-bubble">{output}</div>
+                </div>
             </div>
             """, unsafe_allow_html=True)
-            time.sleep(0.03)  # Typing speed
-        
-        # Save final response
+            time.sleep(0.03)
+
         st.session_state["chat_history"].append(("assistant", response))
         add_message(user_id, "assistant", response, cid)
-        
         st.rerun()
 
     # ================= PROCESS VOICE INPUT =================
     if audio:
         if "voice_processed_key" not in st.session_state:
             st.session_state["voice_processed_key"] = None
-        voice_key = f"{cid}_{len(st.session_state['chat_history'])}"
-        
+        voice_key = f"{cid if cid else 'new'}_{len(st.session_state['chat_history'])}"
+
         if st.session_state["voice_processed_key"] != voice_key:
             st.session_state["voice_processed_key"] = voice_key
             
+            # Create conversation on first message
+            if not cid:
+                cid = create_conversation(user_id)
+                st.session_state["conversation_id"] = cid
+                st.session_state["last_loaded_chat"] = cid
+
             response_placeholder = st.empty()
             response_placeholder.markdown("""
             <div class="chat-row" style="justify-content:flex-start;">
-                <div class="assistant-bubble" style="background:#E8EEF2;">
-                    <div class="thinking-dots">
-                        <span></span><span></span><span></span>
+                <div class="ai-bubble-wrap">
+                    <div class="ai-avatar">🧠</div>
+                    <div class="assistant-bubble">
+                        <div class="thinking-dots">
+                            <span></span><span></span><span></span>
+                        </div>
                     </div>
                 </div>
             </div>

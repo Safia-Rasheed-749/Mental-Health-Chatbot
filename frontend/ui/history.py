@@ -68,6 +68,11 @@ def show_history(user_id):
     # ================= STYLES =================
     st.markdown("""
     <style>
+    .stDeployButton { display: none !important; }
+    .stAppDeployButton { display: none !important; }
+    #MainMenu { visibility: hidden !important; }
+    footer { visibility: hidden !important; }
+    
     .block-container {
         padding-top: 1rem !important;
         padding-bottom: 2rem;

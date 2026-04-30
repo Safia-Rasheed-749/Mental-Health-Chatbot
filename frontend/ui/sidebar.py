@@ -78,7 +78,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             align-items: center;
             justify-content: flex-start;
             gap: 10px;
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 900;
             margin-top: -8px;
             margin-left: -2px;
@@ -87,6 +87,24 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             line-height: 1.1;
             color: rgba(196,181,253,0.98);
             text-shadow: 0 0 18px rgba(124,58,237,0.25);
+        }
+
+        .sidebar-brain-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a78bfa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 0 0 3px rgba(167,139,250,0.25);
+            animation: sidebarPulse 3s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        @keyframes sidebarPulse {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(167,139,250,0.25); }
+            50%       { box-shadow: 0 0 0 6px rgba(167,139,250,0.12); }
         }
 
         .welcome-box {
@@ -184,24 +202,29 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             transform: translateX(4px);
         }
 
-        /* ===== SESSION TABS STYLES ===== */
+        /* ===== SESSION TABS STYLES (CHAT-INSPIRED) ===== */
         .session-item {
             position: relative;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 7px 10px 7px 8px;
-            border-radius: 8px;
-            margin-bottom: 3px;
+            padding: 9px 12px;
+            border-radius: 12px;
+            margin-bottom: 6px;
             cursor: pointer;
-            transition: background 0.18s;
+            transition: all 0.2s;
+            background: rgba(15,23,42,0.25);
+            border: 1px solid rgba(148,163,184,0.12);
         }
         .session-item:hover {
-            background: rgba(59,130,246,0.13);
+            background: rgba(99,102,241,0.15);
+            border-color: rgba(99,102,241,0.25);
+            transform: translateX(3px);
         }
         .session-item.active-session {
-            background: linear-gradient(135deg, rgba(59,130,246,0.22), rgba(124,58,237,0.22)) !important;
-            border: 1px solid rgba(124,58,237,0.40) !important;
+            background: linear-gradient(135deg, rgba(99,102,241,0.28), rgba(139,92,246,0.28)) !important;
+            border: 1px solid rgba(139,92,246,0.45) !important;
+            box-shadow: 0 4px 12px rgba(99,102,241,0.20);
         }
         .session-label {
             font-size: 13px;
@@ -211,13 +234,14 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             text-overflow: ellipsis;
             max-width: 170px;
             flex: 1;
+            font-weight: 500;
         }
         .session-dots {
             opacity: 0;
-            font-size: 16px;
-            color: rgba(226,232,240,0.75);
-            padding: 2px 5px;
-            border-radius: 5px;
+            font-size: 18px;
+            color: rgba(226,232,240,0.85);
+            padding: 2px 6px;
+            border-radius: 6px;
             cursor: pointer;
             transition: opacity 0.15s, background 0.15s;
             flex-shrink: 0;
@@ -226,62 +250,58 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             opacity: 1;
         }
         .session-dots:hover {
-            background: rgba(255,255,255,0.12);
+            background: rgba(99,102,241,0.25);
         }
 
-        /* Dropdown menu */
+        /* Dropdown menu - chat styled */
         .session-dropdown {
             position: absolute;
             right: 0;
-            top: 32px;
-            background: #1e293b;
-            border: 1px solid rgba(148,163,184,0.25);
-            border-radius: 10px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+            top: 38px;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid rgba(99,102,241,0.30);
+            border-radius: 12px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.45);
             z-index: 9999;
-            min-width: 140px;
+            min-width: 150px;
             overflow: hidden;
         }
         .session-dropdown-item {
-            padding: 9px 14px;
+            padding: 10px 16px;
             font-size: 13px;
             color: #e2e8f0;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             transition: background 0.15s;
+            font-weight: 500;
         }
         .session-dropdown-item:hover {
-            background: rgba(59,130,246,0.18);
+            background: rgba(99,102,241,0.22);
         }
         .session-dropdown-item.delete-item {
-            color: #f87171;
+            color: #fca5a5;
         }
         .session-dropdown-item.delete-item:hover {
-            background: rgba(239,68,68,0.15);
+            background: rgba(239,68,68,0.18);
         }
 
-        /* New Chat button */
-        .new-chat-btn {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            padding: 8px 12px;
-            background: rgba(59,130,246,0.18);
-            border: 1px solid rgba(59,130,246,0.35);
-            border-radius: 8px;
-            color: #93c5fd;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 10px;
-            transition: background 0.18s;
-            width: 100%;
-            text-align: left;
+        /* New Chat button - gradient style */
+        section[data-testid="stSidebar"] button[key="new_chat_btn"] {
+            background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(139,92,246,0.25)) !important;
+            border: 1px solid rgba(99,102,241,0.40) !important;
+            border-radius: 12px !important;
+            padding: 10px 14px !important;
+            color: #c4b5fd !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            margin-bottom: 12px !important;
+            box-shadow: 0 2px 8px rgba(99,102,241,0.15) !important;
         }
-        .new-chat-btn:hover {
-            background: rgba(59,130,246,0.28);
+        section[data-testid="stSidebar"] button[key="new_chat_btn"]:hover {
+            background: linear-gradient(135deg, rgba(99,102,241,0.35), rgba(139,92,246,0.35)) !important;
+            transform: translateX(0) !important;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -299,7 +319,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
     with st.sidebar:
         st.markdown(
-            '<div class="sidebar-header">🧠 <span>MindCare AI</span></div>',
+            '<div class="sidebar-header"><div class="sidebar-brain-avatar">🧠</div><span>MindCare AI</span></div>',
             unsafe_allow_html=True
         )
 

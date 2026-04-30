@@ -15,6 +15,7 @@ def show_dashboard():
 
     header[data-testid="stHeader"] { background:transparent !important; box-shadow:none !important; border-bottom:none !important; }
     .stDeployButton { display:none !important; }
+    .stAppDeployButton { display: none !important; }
     #MainMenu       { visibility:hidden !important; }
     footer          { visibility:hidden !important; }
 
@@ -112,10 +113,10 @@ def show_dashboard():
     .nc-history .nav-card-stripe { background:linear-gradient(90deg,#a78bfa,#c4b5fd); }
     .nc-journal .nav-card-stripe { background:linear-gradient(90deg,#fb923c,#fbbf24); }
 
-    .nav-card-icon { width:46px; height:46px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:21px; margin:4px 0 12px; background:rgba(255,255,255,0.70); }
-    .nav-card-title { font-size:15px; font-weight:700; color:#3b2f6e; margin-bottom:5px; }
-    .nav-card-desc  { font-size:13px; color:#6b7a99; line-height:1.55; }
-    .nav-card-tag   { display:inline-block; margin-top:12px; padding:4px 11px; border-radius:50px; font-size:11px; font-weight:600; background:rgba(255,255,255,0.70); }
+    .nav-card-icon { width:46px; height:46px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:24px; margin:4px 0 12px; background:rgba(255,255,255,0.70); }
+    .nav-card-title { font-size:18px; font-weight:700; color:#3b2f6e; margin-bottom:5px; }
+    .nav-card-desc  { font-size:15px; color:#6b7a99; line-height:1.55; }
+    .nav-card-tag   { display:inline-block; margin-top:12px; padding:4px 11px; border-radius:50px; font-size:12px; font-weight:600; background:rgba(255,255,255,0.70); }
     .nc-chat    .nav-card-tag { color:#4a6fd4; }
     .nc-mood    .nav-card-tag { color:#0d9488; }
     .nc-history .nav-card-tag { color:#7c3aed; }
@@ -275,40 +276,44 @@ def show_dashboard():
     # ── QUICK NAVIGATION ──
     st.markdown('<div class="sp-lg"></div><p class="section-label">Quick Navigation</p>', unsafe_allow_html=True)
 
-    col1, col2 = st.columns(2, gap="medium")
-    with col1:
-        st.markdown("""<div class="nav-card nc-chat"><div class="nav-card-stripe"></div>
-            <div class="nav-card-icon">💬</div><div class="nav-card-title">AI Chat</div>
-            <div class="nav-card-desc">Talk with your AI companion anytime, day or night.</div>
-            <span class="nav-card-tag">Start Chatting →</span></div>""", unsafe_allow_html=True)
-        if st.button("Open AI Chat", key="chat_btn", use_container_width=True):
-            st.session_state.current_page = "Chat"; st.query_params["page"] = "Chat"; st.rerun()
+    # Center the navigation cards
+    col_space1, col_main, col_space2 = st.columns([0.5, 2, 0.5])
+    
+    with col_main:
+        col1, col2 = st.columns(2, gap="medium")
+        with col1:
+            st.markdown("""<div class="nav-card nc-chat"><div class="nav-card-stripe"></div>
+                <div class="nav-card-icon">💬</div><div class="nav-card-title">AI Chat</div>
+                <div class="nav-card-desc">Talk with your AI companion anytime, day or night.</div>
+                <span class="nav-card-tag">Start Chatting →</span></div>""", unsafe_allow_html=True)
+            if st.button("Open AI Chat", key="chat_btn", use_container_width=True):
+                st.session_state.current_page = "Chat"; st.query_params["page"] = "Chat"; st.rerun()
 
-    with col2:
-        st.markdown("""<div class="nav-card nc-mood"><div class="nav-card-stripe"></div>
-            <div class="nav-card-icon">📊</div><div class="nav-card-title">Mood Analytics</div>
-            <div class="nav-card-desc">Log your mood and visualize emotional trends over time.</div>
-            <span class="nav-card-tag">Track Mood →</span></div>""", unsafe_allow_html=True)
-        if st.button("Open Mood Analytics", key="mood_btn", use_container_width=True):
-            st.session_state.current_page = "Mood Analytics"; st.query_params["page"] = "Mood Analytics"; st.rerun()
+        with col2:
+            st.markdown("""<div class="nav-card nc-mood"><div class="nav-card-stripe"></div>
+                <div class="nav-card-icon">📊</div><div class="nav-card-title">Mood Analytics</div>
+                <div class="nav-card-desc">Log your mood and visualize emotional trends over time.</div>
+                <span class="nav-card-tag">Track Mood →</span></div>""", unsafe_allow_html=True)
+            if st.button("Open Mood Analytics", key="mood_btn", use_container_width=True):
+                st.session_state.current_page = "Mood Analytics"; st.query_params["page"] = "Mood Analytics"; st.rerun()
 
-    st.markdown('<div class="sp-md"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="sp-md"></div>', unsafe_allow_html=True)
 
-    col3, col4 = st.columns(2, gap="medium")
-    with col3:
-        st.markdown("""<div class="nav-card nc-history"><div class="nav-card-stripe"></div>
-            <div class="nav-card-icon">🕒</div><div class="nav-card-title">Chat History</div>
-            <div class="nav-card-desc">Review past conversations, search and export sessions.</div>
-            <span class="nav-card-tag">View History →</span></div>""", unsafe_allow_html=True)
-        if st.button("Open Chat History", key="history_btn", use_container_width=True):
-            st.session_state.current_page = "Chat"; st.query_params["page"] = "Chat"; st.rerun()
+        col3, col4 = st.columns(2, gap="medium")
+        with col3:
+            st.markdown("""<div class="nav-card nc-history"><div class="nav-card-stripe"></div>
+                <div class="nav-card-icon">🕒</div><div class="nav-card-title">Chat History</div>
+                <div class="nav-card-desc">Review past conversations, search and export sessions.</div>
+                <span class="nav-card-tag">View History →</span></div>""", unsafe_allow_html=True)
+            if st.button("Open Chat History", key="history_btn", use_container_width=True):
+                st.session_state.current_page = "Chat"; st.query_params["page"] = "Chat"; st.rerun()
 
-    with col4:
-        st.markdown("""<div class="nav-card nc-journal"><div class="nav-card-stripe"></div>
-            <div class="nav-card-icon">📖</div><div class="nav-card-title">Journal</div>
-            <div class="nav-card-desc">Write private reflections and build your personal diary.</div>
-            <span class="nav-card-tag">Write Entry →</span></div>""", unsafe_allow_html=True)
-        if st.button("Open Journal", key="journal_btn", use_container_width=True):
-            st.session_state.current_page = "Journal"; st.query_params["page"] = "Journal"; st.rerun()
+        with col4:
+            st.markdown("""<div class="nav-card nc-journal"><div class="nav-card-stripe"></div>
+                <div class="nav-card-icon">📖</div><div class="nav-card-title">Journal</div>
+                <div class="nav-card-desc">Write private reflections and build your personal diary.</div>
+                <span class="nav-card-tag">Write Entry →</span></div>""", unsafe_allow_html=True)
+            if st.button("Open Journal", key="journal_btn", use_container_width=True):
+                st.session_state.current_page = "Journal"; st.query_params["page"] = "Journal"; st.rerun()
 
     st.markdown('<div class="dash-footer">🌿 MindCare AI &nbsp;·&nbsp; Take care of your mental wellness — one day at a time.</div>', unsafe_allow_html=True)

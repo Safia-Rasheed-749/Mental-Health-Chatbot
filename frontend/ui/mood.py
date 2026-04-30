@@ -1,352 +1,334 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 from db import add_mood, get_moods
-from layout_utils import apply_professional_design_system
 from datetime import datetime, timedelta, date
 from db import get_all_user_messages
 
 def show_mood_analytics(user_id):
-    # apply_professional_design_system()
 
-    # ================= ENHANCED CSS =================
+    # ================= ENHANCED CSS (CHAT-STYLE) =================
     st.markdown("""
     <style>
-    /* ========== HIDE STREAMLIT DEFAULTS ========== */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {background: transparent !important;}
-    /* ========== MAIN CONTAINER ========== */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    /* ── HIDE CLUTTER ── */
+    .stDeployButton { display: none !important; }
+    .stAppDeployButton { display: none !important; }
+    #MainMenu       { visibility: hidden !important; }
+    footer          { visibility: hidden !important; }
+    header {
+        background: transparent !important;
+        box-shadow: none !important;
+        visibility: visible !important;
+    }
+
+    /* ── PAGE BACKGROUND (SAME AS CHAT) ── */
+    html, body, .stApp {
+        font-family: 'Inter', 'Segoe UI', sans-serif !important;
+        background: linear-gradient(160deg, #eef2ff 0%, #f0fdf9 50%, #fdf4ff 100%) !important;
+        height: 100%;
+    }
+
+    /* ── BLOCK CONTAINER ── */
     .block-container {
-        padding-top: 0.5rem !important;
-        padding-bottom: 3rem !important;
-        max-width: 1200px !important;
+        padding-top: 0rem !important;
+        padding-bottom: 100px !important;
+        max-width: 100% !important;
     }
-    
-    /* ========== BACKGROUND ========== */
-    .stApp {
-        background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%) !important;
+
+    /* ── HEADER BANNER (SAME AS CHAT) ── */
+    .page-header {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%);
+        padding: 18px 28px 16px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-shadow: 0 4px 24px rgba(99,102,241,0.28);
+        border-radius: 20px;
+        margin-bottom: 30px;
+        margin-top: 20px;
     }
-    
-    /* ========== TITLE STYLING ========== */
-    .mood-title {
-        text-align: center;
-        font-size: 42px;
-        font-weight: 700;
-        margin-bottom: 20px;
-        background: linear-gradient(135deg, #1e3a8a, #3b82f6, #60a5fa);
-        background-clip: text;
-        -webkit-background-clip: text;
-        color: transparent !important;
-        animation: fadeInDown 0.6s ease-out;
-    }
-    
-    @keyframes fadeInDown {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    /* ========== SECTION HEADERS ========== */
-    .section-header {
-        font-size: 24px;
-        font-weight: 600;
-        color: #1e293b;
-        margin: 30px 0 20px 0;
-        padding-bottom: 10px;
-        border-bottom: 3px solid #3b82f6;
-        display: inline-block;
-    }
-    
-    .center-text {
-        text-align: center;
+    .page-header-avatar {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.22);
+        border: 2px solid rgba(255,255,255,0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 22px;
-        font-weight: 600;
-        color: #1e293b;
-        margin-bottom: 25px;
+        flex-shrink: 0;
+        box-shadow: 0 0 0 4px rgba(255,255,255,0.12);
+        animation: headerPulse 3s ease-in-out infinite;
+    }
+    @keyframes headerPulse {
+        0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.12); }
+        50%       { box-shadow: 0 0 0 8px rgba(255,255,255,0.06); }
+    }
+    .page-header-text h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 1.2;
+    }
+    .page-header-text p {
+        margin: 2px 0 0;
+        font-size: 12px;
+        color: rgba(255,255,255,0.78);
+        font-weight: 400;
+    }
+
+    
+    .mood-section-card:hover {
+        box-shadow: 0 8px 28px rgba(99,102,241,0.15);
+        transform: translateY(-2px);
+    }
+
+    /* Hide Streamlit default elements that create white bars */
+    .element-container:has(> .stMarkdown:empty) {
+        display: none !important;
     }
     
-    /* ========== MOOD RADIO BUTTONS ========== */
+    /* Remove extra spacing from empty elements */
+    .stMarkdown:empty {
+        display: none !important;
+    }
+    
+    /* Hide empty columns */
+    div[data-testid="column"]:empty {
+        display: none !important;
+    }
+    
+    /* Remove white background from empty containers */
+    .stVerticalBlock:empty {
+        display: none !important;
+    }
+
+    /* Force hide any white bars from Streamlit columns */
+    div[data-testid="stHorizontalBlock"] {
+        background: transparent !important;
+    }
+
+    div[data-testid="column"] {
+        background: transparent !important;
+    }
+
+    /* Remove padding from empty columns */
+    div[data-testid="column"]:has(> div:empty) {
+        display: none !important;
+    }
+
+    /* Hide element containers with only whitespace */
+    .element-container:has(> div:empty) {
+        display: none !important;
+    }
+
+    /* Remove default Streamlit container backgrounds */
+    .stVerticalBlock {
+        background: transparent !important;
+    }
+
+    .block-container > div {
+        background: transparent !important;
+    }
+
+    .section-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* ── MOOD RADIO BUTTONS ── */
     .main div[role="radiogroup"] {
         justify-content: center !important;
-        gap: 20px !important;
-        margin: 20px 0 !important;
+        gap: 12px !important;
+        margin: 16px 0 !important;
+        flex-wrap: wrap !important;
     }
-    
+
     .main div[role="radiogroup"] label {
-        background: white !important;
+        background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.95)) !important;
         padding: 12px 24px !important;
-        border-radius: 50px !important;
-        border: 2px solid #e2e8f0 !important;
+        border-radius: 16px !important;
+        border: 2px solid rgba(99,102,241,0.20) !important;
         transition: all 0.3s ease !important;
-        font-size: 16px !important;
-        font-weight: 500 !important;
+        font-size: 15px !important;
+        font-weight: 600 !important;
         cursor: pointer !important;
+        box-shadow: 0 2px 8px rgba(99,102,241,0.08) !important;
     }
-    
+
     .main div[role="radiogroup"] label:hover {
         transform: translateY(-2px);
-        border-color: #3b82f6 !important;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        border-color: #6366f1 !important;
+        box-shadow: 0 4px 14px rgba(99,102,241,0.20) !important;
     }
-    
+
     .main div[role="radiogroup"] label[data-checked="true"] {
-        background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
-        border-color: #3b82f6 !important;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+        border-color: #6366f1 !important;
         color: white !important;
+        box-shadow: 0 4px 16px rgba(99,102,241,0.35) !important;
     }
-    
-    /* ========== LOG MOOD BUTTON - CENTERED ========== */
-    .log-button-container {
-        display: flex;
-        justify-content: center;
-        margin: 30px 0;
-    }
-    
+
+    /* ── LOG BUTTON ── */
     div[data-testid="stButton"] button {
-        background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
         color: white !important;
         font-weight: 700 !important;
-        font-size: 16px !important;
-        border-radius: 50px !important;
-        height: 52px !important;
-        padding: 0 40px !important;
-        border: none !important;
-        transition: all 0.3s ease !important;
-        cursor: pointer !important;
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-    }
-    
-    div[data-testid="stButton"] button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-    }
-    
-    /* ========== SELECTBOX STYLING ========== */
-    div[data-testid="stSelectbox"] {
-        margin: 20px 0;
-    }
-    
-    div[data-testid="stSelectbox"] label {
-        font-weight: 600 !important;
-        color: #1e293b !important;
         font-size: 15px !important;
-        margin-bottom: 8px !important;
-    }
-    
-    div[data-testid="stSelectbox"] div[data-baseweb="select"] {
-        border: 2px solid #e2e8f0 !important;
         border-radius: 12px !important;
-        background: white !important;
+        height: 48px !important;
+        padding: 0 36px !important;
+        border: none !important;
+        transition: all 0.2s !important;
+        cursor: pointer !important;
+        box-shadow: 0 4px 16px rgba(99,102,241,0.30) !important;
+    }
+
+    div[data-testid="stButton"] button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 22px rgba(99,102,241,0.40) !important;
+    }
+
+    /* ── SELECTBOX ── */
+    div[data-testid="stSelectbox"] div[data-baseweb="select"] {
+        border: 2px solid rgba(99,102,241,0.25) !important;
+        border-radius: 12px !important;
+        background: rgba(255,255,255,0.90) !important;
         transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(99,102,241,0.08) !important;
     }
-    
+
     div[data-testid="stSelectbox"] div[data-baseweb="select"]:hover {
-        border-color: #3b82f6 !important;
+        border-color: #6366f1 !important;
+        box-shadow: 0 4px 14px rgba(99,102,241,0.15) !important;
     }
-    
-    /* ========== INSIGHT CARD ========== */
+
+    /* ── INSIGHT CARD ── */
     .insight-card {
-        background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(139, 92, 246, 0.08));
-        border-left: 5px solid #8b5cf6;
-        padding: 24px;
-        border-radius: 20px;
-        margin: 30px 0;
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255,255,255,0.3);
-        border-right: 1px solid rgba(255,255,255,0.3);
-        border-bottom: 1px solid rgba(255,255,255,0.3);
-        animation: fadeInUp 0.5s ease-out;
+        background: linear-gradient(135deg, rgba(139,92,246,0.10), rgba(99,102,241,0.10));
+        border-left: 4px solid #8b5cf6;
+        padding: 20px 24px;
+        border-radius: 16px;
+        margin: 24px 0;
+        border: 1px solid rgba(139,92,246,0.20);
+        box-shadow: 0 4px 16px rgba(139,92,246,0.10);
     }
-    
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
+
     .insight-card b {
-        font-size: 18px;
+        font-size: 16px;
         color: #1e293b;
+        font-weight: 700;
     }
-    
-    /* ========== STATS CARDS ========== */
+
+    /* ── STATS CARDS ── */
     .stats-wrapper {
         display: flex;
-        gap: 20px;
-        margin: 30px 0 40px 0;
+        gap: 16px;
+        margin: 24px 0;
+        flex-wrap: wrap;
     }
-    
+
     .stat-card {
         flex: 1;
-        padding: 24px 18px;
-        border-radius: 20px;
+        min-width: 200px;
+        padding: 20px 18px;
+        border-radius: 16px;
         text-align: center;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-        border: 1px solid rgba(59, 130, 246, 0.1);
+        box-shadow: 0 4px 16px rgba(99,102,241,0.10);
+        border: 1px solid rgba(99,102,241,0.15);
         transition: all 0.3s ease;
-        animation: fadeInUp 0.5s ease-out;
+        background: rgba(255,255,255,0.90);
     }
-    
+
     .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 30px rgba(59, 130, 246, 0.15);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(99,102,241,0.18);
     }
-    
+
     .stat-card:nth-child(1) { 
-        background: linear-gradient(135deg, #ffffff, #f0fdf4);
         border-bottom: 3px solid #10b981;
     }
     .stat-card:nth-child(2) { 
-        background: linear-gradient(135deg, #ffffff, #eff6ff);
-        border-bottom: 3px solid #3b82f6;
+        border-bottom: 3px solid #6366f1;
     }
     .stat-card:nth-child(3) { 
-        background: linear-gradient(135deg, #ffffff, #fdf2f8);
         border-bottom: 3px solid #ec4899;
     }
-    
+
     .stat-value { 
         font-size: 32px; 
         font-weight: 800; 
         color: #1e293b;
         margin-bottom: 8px;
     }
-    
+
     .stat-label { 
-        font-size: 14px; 
+        font-size: 13px; 
         color: #64748b;
-        font-weight: 500;
+        font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
+
     
-    /* ========== TIMELINE WRAPPER ========== */
-    .timeline-wrapper {
-        background: white;
-        padding: 0px;
-        border-radius: 20px;
-        margin-top: 40px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-        border: 1px solid #e2e8f0;
-        transition: all 0.3s ease;
-    }
-    
-    .timeline-wrapper:hover {
-        box-shadow: 0 12px 30px rgba(59, 130, 246, 0.1);
-    }
-    
-    /* ========== INFO MESSAGES ========== */
+
+    /* ── INFO/SUCCESS MESSAGES ── */
     .stInfo {
-        background: linear-gradient(135deg, #e0f2fe, #bae6fd) !important;
-        border-radius: 16px !important;
-        padding: 16px 20px !important;
-        border-left: 4px solid #0ea5e9 !important;
-        color: #0c4a6e !important;
+        background: linear-gradient(135deg, rgba(99,102,241,0.10), rgba(139,92,246,0.10)) !important;
+        border-radius: 12px !important;
+        padding: 14px 18px !important;
+        border-left: 4px solid #6366f1 !important;
+        color: #1e293b !important;
         font-weight: 500 !important;
     }
-    
-    /* ========== SUCCESS MESSAGES ========== */
+
     .stSuccess {
-        background: linear-gradient(135deg, #d1fae5, #a7f3d0) !important;
-        border-radius: 16px !important;
-        padding: 16px 20px !important;
+        background: linear-gradient(135deg, rgba(16,185,129,0.10), rgba(52,211,153,0.10)) !important;
+        border-radius: 12px !important;
+        padding: 14px 18px !important;
         border-left: 4px solid #10b981 !important;
         color: #065f46 !important;
         font-weight: 500 !important;
-        animation: slideIn 0.3s ease-out;
     }
-    
-    @keyframes slideIn {
-        from {
-            opacity: 0;
-            transform: translateX(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-    
-    /* ========== DIVIDER ========== */
+
+    /* ── DIVIDER ── */
     hr {
-        margin: 30px 0 !important;
+        margin: 24px 0 !important;
         border: none !important;
-        height: 2px !important;
-        background: linear-gradient(90deg, transparent, #3b82f6, #8b5cf6, transparent) !important;
+        height: 1px !important;
+        background: linear-gradient(90deg, transparent, rgba(99,102,241,0.30), transparent) !important;
     }
-    
-    /* ========== RESPONSIVE DESIGN ========== */
-    @media (max-width: 768px) {
-        .stats-wrapper {
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .mood-title {
-            font-size: 32px !important;
-        }
-        
-        .section-header {
-            font-size: 20px !important;
-        }
-        
-        div[role="radiogroup"] {
-            flex-direction: column !important;
-            align-items: center !important;
-        }
-        
-        div[role="radiogroup"] label {
-            width: 80% !important;
-            text-align: center !important;
-        }
-    }
-    
-    /* ========== SCROLLBAR ========== */
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-    
-    ::-webkit-scrollbar-track {
-        background: #e2e8f0;
-        border-radius: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-        background: #3b82f6;
-        border-radius: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-        background: #2563eb;
-    }
-    
-    /* ========== MATPLOTLIB FIGURE STYLING ========== */
-    .timeline-wrapper .stPlotlyChart, 
-    .timeline-wrapper .stImage {
-        background: transparent !important;
-    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar       { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.30); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.55); }
     </style>
     """, unsafe_allow_html=True)
 
-    # ================= TITLE =================
-    st.markdown("<h1 class='mood-title'>📈 Mood Tracker</h1>", unsafe_allow_html=True)
-    
-    st.markdown("---")
+    # ── HEADER BANNER ──
+    st.markdown("""
+    <div class="page-header">
+        <div class="page-header-avatar">📊</div>
+        <div class="page-header-text">
+            <h2>Mood Analytics</h2>
+            <p>Track and understand your emotional wellness journey</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-    # ================= QUICK MOOD LOG - BETTER VERSION =================
-# ================= QUICK MOOD LOG (USING st.toast) =================
-    st.markdown('<div class="section-header">😊 Quick Mood Log</div>', unsafe_allow_html=True)
+    # ================= QUICK MOOD LOG =================
+     
+    st.markdown('<div class="section-title">😊 Quick Mood Log</div>', unsafe_allow_html=True)
 
     mood = st.radio(
         "",
@@ -355,33 +337,33 @@ def show_mood_analytics(user_id):
         key="mood_radio"
     )
 
-    # Centralized Log Button
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("✨ Log My Mood", key="log_mood_btn", use_container_width=True):
-            mood_text = mood.split(" ", 1)[1]
-            add_mood(user_id, mood_text)
-            # Professional built-in toast
-            st.toast(f"🎉 Mood '{mood_text}' logged successfully!", icon="✅")
-            st.balloons()  # Optional: fun effect
+    # Centralized Log Button (no empty columns)
+    st.markdown('<div style="display: flex; justify-content: center; margin: 20px 0;">', unsafe_allow_html=True)
+    if st.button("✨ Log My Mood", key="log_mood_btn"):
+        mood_text = mood.split(" ", 1)[1]
+        add_mood(user_id, mood_text)
+        st.toast(f"🎉 Mood '{mood_text}' logged successfully!", icon="✅")
+        st.balloons()
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown("---")
+    st.markdown('</div>', unsafe_allow_html=True)  # Close mood-section-card
 
-    # ================= FILTER SECTION =================
-    st.markdown('<div class="section-header">📅 Mood Trend Timeline</div>', unsafe_allow_html=True)
+    moods = get_moods(user_id)
+    mood_list = ["Happy", "Neutral", "Sad", "Anxious", "Angry"]
 
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
+    if moods:
+        # ================= FILTER SECTION (ONLY SHOW IF MOODS EXIST) =================
+        st.markdown('<div class="mood-section-card">', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">📅 Mood Trend Timeline</div>', unsafe_allow_html=True)
+
         range_option = st.selectbox(
             "Select Time Range",
             ["Last 7 Days", "Last 30 Days", "Last 3 Months", "All Time"],
             key="time_range"
         )
 
-    moods = get_moods(user_id)
-    mood_list = ["Happy", "Neutral", "Sad", "Anxious", "Angry"]
+        st.markdown('</div>', unsafe_allow_html=True)  # Close mood-section-card
 
-    if moods:
         if range_option == "Last 7 Days":
             filtered = moods[-7:]
         elif range_option == "Last 30 Days":
@@ -393,7 +375,7 @@ def show_mood_analytics(user_id):
     else:
         filtered = []
 
-    # ================= ANALYTICS SECTION =================
+    # ================= ANALYTICS SECTION (ONLY SHOW IF DATA EXISTS) =================
     if filtered:
 
         mood_counts = {m: filtered.count(m) for m in mood_list if m in filtered}
@@ -430,7 +412,6 @@ def show_mood_analytics(user_id):
 
         # ================= MOOD TREND GRAPH =================
         if len(filtered) > 1:
-            st.markdown("<div class='timeline-wrapper'>", unsafe_allow_html=True)
             st.markdown("### 📊 Mood Trend Analysis")
 
             y_map = {"Happy": 5, "Neutral": 3, "Sad": 2, "Anxious": 1, "Angry": 0}
@@ -461,7 +442,66 @@ def show_mood_analytics(user_id):
             st.pyplot(fig)
             st.markdown("</div>", unsafe_allow_html=True)
 
+            # ================= MOOD DISTRIBUTION PIE CHART =================
+            st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)  # Spacing
+            st.markdown("<div class='chart-wrapper'>", unsafe_allow_html=True)
+            
+            # Centered heading with larger size
+            st.markdown("""
+            <div style='text-align: center; margin-bottom: 20px;'>
+                <h2 style='font-size: 24px; font-weight: 700; color: #1e293b; margin-bottom: 12px;'>
+                    🎨 Mood Distribution
+                </h2>
+                <p style='color: #475569; font-size: 15px; line-height: 1.7; max-width: 700px; margin: 0 auto;'>
+                    This chart visualizes the percentage breakdown of your emotional states during the selected period. 
+                    Understanding your mood distribution helps identify patterns and emotional balance in your daily life.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+
+            # Create pie chart with much smaller size
+            fig2, ax2 = plt.subplots(figsize=(5, 3.5))
+            colors = ['#10b981', '#3b82f6', '#ef4444', '#f59e0b', '#ec4899']
+            mood_colors = {
+                "Happy": '#10b981',
+                "Neutral": '#3b82f6', 
+                "Sad": '#ef4444',
+                "Anxious": '#f59e0b',
+                "Angry": '#ec4899'
+            }
+            
+            pie_data = []
+            pie_labels = []
+            pie_colors = []
+            for mood in mood_list:
+                if mood in mood_counts and mood_counts[mood] > 0:
+                    pie_data.append(mood_counts[mood])
+                    pie_labels.append(mood)
+                    pie_colors.append(mood_colors.get(mood, '#3b82f6'))
+            
+            if pie_data:
+                wedges, texts, autotexts = ax2.pie(
+                    pie_data, 
+                    labels=pie_labels, 
+                    colors=pie_colors,
+                    autopct='%1.1f%%',
+                    startangle=90,
+                    textprops={'fontsize': 10, 'weight': 'bold'}
+                )
+                
+                for autotext in autotexts:
+                    autotext.set_color('white')
+                    autotext.set_fontsize(10)
+                    autotext.set_weight('bold')
+                
+                ax2.set_title(f"Emotional Balance – {range_option}", fontsize=12, fontweight='bold', pad=12)
+                fig2.patch.set_facecolor('white')
+                
+                st.pyplot(fig2)
+            st.markdown("</div>", unsafe_allow_html=True)
+
             # ================= CHAT-BASED TREND =================
+            st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)  # Spacing
             all_msgs = get_all_user_messages(user_id) or []
             cutoff_map = {
                 "Last 7 Days": datetime.now() - timedelta(days=7),
@@ -506,8 +546,22 @@ def show_mood_analytics(user_id):
                 counts = [daily_count[d] for d in days_sorted]
                 stress = [daily_stress.get(d, 0) for d in days_sorted]
 
-                st.markdown("<div class='timeline-wrapper' style='margin-top: 30px;'>", unsafe_allow_html=True)
-                st.markdown("### 💬 Chat Activity Insights")
+                st.markdown("<div class='chart-wrapper' style='margin-top: 30px;'>", unsafe_allow_html=True)
+                
+                # Centered heading with larger size
+                st.markdown("""
+                <div style='text-align: center; margin-bottom: 20px;'>
+                    <h2 style='font-size: 24px; font-weight: 700; color: #1e293b; margin-bottom: 12px;'>
+                        💬 Chat Activity Insights
+                    </h2>
+                    <p style='color: #475569; font-size: 15px; line-height: 1.7; max-width: 750px; margin: 0 auto;'>
+                        This analysis correlates your daily chat activity with stress-related keywords detected in your messages. 
+                        The <span style='color: #10b981; font-weight: 600;'>green line</span> shows message volume, while the 
+                        <span style='color: #ef4444; font-weight: 600;'>red line</span> indicates stress indicators, helping you identify 
+                        patterns between communication frequency and emotional distress.
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
 
                 fig2, ax2 = plt.subplots(figsize=(11, 4))
                 ax2.plot(x2, counts, marker='o', linewidth=2.5, markersize=7, 
@@ -531,7 +585,16 @@ def show_mood_analytics(user_id):
                 st.pyplot(fig2)
                 st.markdown("</div>", unsafe_allow_html=True)
             else:
-                st.info("📭 No chat history found for the selected time range.")
+                st.markdown("""
+                <div style='text-align: center; padding: 40px 20px;'>
+                    <p style='font-size: 16px; color: #64748b; font-weight: 500;'>
+                        📭 No chat history found for the selected time range.
+                    </p>
+                    <p style='font-size: 14px; color: #94a3b8; margin-top: 10px;'>
+                        Start chatting with the AI to see your activity insights here.
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
 
         else:
             st.info("📊 Need more mood entries to show trend analysis. Keep logging your mood daily!")

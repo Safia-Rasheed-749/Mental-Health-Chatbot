@@ -4,9 +4,9 @@ import streamlit as st
 def render_navbar():
     st.markdown("""
     <style>
-                .nav-container {
+        .nav-container {
             background: linear-gradient(135deg, #9FC6F0, #4F84D9) !important;
-            padding: 8px 30px !important;  /* ← padding kam kiya */
+            padding: 8px 30px !important;
             border-radius: 60px !important;
             box-shadow: 0 8px 32px 0 rgba(102, 126, 234, 0.3) !important;
             margin: 10px 0 20px 0 !important;
@@ -14,7 +14,7 @@ def render_navbar():
             align-items: center !important;
             justify-content: space-between !important;
             width: 100% !important;
-             animation: slideDown 0.8s ease-out;
+            animation: slideDown 0.8s ease-out;
         }
         @keyframes slideDown {
             from { transform: translateY(-100px); opacity: 0; }
@@ -24,22 +24,44 @@ def render_navbar():
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 26px;  /* ← size thoda kam */
+            font-size: 26px;
             font-weight: 700;
             color: #6D9EEB !important;
-            line-height: 1;  /* ← add this */
+            line-height: 1;
             text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        /* Buttons ko vertically center karne ke liye */
+        /* Pulsing brain avatar */
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a78bfa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 0 0 0 rgba(99,102,241,0.4);
+            animation: navPulse 2s ease-in-out infinite;
+        }
+        @keyframes navPulse {
+            0% { 
+                box-shadow: 0 0 0 0 rgba(99,102,241,0.7);
+            }
+            50% { 
+                box-shadow: 0 0 0 10px rgba(99,102,241,0);
+            }
+            100% { 
+                box-shadow: 0 0 0 0 rgba(99,102,241,0);
+            }
+        }
+
         div[data-testid="column"] button {
-            padding: 6px 14px !important;  /* ← padding kam */
+            padding: 6px 14px !important;
             margin-top: 0 !important;
             margin-bottom: 0 !important;
         }
-        .logo-icon {
-            font-size: 40px;
-        }
+        
         div.stButton > button {
             all: unset !important;
             display: inline-flex !important;
@@ -91,7 +113,7 @@ def render_navbar():
     with col1:
         st.markdown("""
         <div class="logo">
-            <span class="logo-icon">🧠</span>
+            <div class="logo-icon">🧠</div>
             <span>Mind Care AI</span>
         </div>
         """, unsafe_allow_html=True)
