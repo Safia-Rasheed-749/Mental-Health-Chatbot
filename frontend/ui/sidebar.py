@@ -358,11 +358,9 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
                 unsafe_allow_html=True
             )
 
-            # New Chat button
+            # New Chat button - don't create conversation until user sends first message
             if st.button("＋  New Chat", key="new_chat_btn"):
-                from db import create_conversation
-                new_cid = create_conversation(user_id)
-                st.session_state["conversation_id"] = new_cid
+                st.session_state["conversation_id"] = None
                 st.session_state["chat_history"] = []
                 st.session_state["last_loaded_chat"] = None
                 st.session_state.pop("open_dropdown", None)
