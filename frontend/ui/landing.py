@@ -552,29 +552,7 @@ def show_landing_page():
             }
         }
         
-        .scroll-top {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            text-align: center;
-            line-height: 45px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            font-size: 20px;
-            transition: all 0.3s ease;
-            animation: pulse 2s ease-in-out infinite;
-        }
         
-        .scroll-top:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
         
         .stButton > button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -666,7 +644,6 @@ def show_landing_page():
         }
     </style>
     
-    <div class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">↑</div>
     """, unsafe_allow_html=True)
     
     # ===== CSS (SAFE - NO NAVBAR BREAK) =====
