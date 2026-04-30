@@ -181,6 +181,9 @@ if current == "Dashboard":
 elif current == "Chat":
     chat.show_chat(user_id)
 
+elif current == "History":
+    history.show_history(user_id)
+
 elif current == "Mood Analytics":
     mood.show_mood_analytics(user_id)
 
@@ -189,11 +192,6 @@ elif current == "Journal":
 
 elif current == "Games":
     show_aesthetic_game_selector()
-
-elif current == "History":
-    # History page removed — redirect to Chat
-    st.session_state["current_page"] = "Chat"
-    chat.show_chat(user_id)
 
 elif current == "Admin Panel" and is_admin:
     show_admin_panel()

@@ -214,9 +214,9 @@ def show_landing_page():
             text-align: center;
             font-size: 2rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #8b5cf6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            .section-title 
+            color: #3b82f6;   /* Nice blue */
+            font-weight: 700;
             background-clip: text;
             margin: 35px 0 15px 0;
             position: relative;
@@ -722,60 +722,30 @@ def show_landing_page():
             function createMsg(text, isUser) {
                 var msg = document.createElement('div');
                 msg.style.display = 'flex';
-                msg.style.marginBottom = '18px';
+                msg.style.marginBottom = '12px';
                 msg.style.justifyContent = isUser ? 'flex-start' : 'flex-end';
                 msg.style.opacity = '0';
                 msg.style.transform = 'translateY(10px)';
                 msg.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
                 
-                if (isUser) {
-                    var bubble = document.createElement('div');
-                    bubble.style.padding = '10px 14px';
-                    bubble.style.borderRadius = '0 15px 15px 15px';
-                    bubble.style.fontSize = '13px';
-                    bubble.style.maxWidth = '80%';
-                    bubble.style.wordWrap = 'break-word';
+                var bubble = document.createElement('div');
+                bubble.style.padding = '10px 14px';
+                bubble.style.borderRadius = isUser ? '0 15px 15px 15px' : '15px 0 15px 15px';
+                bubble.style.fontSize = '13px';
+                bubble.style.maxWidth = '80%';
+                bubble.style.wordWrap = 'break-word';
+                
+                if (isUser) { 
                     bubble.style.background = '#f1f5f9'; 
                     bubble.style.color = '#1e293b';
-                    bubble.innerText = "👤 " + text;
-                    msg.appendChild(bubble);
-                } else {
-                    // AI message with avatar
-                    var wrap = document.createElement('div');
-                    wrap.style.display = 'flex';
-                    wrap.style.alignItems = 'flex-start';
-                    wrap.style.gap = '8px';
-                    wrap.style.maxWidth = '85%';
-                    
-                    var avatar = document.createElement('div');
-                    avatar.style.width = '30px';
-                    avatar.style.height = '30px';
-                    avatar.style.borderRadius = '50%';
-                    avatar.style.background = 'linear-gradient(135deg, #6366f1, #a78bfa)';
-                    avatar.style.display = 'flex';
-                    avatar.style.alignItems = 'center';
-                    avatar.style.justifyContent = 'center';
-                    avatar.style.fontSize = '14px';
-                    avatar.style.flexShrink = '0';
-                    avatar.style.boxShadow = '0 2px 8px rgba(99,102,241,0.30)';
-                    avatar.innerText = '🧠';
-                    
-                    var bubble = document.createElement('div');
-                    bubble.style.padding = '10px 14px';
-                    bubble.style.borderRadius = '4px 15px 15px 15px';
-                    bubble.style.fontSize = '13px';
-                    bubble.style.wordWrap = 'break-word';
-                    bubble.style.background = '#ffffff';
-                    bubble.style.color = '#1e293b';
-                    bubble.style.boxShadow = '0 2px 10px rgba(0,0,0,0.08)';
-                    bubble.style.borderLeft = '3px solid #8b5cf6';
-                    bubble.innerText = text;
-                    
-                    wrap.appendChild(avatar);
-                    wrap.appendChild(bubble);
-                    msg.appendChild(wrap);
+                    bubble.innerText = "👤 " + text; 
+                } else { 
+                    bubble.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    bubble.style.color = 'white'; 
+                    bubble.innerText = "🧠" + text; 
                 }
                 
+                msg.appendChild(bubble);
                 return msg;
             }
             

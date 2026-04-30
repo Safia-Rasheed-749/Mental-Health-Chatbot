@@ -7,173 +7,90 @@ def show_dashboard():
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-    html, body, .stApp {
-        font-family: 'Inter','Segoe UI',sans-serif !important;
-        background: linear-gradient(135deg, #ece9f7 0%, #dff0f5 50%, #d9f0e8 100%) !important;
-        min-height: 100vh !important;
-    }
+    html, body, .stApp { font-family:'Inter','Segoe UI',sans-serif !important; background:#f0f4fb !important; }
 
     header[data-testid="stHeader"] { background:transparent !important; box-shadow:none !important; border-bottom:none !important; }
     .stDeployButton { display:none !important; }
-    .stAppDeployButton { display: none !important; }
     #MainMenu       { visibility:hidden !important; }
     footer          { visibility:hidden !important; }
 
-    .block-container {
-        padding-top: 1.6rem !important;
-        padding-bottom: 3rem !important;
-        background: transparent !important;
-        max-width: 1060px !important;
-    }
+    .block-container { padding-top:1.4rem !important; padding-bottom:3rem !important; background:#f0f4fb !important; max-width:1080px !important; }
 
-    /* ── HERO ── */
+    /* HERO */
     .dash-hero {
-        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%);
-        border-radius: 24px;
-        padding: 28px 32px 24px;
-        margin-bottom: 28px;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 8px 28px rgba(74,127,212,0.30);
+        background:linear-gradient(135deg,#4a7fd4 0%,#5fa8e0 55%,#7ecde8 100%);
+        border-radius:20px; padding:28px 32px 26px; margin-bottom:32px;
+        position:relative; overflow:hidden; box-shadow:0 8px 28px rgba(74,127,212,0.25);
     }
     .dash-hero::before { content:''; position:absolute; top:-50px; right:-50px; width:180px; height:180px; background:rgba(255,255,255,0.10); border-radius:50%; }
     .dash-hero::after  { content:''; position:absolute; bottom:-35px; left:28%; width:130px; height:130px; background:rgba(255,255,255,0.07); border-radius:50%; }
-    .hero-top      { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:10px; }
-    .hero-greeting { font-size:25px; font-weight:800; color:#ffffff; line-height:1.25; margin:0; }
-    .hero-sub      { font-size:14px; color:rgba(255,255,255,0.88); margin-top:5px; }
-    .hero-badge    { background:rgba(255,255,255,0.22); border:1px solid rgba(255,255,255,0.35); border-radius:50px; padding:6px 16px; font-size:12px; font-weight:600; color:#fff; white-space:nowrap; margin-top:2px; }
-    .hero-divider  { height:1px; background:rgba(255,255,255,0.22); margin:16px 0 14px; }
-    .hero-stats-row { display:flex; gap:28px; flex-wrap:wrap; align-items:center; }
-    .hero-stat     { display:flex; flex-direction:column; }
-    .hero-stat-val { font-size:24px; font-weight:800; color:#ffffff; line-height:1; }
-    .hero-stat-lbl { font-size:11px; color:rgba(255,255,255,0.75); margin-top:3px; font-weight:500; text-transform:uppercase; letter-spacing:0.5px; }
-    .hero-stat-sep { width:1px; height:34px; background:rgba(255,255,255,0.28); }
+    .hero-top        { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+    .hero-greeting   { font-size:26px; font-weight:800; color:#fff; line-height:1.25; margin:0; }
+    .hero-sub        { font-size:14px; color:rgba(255,255,255,0.88); margin-top:5px; }
+    .hero-badge      { background:rgba(255,255,255,0.22); border:1px solid rgba(255,255,255,0.35); border-radius:50px; padding:6px 16px; font-size:12px; font-weight:600; color:#fff; white-space:nowrap; margin-top:2px; }
+    .hero-divider    { height:1px; background:rgba(255,255,255,0.22); margin:18px 0 16px; }
+    .hero-stats-row  { display:flex; gap:24px; flex-wrap:wrap; align-items:center; }
+    .hero-stat       { display:flex; flex-direction:column; }
+    .hero-stat-val   { font-size:24px; font-weight:800; color:#fff; line-height:1; }
+    .hero-stat-lbl   { font-size:11px; color:rgba(255,255,255,0.75); margin-top:3px; font-weight:500; text-transform:uppercase; letter-spacing:0.5px; }
+    .hero-stat-sep   { width:1px; height:36px; background:rgba(255,255,255,0.28); }
 
-    /* ── SECTION LABEL ── */
-    .section-label { font-size:11px; font-weight:700; letter-spacing:1.1px; text-transform:uppercase; color:#9b8ec4; text-align:center; margin:0 0 14px; }
+    /* SECTION LABEL */
+    .section-label { font-size:11px; font-weight:700; letter-spacing:1.1px; text-transform:uppercase; color:#7c8db5; text-align:center; margin:0 0 16px; padding-top:4px; }
 
-    /* ── SPACERS ── */
-    .sp-md { height:22px; }
-    .sp-lg { height:32px; }
+    /* SPACERS */
+    .sp-md { height:24px; }
+    .sp-lg { height:36px; }
 
-    /* ── OVERVIEW STAT CARDS ── */
+    /* OVERVIEW STAT CARDS */
     .stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
-    .stat-card-pro {
-        border-radius:18px; padding:20px 18px;
-        border:1px solid rgba(255,255,255,0.80);
-        box-shadow:0 4px 18px rgba(160,140,220,0.10);
-        position:relative; overflow:hidden;
-        backdrop-filter: blur(10px);
-    }
-    .sc-blue   { background: linear-gradient(145deg, rgba(220,230,255,0.80), rgba(255,255,255,0.60)); }
-    .sc-teal   { background: linear-gradient(145deg, rgba(210,245,238,0.80), rgba(255,255,255,0.60)); }
-    .sc-purple { background: linear-gradient(145deg, rgba(235,225,255,0.80), rgba(255,255,255,0.60)); }
+    .stat-card-pro { background:#fff; border-radius:16px; padding:20px 18px; border:1px solid #e4eaf4; box-shadow:0 2px 12px rgba(0,0,0,0.04); position:relative; overflow:hidden; }
+    .sc-top-bar    { height:4px; border-radius:16px 16px 0 0; position:absolute; top:0; left:0; right:0; }
+    .sc-blue   .sc-top-bar { background:linear-gradient(90deg,#4a7fd4,#5fa8e0); }
+    .sc-teal   .sc-top-bar { background:linear-gradient(90deg,#0ea5a0,#34d399); }
+    .sc-purple .sc-top-bar { background:linear-gradient(90deg,#8b5cf6,#c084fc); }
+    .sc-icon-wrap  { width:42px; height:42px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:19px; margin:8px 0 12px; }
+    .sc-blue   .sc-icon-wrap { background:#eef3ff; }
+    .sc-teal   .sc-icon-wrap { background:#e6faf8; }
+    .sc-purple .sc-icon-wrap { background:#f3eeff; }
+    .sc-val    { font-size:30px; font-weight:800; color:#1e2d4e; line-height:1; }
+    .sc-val-sm { font-size:18px; font-weight:700; color:#1e2d4e; line-height:1.3; }
+    .sc-lbl    { font-size:12px; color:#7c8db5; font-weight:500; margin-top:5px; }
 
-    .sc-top-bar { height:4px; border-radius:18px 18px 0 0; position:absolute; top:0; left:0; right:0; }
-    .sc-blue   .sc-top-bar { background:linear-gradient(90deg,#7b9ef0,#a5c0f5); }
-    .sc-teal   .sc-top-bar { background:linear-gradient(90deg,#5ecfb8,#7de8c8); }
-    .sc-purple .sc-top-bar { background:linear-gradient(90deg,#a78bfa,#c4b5fd); }
+    /* INSIGHT PANEL */
+    .insight-panel { background:linear-gradient(135deg,#eaf3fd,#f0f6ff); border:1px solid #c8dff5; border-radius:16px; padding:22px 26px; display:flex; align-items:center; gap:18px; }
+    .insight-icon  { font-size:36px; flex-shrink:0; }
+    .insight-text h4 { font-size:15px; font-weight:700; color:#1e3a6e; margin:0 0 5px; }
+    .insight-text p  { font-size:13px; color:#3d5a8a; margin:0; line-height:1.6; }
 
-    .sc-icon-wrap { width:40px; height:40px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:18px; margin:8px 0 12px; background:rgba(255,255,255,0.70); }
-    .sc-val    { font-size:28px; font-weight:800; color:#3b2f6e; line-height:1; }
-    .sc-val-sm { font-size:17px; font-weight:700; color:#3b2f6e; line-height:1.3; }
-    .sc-lbl    { font-size:12px; color:#8b7ec0; font-weight:500; margin-top:5px; }
+    /* NAV CARDS */
+    .nav-card        { background:#fff; border-radius:18px; border:1.5px solid #e4eaf4; box-shadow:0 2px 14px rgba(0,0,0,0.05); padding:24px 22px 20px; position:relative; overflow:hidden; margin-bottom:10px; }
+    .nav-card-stripe { height:4px; border-radius:18px 18px 0 0; position:absolute; top:0; left:0; right:0; }
+    .nc-chat    .nav-card-stripe { background:linear-gradient(90deg,#4a7fd4,#5fa8e0); }
+    .nc-mood    .nav-card-stripe { background:linear-gradient(90deg,#0ea5a0,#34d399); }
+    .nc-history .nav-card-stripe { background:linear-gradient(90deg,#8b5cf6,#c084fc); }
+    .nc-journal .nav-card-stripe { background:linear-gradient(90deg,#f97316,#fbbf24); }
+    .nc-chat    { background:linear-gradient(180deg,#f0f5ff 0%,#fff 55%); }
+    .nc-mood    { background:linear-gradient(180deg,#f0fdfb 0%,#fff 55%); }
+    .nc-history { background:linear-gradient(180deg,#f5f0ff 0%,#fff 55%); }
+    .nc-journal { background:linear-gradient(180deg,#fff7f0 0%,#fff 55%); }
+    .nav-card-icon  { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; margin:6px 0 14px; }
+    .nc-chat    .nav-card-icon { background:#dbeafe; }
+    .nc-mood    .nav-card-icon { background:#ccfbf1; }
+    .nc-history .nav-card-icon { background:#ede9fe; }
+    .nc-journal .nav-card-icon { background:#ffedd5; }
+    .nav-card-title { font-size:16px; font-weight:700; color:#1e2d4e; margin-bottom:6px; }
+    .nav-card-desc  { font-size:13px; color:#64748b; line-height:1.55; }
+    .nav-card-tag   { display:inline-block; margin-top:14px; padding:4px 12px; border-radius:50px; font-size:11px; font-weight:600; }
+    .nc-chat    .nav-card-tag { background:#dbeafe; color:#2563eb; }
+    .nc-mood    .nav-card-tag { background:#ccfbf1; color:#0d9488; }
+    .nc-history .nav-card-tag { background:#ede9fe; color:#7c3aed; }
+    .nc-journal .nav-card-tag { background:#ffedd5; color:#ea580c; }
 
-    /* ── INSIGHT PANEL ── */
-    .insight-panel {
-        background: rgba(255,255,255,0.55);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255,255,255,0.75);
-        border-radius:18px; padding:20px 24px;
-        display:flex; align-items:center; gap:16px;
-        box-shadow: 0 4px 18px rgba(160,140,220,0.10);
-    }
-    .insight-icon    { font-size:34px; flex-shrink:0; }
-    .insight-text h4 { font-size:14px; font-weight:700; color:#3b2f6e; margin:0 0 4px; }
-    .insight-text p  { font-size:13px; color:#6b5fa0; margin:0; line-height:1.6; }
+    /* FOOTER */
+    .dash-footer { text-align:center; color:#a0aec0; font-size:13px; padding:28px 0 10px; border-top:1px solid #e4eaf4; margin-top:12px; }
 
-    /* ── NAV CARDS ── */
-    .nav-card {
-        border-radius:20px;
-        border: 1px solid rgba(255,255,255,0.80);
-        box-shadow: 0 4px 18px rgba(160,140,220,0.10);
-        padding: 22px 20px 18px;
-        position: relative; overflow:hidden;
-        margin-bottom: 10px;
-        backdrop-filter: blur(10px);
-    }
-    .nc-chat    { background: linear-gradient(160deg, rgba(220,230,255,0.75) 0%, rgba(255,255,255,0.55) 60%); }
-    .nc-mood    { background: linear-gradient(160deg, rgba(210,245,238,0.75) 0%, rgba(255,255,255,0.55) 60%); }
-    .nc-history { background: linear-gradient(160deg, rgba(235,225,255,0.75) 0%, rgba(255,255,255,0.55) 60%); }
-    .nc-journal { background: linear-gradient(160deg, rgba(255,237,213,0.75) 0%, rgba(255,255,255,0.55) 60%); }
-
-    .nav-card-stripe { height:4px; border-radius:20px 20px 0 0; position:absolute; top:0; left:0; right:0; }
-    .nc-chat    .nav-card-stripe { background:linear-gradient(90deg,#7b9ef0,#a5c0f5); }
-    .nc-mood    .nav-card-stripe { background:linear-gradient(90deg,#5ecfb8,#7de8c8); }
-    .nc-history .nav-card-stripe { background:linear-gradient(90deg,#a78bfa,#c4b5fd); }
-    .nc-journal .nav-card-stripe { background:linear-gradient(90deg,#fb923c,#fbbf24); }
-
-    .nav-card-icon { width:46px; height:46px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:24px; margin:4px 0 12px; background:rgba(255,255,255,0.70); }
-    .nav-card-title { font-size:18px; font-weight:700; color:#3b2f6e; margin-bottom:5px; }
-    .nav-card-desc  { font-size:15px; color:#6b7a99; line-height:1.55; }
-    .nav-card-tag   { display:inline-block; margin-top:12px; padding:4px 11px; border-radius:50px; font-size:12px; font-weight:600; background:rgba(255,255,255,0.70); }
-    .nc-chat    .nav-card-tag { color:#4a6fd4; }
-    .nc-mood    .nav-card-tag { color:#0d9488; }
-    .nc-history .nav-card-tag { color:#7c3aed; }
-    .nc-journal .nav-card-tag { color:#ea580c; }
-
-    /* ── NAV BUTTONS — colored by Streamlit's own key-based data-testid ── */
-    /* Streamlit renders: <div data-testid="stButton"><button ...> */
-    /* We target the button inside each column's stButton by order */
-
-    /* All 4 nav buttons: shared base */
-    [data-testid="stButton"]:has(button[data-testid="baseButton-secondary"]) button {
-        border-radius: 12px !important;
-        border: none !important;
-        height: 42px !important;
-        min-height: 42px !important;
-        font-size: 13px !important;
-        font-weight: 700 !important;
-        color: #ffffff !important;
-        cursor: pointer !important;
-        width: 100% !important;
-        transition: filter 0.18s, transform 0.18s !important;
-    }
-
-    /* Target by button text via attribute — Streamlit sets aria-label from button label */
-    button[aria-label="Open AI Chat"],
-    button[data-testid="Open AI Chat"] {
-        background: linear-gradient(135deg, #7b9ef0, #a5c0f5) !important;
-        box-shadow: 0 4px 14px rgba(123,158,240,0.40) !important;
-    }
-    button[aria-label="Open Mood Analytics"],
-    button[data-testid="Open Mood Analytics"] {
-        background: linear-gradient(135deg, #5ecfb8, #7de8c8) !important;
-        box-shadow: 0 4px 14px rgba(94,207,184,0.40) !important;
-    }
-    button[aria-label="Open Chat History"],
-    button[data-testid="Open Chat History"] {
-        background: linear-gradient(135deg, #a78bfa, #c4b5fd) !important;
-        box-shadow: 0 4px 14px rgba(167,139,250,0.40) !important;
-    }
-    button[aria-label="Open Journal"],
-    button[data-testid="Open Journal"] {
-        background: linear-gradient(135deg, #fb923c, #fbbf24) !important;
-        box-shadow: 0 4px 14px rgba(251,146,60,0.40) !important;
-    }
-
-    button[aria-label="Open AI Chat"]:hover,
-    button[aria-label="Open Mood Analytics"]:hover,
-    button[aria-label="Open Chat History"]:hover,
-    button[aria-label="Open Journal"]:hover {
-        filter: brightness(1.08) !important;
-        transform: translateY(-2px) !important;
-    }
-
-    /* ── FOOTER ── */
-    .dash-footer { text-align:center; color:#9b8ec4; font-size:13px; padding:26px 0 8px; border-top:1px solid rgba(160,140,220,0.20); margin-top:10px; }
-
-    /* ── SIDEBAR — untouched ── */
+    /* SIDEBAR — untouched */
     section[data-testid="stSidebar"] .stButton > button {
         display:block !important; width:100% !important; background:transparent !important;
         border:none !important; border-radius:30px !important; padding:8px 16px !important;
@@ -186,6 +103,35 @@ def show_dashboard():
         background-color:rgba(59,130,246,0.15) !important; transform:translateX(4px) !important;
     }
     </style>
+
+    <script>
+    (function() {
+        const colors = {
+            'Open AI Chat':        { bg:'linear-gradient(135deg,#4a7fd4,#5fa8e0)', shadow:'0 4px 14px rgba(74,127,212,0.40)' },
+            'Open Mood Analytics': { bg:'linear-gradient(135deg,#0ea5a0,#34d399)', shadow:'0 4px 14px rgba(14,165,160,0.40)' },
+            'Open Chat History':   { bg:'linear-gradient(135deg,#8b5cf6,#c084fc)', shadow:'0 4px 14px rgba(139,92,246,0.40)' },
+            'Open Journal':        { bg:'linear-gradient(135deg,#f97316,#fbbf24)', shadow:'0 4px 14px rgba(249,115,22,0.40)' },
+        };
+        function paint() {
+            window.parent.document.querySelectorAll('button').forEach(btn => {
+                const c = colors[btn.innerText.trim()];
+                if (!c) return;
+                btn.style.setProperty('background', c.bg, 'important');
+                btn.style.setProperty('color', '#fff', 'important');
+                btn.style.setProperty('box-shadow', c.shadow, 'important');
+                btn.style.setProperty('border', 'none', 'important');
+                btn.style.setProperty('border-radius', '12px', 'important');
+                btn.style.setProperty('font-weight', '700', 'important');
+                btn.style.setProperty('height', '44px', 'important');
+                btn.onmouseenter = () => btn.style.setProperty('filter','brightness(1.08)','important');
+                btn.onmouseleave = () => btn.style.removeProperty('filter');
+            });
+        }
+        setTimeout(paint, 100);
+        setTimeout(paint, 600);
+        new MutationObserver(paint).observe(window.parent.document.body, { childList:true, subtree:true });
+    })();
+    </script>
     """, unsafe_allow_html=True)
 
     # ── DATA ──
@@ -276,44 +222,40 @@ def show_dashboard():
     # ── QUICK NAVIGATION ──
     st.markdown('<div class="sp-lg"></div><p class="section-label">Quick Navigation</p>', unsafe_allow_html=True)
 
-    # Center the navigation cards
-    col_space1, col_main, col_space2 = st.columns([0.5, 2, 0.5])
-    
-    with col_main:
-        col1, col2 = st.columns(2, gap="medium")
-        with col1:
-            st.markdown("""<div class="nav-card nc-chat"><div class="nav-card-stripe"></div>
-                <div class="nav-card-icon">💬</div><div class="nav-card-title">AI Chat</div>
-                <div class="nav-card-desc">Talk with your AI companion anytime, day or night.</div>
-                <span class="nav-card-tag">Start Chatting →</span></div>""", unsafe_allow_html=True)
-            if st.button("Open AI Chat", key="chat_btn", use_container_width=True):
-                st.session_state.current_page = "Chat"; st.query_params["page"] = "Chat"; st.rerun()
+    col1, col2 = st.columns(2, gap="medium")
+    with col1:
+        st.markdown("""<div class="nav-card nc-chat"><div class="nav-card-stripe"></div>
+            <div class="nav-card-icon">💬</div><div class="nav-card-title">AI Chat</div>
+            <div class="nav-card-desc">Talk with your AI companion anytime, day or night.</div>
+            <span class="nav-card-tag">Start Chatting →</span></div>""", unsafe_allow_html=True)
+        if st.button("Open AI Chat", key="chat_btn", use_container_width=True):
+            st.session_state.current_page = "Chat"; st.query_params["page"] = "Chat"; st.rerun()
 
-        with col2:
-            st.markdown("""<div class="nav-card nc-mood"><div class="nav-card-stripe"></div>
-                <div class="nav-card-icon">📊</div><div class="nav-card-title">Mood Analytics</div>
-                <div class="nav-card-desc">Log your mood and visualize emotional trends over time.</div>
-                <span class="nav-card-tag">Track Mood →</span></div>""", unsafe_allow_html=True)
-            if st.button("Open Mood Analytics", key="mood_btn", use_container_width=True):
-                st.session_state.current_page = "Mood Analytics"; st.query_params["page"] = "Mood Analytics"; st.rerun()
+    with col2:
+        st.markdown("""<div class="nav-card nc-mood"><div class="nav-card-stripe"></div>
+            <div class="nav-card-icon">📊</div><div class="nav-card-title">Mood Analytics</div>
+            <div class="nav-card-desc">Log your mood and visualize emotional trends over time.</div>
+            <span class="nav-card-tag">Track Mood →</span></div>""", unsafe_allow_html=True)
+        if st.button("Open Mood Analytics", key="mood_btn", use_container_width=True):
+            st.session_state.current_page = "Mood Analytics"; st.query_params["page"] = "Mood Analytics"; st.rerun()
 
-        st.markdown('<div class="sp-md"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="sp-md"></div>', unsafe_allow_html=True)
 
-        col3, col4 = st.columns(2, gap="medium")
-        with col3:
-            st.markdown("""<div class="nav-card nc-history"><div class="nav-card-stripe"></div>
-                <div class="nav-card-icon">🕒</div><div class="nav-card-title">Chat History</div>
-                <div class="nav-card-desc">Review past conversations, search and export sessions.</div>
-                <span class="nav-card-tag">View History →</span></div>""", unsafe_allow_html=True)
-            if st.button("Open Chat History", key="history_btn", use_container_width=True):
-                st.session_state.current_page = "Chat"; st.query_params["page"] = "Chat"; st.rerun()
+    col3, col4 = st.columns(2, gap="medium")
+    with col3:
+        st.markdown("""<div class="nav-card nc-history"><div class="nav-card-stripe"></div>
+            <div class="nav-card-icon">🕒</div><div class="nav-card-title">Chat History</div>
+            <div class="nav-card-desc">Review past conversations, search and export sessions.</div>
+            <span class="nav-card-tag">View History →</span></div>""", unsafe_allow_html=True)
+        if st.button("Open Chat History", key="history_btn", use_container_width=True):
+            st.session_state.current_page = "History"; st.query_params["page"] = "History"; st.rerun()
 
-        with col4:
-            st.markdown("""<div class="nav-card nc-journal"><div class="nav-card-stripe"></div>
-                <div class="nav-card-icon">📖</div><div class="nav-card-title">Journal</div>
-                <div class="nav-card-desc">Write private reflections and build your personal diary.</div>
-                <span class="nav-card-tag">Write Entry →</span></div>""", unsafe_allow_html=True)
-            if st.button("Open Journal", key="journal_btn", use_container_width=True):
-                st.session_state.current_page = "Journal"; st.query_params["page"] = "Journal"; st.rerun()
+    with col4:
+        st.markdown("""<div class="nav-card nc-journal"><div class="nav-card-stripe"></div>
+            <div class="nav-card-icon">📖</div><div class="nav-card-title">Journal</div>
+            <div class="nav-card-desc">Write private reflections and build your personal diary.</div>
+            <span class="nav-card-tag">Write Entry →</span></div>""", unsafe_allow_html=True)
+        if st.button("Open Journal", key="journal_btn", use_container_width=True):
+            st.session_state.current_page = "Journal"; st.query_params["page"] = "Journal"; st.rerun()
 
     st.markdown('<div class="dash-footer">🌿 MindCare AI &nbsp;·&nbsp; Take care of your mental wellness — one day at a time.</div>', unsafe_allow_html=True)
