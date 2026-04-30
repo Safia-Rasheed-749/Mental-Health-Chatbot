@@ -37,7 +37,7 @@ def show_journal(user_id):
 
     /* ── HEADER BANNER (SAME AS CHAT) ── */
     .page-header {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%);
+        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%);
         padding: 18px 28px 16px;
         display: flex;
         align-items: center;
@@ -65,16 +65,16 @@ def show_journal(user_id):
         0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.12); }
         50%       { box-shadow: 0 0 0 8px rgba(255,255,255,0.06); }
     }
-    .page-header-text h2 {
+    .page-header-text h1 {
         margin: 0;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 700;
         color: #ffffff;
         line-height: 1.2;
     }
     .page-header-text p {
         margin: 2px 0 0;
-        font-size: 12px;
+        font-size: 18px;
         color: rgba(255,255,255,0.78);
         font-weight: 400;
     }
@@ -146,7 +146,7 @@ def show_journal(user_id):
 
     /* ── SAVE BUTTON ── */
     .stButton>button {
-        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%);
         color: white !important;
         border-radius: 12px !important;
         padding: 12px 32px !important;
@@ -285,7 +285,7 @@ def show_journal(user_id):
     <div class="page-header">
         <div class="page-header-avatar">📓</div>
         <div class="page-header-text">
-            <h2>Personal Journal</h2>
+            <h1>Personal Journal</h1>
             <p>Express your thoughts and reflect on your journey</p>
         </div>
     </div>

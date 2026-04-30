@@ -98,7 +98,7 @@ def show_chat(user_id):
 
     /* ── HEADER BANNER ── */
     .chat-header {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%);
+        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%);
         padding: 18px 28px 16px;
         display: flex;
         align-items: center;
@@ -126,16 +126,16 @@ def show_chat(user_id):
         0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.12); }
         50%       { box-shadow: 0 0 0 8px rgba(255,255,255,0.06); }
     }
-    .chat-header-text h2 {
+    .chat-header-text h1 {
         margin: 0;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 700;
         color: #ffffff;
         line-height: 1.2;
     }
     .chat-header-text p {
         margin: 2px 0 0;
-        font-size: 12px;
+        font-size: 18px;
         color: rgba(255,255,255,0.78);
         font-weight: 400;
     }
@@ -388,7 +388,7 @@ def show_chat(user_id):
     <div class="chat-header">
         <div class="chat-header-avatar">🧠</div>
         <div class="chat-header-text">
-            <h2>MindCare AI</h2>
+            <h1>MindCare AI</h1>
             <p>Your personal mental wellness companion</p>
         </div>
         <div class="chat-header-status">

@@ -160,7 +160,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         }
 
         section[data-testid="stSidebar"] .stButton button[kind="primary"] {
-            background: linear-gradient(135deg, rgba(59,130,246,0.90), rgba(124,58,237,0.90)) !important;
+        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%);
             border: 1px solid rgba(255,255,255,0.12) !important;
             color: white !important;
             font-weight: 900 !important;
@@ -183,6 +183,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             margin-top: 30px !important;
             margin-bottom: -2px !important;
             padding-bottom: 0 !important;
+            
         }
 
         section[data-testid="stSidebar"] div[role="radiogroup"] label p {
