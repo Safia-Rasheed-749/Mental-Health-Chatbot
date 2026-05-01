@@ -1187,7 +1187,7 @@ def show_calm_colors_game():
         </style>
         """, unsafe_allow_html=True)
 
-        st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
         # ── ROW 1: Popup centered ──
         _, col, _ = st.columns([1, 1.4, 1])
