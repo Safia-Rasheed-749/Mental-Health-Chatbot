@@ -311,12 +311,6 @@ def show_journal(user_id):
 
     st.markdown('<div style="display: flex; justify-content: center; margin: 20px 0;">', unsafe_allow_html=True)
     save_clicked = st.button("💾 Save Entry", key="save_journal")
-    log_user_activity(
-            st.session_state.user_id, 
-            "Write Journal", 
-            "Journal", 
-            f"Entry length: {len(journal_entry)} characters"
-        )
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("</div>", unsafe_allow_html=True)
@@ -330,6 +324,15 @@ def show_journal(user_id):
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             full_entry = f"[{timestamp}] {entry.strip()}"
             add_journal(user_id, full_entry)
+            try:
+                log_user_activity(
+                    user_id,
+                    "Write Journal",
+                    "Journal",
+                    f"Entry length: {len(entry)} characters"
+                )
+            except Exception:
+                pass
             st.success("✅ Journal entry saved successfully!")
             st.session_state['last_journal'] = full_entry
         else:

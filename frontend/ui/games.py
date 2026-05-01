@@ -7,11 +7,15 @@ def show_calm_colors_game():
     # app.py already calls apply_clean_layout + render_navbar before this.
     # Do NOT call apply_clean_layout here — it shifts the navbar down.
 
+    # Detect if opened from sidebar (logged-in) or navbar (public)
+    from_sidebar = st.session_state.get("games_from_sidebar", False)
+
+    # Base CSS — always applied
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-    header, footer, .stDeployButton { display: none !important; }
+    footer, .stDeployButton { display: none !important; }
 
     html, body, .stApp {
         font-family: 'Inter', sans-serif !important;
@@ -19,8 +23,55 @@ def show_calm_colors_game():
         min-height: 100vh !important;
         position: relative !important;
     }
+    </style>
+    """, unsafe_allow_html=True)
 
-    /* Game screen background overlay */
+    # When opened from NAVBAR — hide header completely, no sidebar
+    if not from_sidebar:
+        st.markdown("""
+        <style>
+        header[data-testid="stHeader"] { display: none !important; }
+        button[kind="header"] { display: none !important; }
+        </style>
+        """, unsafe_allow_html=True)
+
+    # When opened from SIDEBAR — keep header/toggle visible, protect sidebar styling
+    if from_sidebar:
+        st.markdown("""
+        <style>
+        header[data-testid="stHeader"] { visibility: hidden !important; height: 0 !important; }
+        button[kind="header"] { 
+            visibility: visible !important; 
+            display: flex !important;
+            position: fixed !important;
+            top: 0.5rem !important;
+            left: 0.5rem !important;
+            z-index: 9999 !important;
+        }
+        section[data-testid="stSidebar"] {
+            background: linear-gradient(145deg, rgba(12,22,48,0.85), rgba(12,22,48,0.55)) !important;
+        }
+        section[data-testid="stSidebar"] .block-container {
+            padding-top: 0.2rem !important;
+            padding-left: 0.9rem !important;
+            padding-right: 0.9rem !important;
+            max-width: 100% !important;
+            margin-top: 0 !important;
+        }
+        section[data-testid="stSidebar"] div[role="radiogroup"] label p {
+            color: #FFFFFF !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+        }
+        section[data-testid="stSidebar"] .stButton button {
+            font-size: 14px !important;
+            color: #F8FAFC !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <style>
     .stApp::before {
         content: '';
         position: fixed;
@@ -53,7 +104,7 @@ def show_calm_colors_game():
         padding-right: 2rem !important;
         max-width: 1200px !important;
         background: transparent !important;
-        margin-top: 25px;
+        margin-top: 0px;
     }
 
     /* ── FLOATING ELEMENTS ── */
@@ -753,45 +804,37 @@ def show_calm_colors_game():
         </div>
         """, unsafe_allow_html=True)
 
-        # How to Play — lighter gradient cards with visible text
+        # How to Play — animated gradient cards
         st.markdown("""
+        <style>
+        @keyframes cardShift1 { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        @keyframes cardShift2 { 0%{background-position:100% 50%} 50%{background-position:0% 50%} 100%{background-position:100% 50%} }
+        @keyframes cardShift3 { 0%{background-position:50% 0%} 50%{background-position:50% 100%} 100%{background-position:50% 0%} }
+        .card1 { background:linear-gradient(135deg,#6366f1,#818cf8,#a78bfa,#6366f1);background-size:300% 300%;animation:cardShift1 6s ease infinite; }
+        .card2 { background:linear-gradient(135deg,#3b82f6,#60a5fa,#93c5fd,#3b82f6);background-size:300% 300%;animation:cardShift2 6s ease infinite; }
+        .card3 { background:linear-gradient(135deg,#10b981,#34d399,#6ee7b7,#10b981);background-size:300% 300%;animation:cardShift3 6s ease infinite; }
+        </style>
         <div style="margin:0 16px;">
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;">
-                <div style="background:linear-gradient(135deg,#6366f1,#818cf8);border-radius:16px;
-                            padding:18px 14px;text-align:center;
-                            box-shadow:0 4px 16px rgba(99,102,241,0.35);">
+                <div class="card1" style="border-radius:16px;padding:18px 14px;text-align:center;box-shadow:0 4px 16px rgba(99,102,241,0.35);">
                     <div style="font-size:26px;margin-bottom:8px;">👁️</div>
                     <div style="font-size:13px;font-weight:700;color:#ffffff;margin-bottom:4px;">Watch</div>
-                    <div style="font-size:12px;color:#e0e7ff;line-height:1.5;">
-                        Colored squares flash in a sequence
-                    </div>
+                    <div style="font-size:12px;color:#e0e7ff;line-height:1.5;">Colored squares flash in a sequence</div>
                 </div>
-                <div style="background:linear-gradient(135deg,#3b82f6,#60a5fa);border-radius:16px;
-                            padding:18px 14px;text-align:center;
-                            box-shadow:0 4px 16px rgba(59,130,246,0.35);">
+                <div class="card2" style="border-radius:16px;padding:18px 14px;text-align:center;box-shadow:0 4px 16px rgba(59,130,246,0.35);">
                     <div style="font-size:26px;margin-bottom:8px;">&#127919;</div>
                     <div style="font-size:13px;font-weight:700;color:#ffffff;margin-bottom:4px;">Repeat</div>
-                    <div style="font-size:12px;color:#dbeafe;line-height:1.5;">
-                        Click the same colors in order
-                    </div>
+                    <div style="font-size:12px;color:#dbeafe;line-height:1.5;">Click the same colors in order</div>
                 </div>
-                <div style="background:linear-gradient(135deg,#10b981,#34d399);border-radius:16px;
-                            padding:18px 14px;text-align:center;
-                            box-shadow:0 4px 16px rgba(16,185,129,0.35);">
+                <div class="card3" style="border-radius:16px;padding:18px 14px;text-align:center;box-shadow:0 4px 16px rgba(16,185,129,0.35);">
                     <div style="font-size:26px;margin-bottom:8px;">🚀</div>
                     <div style="font-size:13px;font-weight:700;color:#ffffff;margin-bottom:4px;">Level Up</div>
-                    <div style="font-size:12px;color:#d1fae5;line-height:1.5;">
-                        Each round gets longer — score points!
-                    </div>
+                    <div style="font-size:12px;color:#d1fae5;line-height:1.5;">Each round gets longer — score points!</div>
                 </div>
             </div>
-            <div style="background:linear-gradient(135deg, #8b5cf6, #c4b5fd);border-radius:16px;
-                        padding:13px 20px;text-align:center;
-                        box-shadow:0 4px 16px rgba(245,158,11,0.30);">
+            <div style="background:linear-gradient(135deg,#8b5cf6,#c4b5fd);border-radius:16px;padding:13px 20px;text-align:center;box-shadow:0 4px 16px rgba(245,158,11,0.30);">
                 <span style="font-size:15px;">🧘</span>
-                <span style="font-size:14px;font-weight:600;color:#1c1917;margin-left:8px; margin-top: 25px;">
-                    Breathe IN while watching &nbsp;·&nbsp; Breathe OUT while repeating
-                </span>
+                <span style="font-size:14px;font-weight:600;color:#1c1917;margin-left:8px;">Breathe IN while watching &nbsp;·&nbsp; Breathe OUT while repeating</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1009,14 +1052,13 @@ def show_calm_colors_game():
         # ── GAP between popup and button ──
         st.markdown("<div style='height:28px'></div>", unsafe_allow_html=True)
 
-        # ── ROW 2: Button centered — completely separate row ──
-        _, btn_col, _ = st.columns([1.5, 1, 1.5])
-        with btn_col:
-            st.markdown('<div class="play-again-result">', unsafe_allow_html=True)
-            if st.button("🎮 Play Again", key="btn_again", use_container_width=True):
-                reset_game()
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
+        # ── PLAY AGAIN — centered via CSS, no column nesting ──
+        st.markdown("""<style>.play-again-result{display:flex;justify-content:center;}.play-again-result button{background:linear-gradient(135deg,#667eea,#764ba2) !important;color:white !important;font-weight:700 !important;font-size:16px !important;padding:12px 48px !important;border-radius:50px !important;border:2px solid rgba(255,255,255,0.3) !important;box-shadow:0 8px 24px rgba(102,126,234,0.4) !important;transition:all 0.3s ease !important;width:auto !important;min-width:200px !important;}.play-again-result button:hover{transform:translateY(-3px) !important;box-shadow:0 12px 32px rgba(102,126,234,0.55) !important;}</style>""", unsafe_allow_html=True)
+        st.markdown('<div class="play-again-result">', unsafe_allow_html=True)
+        if st.button("🎮 Play Again", key="btn_again"):
+            reset_game()
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
     # ── ROUTER ──
     screen = st.session_state.game_screen

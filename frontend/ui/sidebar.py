@@ -1,50 +1,30 @@
 import streamlit as st
-from db import get_conversations, get_messages_by_conversation
+from db import get_conversations, get_messages_by_conversation, rename_conversation, delete_conversation
 
 def short_title(text, max_len=18):
-    """
-    Convert first user message into a short generic session title.
-    """
-
+    """Convert first user message into a short generic session title."""
     text_lower = text.lower().strip()
-
     mood_keywords = {
-        "sad": "Sadness",
-        "depress": "Depression",
-        "stress": "Stress",
-        "anxious": "Anxiety",
-        "anxiety": "Anxiety",
-        "panic": "Panic",
-        "happy": "Happiness",
-        "angry": "Anger",
-        "fear": "Fear",
-        "lonely": "Loneliness",
-        "tired": "Fatigue",
-        "overthink": "Overthinking",
-        "motivation": "Motivation",
-        "relationship": "Relationship",
-        "study": "Studies",
-        "exam": "Exams",
-        "sleep": "Sleep Issues",
-        "work": "Work Stress",
-        "family": "Family Issues"
+        "sad": "Sadness", "depress": "Depression", "stress": "Stress",
+        "anxious": "Anxiety", "anxiety": "Anxiety", "panic": "Panic",
+        "happy": "Happiness", "angry": "Anger", "fear": "Fear",
+        "lonely": "Loneliness", "tired": "Fatigue", "overthink": "Overthinking",
+        "motivation": "Motivation", "relationship": "Relationship",
+        "study": "Studies", "exam": "Exams", "sleep": "Sleep Issues",
+        "work": "Work Stress", "family": "Family Issues"
     }
-
     for keyword, title in mood_keywords.items():
         if keyword in text_lower:
             return title
-
-    # Fallback: use only first 2 words if no keyword matched
     words = text.strip().split()
-
     if len(words) >= 2:
         fallback = " ".join(words[:2])
     elif len(words) == 1:
         fallback = words[0]
     else:
         fallback = "New Chat"
-
     return fallback if len(fallback) <= max_len else fallback[:max_len] + "..."
+
 
 def show_sidebar(user_id=None, current_page="Dashboard"):
     if not st.session_state.get("user"):
@@ -54,240 +34,357 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
     username = user[1] if len(user) > 1 else "User"
     user_id = user[0]
 
-    # ================= STRONG SIDEBAR STYLES =================
     st.markdown("""
-        <style>
-        section[data-testid="stSidebar"] {
-            width: 280px !important;
-            background: linear-gradient(145deg, rgba(12,22,48,0.85), rgba(12,22,48,0.55));
-            border-right: 1px solid rgba(148,163,184,0.18);
-            box-shadow: 0 18px 60px rgba(0,0,0,0.25);
-        }
-
-        /* Move entire sidebar content upward */
-        section[data-testid="stSidebar"] > div:first-child {
-            padding-top: 0rem !important;
-        }
-
-        /* Sidebar container spacing */
-        section[data-testid="stSidebar"] .block-container {
-            padding-top: 0.2rem !important;
-            padding-left: 0.9rem !important;
-            padding-right: 0.9rem !important;
-            padding-bottom: 0.7rem !important;
-        }
-
-        /* Top title/logo */
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 10px;
-            font-size: 26px;
-            font-weight: 900;
-            margin-top: -8px;
-            margin-left: -2px;
-            margin-bottom: 14px;
-            padding: 0;
-            line-height: 1.1;
-            color: rgba(196,181,253,0.98);
-            text-shadow: 0 0 18px rgba(124,58,237,0.25);
-        }
-
-        .welcome-box {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background: rgba(15,23,42,0.45);
-            border: 1px solid rgba(148,163,184,0.18);
-            border-radius: 10px;
-            margin-bottom: 15px;
-            font-size: 14px;
-        }
-
-        /* Navigation title */
-        .section-title {
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            margin: 10px 0 8px 2px;
-            color: rgba(226,232,240,0.78);
-        }
-
-        /* Controlled divider spacing */
-        hr {
-            margin-top: 10px !important;
-            margin-bottom: 10px !important;
-        }
-
-        /* Default button style (grey) for all sidebar buttons */
-        section[data-testid="stSidebar"] .stButton button {
-            background-color: rgba(15,23,42,0.35) !important;
-            border: 1px solid rgba(148,163,184,0.18) !important;
-            border-radius: 30px !important;
-            padding: 8px 16px !important;
-            margin: 4px 0 !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-            text-align: left !important;
-            border: none !important;
-            transition: all 0.2s ease !important;
-            color: #F8FAFC !important;
-            width: 100% !important;
-            display: flex !important;
-            align-items: center !important;
-            gap: 8px !important;
-        }
-
-        section[data-testid="stSidebar"] .stButton button:hover {
-            background-color: rgba(59,130,246,0.10) !important;
-            transform: translateX(4px);
-        }
-
-        /* Navigation radio spacing */
-        div[role="radiogroup"] {
-            gap: 0.2rem !important;
-        }
-
-        /* Force primary button (logout) to dark blue */
-        section[data-testid="stSidebar"] .stButton button[kind="primary"] {
-        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%);
-            border: 1px solid rgba(255,255,255,0.12) !important;
-            color: white !important;
-            font-weight: 900 !important;
-            justify-content: center !important;
-        }
-
-        section[data-testid="stSidebar"] .stButton button[kind="primary"]:hover {
-            filter: brightness(1.06);
-        }
-
-        /* Best-effort "active" styling for radio-like buttons */
-        section[data-testid="stSidebar"] .stButton button[aria-checked="true"],
-        section[data-testid="stSidebar"] .stButton button[data-state="checked"] {
-            background: linear-gradient(135deg, rgba(59,130,246,0.25), rgba(124,58,237,0.28)) !important;
-            border: 1px solid rgba(124,58,237,0.55) !important;
-            color: #ffffff !important;
-            box-shadow: 0 18px 60px rgba(124,58,237,0.18);
-        }
-
-        /* Add balanced spacing above logout */
-        .logout-btn {
-            margin-top: 30px !important;
-            margin-bottom: -2px !important;
-            padding-bottom: 0 !important;
-            
-        }
-        /* 1. Make navigation radio labels pure white (target the actual text) */
-section[data-testid="stSidebar"] div[role="radiogroup"] label p {
-    color: #FFFFFF !important;
-}
-
-/* 2. Remove bubble from session buttons (background, border, radius) AND make text white */
-section[data-testid="stSidebar"] .stButton button:not([kind="primary"]) {
-    background-color: transparent !important;
-    border: none !important;
-    border-radius: 0 !important;
-    color: #FFFFFF !important;
-    box-shadow: none !important;
-}
-
-/* 3. Keep a subtle hover effect (optional, does not affect spacing) */
-section[data-testid="stSidebar"] .stButton button:not([kind="primary"]):hover {
-    background-color: rgba(59,130,246,0.15) !important;
-    transform: translateX(4px);
-}
-        
-        </style>
-    """, unsafe_allow_html=True)
-
-    # ================= PAGE MAP =================
-    menu_map = {
-        "🏠 Dashboard": "Dashboard",
-        "💬 Chat": "Chat",
-        "📜 History": "History",
-        "😊 Mood Analytics": "Mood Analytics",
-        "📓 Journal": "Journal"
+    <style>
+    section[data-testid="stSidebar"] {
+        width: 280px !important;
+        background: linear-gradient(145deg, rgba(12,22,48,0.85), rgba(12,22,48,0.55));
+        border-right: 1px solid rgba(148,163,184,0.18);
+        box-shadow: 0 18px 60px rgba(0,0,0,0.25);
     }
 
+    section[data-testid="stSidebar"] > div:first-child {
+        padding-top: 0rem !important;
+    }
+
+    section[data-testid="stSidebar"] .block-container {
+        padding-top: 0.2rem !important;
+        padding-left: 0.9rem !important;
+        padding-right: 0.9rem !important;
+        padding-bottom: 0.7rem !important;
+        /* Override any page-level block-container changes */
+        max-width: 100% !important;
+        margin-top: 0 !important;
+    }
+
+    /* ── AVATAR HEADER ── */
+    .sidebar-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        padding: 4px 2px 0 2px;
+    }
+    .sidebar-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #6366f1, #a78bfa);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+        box-shadow: 0 0 0 3px rgba(99,102,241,0.25), 0 4px 14px rgba(99,102,241,0.4);
+        animation: avatarPulse 3s ease-in-out infinite;
+    }
+    @keyframes avatarPulse {
+        0%, 100% { box-shadow: 0 0 0 3px rgba(99,102,241,0.25), 0 4px 14px rgba(99,102,241,0.4); }
+        50%       { box-shadow: 0 0 0 6px rgba(99,102,241,0.12), 0 4px 20px rgba(99,102,241,0.55); }
+    }
+    .sidebar-brand {
+        font-size: 17px;
+        font-weight: 900;
+        color: rgba(196,181,253,0.98);
+        text-shadow: 0 0 18px rgba(124,58,237,0.25);
+        line-height: 1.2;
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        margin: 10px 0 8px 2px;
+        color: rgba(226,232,240,0.78);
+    }
+
+    hr {
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+    }
+
+    /* ── ALL SIDEBAR BUTTONS ── */
+    section[data-testid="stSidebar"] .stButton button {
+        background-color: rgba(15,23,42,0.35) !important;
+        border-radius: 30px !important;
+        padding: 8px 16px !important;
+        margin: 4px 0 !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        text-align: left !important;
+        border: none !important;
+        transition: all 0.2s ease !important;
+        color: #F8FAFC !important;
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+    section[data-testid="stSidebar"] .stButton button:hover {
+        background-color: rgba(59,130,246,0.10) !important;
+        transform: translateX(4px);
+    }
+
+    /* ── NAVIGATION RADIO ── */
+    div[role="radiogroup"] { gap: 0.2rem !important; }
+
+    section[data-testid="stSidebar"] div[role="radiogroup"] label p {
+        color: #FFFFFF !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+    }
+
+    section[data-testid="stSidebar"] div[role="radiogroup"] label {
+        padding: 6px 8px !important;
+        font-size: 14px !important;
+    }
+
+    /* ── LOGOUT (primary) ── */
+    section[data-testid="stSidebar"] .stButton button[kind="primary"] {
+        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%) !important;
+        border: 1px solid rgba(255,255,255,0.12) !important;
+        color: white !important;
+        font-weight: 900 !important;
+        justify-content: center !important;
+    }
+    section[data-testid="stSidebar"] .stButton button[kind="primary"]:hover {
+        filter: brightness(1.06);
+    }
+
+    /* ── NON-PRIMARY BUTTONS (session tabs etc) ── */
+    section[data-testid="stSidebar"] .stButton button:not([kind="primary"]) {
+        background-color: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        color: #FFFFFF !important;
+        box-shadow: none !important;
+    }
+    section[data-testid="stSidebar"] .stButton button:not([kind="primary"]):hover {
+        background-color: rgba(59,130,246,0.15) !important;
+        transform: translateX(4px);
+    }
+
+    .logout-btn {
+        margin-top: 30px !important;
+        margin-bottom: -2px !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* ── NEW CHAT BUTTON ── */
+    .new-chat-btn .stButton button {
+        background: rgba(99,102,241,0.18) !important;
+        border: 1px solid rgba(99,102,241,0.35) !important;
+        border-radius: 10px !important;
+        color: #c4b5fd !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        padding: 9px 14px !important;
+        margin-bottom: 8px !important;
+        text-align: left !important;
+    }
+    .new-chat-btn .stButton button:hover {
+        background: rgba(99,102,241,0.30) !important;
+        border-color: rgba(99,102,241,0.6) !important;
+        transform: none !important;
+    }
+
+    /* ── SESSION ITEMS ── */
+    .session-item {
+        border-radius: 10px;
+        padding: 1px 0;
+        margin-bottom: 1px;
+        transition: background 0.2s;
+    }
+    .session-item:hover { background: rgba(255,255,255,0.04); }
+    .session-active {
+        background: rgba(99,102,241,0.18) !important;
+        border-left: 3px solid #818cf8 !important;
+        padding-left: 2px !important;
+    }
+    .session-title-btn .stButton button {
+        color: rgba(203,213,225,0.85) !important;
+        font-size: 13px !important;
+        font-weight: 400 !important;
+        padding: 7px 10px !important;
+        border-radius: 8px !important;
+        text-align: left !important;
+    }
+    .session-title-btn .stButton button:hover {
+        color: #ffffff !important;
+        background: rgba(255,255,255,0.06) !important;
+        transform: none !important;
+    }
+    .session-active .session-title-btn .stButton button {
+        color: #c4b5fd !important;
+        font-weight: 500 !important;
+    }
+    .session-menu-btn .stButton button {
+        color: rgba(148,163,184,0.5) !important;
+        font-size: 16px !important;
+        padding: 4px 8px !important;
+        border-radius: 6px !important;
+        width: auto !important;
+        min-width: 30px !important;
+    }
+    .session-menu-btn .stButton button:hover {
+        color: #e2e8f0 !important;
+        background: rgba(255,255,255,0.08) !important;
+        transform: none !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # ── PAGE MAP (no History) ──
+    menu_map = {
+        "🏠 Dashboard":      "Dashboard",
+        "💬 Chat":           "Chat",
+        "😊 Mood Analytics": "Mood Analytics",
+        "📓 Journal":        "Journal",
+        "🎮 Games":          "Games",
+    }
     reverse_map = {v: k for k, v in menu_map.items()}
     current_label = reverse_map.get(current_page, "🏠 Dashboard")
 
     with st.sidebar:
-        st.markdown(
-            '<div class="sidebar-header">🧠 <span>MindCare AI</span></div>',
-            unsafe_allow_html=True
-        )
+
+        # ── AVATAR HEADER ──
+        st.markdown("""
+        <div class="sidebar-header">
+            <div class="sidebar-avatar">🧠</div>
+            <div class="sidebar-brand">MindCare AI</div>
+        </div>
+        """, unsafe_allow_html=True)
 
         st.markdown("---")
-
-        st.markdown(
-            '<div class="section-title">Navigation</div>',
-            unsafe_allow_html=True
-        )
+        st.markdown('<div class="section-title">Navigation</div>', unsafe_allow_html=True)
 
         menu = list(menu_map.keys())
-
-        choice = st.radio(
-            "",
-            menu,
-            index=menu.index(current_label),
-            key="nav"
-        )
-
+        choice = st.radio("", menu, index=menu.index(current_label), key="nav")
         new_page = menu_map[choice]
 
         if st.session_state.get("current_page") != new_page:
             st.session_state["current_page"] = new_page
+            for k in list(st.session_state.keys()):
+                if k.startswith("rename_") or k.startswith("menu_open_"):
+                    del st.session_state[k]
             st.rerun()
 
-        st.markdown("---")
+        # ── SESSION TABS — only on Chat page ──
+        if st.session_state.get("current_page") == "Chat":
+            st.markdown("---")
 
-        # ================= RECENT SESSIONS (ONLY ON HISTORY, STAY ON HISTORY PAGE) =================
-        if st.session_state["current_page"] == "History":
-            st.markdown(
-                '<div class="section-title">📌 Recent Sessions</div>',
-                unsafe_allow_html=True
-            )
+            st.markdown('<div class="new-chat-btn">', unsafe_allow_html=True)
+            if st.button("✏️  New Chat", key="new_chat_btn"):
+                st.session_state["conversation_id"] = None
+                st.session_state["chat_history"] = []
+                st.session_state["last_loaded_chat"] = None
+                for k in list(st.session_state.keys()):
+                    if k.startswith("rename_") or k.startswith("menu_open_"):
+                        del st.session_state[k]
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
+
+            st.markdown('<div class="section-title">Recent Sessions</div>', unsafe_allow_html=True)
 
             conversations = get_conversations(user_id)
 
-            if not conversations:
-                st.caption("No chats yet. Start a conversation in Chat 💬")
+            # Only show conversations with actual messages
+            valid_convos = []
+            for convo in conversations:
+                msgs = get_messages_by_conversation(str(convo[0]))
+                if msgs:
+                    valid_convos.append((convo, msgs))
+
+            if not valid_convos:
+                st.markdown('<p style="color:rgba(148,163,184,0.55);font-size:12px;padding:4px 2px;">No sessions yet. Start chatting!</p>', unsafe_allow_html=True)
             else:
-                for i, convo in enumerate(conversations):
+                active_cid = str(st.session_state.get("conversation_id", ""))
+
+                for convo, msgs in valid_convos:
                     convo_id = str(convo[0])
+                    db_title = convo[1] if convo[1] and convo[1] != "New Chat" else None
 
-                    messages = get_messages_by_conversation(convo_id)
+                    if db_title:
+                        display_title = db_title[:22] + "..." if len(db_title) > 22 else db_title
+                    else:
+                        first_user = next((m[1] for m in msgs if m[0] == "user"), "New Chat")
+                        display_title = short_title(first_user, 22)
 
-                    if not messages:
-                        continue
+                    is_active = (convo_id == active_cid)
+                    is_renaming = st.session_state.get(f"rename_{convo_id}", False)
+                    menu_open = st.session_state.get(f"menu_open_{convo_id}", False)
 
-                    title = next(
-                        (m[1] for m in messages if m[0] == "user"),
-                        "New Chat"
-                    )
+                    active_class = "session-item session-active" if is_active else "session-item"
+                    st.markdown(f'<div class="{active_class}">', unsafe_allow_html=True)
 
-                    # SHORT GENERIC SESSION TITLE
-                    title = short_title(title, 18)
+                    if is_renaming:
+                        new_name = st.text_input(
+                            "", value=display_title,
+                            key=f"rename_input_{convo_id}",
+                            label_visibility="collapsed"
+                        )
+                        col_save, col_cancel = st.columns([1, 1])
+                        with col_save:
+                            if st.button("✓", key=f"save_rename_{convo_id}"):
+                                if new_name.strip():
+                                    rename_conversation(convo_id, new_name.strip())
+                                st.session_state[f"rename_{convo_id}"] = False
+                                st.rerun()
+                        with col_cancel:
+                            if st.button("✕", key=f"cancel_rename_{convo_id}"):
+                                st.session_state[f"rename_{convo_id}"] = False
+                                st.rerun()
 
-                    if st.button(f"💬 {title}", key=f"sb_{convo_id}_{i}"):
+                    elif menu_open:
+                        st.markdown(f'<p style="color:rgba(226,232,240,0.65);font-size:12px;padding:2px 4px;margin:0;">📝 {display_title}</p>', unsafe_allow_html=True)
+                        col_r, col_d, col_c = st.columns([1, 1, 1])
+                        with col_r:
+                            if st.button("✏️ Rename", key=f"do_rename_{convo_id}"):
+                                st.session_state[f"menu_open_{convo_id}"] = False
+                                st.session_state[f"rename_{convo_id}"] = True
+                                st.rerun()
+                        with col_d:
+                            if st.button("🗑️ Delete", key=f"do_delete_{convo_id}"):
+                                delete_conversation(convo_id)
+                                st.session_state[f"menu_open_{convo_id}"] = False
+                                if convo_id == active_cid:
+                                    st.session_state["conversation_id"] = None
+                                    st.session_state["chat_history"] = []
+                                    st.session_state["last_loaded_chat"] = None
+                                st.rerun()
+                        with col_c:
+                            if st.button("✕", key=f"close_menu_{convo_id}"):
+                                st.session_state[f"menu_open_{convo_id}"] = False
+                                st.rerun()
 
-                        # Store selected conversation and stay on History page
-                        st.session_state["selected_history_conversation"] = convo_id
-                        st.session_state["chat_history"] = messages
+                    else:
+                        col_title, col_menu = st.columns([5, 1])
+                        with col_title:
+                            st.markdown('<div class="session-title-btn">', unsafe_allow_html=True)
+                            if st.button(f"💬 {display_title}", key=f"sess_{convo_id}"):
+                                st.session_state["conversation_id"] = convo_id
+                                st.session_state["chat_history"] = msgs
+                                st.session_state["last_loaded_chat"] = convo_id
+                                st.session_state["current_page"] = "Chat"
+                                st.rerun()
+                            st.markdown('</div>', unsafe_allow_html=True)
+                        with col_menu:
+                            st.markdown('<div class="session-menu-btn">', unsafe_allow_html=True)
+                            if st.button("⋯", key=f"menu_{convo_id}"):
+                                for k in list(st.session_state.keys()):
+                                    if k.startswith("menu_open_") and k != f"menu_open_{convo_id}":
+                                        st.session_state[k] = False
+                                st.session_state[f"menu_open_{convo_id}"] = True
+                                st.rerun()
+                            st.markdown('</div>', unsafe_allow_html=True)
 
-                        # DO NOT change current_page – remain on History
-                        st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
 
-        # ================= LOGOUT BUTTON (DARK BLUE) =================
         st.markdown("---")
-
         st.markdown('<div class="logout-btn">', unsafe_allow_html=True)
-
         if st.button("🚪 Logout", key="logout_btn", type="primary"):
             st.session_state.clear()
             st.rerun()
-
         st.markdown('</div>', unsafe_allow_html=True)

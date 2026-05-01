@@ -474,6 +474,29 @@ def get_conversations(user_id):
             release_connection(conn)
 
 
+def delete_conversation(conversation_id):
+    """Delete a conversation and all its messages."""
+    conn = None
+    cur = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("DELETE FROM messages WHERE conversation_id = %s", (conversation_id,))
+        cur.execute("DELETE FROM conversations WHERE id = %s", (conversation_id,))
+        conn.commit()
+        return True
+    except Exception as e:
+        print("Delete conversation error:", e)
+        if conn:
+            conn.rollback()
+        return False
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            release_connection(conn)
+
+
 def get_messages_by_conversation(conversation_id):
     conn = None
     cur = None

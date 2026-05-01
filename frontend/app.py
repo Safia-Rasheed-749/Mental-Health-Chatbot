@@ -121,6 +121,7 @@ if st.session_state.user is None:
         show_about_page()
 
     elif st.session_state.page == "games":
+        st.session_state["games_from_sidebar"] = False
         show_aesthetic_game_selector()
 
     elif st.session_state.page == "auth":
@@ -181,9 +182,6 @@ if current == "Dashboard":
 elif current == "Chat":
     chat.show_chat(user_id)
 
-elif current == "History":
-    history.show_history(user_id)
-
 elif current == "Mood Analytics":
     mood.show_mood_analytics(user_id)
 
@@ -191,6 +189,8 @@ elif current == "Journal":
     journal.show_journal(user_id)
 
 elif current == "Games":
+    # Mark that games is opened from sidebar (logged-in context)
+    st.session_state["games_from_sidebar"] = True
     show_aesthetic_game_selector()
 
 elif current == "Admin Panel" and is_admin:

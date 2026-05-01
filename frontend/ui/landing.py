@@ -33,7 +33,7 @@ def show_landing_page():
         .stApp {
             overflow-y: auto !important;
             height: 100vh !important;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+            background: radial-gradient(circle at top left, rgba(139,92,246,0.10), transparent 30%), radial-gradient(circle at bottom right, rgba(99,102,241,0.08), transparent 30%), #f8fafc;
         }
         .main .block-container {
             padding: 1rem 2rem 0rem 2rem !important;
@@ -84,31 +84,37 @@ def show_landing_page():
         }
         
         .hero-title {
-            font-size: 1.4rem !important;
+            font-size: 3.4rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #8b5cf6 100%);
+            line-height: 1.08;
+            letter-spacing: -2px;
+            color: #0f172a;
+            max-width: 420px;
+            margin-bottom: 22px;
+            margin-top: 100px !important;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .hero-title span {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.3;
-            margin-bottom: 11px;
-            margin-top: 60px !important;
-            animation: fadeInUp 0.8s ease-out;
         }
         
         .hero-description {
-            color: #1e293b;
-            font-size: 1.05rem;
-            line-height: 1.8;
-            margin-bottom: 7px;
-            max-width: 750px;
-            letter-spacing: 0.2px;
+            font-size: 1.08rem;
+            line-height: 1.9;
+            color: #475569;
+            max-width: 420px;
+            margin-bottom: 28px;
+            font-weight: 400;
             animation: fadeInUp 0.8s ease-out 0.1s both;
         }
 
-         .hero-description b {
-            color: #3b82f6;
-            font-weight: 600;
+        .hero-trust {
+            color: #64748b;
+            font-size: 0.92rem;
+            margin-top: 18px;
+            letter-spacing: 0.3px;
         }
 
         .highlight-text {
@@ -194,10 +200,9 @@ def show_landing_page():
         .carousel-heading h2 {
             font-size: 2rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #8b5cf6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #0f172a;
+            -webkit-text-fill-color: #0f172a;
+            background: none;
             margin-bottom: 12px;
             animation: fadeInUp 0.8s ease-out;
         }
@@ -212,13 +217,10 @@ def show_landing_page():
         
         .section-title {
             text-align: center;
-            font-size: 2rem;
+            font-size: 2.1rem;
             font-weight: 700;
-            .section-title 
-            color: #3b82f6;   /* Nice blue */
-            font-weight: 700;
-            background-clip: text;
-            margin: 35px 0 15px 0;
+            color: #0f172a;
+            margin: 80px 0 15px 0;
             position: relative;
             animation: fadeInUp 0.8s ease-out;
         }
@@ -244,39 +246,30 @@ def show_landing_page():
         }
         
         .exercise-card {
-            border-radius: 20px;
-            padding: 28px;
+            border-radius: 28px;
+            padding: 34px;
             width: 100%;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.35s ease;
             display: flex;
             flex-direction: row;
             align-items: center;
             gap: 30px;
             margin-bottom: 45px;
-            border: none;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
             flex-wrap: wrap;
             animation: fadeInUp 0.8s ease-out;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(20px);
         }
         
-        .exercise-card-1 { 
-            background: linear-gradient(135deg, rgba(167, 243, 208, 0.15), rgba(16, 185, 129, 0.05));
-            border-left: 4px solid #10b981;
-        }
-        .exercise-card-2 { 
-            background: linear-gradient(135deg, rgba(147, 197, 253, 0.15), rgba(59, 130, 246, 0.05));
-            border-left: 4px solid #3b82f6;
-        }
-        .exercise-card-3 { 
-            background: linear-gradient(135deg, rgba(253, 186, 116, 0.15), rgba(245, 158, 11, 0.05));
-            border-left: 4px solid #f59e0b;
-        }
+        .exercise-card-1 { background: linear-gradient(135deg, rgba(209,250,229,0.6), rgba(167,243,208,0.4)); border: 1px solid rgba(52,211,153,0.2); }
+        .exercise-card-2 { background: linear-gradient(135deg, rgba(219,234,254,0.6), rgba(191,219,254,0.4)); border: 1px solid rgba(96,165,250,0.2); }
+        .exercise-card-3 { background: linear-gradient(135deg, rgba(254,243,199,0.6), rgba(253,230,138,0.4)); border: 1px solid rgba(251,191,36,0.2); }
         
         .exercise-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
         }
         
         .exercise-icon-large {
@@ -395,42 +388,40 @@ def show_landing_page():
         }
         
         .feature-card-custom {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            padding: 22px 15px;
-            border-radius: 14px;
-            border: 1px solid rgba(203, 213, 225, 0.3);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            border-radius: 24px;
+            padding: 28px 22px;
+            transition: 0.35s ease;
             text-align: center;
             height: 100%;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
             margin-bottom: 30px;
             animation: fadeInUp 0.8s ease-out;
         }
         
         .feature-card-custom:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
-            border-color: #3b82f6;
-            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
+            border-color: rgba(139, 92, 246, 0.2);
+            background: rgba(255, 255, 255, 0.85);
         }
         
         .feature-card-custom div:first-child {
             font-size: 42px;
             margin-bottom: 10px;
-            animation: pulse 2s ease-in-out infinite;
             display: inline-block;
         }
         
         .feature-card-custom div:nth-child(2) {
             font-weight: 700;
             margin: 10px 0 6px;
-            font-size: 1rem;
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 1.1rem;
+            color: #0f172a;
+            -webkit-text-fill-color: #0f172a;
+            background: none;
         }
         
         .feature-card-custom div:last-child {
@@ -481,30 +472,30 @@ def show_landing_page():
         }
         
         .impact-card-custom {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 14px;
-            padding: 20px 12px;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 28px 12px;
             text-align: center;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(203, 213, 225, 0.3);
+            transition: all 0.35s ease;
+            border: 1px solid rgba(148, 163, 184, 0.12);
             height: 100%;
             animation: fadeInUp 0.8s ease-out;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
         }
         
         .impact-card-custom:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-            border-color: #3b82f6;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
+            border-color: rgba(139, 92, 246, 0.2);
         }
         
         .stat-number-custom {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 2.3rem;
+            font-weight: 700;
+            color: #8b5cf6;
+            -webkit-text-fill-color: #8b5cf6;
+            background: none;
             margin-bottom: 6px;
         }
         
@@ -547,22 +538,23 @@ def show_landing_page():
             }
         }
         .stButton > button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #8b5cf6;
             color: white;
             border: none;
-            padding: 12px 28px;
-            border-radius: 12px;
+            padding: 12px 24px;
+            border-radius: 16px;
             font-weight: 600;
             font-size: 0.95rem;
             transition: all 0.3s ease;
-            width: 100%;
+            width: fit-content !important;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
         }
         
         .stButton > button:hover {
+            background: #7c3aed;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
         }
         
         p, li, .stMarkdown {
@@ -656,28 +648,13 @@ def show_landing_page():
     with col_t:
         st.markdown("""
         <h1 class="hero-title">
-            AI Assistant for Mental Health
+            A calmer space for your <span>mind</span>
         </h1>
-
         <p class="hero-description">
-            Your compassionate AI companion, available 24/7 to support your mental wellness journey.
+            Talk, reflect, and find support through emotionally intelligent AI.
         </p>
-
-        <p class="hero-description">
-            Experience personalized emotional support that understands you, grows with you, 
-            and helps you navigate life's challenges with empathy and care.
-        </p>
-
-        <p class="hero-description">
-            Whether you're feeling overwhelmed, anxious, or just need someone to talk to, 
-            we're here for you anytime, anywhere.
-        </p>
-
-        <p class="hero-description highlight-text">
-             Because everyone deserves compassionate mental health care.
-        </p>
-            <div class="hero-button-wrapper">
-        </div>
+        <p class="hero-trust">Private &nbsp;•&nbsp; Compassionate &nbsp;•&nbsp; Available 24/7</p>
+        <div class="hero-button-wrapper"></div>
         """, unsafe_allow_html=True)
         
         # Button changed to "Learn More" and goes to about page
@@ -690,7 +667,7 @@ def show_landing_page():
     # ================= CHAT DEMO =================
     with col_v:
         components.html("""
-        <div style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border-radius: 40px; padding: 20px; border: 1px solid rgba(203,213,225,0.5); box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1); height: 280px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 80px 10px 10px 10px;">
+        <div style="background: rgba(255,255,255,0.68); backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 10px 40px rgba(15,23,42,0.06), 0 2px 12px rgba(15,23,42,0.04); border-radius: 34px; height: 280px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 80px 10px 10px 10px;">
             <div id="chat-box" style="flex: 1; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column;"></div>
         </div>
         <script>
@@ -850,8 +827,8 @@ def show_landing_page():
             .carousel-container {{ width: 100%; overflow: hidden; position: relative; height: 400px; background: transparent; }}
             .carousel-track {{ display: flex; width: 400%; height: 100%; transition: transform 0.7s ease-in-out; }}
             .slide {{ width: 25%; height: 100%; background-size: cover; background-position: center; background-repeat: no-repeat; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; }}
-            .quote-card {{ background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-radius: 32px; padding: 28px 45px; max-width: 650px; box-shadow: 0 20px 40px -12px rgba(0,0,0,0.25); text-align: center; border: 1px solid rgba(255,255,255,0.5); z-index: 2; margin: 0 20px; position: relative; animation: fadeInUp 0.8s ease-out; }}
-            .quote-text {{ background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 22px; font-weight: 500; line-height: 1.5; font-style: italic; margin: 0; }}
+            .quote-card {{ background: rgba(255,255,255,0.72); backdrop-filter: blur(18px); border-radius: 28px; padding: 24px 34px; max-width: 560px; box-shadow: 0 8px 30px rgba(15,23,42,0.06); text-align: center; border: 1px solid rgba(255,255,255,0.5); z-index: 2; margin: 0 20px; position: relative; animation: fadeInUp 0.8s ease-out; }}
+            .quote-text {{ color: #1e293b; font-size: 1.15rem; line-height: 1.8; font-weight: 500; font-style: italic; margin: 0; }}
             .quote-author {{ margin-top: 30px; color: #667eea; font-size: 14px; font-weight: 600; }}
             @keyframes fadeInUp {{
                 from {{ opacity: 0; transform: translateY(30px); }}
@@ -1055,26 +1032,6 @@ def show_landing_page():
             </div>
         </div>
         """, unsafe_allow_html=True)
-
-    # ================= TECH STACK SECTION =================
-    st.markdown('<h2 class="section-title">🔧 Technology Stack</h2>', unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="section-description">
-        <strong>⚙️ Built with cutting-edge technology for reliability and scale</strong><br><br>
-        Our platform leverages modern AI architectures and industry-standard frameworks.
-    </div>
-    """, unsafe_allow_html=True)
-
-    tech_col1, tech_col2, tech_col3, tech_col4 = st.columns(4)
-    with tech_col1:
-        st.markdown('<div class="tech-card-custom"><div>⚡</div><div>Frontend</div><div>Streamlit</div></div>', unsafe_allow_html=True)
-    with tech_col2:
-        st.markdown('<div class="tech-card-custom"><div>🤖</div><div>AI Engine</div><div>LLM + RAG</div></div>', unsafe_allow_html=True)
-    with tech_col3:
-        st.markdown('<div class="tech-card-custom"><div>🗄️</div><div>Backend</div><div>FastAPI</div></div>', unsafe_allow_html=True)
-    with tech_col4:
-        st.markdown('<div class="tech-card-custom"><div>🎤</div><div>Voice</div><div>Whisper</div></div>', unsafe_allow_html=True)
 
     # ================= IMPACT SECTION =================
     st.markdown('<h2 class="section-title">📊 Impact</h2>', unsafe_allow_html=True)
