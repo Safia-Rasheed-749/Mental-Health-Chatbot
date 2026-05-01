@@ -48,7 +48,7 @@ def show_calm_colors_game():
     }
 
     .block-container {
-        padding-top: 0.4rem !important;
+        padding-top: 1.2rem !important;
         padding-left: 2rem !important;
         padding-right: 2rem !important;
         max-width: 1200px !important;
@@ -340,15 +340,6 @@ def show_calm_colors_game():
     }
 
     /* ── COLOR BUTTONS WITH BETTER SPACING ── */
-    .color-buttons-container {
-        background: rgba(255,255,255,0.3);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.4);
-        border-radius: 24px;
-        padding: 32px;
-        margin: 24px 0;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-    }
 
     div[data-testid="column"] {
         padding: 0 12px !important;
@@ -424,46 +415,47 @@ def show_calm_colors_game():
 
     /* ── SCORE BAR ── */
     .score-bar {
-        background: rgba(255,255,255,0.9);
+        background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 50%, #fdf4ff 100%) !important;
         backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.5);
+        border: 1px solid rgba(167,139,250,0.25) !important;
         padding: 20px 40px;
         display: flex; 
         justify-content: space-around; 
         align-items: center;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 32px rgba(139,92,246,0.12) !important;
         border-radius: 0 0 24px 24px;
         margin-bottom: 24px;
+        margin-top: 38px;
     }
     
     .score-item { 
         font-size: 18px; 
         font-weight: 700; 
-        color: #1f2937; 
+        color: #6d28d9 !important; 
     }
     
     .score-val { 
         font-size: 28px; 
         font-weight: 900; 
-        background: linear-gradient(135deg, #6366f1, #8b5cf6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        background: linear-gradient(135deg, #8b5cf6, #a78bfa) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
     }
 
     .game-msg {
-        background: rgba(255,255,255,0.9);
+        background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%) !important;
         backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.5);
+        border: 1px solid rgba(167,139,250,0.25) !important;
         padding: 24px 40px; 
         border-radius: 20px;
         font-size: 18px; 
         font-weight: 600; 
-        color: #4338ca;
-        margin: 30px auto; 
+        color: #6d28d9 !important;
+        margin: 10px auto; 
         max-width: 600px; 
         text-align: center;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 32px rgba(139,92,246,0.1) !important;
     }
 
     .seq-chip {
@@ -728,12 +720,12 @@ def show_calm_colors_game():
         <div style="
             background: linear-gradient(135deg, #667eea 0%, #764ba2 55%, #f093fb 100%);
             border-radius: 20px;
-            margin: 8px 10px 0 10px;
+            margin: 28px 10px 0 10px;
             padding: 36px 20px 44px;
             text-align: center;
             color: white;
             box-shadow: 0 8px 32px rgba(102,126,234,0.35);
-            margin-top: 20px !important;
+            margin-top: 32px !important;
         ">
             <div style="font-size:44px;font-weight:900;margin-bottom:10px;
                         text-shadow:0 4px 20px rgba(0,0,0,0.25);">🎨 Calm Colors</div>
@@ -806,14 +798,32 @@ def show_calm_colors_game():
 
     # ── SCREEN: COUNTDOWN ──
     def show_countdown():
-        # Apply countdown screen background with overlay
+        # Apply animated teal-blue background only for countdown
         st.markdown("""
         <style>
-        .stApp { 
-            background: linear-gradient(135deg, #a7f3d0 0%, #bfdbfe 50%, #ddd6fe 100%) !important;
-            background-image: 
-                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.4) 0%, transparent 50%),
-                radial-gradient(circle at 80% 50%, rgba(255,255,255,0.3) 0%, transparent 50%) !important;
+        @keyframes countdownShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes starFloat {
+            0%   { transform: translateY(0px) translateX(0px); opacity: 0.8; }
+            50%  { transform: translateY(-15px) translateX(8px); opacity: 0.4; }
+            100% { transform: translateY(0px) translateX(0px); opacity: 0.8; }
+        }
+        .stApp {
+            background: linear-gradient(
+                135deg,
+                #0d3b4f 0%,
+                #0a4a5e 15%,
+                #0e6b7a 30%,
+                #1a7a6e 45%,
+                #0d5c6e 60%,
+                #0a3d52 75%,
+                #0d3b4f 100%
+            ) !important;
+            background-size: 400% 400% !important;
+            animation: countdownShift 8s ease infinite !important;
         }
         .block-container {
             background: transparent !important;
@@ -821,53 +831,27 @@ def show_calm_colors_game():
         }
         </style>
         """, unsafe_allow_html=True)
-        
+
         placeholder = st.empty()
-        for num, hint in [("3","Take a deep breath in..."),
-                          ("2","Focus your mind..."),
-                          ("1","Get ready..."),
-                          ("GO!","Let's begin!")]:
+        for num, hint in [("3", "Take a deep breath in..."),
+                          ("2", "Focus your mind..."),
+                          ("1", "Get ready..."),
+                          ("GO!", "Let's begin!")]:
             placeholder.markdown(f"""
-            <div style="
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                min-height: 100vh;
-                background: linear-gradient(135deg, #a7f3d0 0%, #bfdbfe 50%, #ddd6fe 100%);
-                background-image: 
-                    radial-gradient(circle at 20% 50%, rgba(255,255,255,0.4) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 50%, rgba(255,255,255,0.3) 0%, transparent 50%);
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                color: #1f2937;
-                z-index: 1000;
-            ">
-                <div class="floating-elements">
-                    <div class="floating-circle"></div>
-                    <div class="floating-circle"></div>
-                    <div class="floating-circle"></div>
-                </div>
-                <div style="font-size:140px;font-weight:900;
-                            animation:chipIn 0.8s ease;line-height:1;
-                            margin-bottom:24px;
-                            color:#1f2937;
-                            text-shadow:0 4px 20px rgba(0,0,0,0.1);
-                            position: relative;
-                            z-index: 10;">
-                    {num}
-                </div>
-                <div style="font-size:22px;
-                            font-weight:600;
-                            color:#374151;
-                            text-shadow:0 2px 8px rgba(0,0,0,0.1);
-                            position: relative;
-                            z-index: 10;">
-                    {hint}
-                </div>
+            <div style="position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#0d3b4f 0%,#0a4a5e 15%,#0e6b7a 30%,#1a7a6e 45%,#0d5c6e 60%,#0a3d52 75%,#0d3b4f 100%);background-size:400% 400%;animation:countdownShift 8s ease infinite;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;overflow:hidden;">
+                <div style="position:absolute;top:8%;left:15%;width:3px;height:3px;background:white;border-radius:50%;animation:starFloat 3s ease infinite;opacity:0.8;"></div>
+                <div style="position:absolute;top:15%;left:70%;width:2px;height:2px;background:white;border-radius:50%;animation:starFloat 4s ease infinite 1s;opacity:0.6;"></div>
+                <div style="position:absolute;top:25%;left:40%;width:2px;height:2px;background:white;border-radius:50%;animation:starFloat 5s ease infinite 0.5s;opacity:0.7;"></div>
+                <div style="position:absolute;top:10%;left:85%;width:3px;height:3px;background:white;border-radius:50%;animation:starFloat 3.5s ease infinite 2s;opacity:0.5;"></div>
+                <div style="position:absolute;top:35%;left:10%;width:2px;height:2px;background:white;border-radius:50%;animation:starFloat 4.5s ease infinite 1.5s;opacity:0.6;"></div>
+                <div style="position:absolute;top:20%;left:55%;width:2px;height:2px;background:white;border-radius:50%;animation:starFloat 6s ease infinite 0.8s;opacity:0.5;"></div>
+                <div style="position:absolute;top:5%;left:30%;width:2px;height:2px;background:white;border-radius:50%;animation:starFloat 3.8s ease infinite 2.5s;opacity:0.7;"></div>
+                <div style="position:absolute;top:30%;left:80%;width:3px;height:3px;background:white;border-radius:50%;animation:starFloat 5.5s ease infinite 0.3s;opacity:0.6;"></div>
+                <div style="position:absolute;bottom:0;left:0;right:0;height:45%;background:linear-gradient(180deg,transparent 0%,#0a3347 40%,#071f2e 100%);border-radius:60% 60% 0 0 / 20% 20% 0 0;"></div>
+                <div style="position:absolute;bottom:0;left:-10%;right:-10%;height:35%;background:linear-gradient(180deg,transparent 0%,#0d4a3a 40%,#082a20 100%);border-radius:50% 50% 0 0 / 15% 15% 0 0;opacity:0.7;"></div>
+                <div style="position:absolute;bottom:0;left:5%;right:-5%;height:25%;background:linear-gradient(180deg,transparent 0%,#0a3d2e 50%,#051a14 100%);border-radius:55% 45% 0 0 / 18% 18% 0 0;opacity:0.8;"></div>
+                <div style="font-size:140px;font-weight:900;color:white;text-shadow:0 0 40px rgba(100,220,200,0.6),0 4px 20px rgba(0,0,0,0.4);line-height:1;margin-bottom:24px;position:relative;z-index:10;animation:chipIn 0.6s ease;">{num}</div>
+                <div style="font-size:22px;font-weight:500;color:rgba(180,230,220,0.9);text-shadow:0 2px 12px rgba(0,0,0,0.3);position:relative;z-index:10;letter-spacing:1px;">{hint}</div>
             </div>
             """, unsafe_allow_html=True)
             time.sleep(1)
@@ -877,19 +861,66 @@ def show_calm_colors_game():
 
     # ── SCREEN: GAME ──
     def show_game():
-        # Add game screen background wrapper with proper class and ensure content is on top
         st.markdown("""
-        <div class="game-screen-bg"></div>
-        <div class="floating-elements">
-            <div class="floating-circle"></div>
-            <div class="floating-circle"></div>
-            <div class="floating-circle"></div>
-        </div>
         <style>
+        @keyframes softShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .stApp {
+            background: linear-gradient(135deg, #e0e7ff, #f3e8ff, #fce7f3, #e0f2fe, #d1fae5) !important;
+            background-size: 400% 400% !important;
+            animation: softShift 12s ease infinite !important;
+        }
+
         .stApp .block-container { 
             position: relative !important; 
             z-index: 10 !important;
             padding-top: 1rem !important;
+            background: transparent !important;
+        }
+
+        div.score-bar {
+            background: linear-gradient(135deg, #ede9fe, #e0e7ff) !important;
+            border: 1.5px solid #c4b5fd !important;
+            box-shadow: 0 4px 24px rgba(139,92,246,0.15) !important;
+            border-radius: 16px !important;
+            padding: 20px 40px !important;
+            display: flex !important;
+            justify-content: space-around !important;
+            align-items: center !important;
+            margin-bottom: 24px !important;
+            margin-top: 38px !important;
+        }
+
+        div.score-bar div.score-item {
+            font-size: 18px !important;
+            font-weight: 700 !important;
+            color: #5b21b6 !important;
+        }
+
+        div.score-bar div.score-item span.score-val {
+            font-size: 28px !important;
+            font-weight: 900 !important;
+            color: #7c3aed !important;
+            -webkit-text-fill-color: #7c3aed !important;
+            background: none !important;
+        }
+
+        div.game-msg {
+            background: linear-gradient(135deg, #ede9fe, #e0e7ff) !important;
+            border: 1.5px solid #c4b5fd !important;
+            color: #5b21b6 !important;
+            box-shadow: 0 4px 24px rgba(139,92,246,0.12) !important;
+            border-radius: 16px !important;
+            padding: 20px 40px !important;
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            margin: 10px auto !important;
+            max-width: 600px !important;
+            text-align: center !important;
         }
         </style>
         """, unsafe_allow_html=True)
@@ -941,8 +972,7 @@ def show_calm_colors_game():
                     unsafe_allow_html=True
                 )
 
-            # Color buttons with better spacing
-            st.markdown('<div class="color-buttons-container">', unsafe_allow_html=True)
+            # Color buttons
             col1, col2 = st.columns(2, gap="large")
             with col1:
                 if st.button(f"{colors[0]['emoji']}  {colors[0]['name']}", key="color_blue",  use_container_width=True):
@@ -956,9 +986,8 @@ def show_calm_colors_game():
                 st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
                 if st.button(f"{colors[3]['emoji']}  {colors[3]['name']}", key="color_orange", use_container_width=True):
                     handle_move(3); st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
 
-            st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
             c1, c2, c3 = st.columns([1.2, 1, 1.2])
             with c2:
                 if st.button("End Game", key="btn_end"):
