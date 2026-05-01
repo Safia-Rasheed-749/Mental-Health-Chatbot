@@ -3,9 +3,12 @@ import streamlit as st
 import streamlit.components.v1 as components
 import base64
 import os
+# from components.navbar import render_navbar  # Import navbar
+
 
 
 def show_landing_page():
+    # render_navbar()
     # ================= PROFESSIONAL CSS WITH ANIMATIONS & GRADIENTS =================
     st.markdown("""
     <style>
@@ -779,7 +782,82 @@ def show_landing_page():
         
         # Optional: Extra spacing after button
         st.markdown('<div style="margin-bottom: 30px;"></div>', unsafe_allow_html=True)
+        # ================= HOW IT WORKS =================
+    st.markdown('<h2 class="section-title">⚙️ How It Works</h2>', unsafe_allow_html=True)
 
+    st.markdown("""
+    <div class="section-description">
+    Understand how our AI supports you in just a few simple steps.
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("""
+        <div class="feature-card-custom">
+            <div>🗣️</div>
+            <div>Share Your Thoughts</div>
+            <div>Talk freely about what's on your mind without fear of judgment.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown("""
+        <div class="feature-card-custom">
+            <div>🧠</div>
+            <div>AI Understands You</div>
+            <div>Advanced emotion detection analyzes your feelings in real-time.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
+        st.markdown("""
+        <div class="feature-card-custom">
+            <div>💡</div>
+            <div>Get Support</div>
+            <div>Receive helpful coping strategies and emotional guidance instantly.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+
+    # ================= WHO IS THIS FOR =================
+    st.markdown('<h2 class="section-title">👥 Who Is This For?</h2>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="section-description">
+    Designed for anyone who needs emotional support, clarity, or simply someone to talk to.
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("""
+        <div class="feature-card-custom">
+            <div>🎓</div>
+            <div>طلاب (Students)</div>
+            <div>Managing academic stress, deadlines, and pressure.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown("""
+        <div class="feature-card-custom">
+            <div>😟</div>
+            <div>Anxiety & Overthinking</div>
+            <div>For those struggling with constant worry and racing thoughts.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
+        st.markdown("""
+        <div class="feature-card-custom">
+            <div>🌱</div>
+            <div>Self Growth</div>
+            <div>Anyone looking to improve emotional awareness and well-being.</div>
+        </div>
+        """, unsafe_allow_html=True)
     # ================= CAROUSEL FIRST (UPPER) =================
     st.markdown("""
     <div class="carousel-heading">
@@ -921,118 +999,6 @@ def show_landing_page():
         st.markdown('<div class="feature-card-custom"><div>📚</div><div>RAG Knowledge</div><div>WHO verified guidelines</div></div>', unsafe_allow_html=True)
     with col6:
         st.markdown('<div class="feature-card-custom"><div>🧘</div><div>Coping Tools</div><div>Meditation & CBT techniques</div></div>', unsafe_allow_html=True)
-
-    # ================= MENTAL WELLNESS EXERCISES =================
-    st.markdown('<h2 class="section-title">🧘 Mental Wellness Exercises</h2>', unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="exercise-description">
-        <strong>✨ Evidence-based practices for emotional balance</strong><br><br>
-        These scientifically-backed exercises help reduce anxiety, improve focus, and build emotional resilience.
-    </div>
-    """, unsafe_allow_html=True)
-
-    # ================= FIXED VIDEO PATHS =================
-    video_path_1 = os.path.join(BASE_DIR, "../../assets/videos/video1.mp4")
-    video_path_2 = os.path.join(BASE_DIR, "../../assets/videos/video2.mp4")
-    video_path_3 = os.path.join(BASE_DIR, "../../assets/videos/Ins_-359471723.mp4")
-    
-    def get_video_base64(video_path):
-        try:
-            if os.path.exists(video_path):
-                with open(video_path, "rb") as video_file:
-                    video_base64 = base64.b64encode(video_file.read()).decode()
-                    return video_base64, True
-            else:
-                return "", False
-        except Exception:
-            return "", False
-    
-    video_base64_1, video_available_1 = get_video_base64(video_path_1)
-    video_base64_2, video_available_2 = get_video_base64(video_path_2)
-    video_base64_3, video_available_3 = get_video_base64(video_path_3)
-
-    # Exercise 1 - Mindful Breathing
-    if video_available_1:
-        st.markdown(f"""
-        <div class="exercise-card exercise-card-1">
-            <div class="exercise-icon-large">🌬️</div>
-            <div class="exercise-content">
-                <div class="exercise-title">Mindful Breathing Exercise</div>
-                <div class="exercise-quote">"Feelings come and go like clouds in a windy sky. Conscious breathing is my anchor."<div class="exercise-quote-author">— Thich Nhat Hanh</div></div>
-                <div class="exercise-description-text"><strong>🌿 Why it helps:</strong> Deep breathing activates your parasympathetic nervous system, reducing cortisol levels and calming anxiety.</div>
-                <ul class="exercise-steps"><li><span class="step-number">1</span> Inhale deeply through your nose for 4 seconds</li><li><span class="step-number">2</span> Hold your breath for 4 seconds</li><li><span class="step-number">3</span> Exhale slowly through your mouth for 6 seconds</li><li><span class="step-number">4</span> Repeat 5-10 times</li></ul>
-            </div>
-            <div class="exercise-video"><video autoplay muted loop playsinline><source src="data:video/mp4;base64,{video_base64_1}" type="video/mp4"></video></div>
-        </div>
-        """, unsafe_allow_html=True)
-    else:
-        st.markdown("""
-        <div class="exercise-card exercise-card-1">
-            <div class="exercise-icon-large">🌬️</div>
-            <div class="exercise-content">
-                <div class="exercise-title">Mindful Breathing Exercise</div>
-                <div class="exercise-quote">"Feelings come and go like clouds in a windy sky. Conscious breathing is my anchor."<div class="exercise-quote-author">— Thich Nhat Hanh</div></div>
-                <div class="exercise-description-text"><strong>🌿 Why it helps:</strong> Deep breathing activates your parasympathetic nervous system, reducing cortisol levels and calming anxiety.</div>
-                <ul class="exercise-steps"><li><span class="step-number">1</span> Inhale deeply through your nose for 4 seconds</li><li><span class="step-number">2</span> Hold your breath for 4 seconds</li><li><span class="step-number">3</span> Exhale slowly through your mouth for 6 seconds</li><li><span class="step-number">4</span> Repeat 5-10 times</li></ul>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # Exercise 2 - Mindfulness Meditation
-    if video_available_2:
-        st.markdown(f"""
-        <div class="exercise-card exercise-card-2">
-            <div class="exercise-icon-large">🧠</div>
-            <div class="exercise-content">
-                <div class="exercise-title">Mindfulness Meditation</div>
-                <div class="exercise-quote">"The present moment is filled with joy and happiness. If you are attentive, you will see it."<div class="exercise-quote-author">— Thich Nhat Hanh</div></div>
-                <div class="exercise-description-text"><strong>🎯 Why it helps:</strong> Mindfulness rewires your brain for greater emotional regulation and reduces stress.</div>
-                <ul class="exercise-steps"><li><span class="step-number">1</span> Sit comfortably and close your eyes</li><li><span class="step-number">2</span> Focus on your breath without judgment</li><li><span class="step-number">3</span> Notice thoughts and let them pass</li><li><span class="step-number">4</span> Practice for 5-10 minutes daily</li></ul>
-            </div>
-            <div class="exercise-video"><video autoplay muted loop playsinline><source src="data:video/mp4;base64,{video_base64_2}" type="video/mp4"></video></div>
-        </div>
-        """, unsafe_allow_html=True)
-    else:
-        st.markdown("""
-        <div class="exercise-card exercise-card-2">
-            <div class="exercise-icon-large">🧠</div>
-            <div class="exercise-content">
-                <div class="exercise-title">Mindfulness Meditation</div>
-                <div class="exercise-quote">"The present moment is filled with joy and happiness. If you are attentive, you will see it."<div class="exercise-quote-author">— Thich Nhat Hanh</div></div>
-                <div class="exercise-description-text"><strong>🎯 Why it helps:</strong> Mindfulness rewires your brain for greater emotional regulation and reduces stress.</div>
-                <ul class="exercise-steps"><li><span class="step-number">1</span> Sit comfortably and close your eyes</li><li><span class="step-number">2</span> Focus on your breath without judgment</li><li><span class="step-number">3</span> Notice thoughts and let them pass</li><li><span class="step-number">4</span> Practice for 5-10 minutes daily</li></ul>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # Exercise 3 - Grounding Technique
-    if video_available_3:
-        st.markdown(f"""
-        <div class="exercise-card exercise-card-3">
-            <div class="exercise-icon-large">🌍</div>
-            <div class="exercise-content">
-                <div class="exercise-title">5-4-3-2-1 Grounding Technique</div>
-                <div class="exercise-quote">"Grounding is a powerful way to calm anxiety and return to the present moment."<div class="exercise-quote-author">— AI Assistant</div></div>
-                <div class="exercise-description-text"><strong>⚡ Why it helps:</strong> This evidence-based technique interrupts anxiety spirals by engaging all five senses.</div>
-                <ul class="exercise-steps"><li><span class="step-number">👁️</span> Acknowledge 5 things you see around you</li><li><span class="step-number">🫂</span> Acknowledge 4 things you can physically touch</li><li><span class="step-number">👂</span> Acknowledge 3 distinct sounds you hear</li><li><span class="step-number">👃</span> Acknowledge 2 different smells in your environment</li><li><span class="step-number">👅</span> Acknowledge 1 thing you can taste or focus on your breath</li></ul>
-            </div>
-            <div class="exercise-video"><video autoplay muted loop playsinline><source src="data:video/mp4;base64,{video_base64_3}" type="video/mp4"></video></div>
-        </div>
-        """, unsafe_allow_html=True)
-    else:
-        st.markdown("""
-        <div class="exercise-card exercise-card-3">
-            <div class="exercise-icon-large">🌍</div>
-            <div class="exercise-content">
-                <div class="exercise-title">5-4-3-2-1 Grounding Technique</div>
-                <div class="exercise-quote">"Grounding is a powerful way to calm anxiety and return to the present moment."<div class="exercise-quote-author">— AI Assistant</div></div>
-                <div class="exercise-description-text"><strong>⚡ Why it helps:</strong> This evidence-based technique interrupts anxiety spirals by engaging all five senses.</div>
-                <ul class="exercise-steps"><li><span class="step-number">👁️</span> Acknowledge 5 things you see around you</li><li><span class="step-number">🫂</span> Acknowledge 4 things you can physically touch</li><li><span class="step-number">👂</span> Acknowledge 3 distinct sounds you hear</li><li><span class="step-number">👃</span> Acknowledge 2 different smells in your environment</li><li><span class="step-number">👅</span> Acknowledge 1 thing you can taste or focus on your breath</li></ul>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
     # ================= IMPACT SECTION =================
     st.markdown('<h2 class="section-title">📊 Impact</h2>', unsafe_allow_html=True)
     
@@ -1052,7 +1018,34 @@ def show_landing_page():
         st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">50+</div><div class="stat-label-custom">Sources</div></div>', unsafe_allow_html=True)
     with imp_col4:
         st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">Real-time</div><div class="stat-label-custom">Detection</div></div>', unsafe_allow_html=True)
+# ================= TRUST & SAFETY =================
+    st.markdown('<h2 class="section-title">🔒 Trust & Safety</h2>', unsafe_allow_html=True)
 
+    st.markdown("""
+    <div class="section-description">
+    Your well-being and privacy are our top priorities.
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("""
+        <div class="feature-card-custom">
+            <div>🔐</div>
+            <div>Private & Anonymous</div>
+            <div>Your conversations are not stored permanently and remain confidential.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown("""
+        <div class="feature-card-custom">
+            <div>⚠️</div>
+            <div>Not a Replacement for Therapy</div>
+            <div>This AI provides support but does not replace professional medical advice.</div>
+        </div>
+        """, unsafe_allow_html=True)
     # ================= FULL FOOTER =================
     st.markdown("""
     <div class="footer-container">
