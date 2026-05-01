@@ -78,6 +78,7 @@ init_session()
 
 # ================= IMPORTS =================
 from ui.landing import show_landing_page
+from ui.exercises import show_exercises_page  # <-- Make sure this import is correct
 from ui.auth import show_auth_page
 from ui.sidebar import show_sidebar
 from ui.demo_chat import show_demo_chat
@@ -87,7 +88,7 @@ from ui_pages.admin import show_admin_panel
 from ui.games import show_aesthetic_game_selector
 
 # ================= PUBLIC PAGES =================
-public_pages_list = ["landing", "games", "demo", "auth", "about"]
+public_pages_list = ["landing", "games", "exercises", "auth", "about"]
 
 # ================= CLEAN LAYOUT FOR PUBLIC =================
 if st.session_state.get("page") in public_pages_list:
@@ -116,6 +117,8 @@ if st.session_state.user is None:
 
     if st.session_state.page == "landing":
         show_landing_page()
+    elif st.session_state.page == "exercises":  # <-- Match this with button
+        show_exercises_page()
 
     elif st.session_state.page == "about":
         show_about_page()

@@ -128,8 +128,8 @@ def render_navbar():
                 st.session_state.page = "about"
                 st.rerun()
         with nav_col3:
-            if st.button("📊 Demo", key="nav_demo_shared"):
-                st.session_state.page = "demo"
+            if st.button("Exercises", key="nav_demo_shared"):
+                st.session_state.page = "exercises"
                 st.rerun()
         with nav_col4:
             if st.button("🎮 Games", key="nav_games_shared"):
