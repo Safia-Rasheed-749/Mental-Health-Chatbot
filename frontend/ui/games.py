@@ -868,24 +868,21 @@ def show_calm_colors_game():
             50%  { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
         .stApp {
-            background: linear-gradient(135deg, #e0e7ff, #f3e8ff, #fce7f3, #e0f2fe, #d1fae5) !important;
+            background: linear-gradient(135deg, #c9d6ff, #e2c9ff, #ffd6e7, #c9f0ff, #c9ffe8, #c9d6ff) !important;
             background-size: 400% 400% !important;
-            animation: softShift 12s ease infinite !important;
+            animation: softShift 10s ease infinite !important;
         }
-
         .stApp .block-container { 
             position: relative !important; 
             z-index: 10 !important;
             padding-top: 1rem !important;
             background: transparent !important;
         }
-
         div.score-bar {
-            background: linear-gradient(135deg, #ede9fe, #e0e7ff) !important;
-            border: 1.5px solid #c4b5fd !important;
-            box-shadow: 0 4px 24px rgba(139,92,246,0.15) !important;
+            background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.35)) !important;
+            border: 1.5px solid rgba(255,255,255,0.5) !important;
+            box-shadow: 0 4px 24px rgba(100,180,180,0.2) !important;
             border-radius: 16px !important;
             padding: 20px 40px !important;
             display: flex !important;
@@ -893,14 +890,13 @@ def show_calm_colors_game():
             align-items: center !important;
             margin-bottom: 24px !important;
             margin-top: 38px !important;
+            backdrop-filter: blur(12px) !important;
         }
-
         div.score-bar div.score-item {
             font-size: 18px !important;
             font-weight: 700 !important;
-            color: #5b21b6 !important;
+            color: #5b4fcf !important;
         }
-
         div.score-bar div.score-item span.score-val {
             font-size: 28px !important;
             font-weight: 900 !important;
@@ -908,19 +904,19 @@ def show_calm_colors_game():
             -webkit-text-fill-color: #7c3aed !important;
             background: none !important;
         }
-
         div.game-msg {
-            background: linear-gradient(135deg, #ede9fe, #e0e7ff) !important;
-            border: 1.5px solid #c4b5fd !important;
-            color: #5b21b6 !important;
-            box-shadow: 0 4px 24px rgba(139,92,246,0.12) !important;
+            background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.35)) !important;
+            border: 1.5px solid rgba(255,255,255,0.5) !important;
+            color: #5b4fcf !important;
+            box-shadow: 0 4px 24px rgba(100,180,180,0.2) !important;
             border-radius: 16px !important;
             padding: 20px 40px !important;
             font-size: 18px !important;
             font-weight: 600 !important;
-            margin: 10px auto !important;
+            margin: 10px auto 24px auto !important;
             max-width: 600px !important;
             text-align: center !important;
+            backdrop-filter: blur(12px) !important;
         }
         </style>
         """, unsafe_allow_html=True)
@@ -1000,84 +996,27 @@ def show_calm_colors_game():
         is_win = score > 50
         emoji = "🎉" if is_win else "💙"
         title = "Amazing!" if is_win else "Game Over"
-        
-        # Apply soft background
-        st.markdown("""
-        <style>
-        .stApp {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        # Add some top spacing
-        st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
-        
-        # Main result banner
-        st.markdown(f"""
-        <div style="
-            background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 50%, #fce7f3 100%);
-            border-radius: 24px;
-            padding: 48px 40px;
-            text-align: center;
-            margin: 20px auto;
-            max-width: 600px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.5);
-        ">
-            <div style="font-size:80px;margin-bottom:20px;">{emoji}</div>
-            <h1 style="font-size:48px;font-weight:900;color:#6366f1;margin-bottom:40px;">{title}</h1>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Stats cards in columns
-        col1, col2 = st.columns(2, gap="large")
-        
-        with col1:
-            st.markdown(f"""
-            <div style="
-                background: rgba(255,255,255,0.9);
-                backdrop-filter: blur(20px);
-                border-radius: 20px;
-                padding: 32px 24px;
-                text-align: center;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-                border: 1px solid rgba(255,255,255,0.5);
-            ">
-                <div style="font-size:24px;margin-bottom:16px;">🎯</div>
-                <h3 style="font-size:18px;font-weight:600;color:#1f2937;margin-bottom:16px;">Level Reached</h3>
-                <div style="font-size:48px;font-weight:900;color:#6366f1;">{level}</div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col2:
-            st.markdown(f"""
-            <div style="
-                background: rgba(255,255,255,0.9);
-                backdrop-filter: blur(20px);
-                border-radius: 20px;
-                padding: 32px 24px;
-                text-align: center;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-                border: 1px solid rgba(255,255,255,0.5);
-            ">
-                <div style="font-size:24px;margin-bottom:16px;">⭐</div>
-                <h3 style="font-size:18px;font-weight:600;color:#1f2937;margin-bottom:16px;">Final Score</h3>
-                <div style="font-size:48px;font-weight:900;color:#8b5cf6;">{score}</div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Mindfulness message
+
+        st.markdown("""<style>.stApp{background:linear-gradient(135deg,#f0f4ff 0%,#faf5ff 50%,#fce7f3 100%) !important;}.play-again-result button{background:linear-gradient(135deg,#667eea,#764ba2) !important;color:white !important;font-weight:700 !important;font-size:16px !important;padding:12px 0 !important;border-radius:50px !important;border:2px solid rgba(255,255,255,0.3) !important;box-shadow:0 8px 24px rgba(102,126,234,0.4) !important;transition:all 0.3s ease !important;width:100% !important;}.play-again-result button:hover{transform:translateY(-3px) !important;box-shadow:0 12px 32px rgba(102,126,234,0.55) !important;}</style>""", unsafe_allow_html=True)
+
         st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
-        st.info("🧘 Every game is practice for mindfulness • Breathe deeply and try again")
-        
-        # Play Again button
-        st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
-        col1, col2, col3 = st.columns([1, 1, 1])
-        with col2:
-            if st.button("🎮 Play Again", key="btn_again", use_container_width=True, type="primary"):
+
+        # ── ROW 1: Popup centered ──
+        _, col, _ = st.columns([1, 1.4, 1])
+        with col:
+            st.markdown(f"""<div style="background:linear-gradient(145deg,#667eea 0%,#764ba2 40%,#f093fb 100%);border-radius:24px;padding:32px 28px 28px;text-align:center;box-shadow:0 16px 48px rgba(102,126,234,0.4);border:1px solid rgba(255,255,255,0.2);position:relative;overflow:hidden;"><div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,0.08);border-radius:50%;"></div><div style="position:absolute;bottom:-20px;left:-20px;width:80px;height:80px;background:rgba(255,255,255,0.06);border-radius:50%;"></div><div style="font-size:52px;margin-bottom:10px;position:relative;z-index:1;">{emoji}</div><div style="font-size:30px;font-weight:900;color:white;margin-bottom:24px;text-shadow:0 2px 12px rgba(0,0,0,0.2);position:relative;z-index:1;">{title}</div><div style="display:flex;justify-content:center;gap:14px;margin-bottom:18px;position:relative;z-index:1;"><div style="background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:16px;padding:16px 24px;flex:1;border:1px solid rgba(255,255,255,0.3);"><div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.8);margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">🎯 Level</div><div style="font-size:38px;font-weight:900;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.2);">{level}</div></div><div style="background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:16px;padding:16px 24px;flex:1;border:1px solid rgba(255,255,255,0.3);"><div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.8);margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">⭐ Score</div><div style="font-size:38px;font-weight:900;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.2);">{score}</div></div></div><div style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7;background:rgba(255,255,255,0.12);border-radius:12px;padding:12px 16px;position:relative;z-index:1;">Every game is practice for mindfulness<br>Breathe deeply and try again</div></div>""", unsafe_allow_html=True)
+
+        # ── GAP between popup and button ──
+        st.markdown("<div style='height:28px'></div>", unsafe_allow_html=True)
+
+        # ── ROW 2: Button centered — completely separate row ──
+        _, btn_col, _ = st.columns([1.5, 1, 1.5])
+        with btn_col:
+            st.markdown('<div class="play-again-result">', unsafe_allow_html=True)
+            if st.button("🎮 Play Again", key="btn_again", use_container_width=True):
                 reset_game()
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
     # ── ROUTER ──
     screen = st.session_state.game_screen
