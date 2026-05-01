@@ -10,6 +10,7 @@ def show_calm_colors_game():
     # ── LAYOUT CONTROL based on entry point ──
     if not from_sidebar:
         # Opened from navbar: hide sidebar and collapse icon completely
+        # Keep header height so navbar stays in same position as auth/home/about
         st.markdown("""
         <style>
         [data-testid="stSidebar"]        { display: none !important; }
@@ -17,6 +18,7 @@ def show_calm_colors_game():
         .main { margin-left: 0rem !important; }
         header[data-testid="stHeader"]   { display: none !important; }
         footer, .stDeployButton          { display: none !important; }
+        .block-container                 { padding-top: 1.8rem !important; }
         </style>
         """, unsafe_allow_html=True)
     else:
@@ -60,9 +62,17 @@ def show_calm_colors_game():
     }
 
     .main .block-container {
-        max-width: 100% !important;
+        padding-top: 0rem !important;
         padding-left: 1.5rem !important;
         padding-right: 1.5rem !important;
+        max-width: 100% !important;
+        background: transparent !important;
+    }
+
+    /* Remove gap that pushes navbar down */
+    [data-testid="stVerticalBlock"] > :first-child {
+        margin-top: 0rem !important;
+        padding-top: 0rem !important;
     }
 
     .stApp::before {
@@ -91,18 +101,11 @@ def show_calm_colors_game():
         100% { background-position: 0% 50%; }
     }
 
-    .main .block-container {
-        padding-top: 1rem !important;
-        padding-left: 1.5rem !important;
-        padding-right: 1.5rem !important;
-        max-width: 100% !important;
-        background: transparent !important;
-    }
-
     @media (max-width: 1200px) {
         .block-container {
             padding-left: 1rem !important;
             padding-right: 1rem !important;
+           
         }
     }
 
@@ -230,7 +233,7 @@ def show_calm_colors_game():
             inset 0 1px 0 rgba(255,255,255,0.6);
         position: relative;
         overflow: hidden;
-        margin-top: 25px;
+        margin-top: 20px;
     }
 
     .hero-banner::before {
@@ -242,7 +245,6 @@ def show_calm_colors_game():
         height: 200%;
         background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
         animation: shimmer 3s infinite;
-        margin-top: 25px;
     }
 
     @keyframes shimmer {
@@ -800,25 +802,105 @@ def show_calm_colors_game():
 
     # ── SCREEN: HOME ──
     def show_home():
-        # Banner — smaller, with reduced top margin so it sits closer to navbar
-        st.markdown("""
-        <div style="
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 55%, #f093fb 100%);
-            border-radius: 20px;
-            margin: 28px 10px 0 10px;
-            padding: 36px 20px 44px;
-            text-align: center;
-            color: white;
-            box-shadow: 0 8px 32px rgba(102,126,234,0.35);
-            margin-top: 32px !important;
-        ">
-            <div style="font-size:44px;font-weight:900;margin-bottom:10px;
-                        text-shadow:0 4px 20px rgba(0,0,0,0.25);">🎨 Calm Colors</div>
-            <div style="font-size:16px;font-weight:400;opacity:0.92;">
-                Train your focus &amp; relax your mind
+        if from_sidebar:
+            # After login — match chat/mood/journal banner style exactly
+            st.markdown("""
+            <style>
+            @keyframes headerPulse {
+                0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.12); }
+                50%       { box-shadow: 0 0 0 8px rgba(255,255,255,0.06); }
+            }
+            @keyframes statusBlink {
+                0%, 100% { opacity: 1; }
+                50%       { opacity: 0.4; }
+            }
+            .game-page-header {
+                background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%);
+                padding: 18px 28px 16px;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                box-shadow: 0 4px 24px rgba(99,102,241,0.28);
+                border-radius: 20px;
+                margin-bottom: 30px;
+                margin-top: -30px;
+            }
+            .game-header-avatar {
+                width: 46px;
+                height: 46px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.22);
+                border: 2px solid rgba(255,255,255,0.45);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 22px;
+                flex-shrink: 0;
+                box-shadow: 0 0 0 4px rgba(255,255,255,0.12);
+                animation: headerPulse 3s ease-in-out infinite;
+            }
+            .game-header-text h1 {
+                margin: 0;
+                font-size: 20px;
+                font-weight: 700;
+                color: #ffffff;
+                line-height: 1.2;
+            }
+            .game-header-text p {
+                margin: 2px 0 0;
+                font-size: 14px;
+                color: rgba(255,255,255,0.78);
+                font-weight: 400;
+            }
+            .game-header-status {
+                margin-left: auto;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                color: rgba(255,255,255,0.85);
+                font-weight: 500;
+            }
+            .game-status-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: #4ade80;
+                box-shadow: 0 0 6px #4ade80;
+                animation: statusBlink 2s ease-in-out infinite;
+            }
+            </style>
+            <div class="game-page-header">
+                <div class="game-header-avatar">🎨</div>
+                <div class="game-header-text">
+                    <h1>Calm Colors</h1>
+                    <p>Train your focus &amp; relax your mind</p>
+                </div>
+                <div class="game-header-status">
+                    <div class="game-status-dot"></div>
+                    Ready to play
+                </div>
             </div>
-        </div>
-        """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
+        else:
+            # Before login (navbar) — keep original purple/pink banner
+            st.markdown("""
+            <div style="
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 55%, #f093fb 100%);
+                border-radius: 20px;
+                margin: 40px 10px 0 10px;
+                padding: 36px 20px 44px;
+                text-align: center;
+                color: white;
+                box-shadow: 0 8px 32px rgba(102,126,234,0.35);
+            ">
+                <div style="font-size:44px;font-weight:900;margin-bottom:10px;
+                            text-shadow:0 4px 20px rgba(0,0,0,0.25);">🎨 Calm Colors</div>
+                <div style="font-size:16px;font-weight:400;opacity:0.92;">
+                    Train your focus &amp; relax your mind
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
         # Start Game button — centered, styled via CSS class
         st.markdown("<div style='height:28px'></div>", unsafe_allow_html=True)
@@ -838,37 +920,37 @@ def show_calm_colors_game():
         </div>
         """, unsafe_allow_html=True)
 
-        # How to Play — animated gradient cards
+        # How to Play — lighter animated gradient cards
         st.markdown("""
         <style>
         @keyframes cardShift1 { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
         @keyframes cardShift2 { 0%{background-position:100% 50%} 50%{background-position:0% 50%} 100%{background-position:100% 50%} }
         @keyframes cardShift3 { 0%{background-position:50% 0%} 50%{background-position:50% 100%} 100%{background-position:50% 0%} }
-        .card1 { background:linear-gradient(135deg,#6366f1,#818cf8,#a78bfa,#6366f1);background-size:300% 300%;animation:cardShift1 6s ease infinite; }
-        .card2 { background:linear-gradient(135deg,#3b82f6,#60a5fa,#93c5fd,#3b82f6);background-size:300% 300%;animation:cardShift2 6s ease infinite; }
-        .card3 { background:linear-gradient(135deg,#10b981,#34d399,#6ee7b7,#10b981);background-size:300% 300%;animation:cardShift3 6s ease infinite; }
+        .card1 { background:linear-gradient(135deg,#a5b4fc,#c7d2fe,#ddd6fe,#a5b4fc);background-size:300% 300%;animation:cardShift1 6s ease infinite; }
+        .card2 { background:linear-gradient(135deg,#93c5fd,#bfdbfe,#dbeafe,#93c5fd);background-size:300% 300%;animation:cardShift2 6s ease infinite; }
+        .card3 { background:linear-gradient(135deg,#6ee7b7,#a7f3d0,#d1fae5,#6ee7b7);background-size:300% 300%;animation:cardShift3 6s ease infinite; }
         </style>
         <div style="margin:0 16px;">
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;">
-                <div class="card1" style="border-radius:16px;padding:18px 14px;text-align:center;box-shadow:0 4px 16px rgba(99,102,241,0.35);">
+                <div class="card1" style="border-radius:16px;padding:18px 14px;text-align:center;box-shadow:0 4px 16px rgba(165,180,252,0.3);">
                     <div style="font-size:26px;margin-bottom:8px;">👁️</div>
-                    <div style="font-size:13px;font-weight:700;color:#ffffff;margin-bottom:4px;">Watch</div>
-                    <div style="font-size:12px;color:#e0e7ff;line-height:1.5;">Colored squares flash in a sequence</div>
+                    <div style="font-size:13px;font-weight:700;color:#3730a3;margin-bottom:4px;">Watch</div>
+                    <div style="font-size:12px;color:#4338ca;line-height:1.5;">Colored squares flash in a sequence</div>
                 </div>
-                <div class="card2" style="border-radius:16px;padding:18px 14px;text-align:center;box-shadow:0 4px 16px rgba(59,130,246,0.35);">
+                <div class="card2" style="border-radius:16px;padding:18px 14px;text-align:center;box-shadow:0 4px 16px rgba(147,197,253,0.3);">
                     <div style="font-size:26px;margin-bottom:8px;">&#127919;</div>
-                    <div style="font-size:13px;font-weight:700;color:#ffffff;margin-bottom:4px;">Repeat</div>
-                    <div style="font-size:12px;color:#dbeafe;line-height:1.5;">Click the same colors in order</div>
+                    <div style="font-size:13px;font-weight:700;color:#1d4ed8;margin-bottom:4px;">Repeat</div>
+                    <div style="font-size:12px;color:#1e40af;line-height:1.5;">Click the same colors in order</div>
                 </div>
-                <div class="card3" style="border-radius:16px;padding:18px 14px;text-align:center;box-shadow:0 4px 16px rgba(16,185,129,0.35);">
+                <div class="card3" style="border-radius:16px;padding:18px 14px;text-align:center;box-shadow:0 4px 16px rgba(110,231,183,0.3);">
                     <div style="font-size:26px;margin-bottom:8px;">🚀</div>
-                    <div style="font-size:13px;font-weight:700;color:#ffffff;margin-bottom:4px;">Level Up</div>
-                    <div style="font-size:12px;color:#d1fae5;line-height:1.5;">Each round gets longer — score points!</div>
+                    <div style="font-size:13px;font-weight:700;color:#065f46;margin-bottom:4px;">Level Up</div>
+                    <div style="font-size:12px;color:#047857;line-height:1.5;">Each round gets longer — score points!</div>
                 </div>
             </div>
-            <div style="background:linear-gradient(135deg,#8b5cf6,#c4b5fd);border-radius:16px;padding:13px 20px;text-align:center;box-shadow:0 4px 16px rgba(245,158,11,0.30);">
+            <div style="background:linear-gradient(135deg,#ddd6fe,#ede9fe);border-radius:16px;padding:13px 20px;text-align:center;box-shadow:0 4px 16px rgba(167,139,250,0.2);">
                 <span style="font-size:15px;">🧘</span>
-                <span style="font-size:14px;font-weight:600;color:#1c1917;margin-left:8px;">Breathe IN while watching &nbsp;·&nbsp; Breathe OUT while repeating</span>
+                <span style="font-size:14px;font-weight:600;color:#5b21b6;margin-left:8px;">Breathe IN while watching &nbsp;·&nbsp; Breathe OUT while repeating</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1078,7 +1160,32 @@ def show_calm_colors_game():
         emoji = "🎉" if is_win else "💙"
         title = "Amazing!" if is_win else "Game Over"
 
-        st.markdown("""<style>.stApp{background:linear-gradient(135deg,#f0f4ff 0%,#faf5ff 50%,#fce7f3 100%) !important;}.play-again-result button{background:linear-gradient(135deg,#667eea,#764ba2) !important;color:white !important;font-weight:700 !important;font-size:16px !important;padding:12px 0 !important;border-radius:50px !important;border:2px solid rgba(255,255,255,0.3) !important;box-shadow:0 8px 24px rgba(102,126,234,0.4) !important;transition:all 0.3s ease !important;width:100% !important;}.play-again-result button:hover{transform:translateY(-3px) !important;box-shadow:0 12px 32px rgba(102,126,234,0.55) !important;}</style>""", unsafe_allow_html=True)
+        # Scoped CSS — only targets game page elements, NOT navbar buttons
+        st.markdown("""
+        <style>
+        .stApp { background: linear-gradient(135deg,#f0f4ff 0%,#faf5ff 50%,#fce7f3 100%) !important; }
+        /* Scope to game page only — exclude nav buttons */
+        .game-play-again-btn .stButton > button {
+            background: linear-gradient(135deg,#667eea,#764ba2) !important;
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 16px !important;
+            padding: 12px 48px !important;
+            border-radius: 50px !important;
+            border: 2px solid rgba(255,255,255,0.3) !important;
+            box-shadow: 0 8px 24px rgba(102,126,234,0.4) !important;
+            transition: all 0.3s ease !important;
+            width: auto !important;
+            min-width: 200px !important;
+            display: block !important;
+            margin: 0 auto !important;
+        }
+        .game-play-again-btn .stButton > button:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 12px 32px rgba(102,126,234,0.55) !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
 
         st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
 
@@ -1087,126 +1194,71 @@ def show_calm_colors_game():
         with col:
             st.markdown(f"""<div style="background:linear-gradient(145deg,#667eea 0%,#764ba2 40%,#f093fb 100%);border-radius:24px;padding:32px 28px 28px;text-align:center;box-shadow:0 16px 48px rgba(102,126,234,0.4);border:1px solid rgba(255,255,255,0.2);position:relative;overflow:hidden;"><div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,0.08);border-radius:50%;"></div><div style="position:absolute;bottom:-20px;left:-20px;width:80px;height:80px;background:rgba(255,255,255,0.06);border-radius:50%;"></div><div style="font-size:52px;margin-bottom:10px;position:relative;z-index:1;">{emoji}</div><div style="font-size:30px;font-weight:900;color:white;margin-bottom:24px;text-shadow:0 2px 12px rgba(0,0,0,0.2);position:relative;z-index:1;">{title}</div><div style="display:flex;justify-content:center;gap:14px;margin-bottom:18px;position:relative;z-index:1;"><div style="background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:16px;padding:16px 24px;flex:1;border:1px solid rgba(255,255,255,0.3);"><div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.8);margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">🎯 Level</div><div style="font-size:38px;font-weight:900;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.2);">{level}</div></div><div style="background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:16px;padding:16px 24px;flex:1;border:1px solid rgba(255,255,255,0.3);"><div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.8);margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">⭐ Score</div><div style="font-size:38px;font-weight:900;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.2);">{score}</div></div></div><div style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7;background:rgba(255,255,255,0.12);border-radius:12px;padding:12px 16px;position:relative;z-index:1;">Every game is practice for mindfulness<br>Breathe deeply and try again</div></div>""", unsafe_allow_html=True)
 
-        # ── GAP between popup and button ──
-        st.markdown("<div style='height:28px'></div>", unsafe_allow_html=True)
-
-        # ── PLAY AGAIN — centered via CSS, no column nesting ──
-        st.markdown("""<style>.play-again-result{display:flex;justify-content:center;}.play-again-result button{background:linear-gradient(135deg,#667eea,#764ba2) !important;color:white !important;font-weight:700 !important;font-size:16px !important;padding:12px 48px !important;border-radius:50px !important;border:2px solid rgba(255,255,255,0.3) !important;box-shadow:0 8px 24px rgba(102,126,234,0.4) !important;transition:all 0.3s ease !important;width:auto !important;min-width:200px !important;}.play-again-result button:hover{transform:translateY(-3px) !important;box-shadow:0 12px 32px rgba(102,126,234,0.55) !important;}</style>""", unsafe_allow_html=True)
-        st.markdown('<div class="play-again-result">', unsafe_allow_html=True)
-        if st.button("🎮 Play Again", key="btn_again"):
-            reset_game()
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+        # ── GAP + centered Play Again button ──
+        st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
+        _, btn_col, _ = st.columns([1, 1.4, 1])
+        with btn_col:
+            st.markdown('<div class="game-play-again-btn">', unsafe_allow_html=True)
+            if st.button("🎮 Play Again", key="btn_again", use_container_width=True):
+                reset_game()
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
     def show_login_popup():
-        # Full screen overlay + popup card with buttons INSIDE at high z-index
-        st.markdown("""
-        <style>
-        .popup-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-            z-index: 99998;
-        }
-        .popup-buttons-wrap {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, 80px);
-            z-index: 99999;
-            width: 380px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .popup-buttons-wrap .stButton > button {
-            background: rgba(255,255,255,0.22) !important;
-            color: white !important;
-            font-weight: 700 !important;
-            font-size: 15px !important;
-            padding: 12px 20px !important;
-            border-radius: 50px !important;
-            border: 2px solid rgba(255,255,255,0.5) !important;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2) !important;
-            max-width: 100% !important;
-            width: 100% !important;
-            margin: 0 !important;
-            display: block !important;
-            transition: all 0.2s ease !important;
-        }
-        .popup-buttons-wrap .stButton > button:hover {
-            background: rgba(255,255,255,0.35) !important;
-            transform: translateY(-2px) !important;
-        }
-        </style>
-        <div class="popup-overlay"></div>
-        <div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-                    width:420px;background:linear-gradient(135deg,#667eea,#764ba2);
-                    padding:35px 35px 100px 35px;border-radius:24px;text-align:center;
-                    color:white;box-shadow:0 20px 80px rgba(0,0,0,0.35);z-index:99999;">
-            <div style="font-size:50px;margin-bottom:12px;">🔐</div>
-            <h2 style="margin-bottom:10px;font-size:26px;">Unlock Unlimited Levels</h2>
-            <p style="opacity:0.9;line-height:1.6;margin-bottom:0;">
-                You've reached 5 free levels.<br>
-                Sign in or create an account to continue your wellness journey.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+        _, col, _ = st.columns([1, 1.2, 1])
+        with col:
+            st.markdown("""
+            <div style="background:linear-gradient(135deg,#667eea,#764ba2);
+                        border-radius:24px;margin-top:80px;padding:32px 28px 28px;text-align:center;
+                        color:white;box-shadow:0 16px 60px rgba(0,0,0,0.35);">
+                <div style="font-size:52px;margin-bottom:12px;">🔐</div>
+                <h2 style="font-size:24px;font-weight:800;margin-bottom:10px;">Unlock Unlimited Levels</h2>
+                <p style="opacity:0.88;font-size:14px;line-height:1.65;margin-bottom:0;">
+                    You've reached 5 free levels.<br>
+                    Sign in or create an account to continue.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
 
-        # Buttons positioned over the popup using fixed CSS wrapper
-        st.markdown('<div class="popup-buttons-wrap">', unsafe_allow_html=True)
-        c1, c2 = st.columns(2)
-        with c1:
-            if st.button("🔐 Sign In", key="popup_signin", use_container_width=True):
-                st.session_state.page = "auth"
-                st.session_state.game_screen = "home"
-                st.session_state.public_game_mode = False
-                st.rerun()
-        with c2:
-            if st.button("✨ Create Account", key="popup_register", use_container_width=True):
-                st.session_state.page = "auth"
-                st.session_state.game_screen = "home"
-                st.session_state.public_game_mode = False
-                st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+            # Generous gap between popup and buttons
+            st.markdown("<div style='height:48px'></div>", unsafe_allow_html=True)
 
-        # Back to home — separate centered row
-        st.markdown("""
-        <style>
-        .popup-back-wrap {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, 145px);
-            z-index: 99999;
-            width: 200px;
-        }
-        .popup-back-wrap .stButton > button {
-            background: transparent !important;
-            color: rgba(255,255,255,0.7) !important;
-            font-size: 13px !important;
-            font-weight: 500 !important;
-            padding: 8px 16px !important;
-            border-radius: 50px !important;
-            border: 1px solid rgba(255,255,255,0.3) !important;
-            max-width: 100% !important;
-            width: 100% !important;
-            margin: 0 !important;
-            display: block !important;
-        }
-        .popup-back-wrap .stButton > button:hover {
-            background: rgba(255,255,255,0.1) !important;
-            color: white !important;
-        }
-        </style>
-        <div class="popup-back-wrap">
-        """, unsafe_allow_html=True)
-        if st.button("🏠 Back to Home", key="popup_home", use_container_width=True):
-            st.session_state.page = "landing"
-            st.session_state.game_screen = "home"
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+            # Scoped button styles — won't affect navbar
+            st.markdown("""
+            <style>
+            .game-popup-btns .stButton > button {
+                background: linear-gradient(135deg,#667eea,#764ba2) !important;
+                color: white !important;
+                font-weight: 600 !important;
+                font-size: 14px !important;
+                padding: 11px 16px !important;
+                border-radius: 50px !important;
+                border: 2px solid rgba(255,255,255,0.3) !important;
+                box-shadow: 0 6px 20px rgba(102,126,234,0.35) !important;
+                transition: all 0.2s ease !important;
+                width: 100% !important;
+            }
+            .game-popup-btns .stButton > button:hover {
+                transform: translateY(-2px) !important;
+                box-shadow: 0 10px 28px rgba(102,126,234,0.5) !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+
+            st.markdown('<div class="game-popup-btns">', unsafe_allow_html=True)
+            b1, b2 = st.columns(2, gap="medium")
+            with b1:
+                if st.button("✨ Create Free Account", key="popup_register", use_container_width=True):
+                    st.session_state.page = "auth"
+                    st.session_state.game_screen = "home"
+                    st.session_state.public_game_mode = False
+                    st.rerun()
+            with b2:
+                if st.button("← Back to Home", key="popup_home", use_container_width=True):
+                    st.session_state.page = "landing"
+                    st.session_state.game_screen = "home"
+                    st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
     # ── ROUTER ──
     screen = st.session_state.game_screen
