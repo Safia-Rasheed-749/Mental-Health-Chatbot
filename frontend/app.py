@@ -122,6 +122,7 @@ if st.session_state.user is None:
 
     elif st.session_state.page == "games":
         st.session_state["games_from_sidebar"] = False
+        st.session_state["public_game_mode"] = True
         show_aesthetic_game_selector()
 
     elif st.session_state.page == "auth":
@@ -135,6 +136,18 @@ if st.session_state.user is None:
 
 # ================= LOGGED IN AREA =================
 apply_clean_layout(hide_header_completely=False)
+
+# Keep sidebar collapse/expand icon always visible for logged-in users
+st.markdown("""
+<style>
+[data-testid="collapsedControl"] {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 9999 !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 user = st.session_state.user
 user_id = user[0]
@@ -189,8 +202,8 @@ elif current == "Journal":
     journal.show_journal(user_id)
 
 elif current == "Games":
-    # Mark that games is opened from sidebar (logged-in context)
     st.session_state["games_from_sidebar"] = True
+    st.session_state["public_game_mode"] = False
     show_aesthetic_game_selector()
 
 elif current == "Admin Panel" and is_admin:

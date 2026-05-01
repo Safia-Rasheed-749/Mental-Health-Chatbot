@@ -4,50 +4,27 @@ import random
 
 
 def show_calm_colors_game():
-    # app.py already calls apply_clean_layout + render_navbar before this.
-    # Do NOT call apply_clean_layout here — it shifts the navbar down.
-
     # Detect if opened from sidebar (logged-in) or navbar (public)
     from_sidebar = st.session_state.get("games_from_sidebar", False)
 
-    # Base CSS — always applied
-    st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
-    footer, .stDeployButton { display: none !important; }
-
-    html, body, .stApp {
-        font-family: 'Inter', sans-serif !important;
-        background: #fafbfc !important;
-        min-height: 100vh !important;
-        position: relative !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-    # When opened from NAVBAR — hide header completely, no sidebar
+    # ── LAYOUT CONTROL based on entry point ──
     if not from_sidebar:
+        # Opened from navbar: hide sidebar and collapse icon completely
         st.markdown("""
         <style>
-        header[data-testid="stHeader"] { display: none !important; }
-        button[kind="header"] { display: none !important; }
+        [data-testid="stSidebar"]        { display: none !important; }
+        [data-testid="collapsedControl"]  { display: none !important; }
+        .main { margin-left: 0rem !important; }
+        header[data-testid="stHeader"]   { display: none !important; }
+        footer, .stDeployButton          { display: none !important; }
         </style>
         """, unsafe_allow_html=True)
-
-    # When opened from SIDEBAR — keep header/toggle visible, protect sidebar styling
-    if from_sidebar:
+    else:
+        # Opened from sidebar: DO NOT touch header at all — let Streamlit handle it
+        # Only protect sidebar styling
         st.markdown("""
         <style>
-        header[data-testid="stHeader"] { visibility: hidden !important; height: 0 !important; }
-        button[kind="header"] { 
-            visibility: visible !important; 
-            display: flex !important;
-            position: fixed !important;
-            top: 0.5rem !important;
-            left: 0.5rem !important;
-            z-index: 9999 !important;
-        }
+        footer, .stDeployButton { display: none !important; }
         section[data-testid="stSidebar"] {
             background: linear-gradient(145deg, rgba(12,22,48,0.85), rgba(12,22,48,0.55)) !important;
         }
@@ -72,6 +49,22 @@ def show_calm_colors_game():
 
     st.markdown("""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    html, body, .stApp {
+        font-family: 'Inter', sans-serif !important;
+        background: #fafbfc !important;
+        min-height: 100vh !important;
+        position: relative !important;
+        overflow-x: hidden !important;
+    }
+
+    .main .block-container {
+        max-width: 100% !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+
     .stApp::before {
         content: '';
         position: fixed;
@@ -98,13 +91,19 @@ def show_calm_colors_game():
         100% { background-position: 0% 50%; }
     }
 
-    .block-container {
-        padding-top: 1.2rem !important;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
-        max-width: 1200px !important;
+    .main .block-container {
+        padding-top: 1rem !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+        max-width: 100% !important;
         background: transparent !important;
-        margin-top: 0px;
+    }
+
+    @media (max-width: 1200px) {
+        .block-container {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+        }
     }
 
     /* ── FLOATING ELEMENTS ── */
@@ -397,13 +396,14 @@ def show_calm_colors_game():
     }
 
     div[data-testid="column"] button {
-        padding: 48px 24px !important;
-        font-size: 26px !important;
+        padding: 28px 18px !important;
+        font-size: 22px !important;
         font-weight: 700 !important;
         border-radius: 24px !important;
         border: 3px solid rgba(255,255,255,0.6) !important;
         transition: all 0.3s ease !important;
-        width: 100% !important;
+        width: auto !important;
+        min-width: 140px !important;
         color: white !important;
         margin: 8px 0 !important;
         box-shadow: 
@@ -530,6 +530,12 @@ def show_calm_colors_game():
         100% { transform: scale(1) rotate(0deg); opacity: 1; }
     }
 
+    @keyframes popIn {
+        0%   { transform: scale(0.6); opacity: 0; }
+        70%  { transform: scale(1.08); opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
     .stProgress > div > div {
         background: linear-gradient(90deg, #667eea, #764ba2) !important;
         border-radius: 12px !important; 
@@ -563,13 +569,14 @@ def show_calm_colors_game():
 
     /* ── COLOR BUTTONS ── */
     div[data-testid="column"] button {
-        padding: 40px 20px !important;
-        font-size: 24px !important;
+        padding: 28px 18px !important;
+        font-size: 22px !important;
         font-weight: 700 !important;
         border-radius: 20px !important;
         border: 3px solid rgba(255,255,255,0.55) !important;
         transition: all 0.25s ease !important;
-        width: 100% !important;
+        width: auto !important;
+        min-width: 140px !important;
         color: white !important;
     }
     div[data-testid="column"] button:hover {
@@ -591,11 +598,17 @@ def show_calm_colors_game():
     /* ── MAIN BUTTONS ── */
     .stButton > button {
         background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
-        color: white !important; font-weight: 700 !important;
-        font-size: 18px !important; padding: 14px 44px !important;
-        border-radius: 50px !important; border: none !important;
+        color: white !important;
+        font-weight: 700 !important;
+        font-size: 18px !important;
+        padding: 12px 18px !important;
+        border-radius: 50px !important;
+        border: none !important;
         box-shadow: 0 6px 24px rgba(99,102,241,0.38) !important;
-        transition: all 0.25s ease !important; width: 100% !important;
+        transition: all 0.25s ease !important;
+        max-width: 320px !important;
+        margin: auto !important;
+        display: block !important;
     }
     .stButton > button:hover {
         transform: translateY(-4px) !important;
@@ -708,6 +721,7 @@ def show_calm_colors_game():
         st.session_state.is_playing_seq = False
         st.session_state.waiting        = False
         st.session_state.game_message   = ""
+    st.session_state.public_game_mode = st.session_state.get("public_game_mode", False)
 
     colors = [
         {"name": "Blue",   "color": "#3b82f6", "emoji": "💙", "id": 0},
@@ -757,9 +771,29 @@ def show_calm_colors_game():
                 st.session_state.player_index = 0
                 st.session_state.waiting      = False
                 st.session_state.is_playing_seq = True
-                st.session_state.game_sequence = [
-                    random.randint(0, 3) for _ in range(st.session_state.game_level)
-                ]
+                level = st.session_state.game_level
+                if level < 5:
+                    next_color = random.randint(0, 3)
+                elif level < 10:
+                    last = st.session_state.game_sequence[-1]
+                    choices = [0, 1, 2, 3]
+                    choices.remove(last)
+                    next_color = random.choice(choices)
+                else:
+                    patterns = [[0,1,2,3],[3,2,1,0],[0,2,1,3],[1,3,0,2]]
+                    if random.random() > 0.6:
+                        pattern = random.choice(patterns)
+                        next_color = pattern[len(st.session_state.game_sequence) % 4]
+                    else:
+                        next_color = random.randint(0, 3)
+                st.session_state.game_sequence.append(next_color)
+                # Public demo restriction
+                if (
+                    st.session_state.get("public_game_mode", False)
+                    and st.session_state.game_level > 5
+                ):
+                    st.session_state.game_screen = "login_popup"
+                    return
                 st.session_state.game_message = f"&#9989; Perfect! +{pts} points!"
         else:
             end_game()
@@ -979,17 +1013,21 @@ def show_calm_colors_game():
                 unsafe_allow_html=True
             )
             slot = st.empty()
-            for idx in st.session_state.game_sequence:
+            for i, idx in enumerate(st.session_state.game_sequence):
                 c = colors[idx]
+                # Show the color chip
                 slot.markdown(f"""
-                <div style="text-align:center;margin:40px 0;">
+                <div style="text-align:center;margin:40px 0;animation:popIn 0.3s ease;">
                     <div class="seq-chip" style="background:{c['color']};">
                         {c['emoji']} {c['name']}
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
-                time.sleep(0.85)
-            time.sleep(0.4)
+                time.sleep(0.9)
+                # Clear between steps so repeated colors are visually distinct
+                slot.empty()
+                time.sleep(0.15)
+            time.sleep(0.2)
             st.session_state.is_playing_seq = False
             st.session_state.waiting        = True
             st.session_state.game_message   = "Your turn! Repeat the sequence..."
@@ -1060,12 +1098,123 @@ def show_calm_colors_game():
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
 
+    def show_login_popup():
+        # Full screen overlay + popup card with buttons INSIDE at high z-index
+        st.markdown("""
+        <style>
+        .popup-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            z-index: 99998;
+        }
+        .popup-buttons-wrap {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 80px);
+            z-index: 99999;
+            width: 380px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .popup-buttons-wrap .stButton > button {
+            background: rgba(255,255,255,0.22) !important;
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 15px !important;
+            padding: 12px 20px !important;
+            border-radius: 50px !important;
+            border: 2px solid rgba(255,255,255,0.5) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2) !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            margin: 0 !important;
+            display: block !important;
+            transition: all 0.2s ease !important;
+        }
+        .popup-buttons-wrap .stButton > button:hover {
+            background: rgba(255,255,255,0.35) !important;
+            transform: translateY(-2px) !important;
+        }
+        </style>
+        <div class="popup-overlay"></div>
+        <div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+                    width:420px;background:linear-gradient(135deg,#667eea,#764ba2);
+                    padding:35px 35px 100px 35px;border-radius:24px;text-align:center;
+                    color:white;box-shadow:0 20px 80px rgba(0,0,0,0.35);z-index:99999;">
+            <div style="font-size:50px;margin-bottom:12px;">🔐</div>
+            <h2 style="margin-bottom:10px;font-size:26px;">Unlock Unlimited Levels</h2>
+            <p style="opacity:0.9;line-height:1.6;margin-bottom:0;">
+                You've reached 5 free levels.<br>
+                Sign in or create an account to continue your wellness journey.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Buttons positioned over the popup using fixed CSS wrapper
+        st.markdown('<div class="popup-buttons-wrap">', unsafe_allow_html=True)
+        c1, c2 = st.columns(2)
+        with c1:
+            if st.button("🔐 Sign In", key="popup_signin", use_container_width=True):
+                st.session_state.page = "auth"
+                st.session_state.game_screen = "home"
+                st.session_state.public_game_mode = False
+                st.rerun()
+        with c2:
+            if st.button("✨ Create Account", key="popup_register", use_container_width=True):
+                st.session_state.page = "auth"
+                st.session_state.game_screen = "home"
+                st.session_state.public_game_mode = False
+                st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        # Back to home — separate centered row
+        st.markdown("""
+        <style>
+        .popup-back-wrap {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 145px);
+            z-index: 99999;
+            width: 200px;
+        }
+        .popup-back-wrap .stButton > button {
+            background: transparent !important;
+            color: rgba(255,255,255,0.7) !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+            padding: 8px 16px !important;
+            border-radius: 50px !important;
+            border: 1px solid rgba(255,255,255,0.3) !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            margin: 0 !important;
+            display: block !important;
+        }
+        .popup-back-wrap .stButton > button:hover {
+            background: rgba(255,255,255,0.1) !important;
+            color: white !important;
+        }
+        </style>
+        <div class="popup-back-wrap">
+        """, unsafe_allow_html=True)
+        if st.button("🏠 Back to Home", key="popup_home", use_container_width=True):
+            st.session_state.page = "landing"
+            st.session_state.game_screen = "home"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+
     # ── ROUTER ──
     screen = st.session_state.game_screen
-    if   screen == "home":      show_home()
-    elif screen == "countdown": show_countdown()
-    elif screen == "game":      show_game()
-    elif screen == "result":    show_result()
+    if   screen == "home":        show_home()
+    elif screen == "countdown":   show_countdown()
+    elif screen == "game":        show_game()
+    elif screen == "result":      show_result()
+    elif screen == "login_popup": show_login_popup()
 
 
 def show_aesthetic_game_selector():
