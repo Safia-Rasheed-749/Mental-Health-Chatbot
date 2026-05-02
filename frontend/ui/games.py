@@ -740,6 +740,8 @@ def show_calm_colors_game():
         st.session_state.waiting        = False
         st.session_state.game_message   = ""
 
+    # Complete replacement for handle_move function
+
     def handle_move(color_id):
         if not st.session_state.game_active or not st.session_state.waiting:
             return
@@ -754,21 +756,61 @@ def show_calm_colors_game():
                 st.session_state.waiting      = False
                 st.session_state.is_playing_seq = True
                 level = st.session_state.game_level
-                if level < 5:
-                    next_color = random.randint(0, 3)
-                elif level < 10:
-                    last = st.session_state.game_sequence[-1]
-                    choices = [0, 1, 2, 3]
-                    choices.remove(last)
-                    next_color = random.choice(choices)
+                
+                # 🔥 PROFESSIONAL LOGIC:  
+                # 1. Sequence length slowly increases
+                # 2. Every round has completely NEW random colors
+                # 3. Difficulty maintains through constraints
+                
+                # Calculate new sequence length based on level
+                if level <= 3:
+                    new_length = 3  # Level 1-3: Always 3 colors
+                elif level <= 6:
+                    new_length = 4  # Level 4-6: 4 colors
+                elif level <= 9:
+                    new_length = 5  # Level 7-9: 5 colors
+                elif level <= 12:
+                    new_length = 6  # Level 10-12: 6 colors
                 else:
-                    patterns = [[0,1,2,3],[3,2,1,0],[0,2,1,3],[1,3,0,2]]
-                    if random.random() > 0.6:
-                        pattern = random.choice(patterns)
-                        next_color = pattern[len(st.session_state.game_sequence) % 4]
+                    new_length = min(8, 6 + (level - 12) // 3)  # Max 8 colors
+                
+                # Generate brand new random sequence with difficulty constraints
+                new_sequence = []
+                for i in range(new_length):
+                    if level < 5:
+                        # Easy: Totally random
+                        new_color = random.randint(0, 3)
+                        
+                    elif level < 10:
+                        # Medium: No consecutive repeats
+                        if len(new_sequence) > 0:
+                            last = new_sequence[-1]
+                            choices = [0, 1, 2, 3]
+                            choices.remove(last)
+                            new_color = random.choice(choices)
+                        else:
+                            new_color = random.randint(0, 3)
+                            
                     else:
-                        next_color = random.randint(0, 3)
-                st.session_state.game_sequence.append(next_color)
+                        # Hard: Pattern + No consecutive repeats
+                        patterns = [[0,1,2,3], [3,2,1,0], [0,2,1,3], [1,3,0,2]]
+                        if random.random() > 0.6 and i < len(patterns):
+                            pattern = random.choice(patterns)
+                            new_color = pattern[i % 4]
+                        else:
+                            if len(new_sequence) > 0:
+                                last = new_sequence[-1]
+                                choices = [0, 1, 2, 3]
+                                choices.remove(last)
+                                new_color = random.choice(choices)
+                            else:
+                                new_color = random.randint(0, 3)
+                    
+                    new_sequence.append(new_color)
+                
+                # Replace with completely new sequence
+                st.session_state.game_sequence = new_sequence
+                
                 # Public demo restriction
                 if (
                     st.session_state.get("public_game_mode", False)
@@ -1085,7 +1127,7 @@ def show_calm_colors_game():
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
-                time.sleep(0.9)
+                time.sleep(1.2)
                 # Clear between steps so repeated colors are visually distinct
                 slot.empty()
                 time.sleep(0.15)
@@ -1136,9 +1178,9 @@ def show_calm_colors_game():
     def show_result():
         level = st.session_state.game_level
         score = st.session_state.game_score
-        is_win = score > 50
-        emoji = "🎉" if is_win else "💙"
-        title = "Amazing!" if is_win else "Game Over"
+        # is_win = score > 50
+        emoji = "🎉" 
+        title = "Game Ended!" 
 
         # Scoped CSS — only targets game page elements, NOT navbar buttons
         st.markdown("""
@@ -1225,8 +1267,9 @@ def show_calm_colors_game():
             """, unsafe_allow_html=True)
 
             if st.button("🎮 Play Again", key="btn_again", use_container_width=True):
-                reset_game()
+                st.session_state.game_screen = "countdown"
                 st.rerun()
+                
 
             st.markdown("</div>", unsafe_allow_html=True)
     def show_login_popup():
