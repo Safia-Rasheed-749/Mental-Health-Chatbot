@@ -36,179 +36,198 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
     st.markdown("""
     <style>
+    /* ── SIDEBAR CONTAINER ── */
     section[data-testid="stSidebar"] {
-        width: 280px !important;
-        background: linear-gradient(145deg, rgba(12,22,48,0.85), rgba(12,22,48,0.55));
-        border-right: 1px solid rgba(148,163,184,0.18);
-        box-shadow: 0 18px 60px rgba(0,0,0,0.25);
+        width: 260px !important;
+        background: linear-gradient(180deg, #5b8fa8 0%, #4a7d96 50%, #3d6b82 100%) !important;
+        border-right: 1px solid rgba(180,220,240,0.20) !important;
+        box-shadow: 4px 0 20px rgba(0,0,0,0.08) !important;
     }
-
     section[data-testid="stSidebar"] > div:first-child {
         padding-top: 0rem !important;
     }
-
     section[data-testid="stSidebar"] .block-container {
-        padding-top: 0.2rem !important;
-        padding-left: 0.9rem !important;
-        padding-right: 0.9rem !important;
+        padding-top: 0.6rem !important;
+        padding-left: 0.8rem !important;
+        padding-right: 0.8rem !important;
         padding-bottom: 0.7rem !important;
-        /* Override any page-level block-container changes */
         max-width: 100% !important;
         margin-top: 0 !important;
     }
 
-    /* ── AVATAR HEADER ── */
+    /* ── HEADER ── */
     .sidebar-header {
         display: flex;
         align-items: center;
-        gap: 12px;
-        margin-bottom: 14px;
-        padding: 4px 2px 0 2px;
+        gap: 10px;
+        padding: 2px 0 10px 0;
+        margin-bottom: 4px;
     }
     .sidebar-avatar {
-        width: 40px;
-        height: 40px;
+        width: 42px;
+        height: 42px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #6366f1, #a78bfa);
+        background: rgba(255,255,255,0.22);
+        border: 2px solid rgba(255,255,255,0.45);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 20px;
         flex-shrink: 0;
-        box-shadow: 0 0 0 3px rgba(99,102,241,0.25), 0 4px 14px rgba(99,102,241,0.4);
+        box-shadow: 0 0 0 4px rgba(255,255,255,0.12);
         animation: avatarPulse 3s ease-in-out infinite;
     }
     @keyframes avatarPulse {
-        0%, 100% { box-shadow: 0 0 0 3px rgba(99,102,241,0.25), 0 4px 14px rgba(99,102,241,0.4); }
-        50%       { box-shadow: 0 0 0 6px rgba(99,102,241,0.12), 0 4px 20px rgba(99,102,241,0.55); }
+        0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.12); }
+        50%       { box-shadow: 0 0 0 8px rgba(255,255,255,0.06); }
     }
     .sidebar-brand {
-        font-size: 17px;
-        font-weight: 900;
-        color: rgba(196,181,253,0.98);
-        text-shadow: 0 0 18px rgba(124,58,237,0.25);
+        font-size: 15px;
+        font-weight: 800;
+        color: #ffffff;
         line-height: 1.2;
+        letter-spacing: 0.2px;
     }
 
-    /* ── SECTION TITLE ── */
-    .section-title {
-        font-size: 14px;
-        font-weight: 700;
-        letter-spacing: 0.3px;
-        margin: 10px 0 8px 2px;
-        color: rgba(226,232,240,0.78);
-    }
-
+    /* ── DIVIDER ── */
     hr {
-        margin-top: 10px !important;
-        margin-bottom: 10px !important;
+        margin-top: 6px !important;
+        margin-bottom: 6px !important;
+        border-color: rgba(74,127,212,0.2) !important;
+    }
+
+    /* ── SECTION LABEL ── */
+    section[data-testid="stSidebar"] .sb-section-label {
+        font-size: 13px !important;
+        font-weight: 800 !important;
+        letter-spacing: 1.6px !important;
+        text-transform: uppercase !important;
+        margin: 16px 0 10px 2px !important;
+        color: #ffffff !important;
+        display: block !important;
+        opacity: 1 !important;
+    }
+
+    /* ── NAVIGATION RADIO ── */
+    section[data-testid="stSidebar"] div[role="radiogroup"] {
+        gap: 1px !important;
+    }
+    section[data-testid="stSidebar"] div[role="radiogroup"] label {
+        padding: 5px 8px !important;
+        border-radius: 8px !important;
+        transition: background 0.15s !important;
+        cursor: pointer !important;
+    }
+    section[data-testid="stSidebar"] div[role="radiogroup"] label:hover {
+        background: rgba(255,255,255,0.12) !important;
+    }
+    section[data-testid="stSidebar"] div[role="radiogroup"] label p {
+        color: rgba(255,255,255,0.92) !important;
+        font-size: 13.5px !important;
+        font-weight: 500 !important;
+        margin: 0 !important;
     }
 
     /* ── ALL SIDEBAR BUTTONS ── */
     section[data-testid="stSidebar"] .stButton button {
-        background-color: rgba(15,23,42,0.35) !important;
-        border-radius: 30px !important;
-        padding: 8px 16px !important;
-        margin: 4px 0 !important;
-        font-size: 14px !important;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 5px 10px !important;
+        margin: 1px 0 !important;
+        font-size: 13px !important;
         font-weight: 500 !important;
         text-align: left !important;
-        border: none !important;
-        transition: all 0.2s ease !important;
-        color: #F8FAFC !important;
+        color: rgba(226,232,240,0.88) !important;
         width: 100% !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 8px !important;
+        transition: all 0.15s ease !important;
+        box-shadow: none !important;
+        /* Neutralise any page-level overrides */
+        height: auto !important;
+        min-height: auto !important;
+        max-width: none !important;
+        display: block !important;
+        transform: none !important;
     }
-
     section[data-testid="stSidebar"] .stButton button:hover {
-        background-color: rgba(59,130,246,0.10) !important;
-        transform: translateX(4px);
+        background: rgba(255,255,255,0.12) !important;
+        color: #ffffff !important;
+        transform: translateX(2px) !important;
+        box-shadow: none !important;
     }
 
-    /* ── NAVIGATION RADIO ── */
-    div[role="radiogroup"] { gap: 0.2rem !important; }
-
-    section[data-testid="stSidebar"] div[role="radiogroup"] label p {
-        color: #FFFFFF !important;
-        font-size: 14px !important;
-        font-weight: 500 !important;
+    /* ── PROTECT SIDEBAR COLUMNS from page-level column rules ── */
+    section[data-testid="stSidebar"] div[data-testid="column"] {
+        padding: 0 !important;
+        background: transparent !important;
+        gap: 0 !important;
+    }
+    section[data-testid="stSidebar"] div[data-testid="stHorizontalBlock"] {
+        gap: 4px !important;
+        background: transparent !important;
+        align-items: center !important;
     }
 
-    section[data-testid="stSidebar"] div[role="radiogroup"] label {
-        padding: 6px 8px !important;
-        font-size: 14px !important;
+    /* ── DIVIDER (scoped so mood/journal hr rules don't override) ── */
+    section[data-testid="stSidebar"] hr {
+        margin-top: 6px !important;
+        margin-bottom: 6px !important;
+        border-color: rgba(255,255,255,0.15) !important;
+        background: none !important;
+        height: auto !important;
     }
 
     /* ── LOGOUT (primary) ── */
     section[data-testid="stSidebar"] .stButton button[kind="primary"] {
-        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%) !important;
-        border: 1px solid rgba(255,255,255,0.12) !important;
+        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 100%) !important;
         color: white !important;
-        font-weight: 900 !important;
-        justify-content: center !important;
+        font-weight: 700 !important;
+        border-radius: 8px !important;
+        text-align: center !important;
+        margin-top: 4px !important;
     }
     section[data-testid="stSidebar"] .stButton button[kind="primary"]:hover {
-        filter: brightness(1.06);
+        filter: brightness(1.1) !important;
+        transform: none !important;
     }
-
-    /* ── NON-PRIMARY BUTTONS (session tabs etc) ── */
-    section[data-testid="stSidebar"] .stButton button:not([kind="primary"]) {
-        background-color: transparent !important;
-        border: none !important;
-        border-radius: 0 !important;
-        color: #FFFFFF !important;
-        box-shadow: none !important;
-    }
-    section[data-testid="stSidebar"] .stButton button:not([kind="primary"]):hover {
-        background-color: rgba(59,130,246,0.15) !important;
-        transform: translateX(4px);
-    }
-
-    .logout-btn {
-        margin-top: 30px !important;
-        margin-bottom: -2px !important;
-        padding-bottom: 0 !important;
-    }
+    .logout-btn { margin-top: 36px !important; padding-top: 16px !important; border-top: 1px solid rgba(255,255,255,0.15) !important; }
 
     /* ── NEW CHAT BUTTON ── */
     .new-chat-btn .stButton button {
-        background: rgba(99,102,241,0.18) !important;
-        border: 1px solid rgba(99,102,241,0.35) !important;
-        border-radius: 10px !important;
-        color: #c4b5fd !important;
-        font-size: 13px !important;
+        background: rgba(74,127,212,0.18) !important;
+        border: 1px solid rgba(74,127,212,0.35) !important;
+        border-radius: 8px !important;
+        color: #93c5fd !important;
+        font-size: 12.5px !important;
         font-weight: 600 !important;
-        padding: 9px 14px !important;
-        margin-bottom: 8px !important;
-        text-align: left !important;
+        padding: 7px 12px !important;
+        margin-bottom: 6px !important;
     }
     .new-chat-btn .stButton button:hover {
-        background: rgba(99,102,241,0.30) !important;
-        border-color: rgba(99,102,241,0.6) !important;
+        background: rgba(74,127,212,0.28) !important;
+        border-color: rgba(74,127,212,0.6) !important;
         transform: none !important;
     }
 
     /* ── SESSION ITEMS ── */
     .session-item {
-        border-radius: 10px;
-        padding: 1px 0;
+        border-radius: 8px;
+        padding: 0;
         margin-bottom: 1px;
-        transition: background 0.2s;
+        transition: background 0.15s;
     }
     .session-item:hover { background: rgba(255,255,255,0.04); }
     .session-active {
-        background: rgba(99,102,241,0.18) !important;
-        border-left: 3px solid #818cf8 !important;
+        background: rgba(74,127,212,0.2) !important;
+        border-left: 2px solid #5fa8e0 !important;
         padding-left: 2px !important;
     }
     .session-title-btn .stButton button {
         color: rgba(203,213,225,0.85) !important;
-        font-size: 13px !important;
+        font-size: 12.5px !important;
         font-weight: 400 !important;
-        padding: 7px 10px !important;
-        border-radius: 8px !important;
+        padding: 5px 8px !important;
+        border-radius: 6px !important;
         text-align: left !important;
     }
     .session-title-btn .stButton button:hover {
@@ -217,16 +236,16 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         transform: none !important;
     }
     .session-active .session-title-btn .stButton button {
-        color: #c4b5fd !important;
+        color: #93c5fd !important;
         font-weight: 500 !important;
     }
     .session-menu-btn .stButton button {
-        color: rgba(148,163,184,0.5) !important;
-        font-size: 16px !important;
-        padding: 4px 8px !important;
-        border-radius: 6px !important;
+        color: rgba(148,163,184,0.45) !important;
+        font-size: 14px !important;
+        padding: 3px 6px !important;
+        border-radius: 5px !important;
         width: auto !important;
-        min-width: 30px !important;
+        min-width: 26px !important;
     }
     .session-menu-btn .stButton button:hover {
         color: #e2e8f0 !important;
@@ -236,7 +255,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
     </style>
     """, unsafe_allow_html=True)
 
-    # ── PAGE MAP (no History) ──
+    # ── PAGE MAP ──
     menu_map = {
         "🏠 Dashboard":      "Dashboard",
         "💬 Chat":           "Chat",
@@ -249,7 +268,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
     with st.sidebar:
 
-        # ── AVATAR HEADER ──
+        # ── HEADER — top left ──
         st.markdown("""
         <div class="sidebar-header">
             <div class="sidebar-avatar">🧠</div>
@@ -258,7 +277,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         """, unsafe_allow_html=True)
 
         st.markdown("---")
-        st.markdown('<div class="section-title">Navigation</div>', unsafe_allow_html=True)
+        st.markdown('<div class="sb-section-label">Navigation</div>', unsafe_allow_html=True)
 
         menu = list(menu_map.keys())
         choice = st.radio("", menu, index=menu.index(current_label), key="nav")
@@ -286,11 +305,10 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
                 st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
 
-            st.markdown('<div class="section-title">Recent Sessions</div>', unsafe_allow_html=True)
+            st.markdown('<div class="sb-section-label">Recent Sessions</div>', unsafe_allow_html=True)
 
             conversations = get_conversations(user_id)
 
-            # Only show conversations with actual messages
             valid_convos = []
             for convo in conversations:
                 msgs = get_messages_by_conversation(str(convo[0]))
@@ -298,7 +316,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
                     valid_convos.append((convo, msgs))
 
             if not valid_convos:
-                st.markdown('<p style="color:rgba(148,163,184,0.55);font-size:12px;padding:4px 2px;">No sessions yet. Start chatting!</p>', unsafe_allow_html=True)
+                st.markdown('<p style="color:rgba(148,163,184,0.5);font-size:11.5px;padding:3px 2px;">No sessions yet. Start chatting!</p>', unsafe_allow_html=True)
             else:
                 active_cid = str(st.session_state.get("conversation_id", ""))
 
@@ -338,7 +356,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
                                 st.rerun()
 
                     elif menu_open:
-                        st.markdown(f'<p style="color:rgba(226,232,240,0.65);font-size:12px;padding:2px 4px;margin:0;">📝 {display_title}</p>', unsafe_allow_html=True)
+                        st.markdown(f'<p style="color:rgba(226,232,240,0.65);font-size:11.5px;padding:2px 4px;margin:0;">📝 {display_title}</p>', unsafe_allow_html=True)
                         col_r, col_d, col_c = st.columns([1, 1, 1])
                         with col_r:
                             if st.button("✏️ Rename", key=f"do_rename_{convo_id}"):

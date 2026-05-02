@@ -29,6 +29,8 @@ def show_mood_analytics(user_id):
         height: 100%;
     }
 
+    /* ── Sidebar styling is handled exclusively in sidebar.py ── */
+
     /* ── BLOCK CONTAINER ── */
     .block-container {
         padding-top: 0rem !important;

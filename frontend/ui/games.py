@@ -22,30 +22,10 @@ def show_calm_colors_game():
         </style>
         """, unsafe_allow_html=True)
     else:
-        # Opened from sidebar: DO NOT touch header at all — let Streamlit handle it
-        # Only protect sidebar styling
+        # Opened from sidebar: sidebar styling is handled exclusively in sidebar.py
         st.markdown("""
         <style>
         footer, .stDeployButton { display: none !important; }
-        section[data-testid="stSidebar"] {
-            background: linear-gradient(145deg, rgba(12,22,48,0.85), rgba(12,22,48,0.55)) !important;
-        }
-        section[data-testid="stSidebar"] .block-container {
-            padding-top: 0.2rem !important;
-            padding-left: 0.9rem !important;
-            padding-right: 0.9rem !important;
-            max-width: 100% !important;
-            margin-top: 0 !important;
-        }
-        section[data-testid="stSidebar"] div[role="radiogroup"] label p {
-            color: #FFFFFF !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-        }
-        section[data-testid="stSidebar"] .stButton button {
-            font-size: 14px !important;
-            color: #F8FAFC !important;
-        }
         </style>
         """, unsafe_allow_html=True)
 
@@ -823,7 +803,7 @@ def show_calm_colors_game():
                 box-shadow: 0 4px 24px rgba(99,102,241,0.28);
                 border-radius: 20px;
                 margin-bottom: 30px;
-                margin-top: -30px;
+                margin-top: -35px;
             }
             .game-header-avatar {
                 width: 46px;
@@ -1187,23 +1167,44 @@ def show_calm_colors_game():
         </style>
         """, unsafe_allow_html=True)
 
-        st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+        # Push content below navbar with spacer
+        st.markdown("<div style='height:80px'></div>", unsafe_allow_html=True)
 
-        # ── ROW 1: Popup centered ──
+        # ── Popup card centered ──
         _, col, _ = st.columns([1, 1.4, 1])
         with col:
-            st.markdown(f"""<div style="background:linear-gradient(145deg,#667eea 0%,#764ba2 40%,#f093fb 100%);border-radius:24px;padding:32px 28px 28px;text-align:center;box-shadow:0 16px 48px rgba(102,126,234,0.4);border:1px solid rgba(255,255,255,0.2);position:relative;overflow:hidden;"><div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,0.08);border-radius:50%;"></div><div style="position:absolute;bottom:-20px;left:-20px;width:80px;height:80px;background:rgba(255,255,255,0.06);border-radius:50%;"></div><div style="font-size:52px;margin-bottom:10px;position:relative;z-index:1;">{emoji}</div><div style="font-size:30px;font-weight:900;color:white;margin-bottom:24px;text-shadow:0 2px 12px rgba(0,0,0,0.2);position:relative;z-index:1;">{title}</div><div style="display:flex;justify-content:center;gap:14px;margin-bottom:18px;position:relative;z-index:1;"><div style="background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:16px;padding:16px 24px;flex:1;border:1px solid rgba(255,255,255,0.3);"><div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.8);margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">🎯 Level</div><div style="font-size:38px;font-weight:900;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.2);">{level}</div></div><div style="background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:16px;padding:16px 24px;flex:1;border:1px solid rgba(255,255,255,0.3);"><div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.8);margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">⭐ Score</div><div style="font-size:38px;font-weight:900;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.2);">{score}</div></div></div><div style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7;background:rgba(255,255,255,0.12);border-radius:12px;padding:12px 16px;position:relative;z-index:1;">Every game is practice for mindfulness<br>Breathe deeply and try again</div></div>""", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style="background:linear-gradient(145deg,#667eea 0%,#764ba2 40%,#f093fb 100%);
+                        border-radius:24px;padding:28px 28px 24px;text-align:center;
+                        box-shadow:0 20px 60px rgba(102,126,234,0.8);
+                        border:2px solid rgba(255,255,255,0.4);">
+                <div style="font-size:48px;margin-bottom:8px;">{emoji}</div>
+                <div style="font-size:28px;font-weight:900;color:white;margin-bottom:20px;text-shadow:0 2px 12px rgba(0,0,0,0.3);">{title}</div>
+                <div style="display:flex;justify-content:center;gap:12px;margin-bottom:16px;">
+                    <div style="background:rgba(255,255,255,0.3);border-radius:14px;padding:14px 20px;flex:1;border:1px solid rgba(255,255,255,0.5);">
+                        <div style="font-size:10px;font-weight:700;color:white;margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;">🎯 Level</div>
+                        <div style="font-size:34px;font-weight:900;color:white;">{level}</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.3);border-radius:14px;padding:14px 20px;flex:1;border:1px solid rgba(255,255,255,0.5);">
+                        <div style="font-size:10px;font-weight:700;color:white;margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;">⭐ Score</div>
+                        <div style="font-size:34px;font-weight:900;color:white;">{score}</div>
+                    </div>
+                </div>
+                <div style="font-size:12px;color:white;line-height:1.6;background:rgba(255,255,255,0.2);border-radius:10px;padding:10px 14px;">
+                    Every game is practice for mindfulness<br>Breathe deeply and try again
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
-        # ── GAP + centered Play Again button ──
-        st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
-        _, btn_col, _ = st.columns([1, 1.4, 1])
-        with btn_col:
-            st.markdown('<div class="game-play-again-btn">', unsafe_allow_html=True)
-            if st.button("🎮 Play Again", key="btn_again", use_container_width=True):
-                reset_game()
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
+            # Gap between card and button
+            st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
 
+            # Button centered using inner columns
+            b1, b2, b3 = st.columns([0.5, 2, 0.5])
+            with b2:
+                if st.button("🎮 Play Again", key="btn_again", use_container_width=True):
+                    reset_game()
+                    st.rerun()
     def show_login_popup():
         _, col, _ = st.columns([1, 1.2, 1])
         with col:
@@ -1261,12 +1262,31 @@ def show_calm_colors_game():
             st.markdown('</div>', unsafe_allow_html=True)
 
     # ── ROUTER ──
+    # Demo-chat style: always render base content, conditionally show popup on same page
     screen = st.session_state.game_screen
-    if   screen == "home":        show_home()
-    elif screen == "countdown":   show_countdown()
-    elif screen == "game":        show_game()
-    elif screen == "result":      show_result()
-    elif screen == "login_popup": show_login_popup()
+
+    if screen == "home":
+        show_home()
+
+    elif screen == "countdown":
+        show_countdown()
+
+    elif screen == "game":
+        show_game()
+
+    elif screen in ("result", "login_popup"):
+        # Change background to indicate game over state — no overlay needed
+        st.markdown("""
+        <style>
+        .stApp { background: linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%) !important; }
+        .main .block-container { position: relative !important; z-index: 10 !important; }
+        </style>
+        """, unsafe_allow_html=True)
+
+        if screen == "result":
+            show_result()
+        else:
+            show_login_popup()
 
 
 def show_aesthetic_game_selector():

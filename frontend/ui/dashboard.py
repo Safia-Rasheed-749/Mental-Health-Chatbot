@@ -90,18 +90,7 @@ def show_dashboard():
     /* FOOTER */
     .dash-footer { text-align:center; color:#a0aec0; font-size:13px; padding:28px 0 10px; border-top:1px solid #e4eaf4; margin-top:12px; }
 
-    /* SIDEBAR — untouched */
-    section[data-testid="stSidebar"] .stButton > button {
-        display:block !important; width:100% !important; background:transparent !important;
-        border:none !important; border-radius:30px !important; padding:8px 16px !important;
-        margin:4px 0 !important; font-size:14px !important; font-weight:500 !important;
-        text-align:left !important; color:#F8FAFC !important; min-height:auto !important;
-        box-shadow:none !important; cursor:pointer !important; height:auto !important;
-        transition:background-color 0.2s !important;
-    }
-    section[data-testid="stSidebar"] .stButton > button:hover {
-        background-color:rgba(59,130,246,0.15) !important; transform:translateX(4px) !important;
-    }
+    /* Sidebar styling is handled exclusively in sidebar.py */
     </style>
 
     <script>
