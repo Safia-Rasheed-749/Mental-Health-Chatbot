@@ -724,7 +724,12 @@ def show_landing_page():
     .who-section h2 {
         font-size: 1.6rem;
     }
-
+     .how-it-works-spacing {
+    margin-bottom: 60px;
+}
+    .who-we-serve-spacing {
+    margin-top: 20px;
+}
     
     </style>
     
@@ -986,6 +991,8 @@ def show_landing_page():
                 st.rerun()
         
        # ================= HOW IT WORKS =================
+    st.markdown('<div class="how-it-works-spacing">', unsafe_allow_html=True)
+
     st.markdown('<h2 class="section-title"> How It Works</h2>', unsafe_allow_html=True)
 
     st.markdown("""
@@ -1022,7 +1029,12 @@ def show_landing_page():
             <div style="font-size: 16px; color: #64748b; line-height: 1.5;">Receive personalized coping strategies and guidance.</div>
         </div>
         """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('<div style="height: 60px;"></div>', unsafe_allow_html=True)
+
     # ================= WHO WE SERVE =================
+    st.markdown('<div class="who-we-serve-spacing">', unsafe_allow_html=True)
+
     col1, col2 = st.columns(2)
 
     with col1:
@@ -1064,6 +1076,9 @@ def show_landing_page():
             
         </div>
         """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('<div style="height: 60px;"></div>', unsafe_allow_html=True)
+
     # ================= TRUST & SAFETY =================
     st.markdown('<h2 class="section-title"> Trust & Safety</h2>', unsafe_allow_html=True)
 
@@ -1092,6 +1107,8 @@ def show_landing_page():
             <div>This AI provides support but does not replace professional medical advice.</div>
         </div>
         """, unsafe_allow_html=True)
+    st.markdown('<div style="height: 60px;"></div>', unsafe_allow_html=True)
+
     # ================= CORE CAPABILITIES =================
     st.markdown('<h2 class="section-title">Core Capabilities</h2>', unsafe_allow_html=True)
     
