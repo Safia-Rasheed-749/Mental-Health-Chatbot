@@ -126,6 +126,13 @@ if st.session_state.user is None:
     elif st.session_state.page == "games":
         st.session_state["games_from_sidebar"] = False
         st.session_state["public_game_mode"] = True
+        # Reset to home only on fresh navigation (not on reruns during gameplay)
+        if st.session_state.get("_games_nav_trigger") != "public":
+            st.session_state["game_screen"] = "home"
+            st.session_state["game_active"] = False
+            st.session_state["is_playing_seq"] = False
+            st.session_state["waiting"] = False
+        st.session_state["_games_nav_trigger"] = "public"
         show_aesthetic_game_selector()
 
     elif st.session_state.page == "auth":
@@ -203,6 +210,13 @@ elif current == "Journal":
 elif current == "Games":
     st.session_state["games_from_sidebar"] = True
     st.session_state["public_game_mode"] = False
+    # Reset to home only on fresh navigation (not on reruns during gameplay)
+    if st.session_state.get("_games_nav_trigger") != "sidebar":
+        st.session_state["game_screen"] = "home"
+        st.session_state["game_active"] = False
+        st.session_state["is_playing_seq"] = False
+        st.session_state["waiting"] = False
+    st.session_state["_games_nav_trigger"] = "sidebar"
     show_aesthetic_game_selector()
 
 elif current == "Admin Panel" and is_admin:

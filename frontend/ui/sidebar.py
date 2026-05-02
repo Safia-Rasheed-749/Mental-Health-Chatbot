@@ -288,6 +288,9 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
         if st.session_state.get("current_page") != new_page:
             st.session_state["current_page"] = new_page
+            # Clear game nav trigger so next visit to Games resets to home
+            if new_page != "Games":
+                st.session_state["_games_nav_trigger"] = None
             for k in list(st.session_state.keys()):
                 if k.startswith("rename_") or k.startswith("menu_open_"):
                     del st.session_state[k]

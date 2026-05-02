@@ -855,7 +855,7 @@ def show_calm_colors_game():
                 box-shadow: 0 4px 24px rgba(91,141,239,0.28);
                 border-radius: 20px;
                 margin-bottom: 30px;
-                margin-top: -35px;
+                margin-top: -55px;
             }
             .game-header-avatar {
                 width: 46px;
@@ -915,20 +915,20 @@ def show_calm_colors_game():
             </div>
             """, unsafe_allow_html=True)
         else:
-            # Before login (navbar) — keep original purple/pink banner
+            # Before login (navbar) — softer version of the purple/blue banner
             st.markdown("""
             <div style="
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 55%, #f093fb 100%);
+                background: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 55%, #e9d5ff 100%);
                 border-radius: 20px;
                 margin: 40px 10px 0 10px;
                 padding: 36px 20px 44px;
                 text-align: center;
-                color: white;
-                box-shadow: 0 8px 32px rgba(102,126,234,0.35);
+                color: #3730a3;
+                box-shadow: 0 8px 32px rgba(165,180,252,0.3);
             ">
                 <div style="font-size:44px;font-weight:900;margin-bottom:10px;
-                            text-shadow:0 4px 20px rgba(0,0,0,0.25);">🎨 Calm Colors</div>
-                <div style="font-size:16px;font-weight:400;opacity:0.92;">
+                            text-shadow:0 2px 8px rgba(99,102,241,0.15);">🎨 Calm Colors</div>
+                <div style="font-size:16px;font-weight:500;opacity:0.85;">
                     Train your focus &amp; relax your mind
                 </div>
             </div>
@@ -1158,13 +1158,13 @@ def show_calm_colors_game():
             if total > 0:
                 st.progress(progress / total)
                 st.markdown(
-                    f"<p style='text-align:center;color:#4b5563;font-weight:600;margin:8px 0 20px;text-shadow:0 2px 4px rgba(0,0,0,0.1);'>"
+                    f"<p style='text-align:center;color:#4b5563;font-weight:600;margin:8px 0 20px;text-shadow:0 2px 4px rgba(0,0,0,0.1);width:100%;display:block;'>"
                     f"Progress: {progress} / {total}</p>",
                     unsafe_allow_html=True
                 )
 
             # Color buttons + End Game — all in one centered column
-            _, center, _ = st.columns([0.5, 1.8, 0.5])
+            _, center, _ = st.columns([1, 2, 1])
             with center:
                 # Row 1
                 r1c1, r1c2 = st.columns(2, gap="large")
@@ -1175,7 +1175,7 @@ def show_calm_colors_game():
                     if st.button(f"{colors[1]['emoji']}  {colors[1]['name']}", key="color_green", use_container_width=True):
                         handle_move(1); st.rerun()
 
-                st.write("")
+                st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
 
                 # Row 2
                 r2c1, r2c2 = st.columns(2, gap="large")
@@ -1189,7 +1189,7 @@ def show_calm_colors_game():
                 # Spacer
                 st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
 
-                # End Game — compact pill, centered via sub-columns
+                # End Game — inside same column, fills full width = perfectly centered
                 st.markdown("""
                 <style>
                 div[data-testid="stForm"] {
@@ -1202,12 +1202,12 @@ def show_calm_colors_game():
                     color: white !important;
                     font-weight: 600 !important;
                     font-size: 15px !important;
-                    padding: 8px 36px !important;
+                    padding: 10px 0 !important;
                     border-radius: 40px !important;
                     border: none !important;
                     box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
                     transition: all 0.3s ease !important;
-                    width: auto !important;
+                    width: 100% !important;
                 }
                 div[data-testid="stFormSubmitButton"] > button:hover {
                     background: #6D9EEB !important;
@@ -1215,7 +1215,7 @@ def show_calm_colors_game():
                 }
                 </style>
                 """, unsafe_allow_html=True)
-                _, end_btn_col, _ = st.columns([0.5, 1, 0.5])
+                _, end_btn_col, _ = st.columns([0.2, 1.2, 0.6])
                 with end_btn_col:
                     with st.form("end_game_form", border=False):
                         if st.form_submit_button("⏹ End Game", use_container_width=True):
