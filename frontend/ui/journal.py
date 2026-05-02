@@ -24,7 +24,7 @@ def show_journal(user_id):
     /* ── PAGE BACKGROUND (SAME AS CHAT) ── */
     html, body, .stApp {
         font-family: 'Inter', 'Segoe UI', sans-serif !important;
-        background: linear-gradient(160deg, #eef2ff 0%, #f0fdf9 50%, #fdf4ff 100%) !important;
+        background: linear-gradient(135deg, #F8FAFC 0%, #EEF4FF 45%, #F5F3FF 100%) !important;
         height: 100%;
     }
 
@@ -37,12 +37,12 @@ def show_journal(user_id):
 
     /* ── HEADER BANNER (SAME AS CHAT) ── */
     .page-header {
-        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%);
+        background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
         padding: 18px 28px 16px;
         display: flex;
         align-items: center;
         gap: 14px;
-        box-shadow: 0 4px 24px rgba(99,102,241,0.28);
+        box-shadow: 0 4px 24px rgba(91,141,239,0.28);
         border-radius: 20px;
         margin-bottom: 30px;
         margin-top: 20px;
@@ -81,13 +81,13 @@ def show_journal(user_id):
 
     /* ── INFO CARD ── */
     .info-card {
-        background: linear-gradient(135deg, rgba(139,92,246,0.10), rgba(99,102,241,0.10));
-        border-left: 4px solid #8b5cf6;
+        background: rgba(255,255,255,0.92);
+        border-left: 4px solid #5B8DEF;
         padding: 20px 24px;
         border-radius: 16px;
         margin-bottom: 24px;
-        border: 1px solid rgba(139,92,246,0.20);
-        box-shadow: 0 4px 16px rgba(139,92,246,0.10);
+        border: 1px solid rgba(148,163,184,0.12);
+        box-shadow: 0 4px 18px rgba(15,23,42,0.06);
     }
 
     .info-card h4 {
@@ -146,20 +146,21 @@ def show_journal(user_id):
 
     /* ── SAVE BUTTON ── */
     .stButton>button {
-        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%);
+        background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
         color: white !important;
         border-radius: 12px !important;
         padding: 12px 32px !important;
         border: none !important;
         font-weight: 700 !important;
         font-size: 15px !important;
-        box-shadow: 0 4px 16px rgba(99,102,241,0.30) !important;
+        box-shadow: 0 4px 16px rgba(91,141,239,0.30) !important;
         transition: all 0.2s !important;
     }
 
     .stButton>button:hover {
+        filter: brightness(1.05) !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 6px 22px rgba(99,102,241,0.40) !important;
+        box-shadow: 0 6px 22px rgba(91,141,239,0.40) !important;
     }
 
     /* ── JOURNAL ENTRIES ── */
@@ -178,16 +179,16 @@ def show_journal(user_id):
     }
 
     .journal-entry {
-        background: rgba(255,255,255,0.90);
-        border-left: 4px solid #8b5cf6;
+        background: rgba(255,255,255,0.92);
+        border-left: 4px solid #5B8DEF;
         padding: 16px 20px;
         border-radius: 12px;
         margin-bottom: 14px;
-        box-shadow: 0 2px 12px rgba(99,102,241,0.08);
+        box-shadow: 0 4px 18px rgba(15,23,42,0.06);
         font-size: 14px;
         color: #334155;
         line-height: 1.7;
-        border: 1px solid rgba(139,92,246,0.15);
+        border: 1px solid rgba(148,163,184,0.12);
         transition: all 0.3s ease;
     }
 

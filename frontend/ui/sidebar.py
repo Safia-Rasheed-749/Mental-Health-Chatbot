@@ -39,9 +39,9 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
     /* ── SIDEBAR CONTAINER ── */
     section[data-testid="stSidebar"] {
         width: 260px !important;
-        background: linear-gradient(180deg, #5b8fa8 0%, #4a7d96 50%, #3d6b82 100%) !important;
-        border-right: 1px solid rgba(180,220,240,0.20) !important;
-        box-shadow: 4px 0 20px rgba(0,0,0,0.08) !important;
+        background: linear-gradient(180deg, #44556C 0%, #526581 50%, #607592 100%) !important;
+        border-right: 1px solid rgba(180,200,220,0.15) !important;
+        box-shadow: 2px 0 12px rgba(15,23,42,0.06) !important;
     }
     section[data-testid="stSidebar"] > div:first-child {
         padding-top: 0rem !important;
@@ -179,15 +179,18 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
     /* ── LOGOUT (primary) ── */
     section[data-testid="stSidebar"] .stButton button[kind="primary"] {
-        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 100%) !important;
-        color: white !important;
+        background: linear-gradient(135deg, #e05a5a 0%, #f07070 100%) !important;
+        border: none !important;
+        color: #ffffff !important;
         font-weight: 700 !important;
         border-radius: 8px !important;
         text-align: center !important;
         margin-top: 4px !important;
+        box-shadow: 0 3px 10px rgba(224,90,90,0.35) !important;
     }
     section[data-testid="stSidebar"] .stButton button[kind="primary"]:hover {
-        filter: brightness(1.1) !important;
+        background: linear-gradient(135deg, #d04848 0%, #e06060 100%) !important;
+        box-shadow: 0 4px 14px rgba(224,90,90,0.50) !important;
         transform: none !important;
     }
     .logout-btn { margin-top: 36px !important; padding-top: 16px !important; border-top: 1px solid rgba(255,255,255,0.15) !important; }

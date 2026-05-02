@@ -85,7 +85,7 @@ def show_chat(user_id):
     /* ── PAGE BACKGROUND ── */
     html, body, .stApp {
         font-family: 'Inter', 'Segoe UI', sans-serif !important;
-        background: linear-gradient(160deg, #eef2ff 0%, #f0fdf9 50%, #fdf4ff 100%) !important;
+        background: linear-gradient(135deg, #F8FAFC 0%, #EEF4FF 45%, #F5F3FF 100%) !important;
         height: 100%;
     }
 
@@ -98,12 +98,12 @@ def show_chat(user_id):
 
     /* ── HEADER BANNER ── */
     .chat-header {
-        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%);
+        background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
         padding: 18px 28px 16px;
         display: flex;
         align-items: center;
         gap: 14px;
-        box-shadow: 0 4px 24px rgba(99,102,241,0.28);
+        box-shadow: 0 4px 24px rgba(91,141,239,0.28);
         border-radius: 20px;
         margin-bottom: 30px;
         margin-top: 20px;

@@ -25,7 +25,7 @@ def show_mood_analytics(user_id):
     /* ── PAGE BACKGROUND (SAME AS CHAT) ── */
     html, body, .stApp {
         font-family: 'Inter', 'Segoe UI', sans-serif !important;
-        background: linear-gradient(160deg, #eef2ff 0%, #f0fdf9 50%, #fdf4ff 100%) !important;
+        background: linear-gradient(135deg, #F8FAFC 0%, #EEF4FF 45%, #F5F3FF 100%) !important;
         height: 100%;
     }
 
@@ -40,12 +40,12 @@ def show_mood_analytics(user_id):
 
     /* ── HEADER BANNER (SAME AS CHAT) ── */
     .page-header {
-        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%);
+        background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
         padding: 18px 28px 16px;
         display: flex;
         align-items: center;
         gap: 14px;
-        box-shadow: 0 4px 24px rgba(99,102,241,0.28);
+        box-shadow: 0 4px 24px rgba(91,141,239,0.28);
         border-radius: 20px;
         margin-bottom: 30px;
         margin-top: 20px;
@@ -181,7 +181,7 @@ def show_mood_analytics(user_id):
 
     /* ── LOG BUTTON ── */
     div[data-testid="stButton"] button {
-        background: linear-gradient(135deg, #4a7fd4 0%, #5fa8e0 55%, #7ecde8 100%);
+        background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
         color: white !important;
         font-weight: 700 !important;
         font-size: 15px !important;
@@ -191,12 +191,13 @@ def show_mood_analytics(user_id):
         border: none !important;
         transition: all 0.2s !important;
         cursor: pointer !important;
-        box-shadow: 0 4px 16px rgba(99,102,241,0.30) !important;
+        box-shadow: 0 4px 16px rgba(91,141,239,0.30) !important;
     }
 
     div[data-testid="stButton"] button:hover {
+        filter: brightness(1.05) !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 6px 22px rgba(99,102,241,0.40) !important;
+        box-shadow: 0 6px 22px rgba(91,141,239,0.40) !important;
     }
 
     /* ── SELECTBOX ── */
@@ -471,11 +472,11 @@ def show_mood_analytics(user_id):
             fig2, ax2 = plt.subplots(figsize=(5, 3.5))
             colors = ['#10b981', '#3b82f6', '#ef4444', '#f59e0b', '#ec4899']
             mood_colors = {
-                "Happy": '#10b981',
-                "Neutral": '#3b82f6', 
-                "Sad": '#ef4444',
-                "Anxious": '#f59e0b',
-                "Angry": '#ec4899'
+                "Happy": '#22C55E',
+                "Neutral": '#64748B', 
+                "Sad": '#60A5FA',
+                "Anxious": '#F59E0B',
+                "Angry": '#EF4444'
             }
             
             pie_data = []
