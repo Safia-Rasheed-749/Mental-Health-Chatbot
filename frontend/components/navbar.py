@@ -120,11 +120,11 @@ def render_navbar():
     with col2:
         nav_col1, nav_col2, nav_col3, nav_col4, nav_col5 = st.columns(5)
         with nav_col1:
-            if st.button(" Home", key="nav_home_shared"):
+            if st.button("🏠 Home", key="nav_home_shared"):
                 st.session_state.page = "landing"
                 st.rerun()
         with nav_col2:
-            if st.button("About", key="nav_about_shared"):
+            if st.button("📖 About", key="nav_about_shared"):
                 st.session_state.page = "about"
                 st.rerun()
         with nav_col3:
@@ -132,10 +132,10 @@ def render_navbar():
                 st.session_state.page = "exercises"
                 st.rerun()
         with nav_col4:
-            if st.button(" Games", key="nav_games_shared"):
+            if st.button("🎮 Games", key="nav_games_shared"):
                 st.session_state.page = "games"
                 st.rerun()
         with nav_col5:
-            if st.button(" Get Started", key="nav_getstarted_shared"):
+            if st.button("🚀 Get Started", key="nav_getstarted_shared"):
                 st.session_state.page = "auth"
                 st.rerun()

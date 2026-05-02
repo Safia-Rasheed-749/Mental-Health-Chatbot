@@ -104,18 +104,18 @@ def show_landing_page():
         }
         
         .hero-description {
-            font-size: 1.08rem;
+            font-size: 20px !important;
             line-height: 1.9;
             color: #475569;
             max-width: 420px;
-            margin-bottom: 28px;
+            margin-bottom: 18px;
             font-weight: 400;
             animation: fadeInUp 0.8s ease-out 0.1s both;
         }
 
         .hero-trust {
-            color: #64748b;
-            font-size: 0.92rem;
+            color: #475569 !important;
+            font-size: 17px !important;
             margin-top: 18px;
             letter-spacing: 0.3px;
         }
@@ -130,7 +130,7 @@ def show_landing_page():
         }
         
         .hero-button-wrapper {
-            margin-top: 15px;
+            margin-top: 25px;
         }
         
         /* Animations */
@@ -212,7 +212,7 @@ def show_landing_page():
         
         .carousel-heading p {
             color: #64748b;
-            font-size: 0.95rem;
+            font-size: 17px;
             line-height: 1.6;
             max-width: 800px;
             margin: 0 auto;
@@ -230,8 +230,8 @@ def show_landing_page():
         
         .section-description {
             text-align: center;
-            color: #64748b;
-            font-size: 0.9rem;
+            color: #3b82f6;
+            font-size: 18px;
             line-height: 1.6;
             max-width: 800px;
             margin: 0 auto 35px auto;
@@ -428,7 +428,7 @@ def show_landing_page():
         }
         
         .feature-card-custom div:last-child {
-            font-size: 0.8rem;
+            font-size: 16.5px;
             color: #64748b;
             line-height: 1.4;
         }
@@ -553,6 +553,9 @@ def show_landing_page():
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
         }
+        div.stButton > button{
+                margin: 0 30px !important;
+                }
         
         .stButton > button:hover {
             background: #7c3aed;
@@ -629,6 +632,100 @@ def show_landing_page():
             font-size: 12px;
             color: #94a3b8;
         }
+        /* ================= WHO WE SERVE SECTION ================= */
+
+.who-section {
+    margin: 80px 0 40px 0;
+}
+
+/* Heading */
+.who-section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+/* Left side paragraphs */
+.who-section p {
+    font-size: 0.95rem;
+    color: #475569;
+    line-height: 1.7;
+    margin-bottom: 18px;
+}
+
+/* Highlight titles (Students, Professionals...) */
+.who-section strong {
+    font-size: 1.05rem;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+/* ================= WHO WE SERVE - RIGHT SIDE BOX ================= */
+.who-box {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+    backdrop-filter: blur(16px);
+    border-radius: 28px;
+    padding: 12px 28px;
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.who-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(139, 92, 246, 0.1);
+    border-color: rgba(139, 92, 246, 0.25);
+}
+
+.who-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(203, 213, 225, 0.3);
+}
+
+.who-item:last-child {
+    border-bottom: none;
+}
+
+.who-icon {
+    font-size: 1.8rem;
+    min-width: 45px;
+    text-align: center;
+}
+
+.who-text {
+    font-size: 0.95rem;
+    color: #334155;
+    line-height: 1.5;
+    margin: 0;
+}
+
+
+
+@media (max-width: 768px) {
+    .who-box {
+        padding: 24px 20px;
+        margin-top: 20px;
+    }
+    .who-item {
+        padding: 12px 0;
+    }
+    .who-icon {
+        font-size: 1.5rem;
+        min-width: 38px;
+    }
+}
+
+    .who-section h2 {
+        font-size: 1.6rem;
+    }
+
+    
     </style>
     
     """, unsafe_allow_html=True)
@@ -651,12 +748,12 @@ def show_landing_page():
     with col_t:
         st.markdown("""
         <h1 class="hero-title">
-            A calmer space for your <span>mind</span>
+            A Healing space for your <span>mind</span>
         </h1>
         <p class="hero-description">
             Talk, reflect, and find support through emotionally intelligent AI.
         </p>
-        <p class="hero-trust">Private &nbsp;•&nbsp; Compassionate &nbsp;•&nbsp; Available 24/7</p>
+        <p class="hero-trust"> You're not alone. We listen to you without judgement</p>
         <div class="hero-button-wrapper"></div>
         """, unsafe_allow_html=True)
         
@@ -725,10 +822,10 @@ def show_landing_page():
                 margin-bottom: 8px;
             }
             .user-row {
-                justify-content: flex-start;
+                justify-content: flex-end;
             }
             .bot-row {
-                justify-content: flex-end;
+                justify-content: flex-start;
             }
             /* NO ANIMATION ON MESSAGES - INSTANT APPEAR */
         </style>
@@ -809,7 +906,7 @@ def show_landing_page():
                         bubble.innerText = currentText;
                         charIndex++;
                         box.scrollTop = box.scrollHeight;
-                        setTimeout(addNextChar, 25);
+                        setTimeout(addNextChar, 32);
                     } else {
                         if (callback) callback();
                     }
@@ -884,18 +981,16 @@ def show_landing_page():
         # Centered button using columns
         btn_col1, btn_col2, btn_col3 = st.columns([1, 1.5, 1])
         with btn_col2:
-            if st.button(" Try it Yourself ", use_container_width=True, key="chat_try_btn"):
+            if st.button(" Start Chatting", use_container_width=True, key="chat_try_btn"):
                 st.session_state.page = "demo"
                 st.rerun()
         
-        # Optional: Extra spacing after button
-        st.markdown('<div style="margin-bottom: 30px;"></div>', unsafe_allow_html=True)
-        # ================= HOW IT WORKS =================
+       # ================= HOW IT WORKS =================
     st.markdown('<h2 class="section-title"> How It Works</h2>', unsafe_allow_html=True)
 
     st.markdown("""
-    <div class="section-description">
-    Understand how our AI supports you in just a few simple steps.
+    <div style="text-align: center; margin: -20px 0 20px 0;">
+        <p style="color: #3b82f6; font-size: 19px; margin: 40px auto;">Your journey to better mental health begins here</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -903,73 +998,129 @@ def show_landing_page():
 
     with col1:
         st.markdown("""
-        <div class="feature-card-custom">
-            <div>🗣️</div>
-            <div>Share Your Thoughts</div>
-            <div>Talk freely about what's on your mind without fear of judgment.</div>
+        <div style="text-align: center; padding: 20px;">
+            <div style="font-size: 48px; margin-bottom: 16px;">🗣️</div>
+            <div style="font-weight: 700; font-size: 1.1rem; color: #0f172a; margin-bottom: 8px;">Share freely</div>
+            <div style="font-size: 16px; color: #64748b; line-height: 1.5;">Talk about what's on your mind. No judgment, just listening.</div>
         </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown("""
-        <div class="feature-card-custom">
-            <div>🧠</div>
-            <div>AI Understands You</div>
-            <div>Advanced emotion detection analyzes your feelings in real-time.</div>
+        <div style="text-align: center; padding: 20px;">
+            <div style="font-size: 48px; margin-bottom: 16px;">🧠</div>
+            <div style="font-weight: 700; font-size: 1.1rem; color: #0f172a; margin-bottom: 8px;">AI understands</div>
+            <div style="font-size: 16px; color: #64748b; line-height: 1.5;">Advanced emotion detection that truly gets how you feel.</div>
         </div>
         """, unsafe_allow_html=True)
 
     with col3:
         st.markdown("""
-        <div class="feature-card-custom">
-            <div>💡</div>
-            <div>Get Support</div>
-            <div>Receive helpful coping strategies and emotional guidance instantly.</div>
+        <div style="text-align: center; padding: 20px;">
+            <div style="font-size: 48px; margin-bottom: 16px;">💡</div>
+            <div style="font-weight: 700; font-size: 1.1rem; color: #0f172a; margin-bottom: 8px;">Get support</div>
+            <div style="font-size: 16px; color: #64748b; line-height: 1.5;">Receive personalized coping strategies and guidance.</div>
         </div>
         """, unsafe_allow_html=True)
+    # ================= WHO WE SERVE =================
+    col1, col2 = st.columns(2)
 
+    with col1:
+        st.markdown("""
+        <h2>Who We Serve?</h2>
+        
+        <p><strong>Students</strong><br>
+        Feeling overwhelmed with studies, exams, or pressure.</p>
 
-    # ================= WHO IS THIS FOR =================
-    st.markdown('<h2 class="section-title"> Whom We Serve?</h2>', unsafe_allow_html=True)
+        <p><strong>Professionals</strong><br>
+        Managing stress, burnout, or work-life balance.</p>
+        
+        <p><strong>💔 Those going through hard times</strong><br>
+        Breakups, loss, loneliness — you don't have to go through it alone.</p>
+
+        <p><strong>Anyone feeling anxious</strong><br>
+        Looking for a safe space to talk and reflect.</p>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown("""
+        <div class="who-box">
+            <div class="who-item">
+                <div class="who-icon">🌙</div>
+                <div class="who-text"><strong>Can't sleep?</strong> — Overthinking keeping you awake at night</div>
+            </div>
+            <div class="who-item">
+                <div class="who-icon">💼</div>
+                <div class="who-text"><strong>Burned out?</strong> — Work stress affecting your mental health</div>
+            </div>
+            <div class="who-item">
+                <div class="who-icon">🎓</div>
+                <div class="who-text"><strong>Exam pressure?</strong> — Academic anxiety holding you back</div>
+            </div>
+            <div class="who-item">
+                <div class="who-icon">💔</div>
+                <div class="who-text"><strong>Feeling lonely?</strong> — Need someone who truly listens</div>
+            </div>
+            
+        </div>
+        """, unsafe_allow_html=True)
+    # ================= TRUST & SAFETY =================
+    st.markdown('<h2 class="section-title"> Trust & Safety</h2>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="section-description">
-    Designed for anyone who needs emotional support, clarity, or simply someone to talk to.
+    Your well-being and privacy are our top priorities.
     </div>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
 
     with col1:
         st.markdown("""
         <div class="feature-card-custom">
-            <div>🎓</div>
-            <div>طلاب (Students)</div>
-            <div>Managing academic stress, deadlines, and pressure.</div>
+            <div>🔐</div>
+            <div>Private & Anonymous</div>
+            <div>Your conversations are not stored permanently and remain confidential.</div>
         </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown("""
         <div class="feature-card-custom">
-            <div>😟</div>
-            <div>Anxiety & Overthinking</div>
-            <div>For those struggling with constant worry and racing thoughts.</div>
+            <div>⚠️</div>
+            <div>Not a Replacement for Therapy</div>
+            <div>This AI provides support but does not replace professional medical advice.</div>
         </div>
         """, unsafe_allow_html=True)
+    # ================= CORE CAPABILITIES =================
+    st.markdown('<h2 class="section-title">Core Capabilities</h2>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="section-description">
+        <strong>⚡ Intelligent features designed for your emotional well-being</strong><br><br>
+        Our AI-powered assistant combines cutting-edge technology with compassionate care for personalized support.
+    </div>
+    """, unsafe_allow_html=True)
 
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown('<div class="feature-card-custom"><div>💬</div><div>Sentiment Analysis</div><div>Real-time emotion detection</div></div>', unsafe_allow_html=True)
+    with col2:
+        st.markdown('<div class="feature-card-custom"><div>📊</div><div>Mood Tracking</div><div>Visual progress analytics</div></div>', unsafe_allow_html=True)
     with col3:
-        st.markdown("""
-        <div class="feature-card-custom">
-            <div>🌱</div>
-            <div>Self Growth</div>
-            <div>Anyone looking to improve emotional awareness and well-being.</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown('<div class="feature-card-custom"><div>🛡️</div><div>Crisis Guard</div><div>High-risk keyword detection</div></div>', unsafe_allow_html=True)
+
+    col4, col5, col6 = st.columns(3)
+    with col4:
+        st.markdown('<div class="feature-card-custom"><div>🎤</div><div>Voice Support</div><div>Speech-to-text interaction</div></div>', unsafe_allow_html=True)
+    with col5:
+        st.markdown('<div class="feature-card-custom"><div>📚</div><div>RAG Knowledge</div><div>WHO verified guidelines</div></div>', unsafe_allow_html=True)
+    with col6:
+        st.markdown('<div class="feature-card-custom"><div>🧘</div><div>Coping Tools</div><div>Meditation & CBT techniques</div></div>', unsafe_allow_html=True)
     # ================= CAROUSEL FIRST (UPPER) =================
     st.markdown("""
     <div class="carousel-heading">
-        <h2>✨ Your AI-Powered Mental Wellness Journey</h2>
+        <h2> Your AI-Powered Mental Wellness Journey</h2>
         <p>Experience compassionate AI support that understands your emotions, provides evidence-based guidance, 
         and helps you navigate life's challenges with empathy and care.</p>
     </div>
@@ -1082,33 +1233,9 @@ def show_landing_page():
 
     st.markdown('</div></div>', unsafe_allow_html=True)
 
-    # ================= CORE CAPABILITIES =================
-    st.markdown('<h2 class="section-title">🎯 Core Capabilities</h2>', unsafe_allow_html=True)
     
-    st.markdown("""
-    <div class="section-description">
-        <strong>⚡ Intelligent features designed for your emotional well-being</strong><br><br>
-        Our AI-powered assistant combines cutting-edge technology with compassionate care for personalized support.
-    </div>
-    """, unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown('<div class="feature-card-custom"><div>💬</div><div>Sentiment Analysis</div><div>Real-time emotion detection</div></div>', unsafe_allow_html=True)
-    with col2:
-        st.markdown('<div class="feature-card-custom"><div>📊</div><div>Mood Tracking</div><div>Visual progress analytics</div></div>', unsafe_allow_html=True)
-    with col3:
-        st.markdown('<div class="feature-card-custom"><div>🛡️</div><div>Crisis Guard</div><div>High-risk keyword detection</div></div>', unsafe_allow_html=True)
-
-    col4, col5, col6 = st.columns(3)
-    with col4:
-        st.markdown('<div class="feature-card-custom"><div>🎤</div><div>Voice Support</div><div>Speech-to-text interaction</div></div>', unsafe_allow_html=True)
-    with col5:
-        st.markdown('<div class="feature-card-custom"><div>📚</div><div>RAG Knowledge</div><div>WHO verified guidelines</div></div>', unsafe_allow_html=True)
-    with col6:
-        st.markdown('<div class="feature-card-custom"><div>🧘</div><div>Coping Tools</div><div>Meditation & CBT techniques</div></div>', unsafe_allow_html=True)
     # ================= IMPACT SECTION =================
-    st.markdown('<h2 class="section-title">📊 Impact</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title"> Impact</h2>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="section-description">
@@ -1126,34 +1253,7 @@ def show_landing_page():
         st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">50+</div><div class="stat-label-custom">Sources</div></div>', unsafe_allow_html=True)
     with imp_col4:
         st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">Real-time</div><div class="stat-label-custom">Detection</div></div>', unsafe_allow_html=True)
-# ================= TRUST & SAFETY =================
-    st.markdown('<h2 class="section-title"> Trust & Safety</h2>', unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="section-description">
-    Your well-being and privacy are our top priorities.
-    </div>
-    """, unsafe_allow_html=True)
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.markdown("""
-        <div class="feature-card-custom">
-            <div>🔐</div>
-            <div>Private & Anonymous</div>
-            <div>Your conversations are not stored permanently and remain confidential.</div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col2:
-        st.markdown("""
-        <div class="feature-card-custom">
-            <div>⚠️</div>
-            <div>Not a Replacement for Therapy</div>
-            <div>This AI provides support but does not replace professional medical advice.</div>
-        </div>
-        """, unsafe_allow_html=True)
     # ================= FULL FOOTER =================
     st.markdown("""
     <div class="footer-container">
