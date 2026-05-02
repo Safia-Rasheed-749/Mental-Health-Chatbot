@@ -405,8 +405,8 @@ def show_admin_panel():
         <div class="back-button-wrapper">
     """, unsafe_allow_html=True)
     if st.button("🔙 Back to Main App", key="admin_back"):
-        st.session_state.page = "dashboard"
-        st.session_state.current_page = "Dashboard"
+        st.session_state.page = "landing"
+        st.session_state.user = None
         st.rerun()
     st.markdown("</div></div>", unsafe_allow_html=True)
 
