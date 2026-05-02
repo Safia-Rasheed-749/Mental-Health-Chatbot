@@ -36,7 +36,7 @@ def show_dashboard():
     .hero-stat-sep   { width:1px; height:36px; background:rgba(255,255,255,0.28); }
 
     /* SECTION LABEL */
-    .section-label { font-size:11px; font-weight:700; letter-spacing:1.1px; text-transform:uppercase; color:#64748B; text-align:center; margin:0 0 16px; padding-top:4px; }
+    .section-label { font-size:30px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; color:#64748B; text-align:center; margin: 40px 0 35px; padding-top:6px; margin-bottom: 35px; }
 
     /* SPACERS */
     .sp-md { height:24px; }

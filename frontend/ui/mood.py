@@ -192,6 +192,8 @@ def show_mood_analytics(user_id):
         transition: all 0.2s !important;
         cursor: pointer !important;
         box-shadow: 0 4px 16px rgba(91,141,239,0.30) !important;
+        margin-top: 15px;
+        margin-bottom: 25px;
     }
 
     div[data-testid="stButton"] button:hover {
@@ -342,7 +344,7 @@ def show_mood_analytics(user_id):
 
     # Centralized Log Button (no empty columns)
     st.markdown('<div style="display: flex; justify-content: center; margin: 20px 0;">', unsafe_allow_html=True)
-    if st.button("✨ Log My Mood", key="log_mood_btn"):
+    if st.button(" Log My Mood", key="log_mood_btn"):
         mood_text = mood.split(" ", 1)[1]
         add_mood(user_id, mood_text)
         log_user_activity(
@@ -352,7 +354,7 @@ def show_mood_analytics(user_id):
             f"Mood: {mood_text}"
         )
         st.toast(f"🎉 Mood '{mood_text}' logged successfully!", icon="✅")
-        st.balloons()
+
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)  # Close mood-section-card
@@ -428,7 +430,7 @@ def show_mood_analytics(user_id):
             y = [y_map[m] for m in filtered]
 
             # Create styled figure
-            fig, ax = plt.subplots(figsize=(10, 4))
+            fig, ax = plt.subplots(figsize=(7, 3))
             ax.plot(x, y, marker='o', linewidth=2.5, markersize=8, 
                    color='#3b82f6', markerfacecolor='#2563eb', 
                    markeredgecolor='white', markeredgewidth=2)
@@ -441,9 +443,9 @@ def show_mood_analytics(user_id):
             ax.set_xticks(x)
             ax.set_xticklabels([f"Day {i+1}" for i in x], rotation=45, ha='right')
 
-            ax.set_title(f"Mood Trend – {range_option}", fontsize=14, fontweight='bold', pad=20)
-            ax.set_xlabel("Timeline", fontsize=11)
-            ax.set_ylabel("Mood Level", fontsize=11)
+            ax.set_title(f"Mood Trend – {range_option}", fontsize=10, fontweight='bold', pad=16)
+            ax.set_xlabel("Timeline", fontsize=9)
+            ax.set_ylabel("Mood Level", fontsize=9)
             ax.grid(alpha=0.15, linestyle='--')
             ax.set_facecolor('#f8fafc')
             fig.patch.set_facecolor('white')
@@ -458,10 +460,10 @@ def show_mood_analytics(user_id):
             # Centered heading with larger size
             st.markdown("""
             <div style='text-align: center; margin-bottom: 20px;'>
-                <h2 style='font-size: 24px; font-weight: 700; color: #1e293b; margin-bottom: 12px;'>
+                <h2 style='font-size: 26px; font-weight: 700; color: #1e293b; margin-bottom: 25px; margin-top: 25px;'>
                     🎨 Mood Distribution
                 </h2>
-                <p style='color: #475569; font-size: 15px; line-height: 1.7; max-width: 700px; margin: 0 auto;'>
+                <p style='color: #475569; font-size: 19px; line-height: 1.7; max-width: 700px; margin: 0 auto; margin-bottom: 20px;'>
                     This chart visualizes the percentage breakdown of your emotional states during the selected period. 
                     Understanding your mood distribution helps identify patterns and emotional balance in your daily life.
                 </p>
@@ -469,7 +471,7 @@ def show_mood_analytics(user_id):
             """, unsafe_allow_html=True)
 
             # Create pie chart with much smaller size
-            fig2, ax2 = plt.subplots(figsize=(5, 3.5))
+            fig2, ax2 = plt.subplots(figsize=(10, 3.5))
             colors = ['#10b981', '#3b82f6', '#ef4444', '#f59e0b', '#ec4899']
             mood_colors = {
                 "Happy": '#22C55E',
@@ -495,22 +497,26 @@ def show_mood_analytics(user_id):
                     colors=pie_colors,
                     autopct='%1.1f%%',
                     startangle=90,
-                    textprops={'fontsize': 10, 'weight': 'bold'}
+                    radius=1.00,
+                    textprops={'fontsize': 4, 'weight': 'bold'}
                 )
                 
                 for autotext in autotexts:
                     autotext.set_color('white')
-                    autotext.set_fontsize(10)
+                    autotext.set_fontsize(4)
                     autotext.set_weight('bold')
                 
-                ax2.set_title(f"Emotional Balance – {range_option}", fontsize=12, fontweight='bold', pad=12)
+                ax2.set_title(f"Emotional Balance – {range_option}", fontsize=6, pad=9)
                 fig2.patch.set_facecolor('white')
                 
-                st.pyplot(fig2)
+            col1, col2, col3 = st.columns([1.4,5,0.6])
+
+            with col2:
+                st.pyplot(fig2, use_container_width=False)
             st.markdown("</div>", unsafe_allow_html=True)
 
             # ================= CHAT-BASED TREND =================
-            st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)  # Spacing
+            st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)  # Spacing
             all_msgs = get_all_user_messages(user_id) or []
             cutoff_map = {
                 "Last 7 Days": datetime.now() - timedelta(days=7),
@@ -555,15 +561,15 @@ def show_mood_analytics(user_id):
                 counts = [daily_count[d] for d in days_sorted]
                 stress = [daily_stress.get(d, 0) for d in days_sorted]
 
-                st.markdown("<div class='chart-wrapper' style='margin-top: 30px;'>", unsafe_allow_html=True)
+                st.markdown("<div class='chart-wrapper' style='margin-top: 30px; margin -bottom: 25px;'>", unsafe_allow_html=True)
                 
                 # Centered heading with larger size
                 st.markdown("""
-                <div style='text-align: center; margin-bottom: 20px;'>
+                <div style='text-align: center; margin-bottom: 25px; margin-bottom: 25px;'>
                     <h2 style='font-size: 24px; font-weight: 700; color: #1e293b; margin-bottom: 12px;'>
                         💬 Chat Activity Insights
                     </h2>
-                    <p style='color: #475569; font-size: 15px; line-height: 1.7; max-width: 750px; margin: 0 auto;'>
+                    <p style='color: #475569; font-size: 18px; line-height: 1.7; max-width: 700px; margin: 0 auto; margin-bottom: 25px;'>
                         This analysis correlates your daily chat activity with stress-related keywords detected in your messages. 
                         The <span style='color: #10b981; font-weight: 600;'>green line</span> shows message volume, while the 
                         <span style='color: #ef4444; font-weight: 600;'>red line</span> indicates stress indicators, helping you identify 
@@ -572,7 +578,7 @@ def show_mood_analytics(user_id):
                 </div>
                 """, unsafe_allow_html=True)
 
-                fig2, ax2 = plt.subplots(figsize=(11, 4))
+                fig2, ax2 = plt.subplots(figsize=(9, 4))
                 ax2.plot(x2, counts, marker='o', linewidth=2.5, markersize=7, 
                         label="Messages per day", color='#10b981')
                 ax2.plot(x2, stress, marker='s', linewidth=2.5, markersize=7, 
@@ -599,7 +605,7 @@ def show_mood_analytics(user_id):
                     <p style='font-size: 16px; color: #64748b; font-weight: 500;'>
                         📭 No chat history found for the selected time range.
                     </p>
-                    <p style='font-size: 14px; color: #94a3b8; margin-top: 10px;'>
+                    <p style='font-size: 17px; color: #94a3b8; margin-top: 17px; margiun-bottom; 25px;'>
                         Start chatting with the AI to see your activity insights here.
                     </p>
                 </div>
