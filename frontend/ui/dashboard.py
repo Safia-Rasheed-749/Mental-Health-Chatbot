@@ -68,23 +68,19 @@ def show_dashboard():
     .nav-card-stripe { height:4px; border-radius:18px 18px 0 0; position:absolute; top:0; left:0; right:0; }
     .nc-chat    .nav-card-stripe { background:linear-gradient(90deg,#4a7fd4,#5fa8e0); }
     .nc-mood    .nav-card-stripe { background:linear-gradient(90deg,#0ea5a0,#34d399); }
-    .nc-history .nav-card-stripe { background:linear-gradient(90deg,#8b5cf6,#c084fc); }
     .nc-journal .nav-card-stripe { background:linear-gradient(90deg,#f97316,#fbbf24); }
     .nc-chat    { background:linear-gradient(180deg,#f0f5ff 0%,#fff 55%); }
     .nc-mood    { background:linear-gradient(180deg,#f0fdfb 0%,#fff 55%); }
-    .nc-history { background:linear-gradient(180deg,#f5f0ff 0%,#fff 55%); }
     .nc-journal { background:linear-gradient(180deg,#fff7f0 0%,#fff 55%); }
     .nav-card-icon  { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; margin:6px 0 14px; }
     .nc-chat    .nav-card-icon { background:#dbeafe; }
     .nc-mood    .nav-card-icon { background:#ccfbf1; }
-    .nc-history .nav-card-icon { background:#ede9fe; }
     .nc-journal .nav-card-icon { background:#ffedd5; }
     .nav-card-title { font-size:16px; font-weight:700; color:#1e2d4e; margin-bottom:6px; }
     .nav-card-desc  { font-size:13px; color:#64748b; line-height:1.55; }
     .nav-card-tag   { display:inline-block; margin-top:14px; padding:4px 12px; border-radius:50px; font-size:11px; font-weight:600; }
     .nc-chat    .nav-card-tag { background:#dbeafe; color:#2563eb; }
     .nc-mood    .nav-card-tag { background:#ccfbf1; color:#0d9488; }
-    .nc-history .nav-card-tag { background:#ede9fe; color:#7c3aed; }
     .nc-journal .nav-card-tag { background:#ffedd5; color:#ea580c; }
 
     /* FOOTER */
@@ -98,8 +94,8 @@ def show_dashboard():
         const colors = {
             'Open AI Chat':        { bg:'linear-gradient(135deg,#4a7fd4,#5fa8e0)', shadow:'0 4px 14px rgba(74,127,212,0.40)' },
             'Open Mood Analytics': { bg:'linear-gradient(135deg,#0ea5a0,#34d399)', shadow:'0 4px 14px rgba(14,165,160,0.40)' },
-            'Open Chat History':   { bg:'linear-gradient(135deg,#8b5cf6,#c084fc)', shadow:'0 4px 14px rgba(139,92,246,0.40)' },
             'Open Journal':        { bg:'linear-gradient(135deg,#f97316,#fbbf24)', shadow:'0 4px 14px rgba(249,115,22,0.40)' },
+            'Open Games':          { bg:'linear-gradient(135deg,#8b5cf6,#c084fc)', shadow:'0 4px 14px rgba(139,92,246,0.40)' },
         };
         function paint() {
             window.parent.document.querySelectorAll('button').forEach(btn => {
@@ -232,19 +228,19 @@ def show_dashboard():
 
     col3, col4 = st.columns(2, gap="medium")
     with col3:
-        st.markdown("""<div class="nav-card nc-history"><div class="nav-card-stripe"></div>
-            <div class="nav-card-icon">🕒</div><div class="nav-card-title">Chat History</div>
-            <div class="nav-card-desc">Review past conversations, search and export sessions.</div>
-            <span class="nav-card-tag">View History →</span></div>""", unsafe_allow_html=True)
-        if st.button("Open Chat History", key="history_btn", use_container_width=True):
-            st.session_state.current_page = "History"; st.query_params["page"] = "History"; st.rerun()
-
-    with col4:
         st.markdown("""<div class="nav-card nc-journal"><div class="nav-card-stripe"></div>
             <div class="nav-card-icon">📖</div><div class="nav-card-title">Journal</div>
             <div class="nav-card-desc">Write private reflections and build your personal diary.</div>
             <span class="nav-card-tag">Write Entry →</span></div>""", unsafe_allow_html=True)
         if st.button("Open Journal", key="journal_btn", use_container_width=True):
             st.session_state.current_page = "Journal"; st.query_params["page"] = "Journal"; st.rerun()
+
+    with col4:
+        st.markdown("""<div class="nav-card nc-chat" style="background:linear-gradient(180deg,#f5f0ff 0%,#fff 55%)"><div class="nav-card-stripe" style="background:linear-gradient(90deg,#8b5cf6,#c084fc)"></div>
+            <div class="nav-card-icon" style="background:#ede9fe">🎮</div><div class="nav-card-title">Games</div>
+            <div class="nav-card-desc">Play mindfulness games to relax and sharpen your focus.</div>
+            <span class="nav-card-tag" style="background:#ede9fe;color:#7c3aed">Play Now →</span></div>""", unsafe_allow_html=True)
+        if st.button("Open Games", key="games_btn", use_container_width=True):
+            st.session_state.current_page = "Games"; st.query_params["page"] = "Games"; st.rerun()
 
     st.markdown('<div class="dash-footer">🌿 MindCare AI &nbsp;·&nbsp; Take care of your mental wellness — one day at a time.</div>', unsafe_allow_html=True)

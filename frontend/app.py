@@ -83,7 +83,7 @@ from ui.auth import show_auth_page
 from ui.sidebar import show_sidebar
 from ui.demo_chat import show_demo_chat
 from ui_pages.about import show_about_page
-from ui import dashboard, chat, history, mood, journal
+from ui import dashboard, chat, mood, journal
 from ui_pages.admin import show_admin_panel
 from ui.games import show_aesthetic_game_selector
 
