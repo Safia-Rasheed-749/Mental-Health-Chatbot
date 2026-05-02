@@ -1168,14 +1168,14 @@ def show_calm_colors_game():
         """, unsafe_allow_html=True)
 
         # Push content below navbar with spacer
-        st.markdown("<div style='height:80px'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
 
         # ── Popup card centered ──
         _, col, _ = st.columns([1, 1.4, 1])
         with col:
             st.markdown(f"""
             <div style="background:linear-gradient(145deg,#667eea 0%,#764ba2 40%,#f093fb 100%);
-                        border-radius:24px;padding:28px 28px 24px;text-align:center;
+                        border-radius:24px;padding:28px 28px 28px;text-align:center;
                         box-shadow:0 20px 60px rgba(102,126,234,0.8);
                         border:2px solid rgba(255,255,255,0.4);">
                 <div style="font-size:48px;margin-bottom:8px;">{emoji}</div>
@@ -1190,21 +1190,45 @@ def show_calm_colors_game():
                         <div style="font-size:34px;font-weight:900;color:white;">{score}</div>
                     </div>
                 </div>
-                <div style="font-size:12px;color:white;line-height:1.6;background:rgba(255,255,255,0.2);border-radius:10px;padding:10px 14px;">
+                <div style="font-size:12px;color:white;line-height:1.6;background:rgba(255,255,255,0.2);border-radius:10px;padding:10px 14px;margin-bottom:0;">
                     Every game is practice for mindfulness<br>Breathe deeply and try again
                 </div>
             </div>
             """, unsafe_allow_html=True)
 
-            # Gap between card and button
-            st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
+            # Clear gap between card bottom and button
+            st.markdown("<div style='height:36px'></div>", unsafe_allow_html=True)
 
-            # Button centered using inner columns
-            b1, b2, b3 = st.columns([0.5, 2, 0.5])
-            with b2:
-                if st.button("🎮 Play Again", key="btn_again", use_container_width=True):
-                    reset_game()
-                    st.rerun()
+            # Scoped button style — centered, auto width, not full stretch
+            st.markdown("""
+            <style>
+            .game-play-again-btn { text-align: center; padding-left: 18%; padding-right: 18%; }
+            .game-play-again-btn .stButton > button {
+                background: linear-gradient(135deg,#667eea,#764ba2) !important;
+                color: white !important;
+                font-weight: 700 !important;
+                font-size: 16px !important;
+                padding: 12px 40px !important;
+                border-radius: 50px !important;
+                border: 2px solid rgba(255,255,255,0.35) !important;
+                box-shadow: 0 8px 24px rgba(102,126,234,0.45) !important;
+                transition: all 0.3s ease !important;
+                width: 100% !important;
+                display: block !important;
+            }
+            .game-play-again-btn .stButton > button:hover {
+                transform: translateY(-3px) !important;
+                box-shadow: 0 12px 32px rgba(102,126,234,0.60) !important;
+            }
+            </style>
+            <div class="game-play-again-btn">
+            """, unsafe_allow_html=True)
+
+            if st.button("🎮 Play Again", key="btn_again", use_container_width=True):
+                reset_game()
+                st.rerun()
+
+            st.markdown("</div>", unsafe_allow_html=True)
     def show_login_popup():
         _, col, _ = st.columns([1, 1.2, 1])
         with col:
