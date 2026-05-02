@@ -172,22 +172,18 @@ else:
 # ================= FINAL ROUTING (FIXED) =================
 # IMPORTANT: ONLY current_page drives navigation now
 
-# ================= SAFE ROUTER =================
-
-# FORCE DEFAULT
 # ================= SAFE ROUTER WITH QUERY PARAM FALLBACK =================
 # Ensure a default
 if "current_page" not in st.session_state:
     st.session_state["current_page"] = "Dashboard"
 
-# Priority: URL query param > session state
-if st.query_params.get("page"):
-    current = st.query_params["page"]
-    st.session_state.current_page = current
-    # Clear the param after using it to avoid sticky navigation
-    st.query_params.clear()
-else:
-    current = st.session_state["current_page"]
+# Use query param only if it differs from current session state (first arrival)
+# Do NOT clear it with st.query_params.clear() — that triggers an extra rerun
+qp = st.query_params.get("page")
+if qp and qp != st.session_state.get("current_page"):
+    st.session_state["current_page"] = qp
+
+current = st.session_state["current_page"]
 
 
 # ================= ROUTING =================
