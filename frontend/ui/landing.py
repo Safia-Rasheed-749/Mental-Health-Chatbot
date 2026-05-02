@@ -667,12 +667,71 @@ def show_landing_page():
         
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # ================= CHAT DEMO =================
+    # ================= CHAT DEMO WITH TYPING ANIMATION =================
     with col_v:
         components.html("""
-        <div style="background: rgba(255,255,255,0.68); backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 10px 40px rgba(15,23,42,0.06), 0 2px 12px rgba(15,23,42,0.04); border-radius: 34px; height: 280px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 80px 10px 10px 10px;">
-            <div id="chat-box" style="flex: 1; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column;"></div>
+        <div style="background: rgba(255,255,255,0.68); backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 10px 40px rgba(15,23,42,0.06), 0 2px 12px rgba(15,23,42,0.04); border-radius: 34px; height: 320px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 80px 10px 10px 10px;">
+            <div id="chat-box" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px;"></div>
         </div>
+        <style>
+            @keyframes bounce {
+                0%, 60%, 100% { transform: translateY(0); }
+                30% { transform: translateY(-8px); }
+            }
+            .typing-indicator {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                padding: 10px 14px;
+                border-radius: 20px;
+                border-bottom-right-radius: 4px;
+            }
+            .typing-dot {
+                width: 8px;
+                height: 8px;
+                background: white;
+                border-radius: 50%;
+                animation: bounce 1.4s ease-in-out infinite;
+            }
+            .typing-dot:nth-child(1) { animation-delay: 0s; }
+            .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+            .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+            .message-bubble {
+                max-width: 85%;
+                word-wrap: break-word;
+                line-height: 1.4;
+            }
+            .user-bubble {
+                background: #f1f5f9;
+                color: #1e293b;
+                padding: 10px 14px;
+                border-radius: 18px;
+                border-bottom-left-radius: 4px;
+                display: inline-block;
+            }
+            .bot-bubble {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 10px 14px;
+                border-radius: 18px;
+                border-bottom-right-radius: 4px;
+                display: inline-block;
+                min-width: 60px;
+            }
+            .message-row {
+                display: flex;
+                width: 100%;
+                margin-bottom: 8px;
+            }
+            .user-row {
+                justify-content: flex-start;
+            }
+            .bot-row {
+                justify-content: flex-end;
+            }
+            /* NO ANIMATION ON MESSAGES - INSTANT APPEAR */
+        </style>
         <script>
         (function() {
             var box = document.getElementById('chat-box');
@@ -699,68 +758,117 @@ def show_landing_page():
             var convIndex = 0;
             var isActive = true;
             
-            function createMsg(text, isUser) {
-                var msg = document.createElement('div');
-                msg.style.display = 'flex';
-                msg.style.marginBottom = '12px';
-                msg.style.justifyContent = isUser ? 'flex-start' : 'flex-end';
-                msg.style.opacity = '0';
-                msg.style.transform = 'translateY(10px)';
-                msg.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            function createUserMessage(text) {
+                var row = document.createElement('div');
+                row.className = 'message-row user-row';
                 
                 var bubble = document.createElement('div');
-                bubble.style.padding = '10px 14px';
-                bubble.style.borderRadius = isUser ? '0 15px 15px 15px' : '15px 0 15px 15px';
-                bubble.style.fontSize = '13px';
-                bubble.style.maxWidth = '80%';
-                bubble.style.wordWrap = 'break-word';
+                bubble.className = 'message-bubble user-bubble';
+                bubble.innerText = "👤 " + text;
                 
-                if (isUser) { 
-                    bubble.style.background = '#f1f5f9'; 
-                    bubble.style.color = '#1e293b';
-                    bubble.innerText = "👤 " + text; 
-                } else { 
-                    bubble.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                    bubble.style.color = 'white'; 
-                    bubble.innerText = "🧠" + text; 
-                }
-                
-                msg.appendChild(bubble);
-                return msg;
+                row.appendChild(bubble);
+                return row;
             }
             
-            function animateMessage(msg) {
-                msg.style.opacity = '1';
-                msg.style.transform = 'translateY(0)';
+            function createBotMessageContainer() {
+                var row = document.createElement('div');
+                row.className = 'message-row bot-row';
+                
+                var bubble = document.createElement('div');
+                bubble.className = 'message-bubble bot-bubble';
+                bubble.innerText = "🧠 ";
+                
+                row.appendChild(bubble);
+                return {row: row, bubble: bubble};
+            }
+            
+            function createTypingIndicator() {
+                var row = document.createElement('div');
+                row.className = 'message-row bot-row';
+                
+                var indicator = document.createElement('div');
+                indicator.className = 'typing-indicator';
+                for (var i = 0; i < 3; i++) {
+                    var dot = document.createElement('div');
+                    dot.className = 'typing-dot';
+                    indicator.appendChild(dot);
+                }
+                
+                row.appendChild(indicator);
+                return row;
+            }
+            
+            function typeTextWithDelay(bubble, fullText, callback) {
+                bubble.innerText = "🧠 ";
+                var currentText = "🧠 ";
+                var charIndex = 0;
+                
+                function addNextChar() {
+                    if (charIndex < fullText.length) {
+                        currentText += fullText.charAt(charIndex);
+                        bubble.innerText = currentText;
+                        charIndex++;
+                        box.scrollTop = box.scrollHeight;
+                        setTimeout(addNextChar, 25);
+                    } else {
+                        if (callback) callback();
+                    }
+                }
+                
+                addNextChar();
+            }
+            
+            function removeTypingIndicator(indicator, callback) {
+                if (indicator && indicator.parentNode) {
+                    indicator.parentNode.removeChild(indicator);
+                }
+                if (callback) callback();
             }
             
             function clearChat() {
                 return new Promise(function(resolve) {
-                    box.style.opacity = '0';
-                    setTimeout(function() {
-                        while(box.firstChild) box.removeChild(box.firstChild);
-                        box.style.opacity = '1';
-                        resolve();
-                    }, 300);
+                    while(box.firstChild) box.removeChild(box.firstChild);
+                    resolve();
                 });
             }
             
             async function playConversation() {
                 if (!isActive) return;
                 var conv = conversations[convIndex];
+                
                 for (var i = 0; i < conv.length; i++) {
-                    var userMsg = createMsg(conv[i].u, true);
+                    // Show user message (instantly)
+                    var userMsg = createUserMessage(conv[i].u);
                     box.appendChild(userMsg);
-                    animateMessage(userMsg);
                     box.scrollTop = box.scrollHeight;
                     await new Promise(function(resolve) { setTimeout(resolve, 1500); });
                     
-                    var botMsg = createMsg(conv[i].a, false);
-                    box.appendChild(botMsg);
-                    animateMessage(botMsg);
+                    // Show typing indicator
+                    var typingIndicator = createTypingIndicator();
+                    box.appendChild(typingIndicator);
                     box.scrollTop = box.scrollHeight;
-                    if (i < conv.length - 1) await new Promise(function(resolve) { setTimeout(resolve, 1500); });
+                    
+                    // Wait 2 seconds
+                    await new Promise(function(resolve) { setTimeout(resolve, 2000); });
+                    
+                    // Remove typing indicator instantly
+                    removeTypingIndicator(typingIndicator);
+                    
+                    // Create bot message container (INSTANTLY VISIBLE - no animation)
+                    var botContainer = createBotMessageContainer();
+                    box.appendChild(botContainer.row);
+                    box.scrollTop = box.scrollHeight;
+                    
+                    // Start typing animation character by character
+                    await new Promise(function(resolve) {
+                        typeTextWithDelay(botContainer.bubble, conv[i].a, resolve);
+                    });
+                    
+                    if (i < conv.length - 1) {
+                        await new Promise(function(resolve) { setTimeout(resolve, 1000); });
+                    }
                 }
+                
                 await new Promise(function(resolve) { setTimeout(resolve, 2000); });
                 await clearChat();
                 convIndex = (convIndex + 1) % conversations.length;
@@ -770,7 +878,7 @@ def show_landing_page():
             setTimeout(playConversation, 500);
         })();
         </script>
-        """, height=410)
+        """, height=420)
         st.markdown('<div style="margin-top: 25px;"></div>', unsafe_allow_html=True)
     
         # Centered button using columns
@@ -783,7 +891,7 @@ def show_landing_page():
         # Optional: Extra spacing after button
         st.markdown('<div style="margin-bottom: 30px;"></div>', unsafe_allow_html=True)
         # ================= HOW IT WORKS =================
-    st.markdown('<h2 class="section-title">⚙️ How It Works</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title"> How It Works</h2>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="section-description">
@@ -822,7 +930,7 @@ def show_landing_page():
 
 
     # ================= WHO IS THIS FOR =================
-    st.markdown('<h2 class="section-title">👥 Who Is This For?</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title"> Whom We Serve?</h2>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="section-description">
@@ -1019,7 +1127,7 @@ def show_landing_page():
     with imp_col4:
         st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">Real-time</div><div class="stat-label-custom">Detection</div></div>', unsafe_allow_html=True)
 # ================= TRUST & SAFETY =================
-    st.markdown('<h2 class="section-title">🔒 Trust & Safety</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title"> Trust & Safety</h2>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="section-description">
