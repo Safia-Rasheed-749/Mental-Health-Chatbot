@@ -292,27 +292,6 @@ def show_exercises_page():
             line-height: 1.4;
         }
         
-        /* ========== BACK BUTTON ========== */
-        .back-button-wrapper {
-            margin: 40px 0 20px 0;
-        }
-        
-        div[data-testid="stButton"] button[key="back_to_home"] {
-            background: linear-gradient(135deg, #64748b, #475569) !important;
-            padding: 12px 40px !important;
-            font-size: 1rem !important;
-            font-weight: 600 !important;
-            border-radius: 40px !important;
-            width: 100% !important;
-            cursor: pointer !important;
-        }
-        
-        div[data-testid="stButton"] button[key="back_to_home"]:hover {
-            background: linear-gradient(135deg, #475569, #334155) !important;
-            transform: translateY(-2px) !important;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
-        }
-        
         /* Regular button style */
         div.stButton > button {
             background: linear-gradient(135deg, #8b5cf6, #6366f1);
@@ -493,15 +472,6 @@ def show_exercises_page():
         </div>
     </div>
     """, unsafe_allow_html=True)
-
-    # ================= BACK TO HOME BUTTON (CENTERED AT THE BOTTOM) =================
-    st.markdown('<div class="back-button-wrapper">', unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("← Back to Home", key="back_to_home", use_container_width=True):
-            st.session_state.page = "landing"
-            st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     show_exercises_page()

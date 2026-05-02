@@ -7,223 +7,206 @@ from datetime import datetime
 def show_admin_panel():
     apply_clean_layout(hide_header_completely=False)
 
-    # --- CLEAN PROFESSIONAL TABLES - NO HOVER, FIXED ROWS ---
     st.markdown("""
     <style>
-        /* Dark + glassy "admin panel" theme (matches your 3rd reference) */
-        :root{
-            --bg0:#070a17;
-            --bg1:#0b1227;
-            --panel:#0c1630;
-            --border:rgba(148,163,184,0.18);
-            --text:#e5e7eb;
-            --muted:rgba(226,232,240,0.72);
-            --accent:#7c3aed;   /* purple */
-            --accent2:#3b82f6;  /* blue */
-        }
-        html, body, .stApp {
-            background-color: var(--bg0) !important;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        html, body, .stApp, [class*="css"] {
+            font-family: 'Inter', sans-serif !important;
+            background-color: #0B0F19 !important;
         }
         .main .block-container {
-            background-color: var(--bg0) !important;
+            background-color: #0B0F19 !important;
+            padding-top: 0.5rem !important;
         }
 
+        /* ── HEADER ── */
         .admin-header {
-            margin-top: -5rem;
-            background: linear-gradient(90deg, rgba(59,130,246,0.25), rgba(124,58,237,0.35));
-            border: 1px solid rgba(124,58,237,0.25);
-            padding: 1.5rem;
-            border-radius: 16px;
-            color: white;
+            margin-top: -3rem;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
+            border: 1px solid #4338ca;
+            padding: 1.4rem 2rem;
+            border-radius: 14px;
+            color: #E5E7EB;
             text-align: center;
-            margin-bottom: 2.5rem;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            box-shadow: 0 18px 60px rgba(124,58,237,0.18);
-            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 24px rgba(99,102,241,0.25);
+        }
+        .admin-header h1 {
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #F9FAFB;
+            letter-spacing: -0.3px;
+        }
+        .admin-header p {
+            margin: 0.3rem 0 0;
+            color: #a5b4fc;
+            font-size: 0.9rem;
+            font-weight: 400;
         }
 
+        /* ── STAT CARDS ── */
         .stat-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 100%);
-            border-radius: 16px;
-            padding: 1.5rem;
+            background: #111827;
+            border-radius: 12px;
+            padding: 1.4rem 1.2rem;
             text-align: center;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.35);
-            border: 1px solid rgba(148,163,184,0.18);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            border: 1px solid #1F2937;
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
         .stat-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 18px 55px rgba(0,0,0,0.45);
+            border-color: #6366F1;
         }
         .stat-number {
-            font-size: 2.5rem;
-            font-weight: 850;
-            color: #c4b5fd;
-            margin-bottom: 0.5rem;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            text-shadow: 0 0 18px rgba(124,58,237,0.35);
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #6366F1;
+            margin-bottom: 0.4rem;
+            font-family: 'Inter', sans-serif;
         }
         .stat-label {
-            font-size: 0.95rem;
-            color: rgba(226,232,240,0.78);
-            font-weight: 700;
+            font-size: 0.82rem;
+            color: #9CA3AF;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.6px;
         }
 
+        /* ── BUTTONS ── */
         button {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.85), rgba(124, 58, 237, 0.85)) !important;
+            background: #6366F1 !important;
             color: white !important;
-            border: 1px solid rgba(255,255,255,0.10) !important;
-            font-weight: 800 !important;
-            padding: 12px 32px !important;
-            border-radius: 14px !important;
-            font-size: 1rem !important;
-            box-shadow: 0 18px 45px rgba(59,130,246,0.22) !important;
+            border: none !important;
+            font-weight: 600 !important;
+            padding: 10px 28px !important;
+            border-radius: 10px !important;
+            font-size: 0.9rem !important;
+            box-shadow: 0 2px 8px rgba(99,102,241,0.3) !important;
+            transition: background 0.2s ease !important;
+            font-family: 'Inter', sans-serif !important;
         }
         button:hover {
-            transform: translateY(-2px) !important;
-            box-shadow: 0 25px 60px rgba(124,58,237,0.25) !important;
+            background: #4F46E5 !important;
+            transform: translateY(-1px) !important;
         }
-         
-        /* Professional tables - dark, clean, alternating rows */
-        div[data-testid="stMarkdownContainer"] table.professional-table,
-        div.element-container table.professional-table,
-        .professional-table,
-        table.professional-table {
+
+        /* ── PROFESSIONAL TABLE ── */
+        .professional-table {
             width: 100% !important;
             border-collapse: collapse !important;
-            border-radius: 16px !important;
+            border-radius: 12px !important;
             overflow: hidden !important;
-            box-shadow: 0 18px 55px rgba(0,0,0,0.35) !important;
-            font-family: 'Segoe UI', Roboto, -apple-system, sans-serif !important;
-            font-size: 0.95rem !important;
-            background: rgba(12,22,48,0.9) !important;
-            border: 1px solid rgba(148,163,184,0.18) !important;
-            margin: 2rem 0 !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 0.88rem !important;
+            background: #111827 !important;
+            border: 1px solid #1F2937 !important;
+            margin: 1.5rem 0 !important;
         }
-
-        .professional-table thead th,
-        .professional-table th,
-        table.professional-table th {
-            background: linear-gradient(90deg, rgba(59,130,246,0.85) 0%, rgba(124,58,237,0.85) 100%) !important;
-            color: #ffffff !important;
-            font-weight: 800 !important;
-            font-size: 0.92rem !important;
-            padding: 16px 18px !important;
+        .professional-table thead th {
+            background: #1F2937 !important;
+            color: #E5E7EB !important;
+            font-weight: 700 !important;
+            font-size: 0.8rem !important;
+            padding: 14px 16px !important;
             border: none !important;
             text-align: left !important;
-            letter-spacing: 0.25px !important;
-            font-family: 'Segoe UI', Roboto, sans-serif !important;
+            letter-spacing: 0.5px !important;
+            text-transform: uppercase !important;
         }
-
-        .professional-table tbody tr,
-        table.professional-table tbody tr {
-            border-bottom: 1px solid rgba(148,163,184,0.14) !important;
+        .professional-table tbody tr {
+            border-bottom: 1px solid #1F2937 !important;
+            transition: background 0.15s ease !important;
         }
-
-        .professional-table tbody tr:nth-child(odd),
-        table.professional-table tbody tr:nth-child(odd) {
-            background-color: rgba(11,18,39,0.85) !important;
+        .professional-table tbody tr:nth-child(odd) {
+            background-color: rgba(255,255,255,0.02) !important;
         }
-
-        .professional-table tbody tr:nth-child(even),
-        table.professional-table tbody tr:nth-child(even) {
-            background-color: rgba(15,23,42,0.72) !important;
+        .professional-table tbody tr:nth-child(even) {
+            background-color: rgba(255,255,255,0.05) !important;
         }
-
-        .professional-table tbody tr:hover,
-        table.professional-table tbody tr:hover {
-            background-color: inherit !important;
+        .professional-table tbody tr:hover {
+            background-color: rgba(99,102,241,0.12) !important;
         }
-
-        .professional-table td,
-        table.professional-table td {
-            padding: 16px 18px !important;
-            color: rgba(229,231,235,0.98) !important;
-            font-weight: 550 !important;
-            font-size: 0.94rem !important;
+        .professional-table td {
+            padding: 13px 16px !important;
+            color: #E5E7EB !important;
+            font-weight: 400 !important;
+            font-size: 0.88rem !important;
             line-height: 1.5 !important;
             border: none !important;
             vertical-align: middle !important;
-            font-family: 'Segoe UI', Roboto, sans-serif !important;
+        }
+        /* Admin column */
+        .professional-table td:nth-child(4) {
+            font-weight: 600 !important;
+            color: #22C55E !important;
+        }
+        /* Timestamp column */
+        .professional-table td:last-child {
+            color: #9CA3AF !important;
+            font-size: 0.82rem !important;
+            font-family: 'Inter', monospace !important;
         }
 
-        /* Admin column highlighting */
-        .professional-table td:nth-child(4),
-        table.professional-table td:nth-child(4) {
-            font-weight: 750 !important;
-            color: rgba(209,250,229,0.95) !important;
-        }
-
-        .professional-table td:last-child,
-        table.professional-table td:last-child {
-            color: rgba(147,197,253,0.9) !important;
-            font-size: 0.92rem !important;
-            font-family: 'Monaco', monospace !important;
-        }
-
-        /* Tabs styling (Streamlit baseweb) */
+        /* ── TABS ── */
         div[role="tablist"] button[role="tab"] {
-            border-radius: 999px !important;
-            border: 1px solid rgba(148,163,184,0.20) !important;
-            background: rgba(15,23,42,0.4) !important;
-            color: rgba(226,232,240,0.85) !important;
-            padding: 10px 14px !important;
-            margin: 0 8px 0 0 !important;
-            font-weight: 800 !important;
+            border-radius: 8px !important;
+            border: 1px solid #1F2937 !important;
+            background: #111827 !important;
+            color: #9CA3AF !important;
+            padding: 8px 16px !important;
+            margin: 0 6px 0 0 !important;
+            font-weight: 600 !important;
+            font-size: 0.85rem !important;
+            font-family: 'Inter', sans-serif !important;
         }
         div[role="tablist"] button[role="tab"][aria-selected="true"] {
-            background: linear-gradient(135deg, rgba(59,130,246,0.85), rgba(124,58,237,0.85)) !important;
-            border-color: rgba(124,58,237,0.55) !important;
+            background: #6366F1 !important;
+            border-color: #6366F1 !important;
             color: #ffffff !important;
         }
-
-        /* Tabs content spacing */
         div[data-testid="stTab"] {
-            padding: 1rem 0 !important;
-        }
-        div[data-testid="stTab"] > div > div {
-            padding-top: 1rem !important;
+            padding: 0.5rem 0 !important;
         }
 
-        /* Mobile responsive */
+        /* ── SELECTBOX / LABELS ── */
+        div[data-testid="stSelectbox"] label,
+        label[data-testid="stMetricLabel"] {
+            color: #E5E7EB !important;
+            font-weight: 600 !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+        div[data-testid="stMetricValue"] {
+            color: #6366F1 !important;
+            font-weight: 700 !important;
+        }
+        div[data-testid="stMetricValue"] p {
+            color: #6366F1 !important;
+            font-size: 1.6rem !important;
+        }
+        div[data-testid="stMetric"] {
+            background: #111827 !important;
+            border-radius: 10px !important;
+            padding: 14px !important;
+            border: 1px solid #1F2937 !important;
+        }
+
+        /* ── DIVIDER ── */
+        hr {
+            border-color: #1F2937 !important;
+            margin: 1.5rem 0 !important;
+        }
+
         @media (max-width: 768px) {
             .professional-table td,
             .professional-table th {
-                padding: 12px 14px !important;
-                font-size: 0.9rem !important;
+                padding: 10px 12px !important;
+                font-size: 0.82rem !important;
             }
         }
-        div[data-testid="stSelectbox"] label {
-            color: white !important;
-        }
-        /* Metric labels (Total Actions, Pages Visited, Most Frequent Action) */
-        label[data-testid="stMetricLabel"] {
-            color: white !important;
-            font-weight: bold !important;
-            
-        }
-        
-        /* Metric values (numbers and text) */
-        div[data-testid="stMetricValue"] {
-            color: white !important;
-            font-weight: 700 !important;
-        }
-        
-        /* Metric value text for "Most Frequent Action" */
-        div[data-testid="stMetricValue"] p {
-            color: white !important;
-            font-size: 30px !important;
-        }
-        
-        /* Metric cards background (optional - makes them visible) */
-        div[data-testid="stMetric"] {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.85), rgba(124, 58, 237, 0.85)) !important;
-            border-radius: 12px !important;
-            padding: 16px !important;
-            border: 1px solid #3b82f6 !important;
     </style>
     """, unsafe_allow_html=True)
 
@@ -313,13 +296,13 @@ def show_admin_panel():
         
         st.markdown(f'''
         <div style="
-            background: linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%);
-            border-radius: 20px;
-            padding: 2rem;
-            margin: 1rem 0;
-            box-shadow: 0 18px 55px rgba(0,0,0,0.35);
-            border: 1px solid rgba(148,163,184,0.18);
-            backdrop-filter: blur(10px);
+            background: #111827;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 0.5rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            border: 1px solid #1F2937;
+            overflow-x: auto;
         ">
             {html_table}
         </div>
@@ -371,8 +354,8 @@ def show_admin_panel():
             else:
                 st.info("No journal entries for this user.")
     with tab5:
-        st.markdown("<h3 style='color:white'>📊 Detailed User Activity Timeline</h3>", unsafe_allow_html=True)     
-        st.markdown("<p style='color:#cbd5e1'>Shows every action users perform across the platform</p>", unsafe_allow_html=True)        
+        st.markdown("<h3 style='color:#E5E7EB;font-family:Inter,sans-serif;font-weight:700;margin-bottom:0.25rem'>📊 Detailed User Activity Timeline</h3>", unsafe_allow_html=True)
+        st.markdown("<p style='color:#9CA3AF;font-family:Inter,sans-serif;font-size:0.88rem;margin-top:0'>Shows every action users perform across the platform</p>", unsafe_allow_html=True)        
         selected_user_activity = st.selectbox(
             "Select user to view activity log", 
             users, 
@@ -398,7 +381,7 @@ def show_admin_panel():
                 render_styled_table(activity_df, timestamp_cols=['Timestamp'])
                 
                 # Add summary stats
-                st.markdown("<h3 style='color:white'>📈 Activity Summary</h3>", unsafe_allow_html=True)
+                st.markdown("<h3 style='color:#E5E7EB;font-family:Inter,sans-serif;font-weight:700;margin-top:1.5rem'>📈 Activity Summary</h3>", unsafe_allow_html=True)
 
                 col1, col2, col3 = st.columns(3)
                 with col1:
@@ -415,7 +398,7 @@ def show_admin_panel():
                     if most_common:
                         st.metric("Most Frequent Action", most_common[0][0])
             else:
-                st.markdown("<p style='color:#e2e8f0'>📭 No detailed activity logs yet. Activities will appear as users interact with the platform.</p>", unsafe_allow_html=True)
+                st.markdown("<p style='color:#9CA3AF;font-family:Inter,sans-serif;font-size:0.88rem'>📭 No detailed activity logs yet. Activities will appear as users interact with the platform.</p>", unsafe_allow_html=True)
     # Back button with better spacing
     st.markdown("""
     <div style="margin-top: 3rem; text-align: center;">
