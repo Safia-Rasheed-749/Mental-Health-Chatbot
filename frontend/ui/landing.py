@@ -195,28 +195,7 @@ def show_landing_page():
             text-shadow: 0px 1px 1px rgba(0,0,0,0.04);
         }
         
-        .carousel-heading {
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        .carousel-heading h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #0f172a;
-            -webkit-text-fill-color: #0f172a;
-            background: none;
-            margin-bottom: 12px;
-            animation: fadeInUp 0.8s ease-out;
-        }
-        
-        .carousel-heading p {
-            color: #64748b;
-            font-size: 17px;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
-        }
+       
         
         .section-title {
             text-align: center;
@@ -508,17 +487,7 @@ def show_landing_page():
             font-size: 0.8rem;
         }
         
-        .carousel-wrapper {
-            max-width: 1400px;
-            margin: 35px auto;
-            padding: 0 20px;
-        }
         
-        .carousel-outer {
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
-        }
         
         @media (max-width: 768px) {
             .exercise-card {
@@ -730,7 +699,55 @@ def show_landing_page():
     .who-we-serve-spacing {
     margin-top: 20px;
 }
-    
+    #Overlay Caousel
+    .slider-section {
+        margin: 60px 0 40px 0;
+        text-align: center;
+    }
+    .slider-badge {
+        display: inline-block;
+        background: rgba(139, 92, 246, 0.1);
+        padding: 6px 18px;
+        border-radius: 40px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #8b5cf6;
+        margin-bottom: 20px;
+    }
+    .slider-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 12px;
+    }
+    .slider-sub {
+        color: #64748b;
+        font-size: 0.95rem;
+        max-width: 600px;
+        margin: 0 auto 40px auto;
+    }
+    .carousel-heading {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .carousel-heading h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f172a;
+            -webkit-text-fill-color: #0f172a;
+            background: none;
+            margin-bottom: 12px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .carousel-heading p {
+            color: #64748b;
+            font-size: 17px;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
     </style>
     
     """, unsafe_allow_html=True)
@@ -1134,25 +1151,22 @@ def show_landing_page():
         st.markdown('<div class="feature-card-custom"><div>📚</div><div>RAG Knowledge</div><div>WHO verified guidelines</div></div>', unsafe_allow_html=True)
     with col6:
         st.markdown('<div class="feature-card-custom"><div>🧘</div><div>Coping Tools</div><div>Meditation & CBT techniques</div></div>', unsafe_allow_html=True)
-    # ================= CAROUSEL FIRST (UPPER) =================
+    # ================= CAROUSEL SECTION =================
     st.markdown("""
     <div class="carousel-heading">
-        <h2> Your AI-Powered Mental Wellness Journey</h2>
+        <h2>✨ Your AI-Powered Mental Wellness Journey</h2>
         <p>Experience compassionate AI support that understands your emotions, provides evidence-based guidance, 
         and helps you navigate life's challenges with empathy and care.</p>
     </div>
     """, unsafe_allow_html=True)
 
-    # ================= QUOTE CAROUSEL WITH 3 NEW IMAGES (NO OVERLAY) =================
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    
-    # NEW IMAGE PATHS - Updated with your 3 new images
+
     image_path_1 = os.path.join(BASE_DIR, "../../assets/images/WhatsApp Image 2026-04-29 at 7.58.14 PM.jpeg")
     image_path_2 = os.path.join(BASE_DIR, "../../assets/images/WhatsApp Image 2026-04-29 at 7.58.15 PM.jpeg")
     image_path_3 = os.path.join(BASE_DIR, "../../assets/images/WhatsApp Image 2026-04-29 at 8.00.27 PM.jpeg")
-    
+
     def get_image_base64(image_path):
-        """Convert image file to base64 string"""
         try:
             if os.path.exists(image_path):
                 with open(image_path, "rb") as image_file:
@@ -1162,73 +1176,166 @@ def show_landing_page():
                 return "", False
         except Exception:
             return "", False
-    
+
     img_base64_1, img_available_1 = get_image_base64(image_path_1)
     img_base64_2, img_available_2 = get_image_base64(image_path_2)
     img_base64_3, img_available_3 = get_image_base64(image_path_3)
-    
-    # Use first image as fallback if others not available
+
     fallback_img = img_base64_1 if img_available_1 else ""
-    
+
     st.markdown('<div class="carousel-wrapper"><div class="carousel-outer">', unsafe_allow_html=True)
 
     components.html(f"""
     <!DOCTYPE html>
     <html>
     <head>
-        <style>
-            body {{ margin: 0; background: transparent; font-family: 'Inter', sans-serif; }}
-            .carousel-container {{ width: 100%; overflow: hidden; position: relative; height: 400px; background: transparent; }}
-            .carousel-track {{ display: flex; width: 400%; height: 100%; transition: transform 0.7s ease-in-out; }}
-            .slide {{ width: 25%; height: 100%; background-size: cover; background-position: center; background-repeat: no-repeat; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; }}
-            .quote-card {{ background: rgba(255,255,255,0.72); backdrop-filter: blur(18px); border-radius: 28px; padding: 24px 34px; max-width: 560px; box-shadow: 0 8px 30px rgba(15,23,42,0.06); text-align: center; border: 1px solid rgba(255,255,255,0.5); z-index: 2; margin: 0 20px; position: relative; animation: fadeInUp 0.8s ease-out; }}
-            .quote-text {{ color: #1e293b; font-size: 1.15rem; line-height: 1.8; font-weight: 500; font-style: italic; margin: 0; }}
-            .quote-author {{ margin-top: 30px; color: #667eea; font-size: 14px; font-weight: 600; }}
-            @keyframes fadeInUp {{
-                from {{ opacity: 0; transform: translateY(30px); }}
-                to {{ opacity: 1; transform: translateY(0); }}
-            }}
-            @media (max-width: 768px) {{
-                .carousel-container {{ height: 350px; }}
-                .quote-card {{ padding: 20px 24px; margin: 0 15px; }}
-                .quote-text {{ font-size: 18px; }}
-            }}
-        </style>
-    </head>
-    <body>
+    <style>
+        body {{ margin: 0; background: transparent; font-family: 'Inter', sans-serif; }}
+        .carousel-container {{ width: 100%; overflow: hidden; position: relative; height: 420px; background: transparent; border-radius: 24px; }}
+        .carousel-track {{ display: flex; width: 400%; height: 100%; transition: transform 0.6s ease-in-out; }}
+        .slide {{ width: 25%; height: 100%; background-size: cover; background-position: center; background-repeat: no-repeat; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; }}
+        
+        /* Dark overlay for better text readability */
+        .slide::after {{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 100%);
+            border-radius: 24px;
+        }}
+        
+        .quote-card {{ 
+            background: rgba(255,255,255,0.92); 
+            backdrop-filter: blur(16px); 
+            border-radius: 28px; 
+            padding: 28px 40px; 
+            max-width: 560px; 
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2); 
+            text-align: center; 
+            border: 1px solid rgba(255,255,255,0.6); 
+            z-index: 2; 
+            margin: 0 24px; 
+            position: relative; 
+            animation: fadeInUp 0.8s ease-out;
+        }}
+        
+        .quote-text {{ 
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.2rem; 
+            line-height: 1.6; 
+            font-weight: 500; 
+            font-style: italic; 
+            margin: 0;
+        }}
+        
+        .quote-author {{ 
+            margin-top: 20px; 
+            color: #8b5cf6; 
+            font-size: 14px; 
+            font-weight: 600; 
+            letter-spacing: 0.5px;
+        }}
+        
+        /* Navigation Dots */
+        .nav-dots {{
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            z-index: 10;
+        }}
+        .dot {{
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }}
+        .dot.active {{
+            width: 24px;
+            background: white;
+            border-radius: 10px;
+        }}
+        
+        @keyframes fadeInUp {{
+            from {{ opacity: 0; transform: translateY(30px); }}
+            to {{ opacity: 1; transform: translateY(0); }}
+        }}
+        
+        @media (max-width: 768px) {{
+            .carousel-container {{ height: 380px; }}
+            .quote-card {{ padding: 20px 24px; margin: 0 16px; }}
+            .quote-text {{ font-size: 1rem; }}
+        }}
+    </style>
+
     <div class="carousel-container">
         <div class="carousel-track" id="carouselTrack">
             <div class="slide" style="background-image: url('{img_base64_1 if img_available_1 else fallback_img}');">
                 <div class="quote-card">
-                    <p class="quote-text">"Mental health is not a destination, but a journey of self-discovery and healing."</p>
-                    <p class="quote-author">— AI Assistant for Mental Health</p>
+                    <div class="quote-text">"Mental health is not a destination, but a journey of self-discovery and healing."</div>
+                    <div class="quote-author">— MindCare AI Community</div>
                 </div>
             </div>
             <div class="slide" style="background-image: url('{img_base64_2 if img_available_2 else fallback_img}');">
                 <div class="quote-card">
-                    <p class="quote-text">"AI-powered emotional support is transforming mental healthcare, making it accessible 24/7 for everyone."</p>
-                    <p class="quote-author">— AI Assistant Research</p>
+                    <div class="quote-text">"AI-powered emotional support, making mental healthcare accessible 24/7 for everyone."</div>
+                    <div class="quote-author">— Available Anytime, Anywhere</div>
                 </div>
             </div>
             <div class="slide" style="background-image: url('{img_base64_3 if img_available_3 else fallback_img}');">
                 <div class="quote-card">
-                    <p class="quote-text">"Your mental health journey matters. Let AI be your compassionate companion along the way."</p>
-                    <p class="quote-author">— AI Assistant Team</p>
+                    <div class="quote-text">"Your mental health journey matters. Let AI be your compassionate companion."</div>
+                    <div class="quote-author">— Empathy Meets Technology</div>
                 </div>
             </div>
             <div class="slide" style="background-image: url('{img_base64_1 if img_available_1 else fallback_img}');">
                 <div class="quote-card">
-                    <p class="quote-text">"Technology meets empathy. Our AI understands, listens, and supports your emotional well-being."</p>
-                    <p class="quote-author">— AI Assistant</p>
+                    <div class="quote-text">"Technology meets empathy. Our AI understands, listens, and supports you."</div>
+                    <div class="quote-author">— Mindvare AI</div>
                 </div>
             </div>
         </div>
+        <div class="nav-dots" id="navDots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
     </div>
+
     <script>
         var track = document.getElementById('carouselTrack');
+        var dots = document.querySelectorAll('.dot');
         var currentIndex = 0;
         var totalSlides = 3;
         var slideWidth = 25;
+        var autoInterval;
+        
+        function updateDots() {{
+            dots.forEach((dot, i) => {{
+                if (i === currentIndex) {{
+                    dot.classList.add('active');
+                }} else {{
+                    dot.classList.remove('active');
+                }}
+            }});
+        }}
+        
+        function moveToSlide(index) {{
+            currentIndex = index;
+            track.style.transform = 'translateX(-' + (currentIndex * slideWidth) + '%)';
+            updateDots();
+        }}
+        
         function moveToNext() {{
             currentIndex++;
             track.style.transform = 'translateX(-' + (currentIndex * slideWidth) + '%)';
@@ -1238,15 +1345,36 @@ def show_landing_page():
                     track.style.transform = 'translateX(0%)';
                     currentIndex = 0;
                     track.offsetHeight;
-                    track.style.transition = 'transform 0.7s ease-in-out';
-                }}, 700);
+                    track.style.transition = 'transform 0.6s ease-in-out';
+                    updateDots();
+                }}, 600);
+            }} else {{
+                updateDots();
             }}
         }}
-        setInterval(moveToNext, 5000);
+        
+        function startAutoSlide() {{
+            autoInterval = setInterval(moveToNext, 5000);
+        }}
+        
+        function resetAutoSlide() {{
+            clearInterval(autoInterval);
+            startAutoSlide();
+        }}
+        
+        dots.forEach((dot, index) => {{
+            dot.addEventListener('click', function() {{
+                clearInterval(autoInterval);
+                moveToSlide(index);
+                resetAutoSlide();
+            }});
+        }});
+        
+        startAutoSlide();
     </script>
     </body>
     </html>
-    """, height=420)
+    """, height=480)
 
     st.markdown('</div></div>', unsafe_allow_html=True)
 
