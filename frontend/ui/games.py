@@ -664,7 +664,7 @@ def show_calm_colors_game():
     </style>
 
     <script>
-    /* Color the 4 game buttons by their text label */
+    /* Color the 4 game buttons by their text label and enforce uniform size */
     (function() {
         const map = {
             '💙  Blue':   'linear-gradient(135deg,#3b82f6,#60a5fa)',
@@ -680,6 +680,16 @@ def show_calm_colors_game():
                     btn.style.setProperty('background', map[t], 'important');
                     btn.style.setProperty('color', '#fff', 'important');
                     btn.style.setProperty('border', '3px solid rgba(255,255,255,0.45)', 'important');
+                    btn.style.setProperty('height', '60px', 'important');
+                    btn.style.setProperty('min-height', '60px', 'important');
+                    btn.style.setProperty('padding', '0 16px', 'important');
+                    btn.style.setProperty('font-size', '18px', 'important');
+                    btn.style.setProperty('font-weight', '700', 'important');
+                    btn.style.setProperty('border-radius', '20px', 'important');
+                    btn.style.setProperty('width', '100%', 'important');
+                    btn.style.setProperty('display', 'flex', 'important');
+                    btn.style.setProperty('align-items', 'center', 'important');
+                    btn.style.setProperty('justify-content', 'center', 'important');
                 }
             });
         }
@@ -1153,132 +1163,153 @@ def show_calm_colors_game():
                     unsafe_allow_html=True
                 )
 
-            # Color buttons
-            col1, col2 = st.columns(2, gap="large")
-            with col1:
-                if st.button(f"{colors[0]['emoji']}  {colors[0]['name']}", key="color_blue",  use_container_width=True):
-                    handle_move(0); st.rerun()
-                st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
-                if st.button(f"{colors[2]['emoji']}  {colors[2]['name']}", key="color_purple", use_container_width=True):
-                    handle_move(2); st.rerun()
-            with col2:
-                if st.button(f"{colors[1]['emoji']}  {colors[1]['name']}", key="color_green",  use_container_width=True):
-                    handle_move(1); st.rerun()
-                st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
-                if st.button(f"{colors[3]['emoji']}  {colors[3]['name']}", key="color_orange", use_container_width=True):
-                    handle_move(3); st.rerun()
+            # Color buttons + End Game — all in one centered column
+            _, center, _ = st.columns([0.5, 1.8, 0.5])
+            with center:
+                # Row 1
+                r1c1, r1c2 = st.columns(2, gap="large")
+                with r1c1:
+                    if st.button(f"{colors[0]['emoji']}  {colors[0]['name']}", key="color_blue", use_container_width=True):
+                        handle_move(0); st.rerun()
+                with r1c2:
+                    if st.button(f"{colors[1]['emoji']}  {colors[1]['name']}", key="color_green", use_container_width=True):
+                        handle_move(1); st.rerun()
 
-            st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
-            c1, c2, c3 = st.columns([1.2, 1, 1.2])
-            with c2:
-                if st.button("End Game", key="btn_end"):
-                    end_game(); st.rerun()
+                st.write("")
+
+                # Row 2
+                r2c1, r2c2 = st.columns(2, gap="large")
+                with r2c1:
+                    if st.button(f"{colors[2]['emoji']}  {colors[2]['name']}", key="color_purple", use_container_width=True):
+                        handle_move(2); st.rerun()
+                with r2c2:
+                    if st.button(f"{colors[3]['emoji']}  {colors[3]['name']}", key="color_orange", use_container_width=True):
+                        handle_move(3); st.rerun()
+
+                # Spacer
+                st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
+
+                # End Game — compact pill, centered via sub-columns
+                st.markdown("""
+                <style>
+                div[data-testid="stForm"] {
+                    background: transparent !important;
+                    border: none !important;
+                    padding: 0 !important;
+                }
+                div[data-testid="stFormSubmitButton"] > button {
+                    background: linear-gradient(135deg, #9FC6F0, #4F84D9) !important;
+                    color: white !important;
+                    font-weight: 600 !important;
+                    font-size: 15px !important;
+                    padding: 8px 36px !important;
+                    border-radius: 40px !important;
+                    border: none !important;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
+                    transition: all 0.3s ease !important;
+                    width: auto !important;
+                }
+                div[data-testid="stFormSubmitButton"] > button:hover {
+                    background: #6D9EEB !important;
+                    transform: translateY(-2px) !important;
+                }
+                </style>
+                """, unsafe_allow_html=True)
+                _, end_btn_col, _ = st.columns([0.5, 1, 0.5])
+                with end_btn_col:
+                    with st.form("end_game_form", border=False):
+                        if st.form_submit_button("⏹ End Game", use_container_width=True):
+                            end_game(); st.rerun()
 
     # ── SCREEN: RESULT ──
     def show_result():
         level = st.session_state.game_level
         score = st.session_state.game_score
-        # is_win = score > 50
-        emoji = "🎉" 
-        title = "Game Ended!" 
+        emoji = "🎉"
+        title = "Game Ended!"
 
-        # Scoped CSS — only targets game page elements, NOT navbar buttons
-        st.markdown("""
-        <style>
-        .stApp { background: linear-gradient(135deg,#f0f4ff 0%,#faf5ff 50%,#fce7f3 100%) !important; }
-        /* Scope to game page only — exclude nav buttons */
-        .game-play-again-btn .stButton > button {
-            background: linear-gradient(135deg,#667eea,#764ba2) !important;
-            color: white !important;
-            font-weight: 700 !important;
-            font-size: 16px !important;
-            padding: 12px 48px !important;
-            border-radius: 50px !important;
-            border: 2px solid rgba(255,255,255,0.3) !important;
-            box-shadow: 0 8px 24px rgba(102,126,234,0.4) !important;
-            transition: all 0.3s ease !important;
-            width: auto !important;
-            min-width: 200px !important;
-            display: block !important;
-            margin: 0 auto !important;
-        }
-        .game-play-again-btn .stButton > button:hover {
-            transform: translateY(-3px) !important;
-            box-shadow: 0 12px 32px rgba(102,126,234,0.55) !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
+        # Push content below navbar — less space when sidebar is visible
+        top_space = "10px" if from_sidebar else "60px"
+        st.markdown(f"<div style='height:{top_space}'></div>", unsafe_allow_html=True)
 
-        # Push content below navbar with spacer
-        st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
-
-        # ── Popup card centered ──
+        # ── Centered column for card ──
         _, col, _ = st.columns([1, 1.4, 1])
         with col:
             st.markdown(f"""
-            <div style="background:linear-gradient(145deg,#667eea 0%,#764ba2 40%,#f093fb 100%);
-                        border-radius:24px;padding:28px 28px 28px;text-align:center;
-                        box-shadow:0 20px 60px rgba(102,126,234,0.8);
-                        border:2px solid rgba(255,255,255,0.4);">
-                <div style="font-size:48px;margin-bottom:8px;">{emoji}</div>
-                <div style="font-size:28px;font-weight:900;color:white;margin-bottom:20px;text-shadow:0 2px 12px rgba(0,0,0,0.3);">{title}</div>
+            <div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 55%,#9b59b6 100%);
+                        border-radius:24px;padding:32px 28px 28px;text-align:center;
+                        box-shadow:0 20px 60px rgba(102,126,234,0.55),0 8px 32px rgba(118,75,162,0.4);
+                        border:1.5px solid rgba(255,255,255,0.25);">
+                <div style="font-size:52px;margin-bottom:12px;">{emoji}</div>
+                <div style="font-size:28px;font-weight:900;color:white;margin-bottom:20px;
+                            text-shadow:0 2px 12px rgba(0,0,0,0.3);">{title}</div>
                 <div style="display:flex;justify-content:center;gap:12px;margin-bottom:16px;">
-                    <div style="background:rgba(255,255,255,0.3);border-radius:14px;padding:14px 20px;flex:1;border:1px solid rgba(255,255,255,0.5);">
-                        <div style="font-size:10px;font-weight:700;color:white;margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;">🎯 Level</div>
+                    <div style="background:rgba(255,255,255,0.18);border-radius:14px;padding:14px 20px;
+                                flex:1;border:1px solid rgba(255,255,255,0.3);">
+                        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.85);
+                                    margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;">🎯 Level</div>
                         <div style="font-size:34px;font-weight:900;color:white;">{level}</div>
                     </div>
-                    <div style="background:rgba(255,255,255,0.3);border-radius:14px;padding:14px 20px;flex:1;border:1px solid rgba(255,255,255,0.5);">
-                        <div style="font-size:10px;font-weight:700;color:white;margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;">⭐ Score</div>
+                    <div style="background:rgba(255,255,255,0.18);border-radius:14px;padding:14px 20px;
+                                flex:1;border:1px solid rgba(255,255,255,0.3);">
+                        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.85);
+                                    margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;">⭐ Score</div>
                         <div style="font-size:34px;font-weight:900;color:white;">{score}</div>
                     </div>
                 </div>
-                <div style="font-size:12px;color:white;line-height:1.6;background:rgba(255,255,255,0.2);border-radius:10px;padding:10px 14px;margin-bottom:0;">
+                <div style="font-size:13px;color:rgba(255,255,255,0.88);line-height:1.65;
+                            background:rgba(255,255,255,0.15);border-radius:12px;padding:12px 16px;">
                     Every game is practice for mindfulness<br>Breathe deeply and try again
                 </div>
             </div>
             """, unsafe_allow_html=True)
 
-            # Clear gap between card bottom and button
-            st.markdown("<div style='height:36px'></div>", unsafe_allow_html=True)
-
-            # Scoped button style — centered, auto width, not full stretch
+            # Spacing + centered form submit button (renders centered natively)
+            st.write("")
             st.markdown("""
             <style>
-            .game-play-again-btn { text-align: center; padding-left: 18%; padding-right: 18%; }
-            .game-play-again-btn .stButton > button {
-                background: linear-gradient(135deg,#667eea,#764ba2) !important;
+            /* Remove form chrome */
+            div[data-testid="stForm"] {
+                background: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+            }
+            /* Target form submit button with maximum specificity */
+            div[data-testid="stForm"] div[data-testid="stFormSubmitButton"] button,
+            div[data-testid="stForm"] button[kind="primaryFormSubmit"],
+            div[data-testid="stForm"] button[kind="secondaryFormSubmit"],
+            div[data-testid="stForm"] button {
+                background: linear-gradient(135deg, #9FC6F0, #4F84D9) !important;
                 color: white !important;
-                font-weight: 700 !important;
-                font-size: 16px !important;
-                padding: 12px 40px !important;
-                border-radius: 50px !important;
-                border: 2px solid rgba(255,255,255,0.35) !important;
-                box-shadow: 0 8px 24px rgba(102,126,234,0.45) !important;
+                font-weight: 600 !important;
+                font-size: 15px !important;
+                padding: 10px 0 !important;
+                border-radius: 40px !important;
+                border: none !important;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
                 transition: all 0.3s ease !important;
                 width: 100% !important;
-                display: block !important;
             }
-            .game-play-again-btn .stButton > button:hover {
+            div[data-testid="stForm"] button:hover {
+                background: #6D9EEB !important;
                 transform: translateY(-3px) !important;
-                box-shadow: 0 12px 32px rgba(102,126,234,0.60) !important;
             }
             </style>
-            <div class="game-play-again-btn">
             """, unsafe_allow_html=True)
 
-            if st.button("🎮 Play Again", key="btn_again", use_container_width=True):
-                st.session_state.game_screen = "countdown"
-                st.rerun()
-                
-
-            st.markdown("</div>", unsafe_allow_html=True)
+            with st.form("play_again_form", border=False):
+                submitted = st.form_submit_button("🎮 Play Again", use_container_width=True)
+                if submitted:
+                    st.session_state.game_screen = "countdown"
+                    st.rerun()
     def show_login_popup():
         _, col, _ = st.columns([1, 1.2, 1])
         with col:
             st.markdown("""
-            <div style="background:linear-gradient(135deg,#667eea,#764ba2);
+            <div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 55%,#9b59b6 100%);
                         border-radius:24px;margin-top:80px;padding:32px 28px 28px;text-align:center;
-                        color:white;box-shadow:0 16px 60px rgba(0,0,0,0.35);">
+                        color:white;box-shadow:0 20px 60px rgba(102,126,234,0.55),0 8px 32px rgba(118,75,162,0.4);
+                        border:1.5px solid rgba(255,255,255,0.25);">
                 <div style="font-size:52px;margin-bottom:12px;">🔐</div>
                 <h2 style="font-size:24px;font-weight:800;margin-bottom:10px;">Unlock Unlimited Levels</h2>
                 <p style="opacity:0.88;font-size:14px;line-height:1.65;margin-bottom:0;">
@@ -1342,10 +1373,13 @@ def show_calm_colors_game():
         show_game()
 
     elif screen in ("result", "login_popup"):
-        # Change background to indicate game over state — no overlay needed
+        # Page background matching the dark navy from the image
         st.markdown("""
         <style>
-        .stApp { background: linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%) !important; }
+        .stApp {
+            background: linear-gradient(160deg, #0a0e1a 0%, #0d1b3e 35%, #0f2352 60%, #0a1628 100%) !important;
+            background-attachment: fixed !important;
+        }
         .main .block-container { position: relative !important; z-index: 10 !important; }
         </style>
         """, unsafe_allow_html=True)
