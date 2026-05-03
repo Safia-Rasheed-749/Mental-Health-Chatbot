@@ -73,8 +73,10 @@ def show_chat(user_id):
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
     /* ── HIDE CLUTTER ── */
-    .stDeployButton { display: none !important; }
-    #MainMenu       { visibility: hidden !important; }
+    .stAppDeployButton {
+        display: none;
+        }  
+     #MainMenu       { visibility: hidden !important; }
     footer          { visibility: hidden !important; }
     header {
         background: transparent !important;
@@ -165,7 +167,7 @@ def show_chat(user_id):
     .chat-area {
         padding: 20px 16px 10px;
         min-height: 60px;
-        max-height: calc(100vh - 320px);
+        max-height: calc(100vh - 180px);
         overflow-y: auto;
         scroll-behavior: smooth;
     }
@@ -396,7 +398,7 @@ def show_chat(user_id):
         </div>
         <div class="chat-header-status">
             <div class="status-dot"></div>
-            Online
+            Available
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -539,7 +541,7 @@ def show_chat(user_id):
         """, unsafe_allow_html=True)
         
         audio = mic_recorder(
-            start_prompt="🎙️",
+            start_prompt="🎤",
             stop_prompt="⏹️",
             key=f"voice_rec_{cid if cid else 'new'}",
             just_once=True
