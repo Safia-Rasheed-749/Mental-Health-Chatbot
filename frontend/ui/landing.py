@@ -552,7 +552,7 @@ def show_landing_page():
     with col_t:
         st.markdown("""
         <h1 class="hero-title">
-            Your AI Wellness Companion
+            Healing Space for <br> your Mind
         </h1>
         <p class="hero-description">
             Talk, reflect, and find support through emotionally intelligent AI.
