@@ -124,7 +124,7 @@ def show_auth_page():
 
             # Explicit spacer above Sign In button
             st.markdown('<div style="height: 25px;"></div>', unsafe_allow_html=True)
-            if st.button("Sign In", key="signin_btn", use_container_width=True):
+            if st.button("Sign In", key="signin_btn", use_container_width=True, type="primary"):
                 user = check_login(email, password)
                 if user:
                     st.session_state.user = user
@@ -148,7 +148,7 @@ def show_auth_page():
 
                 c1, c2 = st.columns(2)
                 with c1:
-                    if st.button("Send Reset Code", key="send_reset_btn", use_container_width=True):
+                    if st.button("Send Reset Code", key="send_reset_btn", use_container_width=True, type="primary"):
                         if reset_email_input:
                             user = get_user_by_email(reset_email_input)
                             if user:
@@ -169,7 +169,7 @@ def show_auth_page():
                             st.warning("⚠️ Please enter your email address")
 
                 with c2:
-                    if st.button("I have a code", key="have_code_btn", use_container_width=True):
+                    if st.button("I have a code", key="have_code_btn", use_container_width=True, type="secondary"):
                         st.session_state['show_reset_form'] = True
 
                 if st.session_state.get('show_reset_form', False):
@@ -180,7 +180,7 @@ def show_auth_page():
                     new_password = st.text_input("New password", type="password", key="reset_new_password")
                     confirm_password = st.text_input("Confirm new password", type="password", key="reset_confirm_password")
                     
-                    if st.button("Reset Password", key="reset_password_btn", use_container_width=True):
+                    if st.button("Reset Password", key="reset_password_btn", use_container_width=True, type="primary"):
                         if reset_code and new_password and confirm_password:
                             if new_password != confirm_password:
                                 st.error("❌ Passwords don't match")
@@ -201,7 +201,7 @@ def show_auth_page():
                         else:
                             st.warning("⚠️ Please fill all fields")
                     
-                    if st.button("Cancel", key="cancel_reset_btn", use_container_width=True):
+                    if st.button("Cancel", key="cancel_reset_btn", use_container_width=True, type="secondary"):
                         st.session_state['show_reset_form'] = False
                         st.rerun()
 
@@ -213,7 +213,7 @@ def show_auth_page():
 
             # Explicit spacer above Create Account button
             st.markdown('<div style="height: 25px;"></div>', unsafe_allow_html=True)
-            if st.button("Create Account", key="signup_btn", use_container_width=True):
+            if st.button("Create Account", key="signup_btn", use_container_width=True, type="primary"):
                 if name and reg_email and reg_password:
                     if not is_valid_email(reg_email):
                         st.warning("Invalid email format")

@@ -1,9 +1,6 @@
-# landing.py - With 3 New Images in Carousel (No Overlay)
+# landing.py — public marketing page (design tokens via app.py)
 import streamlit as st
 import streamlit.components.v1 as components
-import base64
-import os
-# from components.navbar import render_navbar  # Import navbar
 
 
 
@@ -22,9 +19,21 @@ def show_landing_page():
             display: none;
         }
 
-        /* 🔥 REMOVE EXTRA GAP ABOVE CONTENT */
+        /* Do NOT pad .main — that pushed the whole page (navbar) down. Space = below navbar only. */
         .main {
-            padding-top: 1.8rem !important;
+            padding-top: 0 !important;
+        }
+        [data-testid="stHorizontalBlock"]:has(h1.hero-title) {
+            margin-top: 2.25rem !important;
+        }
+        /* Hero row CTAs: keep label on one line (desktop) */
+        [data-testid="stHorizontalBlock"]:has(h1.hero-title) .stButton > button {
+            white-space: nowrap !important;
+        }
+        @media (max-width: 520px) {
+            [data-testid="stHorizontalBlock"]:has(h1.hero-title) .stButton > button {
+                white-space: normal !important;
+            }
         }
         
         /* Remove footer */
@@ -32,21 +41,21 @@ def show_landing_page():
             display: none !important;
         }
         
-        /* Enable scrolling */
+        /* min-height only — fixed 100vh caused extra empty scroll below footer */
         .stApp {
             overflow-y: auto !important;
-            height: 100vh !important;
-            background: radial-gradient(circle at top left, rgba(139,92,246,0.10), transparent 30%), radial-gradient(circle at bottom right, rgba(99,102,241,0.08), transparent 30%), #f8fafc;
+            min-height: 100vh !important;
+            background: radial-gradient(circle at top left, rgba(124,58,237,0.06), transparent 32%), radial-gradient(circle at bottom right, rgba(99,102,241,0.05), transparent 32%), #f6f7fb !important;
         }
         .main .block-container {
-            padding: 1rem 2rem 0rem 2rem !important;
+            padding: 0.5rem 2rem 0 2rem !important;
             max-width: 1200px;
             margin: 0 auto;
         }
         
         html, body {
             overflow-y: auto !important;
-            height: 100% !important;
+            min-height: 100% !important;
             scroll-behavior: smooth;
         }
         
@@ -82,42 +91,43 @@ def show_landing_page():
         
         /* ================= HERO SECTION STYLING ================= */
         .hero-container {
-            margin-top: 70px;
+            margin-top: 24px;
             padding-right: 20px;
         }
         
         .hero-title {
-            font-size: 3.4rem;
+            font-size: clamp(2.75rem, 5vw, 4.1rem);
             font-weight: 800;
-            line-height: 1.08;
-            letter-spacing: -2px;
+            line-height: 1.06;
+            letter-spacing: -0.045em;
             color: #0f172a;
-            max-width: 420px;
+            max-width: 520px;
             margin-bottom: 22px;
-            margin-top: 100px !important;
-            animation: fadeInUp 0.8s ease-out;
+            margin-top: 12px !important;
+            animation: fadeInUp 0.35s ease-out;
         }
-        .hero-title span {
-            background: linear-gradient(135deg, #8b5cf6, #6366f1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .hero-title span.accent-word {
+            color: #5b21b6;
+            -webkit-text-fill-color: #5b21b6;
+            background: none;
         }
         
         .hero-description {
-            font-size: 20px !important;
-            line-height: 1.9;
-            color: #475569;
-            max-width: 420px;
-            margin-bottom: 18px;
-            font-weight: 400;
-            animation: fadeInUp 0.8s ease-out 0.1s both;
+            font-size: 19px !important;
+            line-height: 1.75;
+            color: #334155;
+            max-width: 440px;
+            margin-bottom: 16px;
+            font-weight: 500;
+            animation: fadeInUp 0.35s ease-out 0.05s both;
         }
 
         .hero-trust {
-            color: #475569 !important;
+            color: #334155 !important;
             font-size: 17px !important;
             margin-top: 18px;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.02em;
+            font-weight: 500;
         }
 
         .highlight-text {
@@ -126,18 +136,18 @@ def show_landing_page():
             border-left: 4px solid #3b82f6;
             border-radius: 8px;
             display: inline-block;
-            animation: fadeInUp 0.8s ease-out 0.2s both;
+            animation: fadeInUp 0.4s ease-out 0.2s both;
         }
         
         .hero-button-wrapper {
             margin-top: 25px;
         }
         
-        /* Animations */
+        /* Animations — short to reduce overlap with Streamlit rerenders */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(12px);
             }
             to {
                 opacity: 1;
@@ -184,37 +194,63 @@ def show_landing_page():
         
         /* ================= REDUCED FONT SIZES ================= */
         .hero-text {
-            color: #475569;
+            color: #334155;
             font-size: 1.0rem;
             line-height: 1.9;
             margin-bottom: 20px;
-            font-weight: 400;
-            letter-spacing: 0.3px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
             max-width: 720px;
-            opacity: 0.9;
-            text-shadow: 0px 1px 1px rgba(0,0,0,0.04);
+            opacity: 1;
         }
         
+<<<<<<< HEAD
        
+=======
+        .spotlight-heading {
+            text-align: center;
+            margin: 28px 0 8px 0;
+        }
+        
+        .spotlight-heading h2 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+        
+        .spotlight-heading p {
+            color: #475569;
+            font-size: 16px;
+            line-height: 1.65;
+            max-width: 720px;
+            margin: 0 auto;
+            font-weight: 500;
+        }
+>>>>>>> 43904d9 (updated project)
         
         .section-title {
             text-align: center;
-            font-size: 2.1rem;
+            font-size: clamp(1.5rem, 3vw, 2rem);
             font-weight: 700;
             color: #0f172a;
-            margin: 80px 0 15px 0;
+            margin: 56px 0 12px 0;
             position: relative;
-            animation: fadeInUp 0.8s ease-out;
         }
         
         .section-description {
             text-align: center;
-            color: #3b82f6;
-            font-size: 18px;
-            line-height: 1.6;
+            color: #475569;
+            font-size: 17px;
+            line-height: 1.65;
             max-width: 800px;
-            margin: 0 auto 35px auto;
+            margin: 0 auto 28px auto;
             padding: 0 20px;
+            font-weight: 500;
+        }
+        .section-description strong {
+            color: #0f172a;
+            font-weight: 700;
         }
         
         .exercise-description {
@@ -240,7 +276,7 @@ def show_landing_page():
             border: 1px solid rgba(148, 163, 184, 0.12);
             box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
             flex-wrap: wrap;
-            animation: fadeInUp 0.8s ease-out;
+            animation: fadeInUp 0.4s ease-out;
             background: rgba(255, 255, 255, 0.72);
             backdrop-filter: blur(20px);
         }
@@ -381,7 +417,7 @@ def show_landing_page():
             cursor: pointer;
             box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
             margin-bottom: 30px;
-            animation: fadeInUp 0.8s ease-out;
+            animation: fadeInUp 0.4s ease-out;
         }
         
         .feature-card-custom:hover {
@@ -408,8 +444,9 @@ def show_landing_page():
         
         .feature-card-custom div:last-child {
             font-size: 16.5px;
-            color: #64748b;
-            line-height: 1.4;
+            color: #475569;
+            line-height: 1.45;
+            font-weight: 500;
         }
         
         .tech-card-custom {
@@ -422,7 +459,7 @@ def show_landing_page():
             border: 1px solid rgba(203, 213, 225, 0.3);
             height: 100%;
             margin-bottom: 30px;
-            animation: fadeInUp 0.8s ease-out;
+            animation: fadeInUp 0.4s ease-out;
         }
         
         .tech-card-custom:hover {
@@ -462,7 +499,7 @@ def show_landing_page():
             transition: all 0.35s ease;
             border: 1px solid rgba(148, 163, 184, 0.12);
             height: 100%;
-            animation: fadeInUp 0.8s ease-out;
+            animation: fadeInUp 0.4s ease-out;
             box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
         }
         
@@ -487,7 +524,11 @@ def show_landing_page():
             font-size: 0.8rem;
         }
         
+<<<<<<< HEAD
         
+=======
+        .mc-section-spacer { height: 40px; }
+>>>>>>> 43904d9 (updated project)
         
         @media (max-width: 768px) {
             .exercise-card {
@@ -509,43 +550,26 @@ def show_landing_page():
                 font-size: 0.85rem;
             }
         }
-        .stButton > button {
-            background: #8b5cf6;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 16px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            width: fit-content !important;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
-        }
-        div.stButton > button{
-                margin: 0 30px !important;
-                }
-        
-        .stButton > button:hover {
-            background: #7c3aed;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
-        }
-        
-        p, li, .stMarkdown {
-            color: #334155;
+        /* Primary CTAs use global blue (layout_utils); do not override all .stButton here */
+
+        section.main p,
+        section.main li,
+        section.main .stMarkdown p {
+            color: #1e293b;
+            font-weight: 500;
         }
         
         strong {
-            color: #3b82f6;
+            color: #5b21b6;
         }
         
+        /* Static footer — same pattern as About page (solid bar, grid, calm typography) */
         .footer-container {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-            color: white;
-            padding: 60px 40px 30px 40px;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 48px 40px 28px 40px;
             margin-top: 60px;
-            margin-bottom: 0;
+            margin-bottom: 0 !important;
             margin-left: -2rem;
             margin-right: -2rem;
             width: calc(100% + 4rem);
@@ -562,49 +586,45 @@ def show_landing_page():
         }
         
         .footer-grid {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
         .footer-col {
-            flex: 1;
-            min-width: 220px;
+            min-width: 0;
         }
         
         .footer-title {
-            font-weight: 700;
-            margin-bottom: 15px;
-            font-size: 16px;
-            background: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 600;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
         }
         
         .footer-text {
-            font-size: 13px;
+            font-size: 0.85rem;
             color: #cbd5e1;
             margin-bottom: 8px;
-            transition: color 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .footer-text:hover {
-            color: #a5b4fc;
+            cursor: default;
         }
         
         .footer-bottom {
             text-align: center;
-            margin-top: 40px;
-            font-size: 12px;
-            color: #94a3b8;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.75rem;
+            color: #64748b;
         }
+
         /* ================= WHO WE SERVE SECTION ================= */
 
 .who-section {
-    margin: 80px 0 40px 0;
+    margin: 48px 0 32px 0;
 }
 
 /* Heading */
@@ -619,9 +639,10 @@ def show_landing_page():
 /* Left side paragraphs */
 .who-section p {
     font-size: 0.95rem;
-    color: #475569;
+    color: #334155;
     line-height: 1.7;
     margin-bottom: 18px;
+    font-weight: 500;
 }
 
 /* Highlight titles (Students, Professionals...) */
@@ -759,8 +780,9 @@ def show_landing_page():
             display: none !important;
         }
 
-        .block-container {
-            padding-top: 1.8rem !important;
+        /* Hero spacing comes from .main padding above; avoid double tightening here */
+        .main .block-container {
+            padding-top: 0 !important;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -770,7 +792,7 @@ def show_landing_page():
     with col_t:
         st.markdown("""
         <h1 class="hero-title">
-            A Healing space for your <span>mind</span>
+            A healing space for your <span class="accent-word">mind</span>
         </h1>
         <p class="hero-description">
             Talk, reflect, and find support through emotionally intelligent AI.
@@ -778,18 +800,17 @@ def show_landing_page():
         <p class="hero-trust"> You're not alone. We listen to you without judgement</p>
         <div class="hero-button-wrapper"></div>
         """, unsafe_allow_html=True)
-        
-        # Button changed to "Learn More" and goes to about page
-        if st.button(" Learn more", key="hero_learn_more", use_container_width=True):
-            st.session_state.page = "about"
-            st.rerun()
-        
-        st.markdown('</div>', unsafe_allow_html=True)
+        # Compact CTA — not full column width
+        _hb1, _hb2, _hb3 = st.columns([0.85, 1.45, 1.7])
+        with _hb2:
+            if st.button("Learn more", key="hero_learn_more", use_container_width=True, type="primary"):
+                st.session_state.page = "about"
+                st.rerun()
 
     # ================= CHAT DEMO WITH TYPING ANIMATION =================
     with col_v:
         components.html("""
-        <div style="background: rgba(255,255,255,0.68); backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 10px 40px rgba(15,23,42,0.06), 0 2px 12px rgba(15,23,42,0.04); border-radius: 34px; height: 320px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 80px 10px 10px 10px;">
+        <div style="background: rgba(255,255,255,0.68); backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 10px 40px rgba(15,23,42,0.06), 0 2px 12px rgba(15,23,42,0.04); border-radius: 34px; height: 320px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 8px 10px 10px 10px;">
             <div id="chat-box" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px;"></div>
         </div>
         <style>
@@ -1003,7 +1024,7 @@ def show_landing_page():
         # Centered button using columns
         btn_col1, btn_col2, btn_col3 = st.columns([1, 1.5, 1])
         with btn_col2:
-            if st.button(" Start Chatting", use_container_width=True, key="chat_try_btn"):
+            if st.button(" Start Chatting", use_container_width=True, key="chat_try_btn", type="primary"):
                 st.session_state.page = "demo"
                 st.rerun()
         
@@ -1013,8 +1034,8 @@ def show_landing_page():
     st.markdown('<h2 class="section-title"> How It Works</h2>', unsafe_allow_html=True)
 
     st.markdown("""
-    <div style="text-align: center; margin: -20px 0 20px 0;">
-        <p style="color: #3b82f6; font-size: 19px; margin: 40px auto;">Your journey to better mental health begins here</p>
+    <div style="text-align: center; margin: 8px 0 24px 0;">
+        <p style="color: #64748b; font-size: 17px; margin: 0 auto;">Your journey to better mental health begins here</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1047,7 +1068,118 @@ def show_landing_page():
         </div>
         """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown('<div style="height: 60px;"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="mc-section-spacer"></div>', unsafe_allow_html=True)
+
+    # ================= INTERACTIVE WELLNESS SPOTLIGHT (after How it works — engagement before audience) =================
+    st.markdown("""
+    <div class="spotlight-heading">
+        <h2>Explore what you need right now</h2>
+        <p>Choose a focus area — see an insight and a small step you can try in the moment.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    components.html(
+        """
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: transparent; }
+  .ws-wrap { max-width: 920px; margin: 0 auto; padding: 4px 8px 12px; }
+  .ws-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 18px; }
+  .ws-pill {
+    border: 1px solid rgba(15,23,42,0.12);
+    background: rgba(255,255,255,0.95);
+    color: #0f172a;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+  }
+  .ws-pill:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,23,42,0.08); }
+  .ws-pill.active {
+    color: #fff;
+    border-color: transparent;
+    background: linear-gradient(135deg, #7c3aed, #6366f1);
+    box-shadow: 0 10px 28px rgba(124,58,237,0.35);
+  }
+  .ws-panel {
+    border-radius: 24px;
+    padding: 26px 24px 24px;
+    min-height: 200px;
+    border: 1px solid rgba(15,23,42,0.08);
+    transition: background 0.35s ease, border-color 0.35s ease;
+  }
+  .ws-quote { font-size: 1.12rem; line-height: 1.7; color: #0f172a; font-style: italic; margin: 0 0 14px; }
+  .ws-tip { font-size: 15px; color: #475569; line-height: 1.65; margin: 0; }
+  .ws-tip strong { color: #7c3aed; }
+  .ws-emoji { font-size: 2.25rem; margin-bottom: 10px; display: block; }
+  .ws-hint { font-size: 12px; color: #94a3b8; margin-top: 16px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="ws-wrap">
+  <div class="ws-pills" id="pills"></div>
+  <div class="ws-panel" id="panel">
+    <span class="ws-emoji" id="emoji">🌿</span>
+    <p class="ws-quote" id="quote"></p>
+    <p class="ws-tip" id="tip"></p>
+  </div>
+  <p class="ws-hint">Tap a topic to switch insights instantly.</p>
+</div>
+<script>
+var topics = [
+  { label: 'Calm', emoji: '🌿', grad: 'linear-gradient(135deg, rgba(124,58,237,0.11), rgba(99,102,241,0.07))',
+    quote: '"Small pauses between tasks make space for clarity and peace."',
+    tip: '<strong>Try now:</strong> Inhale for 4 counts, hold for 2, exhale for 6. Repeat three times.' },
+  { label: 'Focus', emoji: '🎯', grad: 'linear-gradient(135deg, rgba(59,130,246,0.12), rgba(14,165,233,0.07))',
+    quote: '"One clear step forward beats ten distracted attempts."',
+    tip: '<strong>Try now:</strong> Set a 12-minute timer and work on a single micro-task only.' },
+  { label: 'Rest', emoji: '🌙', grad: 'linear-gradient(135deg, rgba(99,102,241,0.11), rgba(30,64,175,0.07))',
+    quote: '"Rest is not a reward — it is part of sustainable strength."',
+    tip: '<strong>Try now:</strong> Dim screens 45 minutes before bed; keep the room slightly cool.' },
+  { label: 'Connect', emoji: '💬', grad: 'linear-gradient(135deg, rgba(16,185,129,0.12), rgba(124,58,237,0.06))',
+    quote: '"Reaching out is a sign of courage, not weakness."',
+    tip: '<strong>Try now:</strong> Send one short message to someone you trust today.' }
+];
+var idx = 0;
+function render() {
+  var t = topics[idx];
+  document.getElementById('emoji').textContent = t.emoji;
+  document.getElementById('quote').textContent = t.quote;
+  document.getElementById('tip').innerHTML = t.tip;
+  document.getElementById('panel').style.background = t.grad;
+  var pills = document.querySelectorAll('.ws-pill');
+  for (var i = 0; i < pills.length; i++) {
+    pills[i].classList.toggle('active', i === idx);
+  }
+}
+function buildPills() {
+  var el = document.getElementById('pills');
+  topics.forEach(function(topic, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'ws-pill' + (i === 0 ? ' active' : '');
+    b.textContent = topic.label;
+    b.addEventListener('click', function() { idx = i; render(); });
+    el.appendChild(b);
+  });
+}
+buildPills();
+render();
+</script>
+</body>
+</html>
+        """,
+        height=400,
+        scrolling=False,
+    )
+    st.markdown('<div class="mc-section-spacer"></div>', unsafe_allow_html=True)
 
     # ================= WHO WE SERVE =================
     st.markdown('<div class="who-we-serve-spacing">', unsafe_allow_html=True)
@@ -1094,7 +1226,7 @@ def show_landing_page():
         </div>
         """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown('<div style="height: 60px;"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="mc-section-spacer"></div>', unsafe_allow_html=True)
 
     # ================= TRUST & SAFETY =================
     st.markdown('<h2 class="section-title"> Trust & Safety</h2>', unsafe_allow_html=True)
@@ -1124,7 +1256,7 @@ def show_landing_page():
             <div>This AI provides support but does not replace professional medical advice.</div>
         </div>
         """, unsafe_allow_html=True)
-    st.markdown('<div style="height: 60px;"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="mc-section-spacer"></div>', unsafe_allow_html=True)
 
     # ================= CORE CAPABILITIES =================
     st.markdown('<h2 class="section-title">Core Capabilities</h2>', unsafe_allow_html=True)
@@ -1151,6 +1283,7 @@ def show_landing_page():
         st.markdown('<div class="feature-card-custom"><div>📚</div><div>RAG Knowledge</div><div>WHO verified guidelines</div></div>', unsafe_allow_html=True)
     with col6:
         st.markdown('<div class="feature-card-custom"><div>🧘</div><div>Coping Tools</div><div>Meditation & CBT techniques</div></div>', unsafe_allow_html=True)
+<<<<<<< HEAD
     # ================= CAROUSEL SECTION =================
     st.markdown("""
     <div class="carousel-heading">
@@ -1379,6 +1512,9 @@ def show_landing_page():
     st.markdown('</div></div>', unsafe_allow_html=True)
 
     
+=======
+
+>>>>>>> 43904d9 (updated project)
     # ================= IMPACT SECTION =================
     st.markdown('<h2 class="section-title"> Impact</h2>', unsafe_allow_html=True)
     
@@ -1428,14 +1564,10 @@ def show_landing_page():
             </div>
         </div>
         <div class="footer-bottom">
-            © 2026 AI Assistant for Mental Health — Your well-being matters 
+            © 2026 MindCareAI — Your well-being matters
         </div>
     </div>
     """, unsafe_allow_html=True)
-    
-
-    
-    st.markdown('<div style="height: 0px;"></div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     if 'page' not in st.session_state:

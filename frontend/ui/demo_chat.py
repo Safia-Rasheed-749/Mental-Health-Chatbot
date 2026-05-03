@@ -27,7 +27,7 @@ def show_demo_chat():
         }
 
         .stApp {
-            background-color: white !important;
+            background-color: #f6f7fb !important;
         }
 
         /* ===== NEW CHAT BUBBLE STYLES (FROM CHAT.PY) ===== */

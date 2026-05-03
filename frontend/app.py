@@ -2,7 +2,7 @@
 import streamlit as st
 import streamlit.components.v1 as components  # ADDED for scroll fix
 from components.navbar import render_navbar
-from layout_utils import apply_clean_layout
+from layout_utils import apply_clean_layout, apply_professional_design_system
 
 st.set_page_config(
     page_title="MindCareAI",
@@ -29,7 +29,7 @@ st.markdown("""
     footer { visibility: hidden !important; }
 
     .main .block-container {
-        padding-top: 0.5rem !important;
+        padding-top: 0 !important;
     }
 
     button[kind="header"] {
@@ -38,20 +38,42 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ================= SCROLL FIX =================
+# ================= SCROLL FIX (parent frame + debounce — Streamlit runs in iframe) =================
 components.html(
     """
     <script>
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        scrollToTop();
-
-        const observer = new MutationObserver(scrollToTop);
-        observer.observe(document.body, { childList: true, subtree: true });
-
-        window.addEventListener('popstate', scrollToTop);
+        (function () {
+            var t = null;
+            function scrollToTop() {
+                try {
+                    var p = window.parent && window.parent !== window ? window.parent : window;
+                    var d = p.document;
+                    p.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                    if (d.documentElement) d.documentElement.scrollTop = 0;
+                    if (d.body) d.body.scrollTop = 0;
+                    var view = d.querySelector('[data-testid="stAppViewContainer"]');
+                    if (view) view.scrollTop = 0;
+                    var main = d.querySelector('section.main');
+                    if (main) main.scrollTop = 0;
+                    var inner = d.querySelector('.main .block-container');
+                    if (inner && inner.parentElement) inner.parentElement.scrollTop = 0;
+                } catch (e) {
+                    try { window.scrollTo({ top: 0, left: 0, behavior: 'auto' }); } catch (e2) {}
+                }
+            }
+            function debounced() {
+                if (t) clearTimeout(t);
+                t = setTimeout(scrollToTop, 80);
+            }
+            scrollToTop();
+            if (window.parent && window.parent !== window) {
+                try {
+                    var obs = new MutationObserver(debounced);
+                    obs.observe(window.parent.document.body, { childList: true, subtree: true });
+                } catch (e) {}
+            }
+            window.addEventListener('popstate', scrollToTop);
+        })();
     </script>
     """,
     height=0,
@@ -93,6 +115,7 @@ public_pages_list = ["landing", "games", "exercises", "auth", "about"]
 # ================= CLEAN LAYOUT FOR PUBLIC =================
 if st.session_state.get("page") in public_pages_list:
     apply_clean_layout(hide_header_completely=True)
+    apply_professional_design_system()
     render_navbar()
 
 # ================= SYNC FIX (IMPORTANT) =================
@@ -102,6 +125,8 @@ if st.session_state.current_page is None:
 
 # ================= DEMO ROUTE =================
 if st.session_state.page == "demo":
+    apply_clean_layout(hide_header_completely=True)
+    apply_professional_design_system()
     show_demo_chat()
     st.stop()
 
@@ -191,6 +216,10 @@ if qp and qp != st.session_state.get("current_page"):
     st.session_state["current_page"] = qp
 
 current = st.session_state["current_page"]
+
+# Shared light theme for all logged-in pages except Admin (admin keeps dark UI in admin.py)
+if not (current == "Admin Panel" and is_admin):
+    apply_professional_design_system()
 
 
 # ================= ROUTING =================

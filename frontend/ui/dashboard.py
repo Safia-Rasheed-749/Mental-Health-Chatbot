@@ -1,8 +1,39 @@
 import streamlit as st
+import streamlit.components.v1 as components
 from datetime import datetime, timedelta
 from db import get_messages_by_user, get_moods_by_user, get_journals_by_user
 
 def show_dashboard():
+    # Ensure top of dashboard is visible after sign-in (scroll containers differ from public pages)
+    components.html(
+        """
+        <script>
+        (function () {
+            function scrollAppTop() {
+                try {
+                    var p = window.parent;
+                    var d = p.document;
+                    p.scrollTo(0, 0);
+                    if (d.documentElement) d.documentElement.scrollTop = 0;
+                    if (d.body) d.body.scrollTop = 0;
+                    var sel = ['[data-testid="stAppViewContainer"]', 'section.main', '.main'];
+                    sel.forEach(function (s) {
+                        var el = d.querySelector(s);
+                        if (el) el.scrollTop = 0;
+                    });
+                } catch (e) {}
+            }
+            scrollAppTop();
+            requestAnimationFrame(scrollAppTop);
+            setTimeout(scrollAppTop, 0);
+            setTimeout(scrollAppTop, 120);
+            setTimeout(scrollAppTop, 400);
+        })();
+        </script>
+        """,
+        height=0,
+        scrolling=False,
+    )
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');

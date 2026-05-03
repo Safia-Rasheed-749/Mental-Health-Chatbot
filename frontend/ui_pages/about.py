@@ -23,12 +23,12 @@ def show_about_page():
         }
         
         .stApp {
-            background: #e6f3ff !important;
+            background: #f6f7fb !important;
         }
         
-        /* Main content background */
+        /* Main content background — matches MindCare design tokens */
         .main {
-            background: #e6f3ff;
+            background: #f6f7fb;
         }
         
         /* Professional animations */

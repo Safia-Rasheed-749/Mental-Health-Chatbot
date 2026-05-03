@@ -43,7 +43,7 @@ def apply_professional_design_system():
                 --mc-surface:#ffffff;
                 --mc-border: rgba(15,23,42,0.10);
                 --mc-text:#0f172a;
-                --mc-muted: rgba(15,23,42,0.62);
+                --mc-muted: rgba(15,23,42,0.72);
                 --mc-accent:#7c3aed;   /* purple */
                 --mc-accent2:#3b82f6;  /* blue */
                 --mc-accent3:#10b981;  /* green */
@@ -62,6 +62,17 @@ def apply_professional_design_system():
             /* Main container background (Streamlit) */
             .main .block-container {
                 background-color: var(--mc-bg0) !important;
+            }
+
+            /* Readability in main column (Streamlit markdown + widgets) */
+            section.main .stMarkdown,
+            section.main .stMarkdown p,
+            section.main [data-testid="stCaptionContainer"] {
+                color: #1e293b !important;
+            }
+            section.main .stMarkdown p {
+                font-weight: 500;
+                line-height: 1.65;
             }
 
             /* Nice soft page surface for wide layout */
@@ -86,11 +97,25 @@ def apply_professional_design_system():
                 color: #ffffff !important;
             }
 
-            /* Primary buttons */
-            .stButton > button[kind="primary"],
-            .stButton > button{
+            /* Main content CTAs — primary = blue (navbar uses secondary + :has(logo) overrides) */
+            .stButton > button[kind="primary"] {
+                background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
+                color: #ffffff !important;
+                border: none !important;
                 border-radius: 14px !important;
                 font-weight: 800 !important;
+                font-family: var(--mc-font) !important;
+                box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35) !important;
+                transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease !important;
+            }
+            .stButton > button[kind="primary"]:hover {
+                filter: brightness(1.05) !important;
+                transform: translateY(-2px) !important;
+                box-shadow: 0 12px 28px rgba(37, 99, 235, 0.4) !important;
+            }
+            .stButton > button[kind="secondary"] {
+                border-radius: 14px !important;
+                font-weight: 700 !important;
                 font-family: var(--mc-font) !important;
             }
 
@@ -115,6 +140,21 @@ def apply_professional_design_system():
                 color: var(--mc-text) !important;
                 border-radius: 14px !important;
                 border: 1.5px solid rgba(15,23,42,0.14) !important;
+            }
+
+            /* Page transition on navigation / rerun */
+            .main .block-container {
+                animation: mcPageIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+            }
+            @keyframes mcPageIn {
+                from {
+                    opacity: 0.94;
+                    transform: translateY(5px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
         </style>
         """,

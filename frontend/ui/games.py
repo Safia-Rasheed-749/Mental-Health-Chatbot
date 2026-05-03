@@ -939,7 +939,7 @@ def show_calm_colors_game():
         c1, c2, c3 = st.columns([2, 1, 2])
         with c2:
             st.markdown('<div class="start-btn-wrap">', unsafe_allow_html=True)
-            if st.button("▶  Start Game", key="btn_start", use_container_width=True):
+            if st.button("▶  Start Game", key="btn_start", use_container_width=True, type="primary"):
                 st.session_state.game_screen = "countdown"
                 st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
@@ -1198,7 +1198,7 @@ def show_calm_colors_game():
                     padding: 0 !important;
                 }
                 div[data-testid="stFormSubmitButton"] > button {
-                    background: linear-gradient(135deg, #9FC6F0, #4F84D9) !important;
+                    background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
                     color: white !important;
                     font-weight: 600 !important;
                     font-size: 15px !important;
@@ -1210,7 +1210,7 @@ def show_calm_colors_game():
                     width: 100% !important;
                 }
                 div[data-testid="stFormSubmitButton"] > button:hover {
-                    background: #6D9EEB !important;
+                    filter: brightness(1.08) !important;
                     transform: translateY(-2px) !important;
                 }
                 </style>
@@ -1279,7 +1279,7 @@ def show_calm_colors_game():
             div[data-testid="stForm"] button[kind="primaryFormSubmit"],
             div[data-testid="stForm"] button[kind="secondaryFormSubmit"],
             div[data-testid="stForm"] button {
-                background: linear-gradient(135deg, #9FC6F0, #4F84D9) !important;
+                background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
                 color: white !important;
                 font-weight: 600 !important;
                 font-size: 15px !important;
@@ -1291,7 +1291,7 @@ def show_calm_colors_game():
                 width: 100% !important;
             }
             div[data-testid="stForm"] button:hover {
-                background: #6D9EEB !important;
+                filter: brightness(1.08) !important;
                 transform: translateY(-3px) !important;
             }
             </style>
