@@ -2,10 +2,7 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-
-
 def show_landing_page():
-    # render_navbar()
     # ================= PROFESSIONAL CSS WITH ANIMATIONS & GRADIENTS =================
     st.markdown("""
     <style>
@@ -126,7 +123,7 @@ def show_landing_page():
         .hero-trust {
             color: #334155 !important;
             font-size: 17px !important;
-            margin-top: 18px;
+            margin-top: 20px;
             letter-spacing: 0.02em;
             font-weight: 500;
         }
@@ -229,6 +226,12 @@ def show_landing_page():
         .section-description strong {
             color: #0f172a;
             font-weight: 700;
+        }
+        
+        /* FIXED: Move "Start Chatting" button closer to chat box */
+        .chat-button-container {
+            margin-top: -15px !important;
+            margin-bottom: 10px !important;
         }
         
         .feature-card-custom {
@@ -521,11 +524,17 @@ def show_landing_page():
     .who-we-serve-spacing {
     margin-top: 20px;
 }
+.trust-section-title {
+    margin-top: 35px !important;
+}
+.core-section-title {
+    margin-top: 30px !important;
+}
     </style>
     
     """, unsafe_allow_html=True)
     
-   # ===== CSS (SAFE - NO NAVBAR BREAK) =====
+    # ===== CSS (SAFE - NO NAVBAR BREAK) =====
     st.markdown("""
     <style>
         header, footer, .stDeployButton {
@@ -560,7 +569,7 @@ def show_landing_page():
 
     # ================= CHAT DEMO WITH TYPING ANIMATION =================
     with col_v:
-        st.markdown('<div style="margin-top: 50px;"></div>', unsafe_allow_html=True)
+        st.markdown('<div style="margin-top: 30px;"></div>', unsafe_allow_html=True)
         components.html("""
         <div style="background: rgba(255,255,255,0.68); backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 10px 40px rgba(15,23,42,0.06), 0 2px 12px rgba(15,23,42,0.04); border-radius: 34px; height: 320px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 12px 10px 10px 10px;">
             <div id="chat-box" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px;"></div>
@@ -770,29 +779,30 @@ def show_landing_page():
             setTimeout(playConversation, 500);
         })();
         </script>
-        """, height=420)
-        st.markdown('<div style="margin-top: 25px;"></div>', unsafe_allow_html=True)
-    
-        # Centered button using columns
+        """, height=380)
+        
+        # FIXED: Moved button closer to chat box with custom class
+        st.markdown('<div class="chat-button-container">', unsafe_allow_html=True)
         btn_col1, btn_col2, btn_col3 = st.columns([1, 1.5, 1])
         with btn_col2:
             if st.button(" Start Chatting", use_container_width=True, key="chat_try_btn", type="primary"):
                 st.session_state.page = "demo"
                 st.rerun()
-        
-       # ================= HOW IT WORKS =================
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    # ================= HOW IT WORKS =================
     st.markdown('<div class="how-it-works-spacing">', unsafe_allow_html=True)
-
+    
     st.markdown('<h2 class="section-title"> How It Works</h2>', unsafe_allow_html=True)
-
+    
     st.markdown("""
     <div style="text-align: center; margin: 8px 0 24px 0;">
         <p style="color: #64748b; font-size: 17px; margin: 0 auto;">Your journey to better mental health begins here</p>
     </div>
     """, unsafe_allow_html=True)
-
+    
     col1, col2, col3 = st.columns(3)
-
+    
     with col1:
         st.markdown("""
         <div style="text-align: center; padding: 20px;">
@@ -801,7 +811,7 @@ def show_landing_page():
             <div style="font-size: 16px; color: #64748b; line-height: 1.5;">Talk about what's on your mind. No judgment, just listening.</div>
         </div>
         """, unsafe_allow_html=True)
-
+    
     with col2:
         st.markdown("""
         <div style="text-align: center; padding: 20px;">
@@ -810,7 +820,7 @@ def show_landing_page():
             <div style="font-size: 16px; color: #64748b; line-height: 1.5;">Advanced emotion detection that truly gets how you feel.</div>
         </div>
         """, unsafe_allow_html=True)
-
+    
     with col3:
         st.markdown("""
         <div style="text-align: center; padding: 20px;">
@@ -821,15 +831,15 @@ def show_landing_page():
         """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
     st.markdown('<div class="mc-section-spacer"></div>', unsafe_allow_html=True)
-
-    # ================= INTERACTIVE WELLNESS SPOTLIGHT (after How it works — engagement before audience) =================
+    
+    # ================= INTERACTIVE WELLNESS SPOTLIGHT =================
     st.markdown("""
     <div class="spotlight-heading">
         <h2>Explore what you need right now</h2>
         <p>Choose a focus area — see an insight and a small step you can try in the moment.</p>
     </div>
     """, unsafe_allow_html=True)
-
+    
     components.html(
         """
 <!DOCTYPE html>
@@ -932,12 +942,12 @@ render();
         scrolling=False,
     )
     st.markdown('<div class="mc-section-spacer"></div>', unsafe_allow_html=True)
-
+    
     # ================= WHO WE SERVE =================
     st.markdown('<div class="who-we-serve-spacing">', unsafe_allow_html=True)
-
+    
     col1, col2 = st.columns(2)
-
+    
     with col1:
         st.markdown("""
         <h2>Who We Serve?</h2>
@@ -954,7 +964,7 @@ render();
         <p><strong>Anyone feeling anxious</strong><br>
         Looking for a safe space to talk and reflect.</p>
         """, unsafe_allow_html=True)
-
+    
     with col2:
         st.markdown("""
         <div class="who-box">
@@ -979,18 +989,18 @@ render();
         """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
     st.markdown('<div class="mc-section-spacer"></div>', unsafe_allow_html=True)
-
+    
     # ================= TRUST & SAFETY =================
-    st.markdown('<h2 class="section-title"> Trust & Safety</h2>', unsafe_allow_html=True)
-
+    st.markdown('<h2 class="section-title trust-section-title"> Trust & Safety</h2>', unsafe_allow_html=True)
+    
     st.markdown("""
     <div class="section-description">
     Your well-being and privacy are our top priorities.
     </div>
     """, unsafe_allow_html=True)
-
+    
     col1, col2 = st.columns(2)
-
+    
     with col1:
         st.markdown("""
         <div class="feature-card-custom">
@@ -999,7 +1009,7 @@ render();
             <div>Your conversations are not stored permanently and remain confidential.</div>
         </div>
         """, unsafe_allow_html=True)
-
+    
     with col2:
         st.markdown("""
         <div class="feature-card-custom">
@@ -1009,17 +1019,16 @@ render();
         </div>
         """, unsafe_allow_html=True)
     st.markdown('<div class="mc-section-spacer"></div>', unsafe_allow_html=True)
-
-    # ================= CORE CAPABILITIES =================
-    st.markdown('<h2 class="section-title">Core Capabilities</h2>', unsafe_allow_html=True)
     
+    # ================= CORE CAPABILITIES =================
+    st.markdown('<h2 class="section-title core-section-title">Core Capabilities</h2>', unsafe_allow_html=True)
     st.markdown("""
     <div class="section-description">
         <strong>⚡ Intelligent features designed for your emotional well-being</strong><br><br>
         Our AI-powered assistant combines cutting-edge technology with compassionate care for personalized support.
     </div>
     """, unsafe_allow_html=True)
-
+    
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown('<div class="feature-card-custom"><div>💬</div><div>Sentiment Analysis</div><div>Real-time emotion detection</div></div>', unsafe_allow_html=True)
@@ -1027,7 +1036,7 @@ render();
         st.markdown('<div class="feature-card-custom"><div>📊</div><div>Mood Tracking</div><div>Visual progress analytics</div></div>', unsafe_allow_html=True)
     with col3:
         st.markdown('<div class="feature-card-custom"><div>🛡️</div><div>Crisis Guard</div><div>High-risk keyword detection</div></div>', unsafe_allow_html=True)
-
+    
     col4, col5, col6 = st.columns(3)
     with col4:
         st.markdown('<div class="feature-card-custom"><div>🎤</div><div>Voice Support</div><div>Speech-to-text interaction</div></div>', unsafe_allow_html=True)
@@ -1045,7 +1054,7 @@ render();
         24/7 anonymous support reducing stigma and reaching underserved communities.
     </div>
     """, unsafe_allow_html=True)
-
+    
     imp_col1, imp_col2, imp_col3, imp_col4 = st.columns(4)
     with imp_col1:
         st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">24/7</div><div class="stat-label-custom">Availability</div></div>', unsafe_allow_html=True)
@@ -1055,7 +1064,7 @@ render();
         st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">50+</div><div class="stat-label-custom">Sources</div></div>', unsafe_allow_html=True)
     with imp_col4:
         st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">Real-time</div><div class="stat-label-custom">Detection</div></div>', unsafe_allow_html=True)
-
+    
     # ================= FULL FOOTER =================
     st.markdown("""
     <div class="footer-container">

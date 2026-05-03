@@ -44,15 +44,16 @@ def show_exercises_page():
         .page-header {
             text-align: center;
             margin: 20px 0 30px 0;
+            margin-top: 30px;
         }
         
         .page-header h1 {
             font-size: 2.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 12px;
+            color: #3b82f6;   /* Nice blue */
+            font-weight: 700;
+            margin-bottom: 20px;
+            margin-top: 40px;
         }
         
         .page-header p {
@@ -127,9 +128,8 @@ def show_exercises_page():
             font-size: 1.4rem;
             font-weight: 700;
             margin-bottom: 10px;
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #3b82f6;   /* Nice blue */
+            font-weight: 700;
             background-clip: text;
         }
         
@@ -336,8 +336,8 @@ def show_exercises_page():
     # ================= PAGE HEADER =================
     st.markdown("""
     <div class="page-header">
-        <h1>🧘 Mental Wellness Exercises</h1>
-        <p><strong>✨ Evidence-based practices for emotional balance</strong></p>
+        <h1>Mental Wellness Exercises</h1>
+        <p><strong> Evidence-based practices for emotional balance</strong></p>
         <p>These scientifically-backed exercises help reduce anxiety, improve focus, and build emotional resilience.</p>
     </div>
     """, unsafe_allow_html=True)    
