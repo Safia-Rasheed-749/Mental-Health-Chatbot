@@ -24,7 +24,7 @@ def show_landing_page():
             padding-top: 0 !important;
         }
         [data-testid="stHorizontalBlock"]:has(h1.hero-title) {
-            margin-top: 2.25rem !important;
+            margin-top: 40px !important;
         }
         /* Hero row CTAs: keep label on one line (desktop) */
         [data-testid="stHorizontalBlock"]:has(h1.hero-title) .stButton > button {
@@ -46,6 +46,7 @@ def show_landing_page():
             overflow-y: auto !important;
             min-height: 100vh !important;
             background: radial-gradient(circle at top left, rgba(124,58,237,0.06), transparent 32%), radial-gradient(circle at bottom right, rgba(99,102,241,0.05), transparent 32%), #f6f7fb !important;
+            padding-bottom: 0 !important;
         }
         .main .block-container {
             padding: 0.5rem 2rem 0 2rem !important;
@@ -91,19 +92,19 @@ def show_landing_page():
         
         /* ================= HERO SECTION STYLING ================= */
         .hero-container {
-            margin-top: 24px;
+            margin-top: 32px;
             padding-right: 20px;
         }
         
         .hero-title {
-            font-size: clamp(2.75rem, 5vw, 4.1rem);
+            font-size: clamp(28px, 4vw, 48px);
             font-weight: 800;
             line-height: 1.06;
             letter-spacing: -0.045em;
             color: #0f172a;
             max-width: 520px;
             margin-bottom: 22px;
-            margin-top: 12px !important;
+            margin-top: 15px !important;
             animation: fadeInUp 0.35s ease-out;
         }
         .hero-title span.accent-word {
@@ -230,158 +231,6 @@ def show_landing_page():
             font-weight: 700;
         }
         
-        .exercise-description {
-            text-align: center;
-            color: #64748b;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto 35px auto;
-            padding: 0 20px;
-        }
-        
-        .exercise-card {
-            border-radius: 28px;
-            padding: 34px;
-            width: 100%;
-            transition: all 0.35s ease;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 30px;
-            margin-bottom: 45px;
-            border: 1px solid rgba(148, 163, 184, 0.12);
-            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
-            flex-wrap: wrap;
-            animation: fadeInUp 0.4s ease-out;
-            background: rgba(255, 255, 255, 0.72);
-            backdrop-filter: blur(20px);
-        }
-        
-        .exercise-card-1 { background: linear-gradient(135deg, rgba(209,250,229,0.6), rgba(167,243,208,0.4)); border: 1px solid rgba(52,211,153,0.2); }
-        .exercise-card-2 { background: linear-gradient(135deg, rgba(219,234,254,0.6), rgba(191,219,254,0.4)); border: 1px solid rgba(96,165,250,0.2); }
-        .exercise-card-3 { background: linear-gradient(135deg, rgba(254,243,199,0.6), rgba(253,230,138,0.4)); border: 1px solid rgba(251,191,36,0.2); }
-        
-        .exercise-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
-        }
-        
-        .exercise-icon-large {
-            font-size: 3.8rem;
-            min-width: 85px;
-            text-align: center;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes gentleBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-        
-        .exercise-content { flex: 1; }
-        
-        .exercise-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .exercise-quote {
-            font-style: italic;
-            font-size: 0.85rem;
-            color: #64748b;
-            margin-bottom: 15px;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 12px;
-            border-left: 3px solid #3b82f6;
-            line-height: 1.5;
-        }
-        
-        .exercise-description-text {
-            font-size: 0.85rem;
-            color: #64748b;
-            margin-bottom: 15px;
-            padding: 6px 0;
-            line-height: 1.5;
-        }
-        
-        .exercise-description-text strong {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .exercise-quote-author {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            text-align: right;
-            margin-top: 6px;
-        }
-        
-        .exercise-steps {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .exercise-steps li {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 8px 12px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid rgba(203, 213, 225, 0.5);
-            transition: all 0.3s ease;
-            color: #334155;
-        }
-        
-        .exercise-steps li:hover {
-            transform: translateX(6px);
-            border-color: #3b82f6;
-            background: rgba(59, 130, 246, 0.05);
-        }
-        
-        .step-number {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-        
-        .exercise-video {
-            min-width: 280px;
-            max-width: 320px;
-        }
-        
-        .exercise-video video {
-            width: 100%;
-            border-radius: 14px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .exercise-video video:hover {
-            transform: scale(1.02);
-        }
-        
         .feature-card-custom {
             background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(20px);
@@ -425,48 +274,6 @@ def show_landing_page():
             line-height: 1.45;
             font-weight: 500;
         }
-        
-        .tech-card-custom {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 14px;
-            padding: 20px 12px;
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(203, 213, 225, 0.3);
-            height: 100%;
-            margin-bottom: 30px;
-            animation: fadeInUp 0.4s ease-out;
-        }
-        
-        .tech-card-custom:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-            background: rgba(255, 255, 255, 0.95);
-            border-color: #3b82f6;
-        }
-        
-        .tech-card-custom div:first-child {
-            font-size: 2.2rem;
-            animation: float 3s ease-in-out infinite;
-            display: inline-block;
-        }
-        
-        .tech-card-custom div:nth-child(2) {
-            font-weight: 700;
-            margin: 10px 0 5px;
-            font-size: 0.9rem;
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .tech-card-custom div:last-child {
-            font-size: 0.75rem;
-            color: #64748b;
-        }
-        
         .impact-card-custom {
             background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(20px);
@@ -592,7 +399,28 @@ def show_landing_page():
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             font-size: 0.75rem;
             color: #64748b;
+            margin-bottom: 0 !important;
         }
+        .spotlight-heading {
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 30px;
+}
+
+.spotlight-heading h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 10px;
+}
+
+.spotlight-heading p {
+    color: #64748b;
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto;
+}
 
         /* ================= WHO WE SERVE SECTION ================= */
 
@@ -693,69 +521,19 @@ def show_landing_page():
     .who-we-serve-spacing {
     margin-top: 20px;
 }
-    #Overlay Caousel
-    .slider-section {
-        margin: 60px 0 40px 0;
-        text-align: center;
-    }
-    .slider-badge {
-        display: inline-block;
-        background: rgba(139, 92, 246, 0.1);
-        padding: 6px 18px;
-        border-radius: 40px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #8b5cf6;
-        margin-bottom: 20px;
-    }
-    .slider-title {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #0f172a;
-        margin-bottom: 12px;
-    }
-    .slider-sub {
-        color: #64748b;
-        font-size: 0.95rem;
-        max-width: 600px;
-        margin: 0 auto 40px auto;
-    }
-    .carousel-heading {
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        .carousel-heading h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #0f172a;
-            -webkit-text-fill-color: #0f172a;
-            background: none;
-            margin-bottom: 12px;
-            animation: fadeInUp 0.8s ease-out;
-        }
-        
-        .carousel-heading p {
-            color: #64748b;
-            font-size: 17px;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
-        }
     </style>
     
     """, unsafe_allow_html=True)
     
-    # ===== CSS (SAFE - NO NAVBAR BREAK) =====
+   # ===== CSS (SAFE - NO NAVBAR BREAK) =====
     st.markdown("""
     <style>
         header, footer, .stDeployButton {
             display: none !important;
         }
 
-        /* Hero spacing comes from .main padding above; avoid double tightening here */
-        .main .block-container {
-            padding-top: 0 !important;
+        .block-container {
+            padding-top: 1rem !important;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -765,7 +543,7 @@ def show_landing_page():
     with col_t:
         st.markdown("""
         <h1 class="hero-title">
-            A healing space for your <span class="accent-word">mind</span>
+            AI Mental Health Support 
         </h1>
         <p class="hero-description">
             Talk, reflect, and find support through emotionally intelligent AI.
@@ -782,8 +560,9 @@ def show_landing_page():
 
     # ================= CHAT DEMO WITH TYPING ANIMATION =================
     with col_v:
+        st.markdown('<div style="margin-top: 50px;"></div>', unsafe_allow_html=True)
         components.html("""
-        <div style="background: rgba(255,255,255,0.68); backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 10px 40px rgba(15,23,42,0.06), 0 2px 12px rgba(15,23,42,0.04); border-radius: 34px; height: 320px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 8px 10px 10px 10px;">
+        <div style="background: rgba(255,255,255,0.68); backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 10px 40px rgba(15,23,42,0.06), 0 2px 12px rgba(15,23,42,0.04); border-radius: 34px; height: 320px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; margin: 12px 10px 10px 10px;">
             <div id="chat-box" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px;"></div>
         </div>
         <style>
