@@ -73,8 +73,9 @@ def show_chat(user_id):
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
     /* ── HIDE CLUTTER ── */
-    .stDeployButton { display: none !important; }
-    #MainMenu       { visibility: hidden !important; }
+    .stAppDeployButton {
+    display: none;
+    }    #MainMenu       { visibility: hidden !important; }
     footer          { visibility: hidden !important; }
     header {
         background: transparent !important;
@@ -163,8 +164,11 @@ def show_chat(user_id):
 
     /* ── CHAT MESSAGES AREA ── */
     .chat-area {
-        padding: 20px 16px 10px;
+        padding: 20px 16px 100px 16px;
         min-height: 60px;
+        max-height: calc(100vh - 320px);
+        overflow-y: auto;
+        scroll-behavior: smooth;
     }
 
     /* ── MESSAGE ROWS ── */
@@ -393,7 +397,7 @@ def show_chat(user_id):
         </div>
         <div class="chat-header-status">
             <div class="status-dot"></div>
-            Online
+            Available
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -451,10 +455,37 @@ def show_chat(user_id):
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # ── AUTO-SCROLL TO BOTTOM ──
+    # ── AUTO-SCROLL TO BOTTOM (STRONG VERSION) ──
     st.markdown("""
     <script>
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        function scrollToBottom() {
+            // Scroll chat area
+            const chatArea = document.querySelector('.chat-area');
+            if (chatArea) {
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }
+            // Scroll main window
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Scroll immediately
+        setTimeout(scrollToBottom, 100);
+        
+        // Keep trying to scroll (for dynamic content)
+        let scrollInterval = setInterval(function() {
+            const chatArea = document.querySelector('.chat-area');
+            if (chatArea && chatArea.scrollHeight > chatArea.clientHeight) {
+                scrollToBottom();
+            }
+        }, 500);
+        
+        // Stop interval after 10 seconds
+        setTimeout(function() {
+            clearInterval(scrollInterval);
+        }, 10000);
     </script>
     """, unsafe_allow_html=True)
 
@@ -538,39 +569,58 @@ def show_chat(user_id):
         except Exception as e:
             print(f"Activity logging error: {e}")  # Don't break the chat if logging fails
 
-        typing_placeholder = st.empty()
-        typing_placeholder.markdown("""
+        # Show bouncing dots FIRST
+        dots_placeholder = st.empty()
+        dots_placeholder.markdown("""
         <div class="chat-row" style="justify-content:flex-start;">
             <div class="ai-bubble-wrap">
                 <div class="ai-avatar">🧠</div>
                 <div class="assistant-bubble">
-                    <span class="thinking-dots">
+                    <div class="thinking-dots">
                         <span></span><span></span><span></span>
-                    </span>
+                    </div>
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
+        # Get response from AI
         response = generate_response(user_input, st.session_state["chat_history"][-5:])
-        typing_placeholder.empty()
-
+        
+        # Remove bouncing dots
+        dots_placeholder.empty()
+        
+        # Create placeholder for typing animation
         response_placeholder = st.empty()
-        output = ""
-        for word in response.split():
-            output += word + " "
+        
+        # Character by character typing with proper word rendering
+        full_response = ""
+        for i in range(len(response)):
+            full_response = response[:i+1]  # Take characters one by one
             response_placeholder.markdown(f"""
             <div class="chat-row" style="justify-content:flex-start;">
                 <div class="ai-bubble-wrap">
                     <div class="ai-avatar">🧠</div>
-                    <div class="assistant-bubble">{output}</div>
+                    <div class="assistant-bubble">{full_response}</div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
-            time.sleep(0.03)
+            time.sleep(0.6)  
+       # Save to session and database
 
         st.session_state["chat_history"].append(("assistant", response))
         add_message(user_id, "assistant", response, cid)
+                # Auto-scroll to bottom
+        st.markdown("""
+        <script>
+            setTimeout(function() {
+                const chatArea = document.querySelector('.chat-area');
+                if(chatArea) chatArea.scrollTop = chatArea.scrollHeight;
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 50);
+        </script>
+        """, unsafe_allow_html=True)
+        
         st.rerun()
 
     # ================= PROCESS VOICE INPUT =================

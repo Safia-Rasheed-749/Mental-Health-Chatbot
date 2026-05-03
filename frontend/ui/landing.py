@@ -45,11 +45,6 @@ def show_landing_page():
             background: radial-gradient(circle at top left, rgba(124,58,237,0.06), transparent 32%), radial-gradient(circle at bottom right, rgba(99,102,241,0.05), transparent 32%), #f6f7fb !important;
             padding-bottom: 0 !important;
         }
-        .main .block-container {
-            padding: 0.5rem 2rem 0 2rem !important;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
         
         html, body {
             overflow-y: auto !important;
@@ -552,7 +547,7 @@ def show_landing_page():
     with col_t:
         st.markdown("""
         <h1 class="hero-title">
-            AI Mental Health Support 
+            Healing Space for your Mind
         </h1>
         <p class="hero-description">
             Talk, reflect, and find support through emotionally intelligent AI.
