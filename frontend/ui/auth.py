@@ -68,13 +68,7 @@ def show_auth_page():
     h1 { color: #1e293b !important; font-size: 1.8rem !important; text-align: center; }
     p { color: #475569 !important; font-size: 1rem !important; text-align: center; }
 
-    /* Input fields styling */
-    div[data-testid="stTextInput"] > div[data-testid="stTextInputRootElement"] {
-        border-radius: 12px !important;
-        border: 1.5px solid #cbd5e1 !important;
-        background-color: #f8fafc !important;
-        padding: 2px !important;
-        transition: all 0.3s ease;
+    
     }
     div[data-testid="stTextInput"] > div[data-testid="stTextInputRootElement"]:focus-within {
         border: 2px solid #000000 !important;
