@@ -73,9 +73,8 @@ def show_chat(user_id):
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
     /* ── HIDE CLUTTER ── */
-    .stAppDeployButton {
-    display: none;
-    }    #MainMenu       { visibility: hidden !important; }
+    .stDeployButton { display: none !important; }
+    #MainMenu       { visibility: hidden !important; }
     footer          { visibility: hidden !important; }
     header {
         background: transparent !important;
@@ -164,7 +163,7 @@ def show_chat(user_id):
 
     /* ── CHAT MESSAGES AREA ── */
     .chat-area {
-        padding: 20px 16px 100px 16px;
+        padding: 20px 16px 10px;
         min-height: 60px;
         max-height: calc(100vh - 320px);
         overflow-y: auto;
@@ -397,7 +396,7 @@ def show_chat(user_id):
         </div>
         <div class="chat-header-status">
             <div class="status-dot"></div>
-            Available
+            Online
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -605,7 +604,7 @@ def show_chat(user_id):
                 </div>
             </div>
             """, unsafe_allow_html=True)
-            time.sleep(0.6)  
+            time.sleep(0.01)  # 20ms per character
        # Save to session and database
 
         st.session_state["chat_history"].append(("assistant", response))
