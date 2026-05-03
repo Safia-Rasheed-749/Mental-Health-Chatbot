@@ -131,6 +131,12 @@ def show_demo_chat():
         }
     </style>
     """, unsafe_allow_html=True)
+    # ===== BACK BUTTON =====
+    col1, col2 = st.columns([6,1])
+    with col2:
+        if st.button("Back to Home"):
+            st.session_state.page = "home"   # make sure your main app uses this key
+            st.rerun()
 
     # ===== LOGIC =====
     remaining = 5 - st.session_state.demo_msg_count
