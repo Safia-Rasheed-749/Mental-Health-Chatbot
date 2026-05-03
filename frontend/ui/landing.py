@@ -552,12 +552,13 @@ def show_landing_page():
     with col_t:
         st.markdown("""
         <h1 class="hero-title">
-            AI Mental Health Support 
+            Your AI Wellness Companion
         </h1>
         <p class="hero-description">
             Talk, reflect, and find support through emotionally intelligent AI.
         </p>
-        <p class="hero-trust"> You're not alone. We listen to you without judgement</p>
+        <p class="hero-trust"> You're not alone. We listen to you without judgement.Your safe space for emotional support, self-reflection, and mental wellness growth.</p>
+        
         <div class="hero-button-wrapper"></div>
         """, unsafe_allow_html=True)
         # Compact CTA — not full column width
