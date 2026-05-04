@@ -556,7 +556,7 @@ def show_landing_page():
         </h1>
         <p class="hero-description">
             Talk, reflect, and find support through emotionally intelligent AI.
-        </p>
+        </p>env
         <p class="hero-trust"> You're not alone. We listen to you without judgement.Your safe space for emotional support, self-reflection, and mental wellness growth.</p>
         
         <div class="hero-button-wrapper"></div>

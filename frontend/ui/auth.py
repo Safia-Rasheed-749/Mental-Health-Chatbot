@@ -66,7 +66,7 @@ def show_auth_page():
     }
 
     h1 { color: #1e293b !important; font-size: 1.8rem !important; text-align: center; }
-    p { color: #475569 !important; font-size: 1rem !important; text-align: center; }
+    p { color: #010913!important; font-size: 1rem !important; text-align: center; }
 
     
     }
@@ -94,6 +94,7 @@ def show_auth_page():
     #     padding-top: 0rem !important;
     #     max-width: 1200px;
     # }
+    
     </style>
     """, unsafe_allow_html=True)
 
