@@ -947,7 +947,7 @@ def show_calm_colors_game():
         # How to Play label
         st.markdown("""
         <div style="text-align:center;font-size:16px;font-weight:700;letter-spacing:1.2px;
-                    text-transform:uppercase;color:#6d28d9;margin:28px 0 14px;">
+                    text-transform:uppercase;color:black :;margin:28px 0 34px;">
             📖 How to Play
         </div>
         """, unsafe_allow_html=True)

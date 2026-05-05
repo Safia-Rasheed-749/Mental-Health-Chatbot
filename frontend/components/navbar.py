@@ -36,7 +36,7 @@ def render_navbar():
             width: 46px;
             height: 46px;
             border-radius: 50%;
-            background: linear-gradient(145deg, #7c3aed 0%, #6366f1 55%, #8b5cf6 100%);
+           background: #e9d5ff;
             display: flex;
             align-items: center;
             justify-content: center;
