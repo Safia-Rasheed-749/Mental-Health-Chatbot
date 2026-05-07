@@ -39,8 +39,8 @@ def send_reset_email(to_email, reset_code, username):
     try:
         # Create email message
         msg = MIMEMultipart('alternative')
-        msg['Subject'] = "🔐 Password Reset Request - AI Therapist"
-        msg['From'] = f"AI Therapist <{SENDER_EMAIL}>"
+        msg['Subject'] = "🔐 Password Reset Request - MindCare AI"
+        msg['From'] = f"MindCare AI <{SENDER_EMAIL}>"
         msg['To'] = to_email
         
         # HTML Email Template (Professional)
@@ -104,7 +104,7 @@ def send_reset_email(to_email, reset_code, username):
                 <tr>
                     <td style="background:#f8fafc; padding:20px 30px; border-radius:0 0 24px 24px; text-align:center; border-top:1px solid #e2e8f0;">
                         <p style="color:#94a3b8; font-size:13px; margin:0;">
-                            © 2024 AI Therapist. All rights reserved.<br>
+                            © 2024 MindCare AI. All rights reserved.<br>
                             Need help? Contact us at support@aitherapist.com
                         </p>
                     </td>

@@ -719,8 +719,6 @@ def show_about_page():
             <li>📖 <a href="https://www.mayoclinic.org/healthy-lifestyle" target="_blank">Mayo Clinic - Verified Mental Health Resources</a></li>
             <li>📖 <a href="https://www.nimh.nih.gov/" target="_blank">National Institute of Mental Health (NIMH) - Research Publications</a></li>
             <li>📖 <a href="https://www.mentalhealth.gov/" target="_blank">MentalHealth.gov - Evidence-Based Practices</a></li>
-            <li>📖 T. Bickmore - "Review of Healthcare Chatbots" (Journal of Medical Internet Research, 2023)</li>
-            <li>📖 A. Miner - "Mental-Health Chatbot Safety Study" (JAMA Network, 2019)</li>
             <li>📖 <a href="https://arxiv.org/abs/2304.12210" target="_blank">Recent Advances in Mental Health AI - arXiv Research Paper</a></li>
         </ul>
     </div>
