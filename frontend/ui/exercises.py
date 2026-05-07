@@ -44,7 +44,7 @@ def show_exercises_page():
         .page-header {
             text-align: center;
             margin: 20px 0 30px 0;
-            margin-top: 30px;
+            margin-top: 50px;
         }
         
         .page-header h1 {
@@ -53,7 +53,7 @@ def show_exercises_page():
             color: #3b82f6;   /* Nice blue */
             font-weight: 700;
             margin-bottom: 20px;
-            margin-top: 40px;
+            margin-top: 50px;
         }
         
         .page-header p {

@@ -7,7 +7,7 @@ def show_about_page():
     apply_clean_layout(hide_header_completely=True)
     
     # --- Top spacer to push content away from navbar buttons ---
-    st.markdown('<div style="height: 60px;"></div>', unsafe_allow_html=True)
+    st.markdown('<div style="height: 40px;"></div>', unsafe_allow_html=True)
     
     # ===== Professional CSS =====
     st.markdown("""
@@ -43,12 +43,13 @@ def show_about_page():
             }
         }
         
-        /* Hero Section - Professional */
+        /* Hero Section - Professional - adjusted for navbar */
         .hero-section {
             background: linear-gradient(135deg, #1a3c5e 0%, #2c5f8a 50%, #1a3c5e 100%);
             border-radius: 16px;
-            padding: 60px 40px;
+            padding: 40px 40px;
             margin-bottom: 48px;
+            margin-top: 60px;
             text-align: center;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
@@ -518,9 +519,10 @@ def show_about_page():
             color: #e2e8f0;
             padding: 48px 40px 24px 40px;
             margin-top: 60px;
-            margin-left: -2rem;
-            margin-right: -2rem;
-            width: calc(100% + 4rem);
+            margin-bottom: 0 !important;
+            margin-left: -2rem !important;
+            margin-right: -2rem !important;
+            width: calc(100% + 4rem) !important;
         }
         
         .footer-grid {
@@ -550,9 +552,11 @@ def show_about_page():
             text-align: center;
             margin-top: 48px;
             padding-top: 24px;
+            padding-bottom: 24px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             font-size: 0.75rem;
             color: #64748b;
+            margin-bottom: 0 !important;
         }
         
         /* Responsive */
@@ -581,10 +585,10 @@ def show_about_page():
                 text-align: center;
             }
             .footer-container {
-                margin-left: -1rem;
-                margin-right: -1rem;
-                width: calc(100% + 2rem);
-                padding: 32px 20px 20px 20px;
+                margin-left: -1rem !important;
+                margin-right: -1rem !important;
+                width: calc(100% + 2rem) !important;
+                padding: 48px 20px 24px 20px;
             }
         }
     </style>

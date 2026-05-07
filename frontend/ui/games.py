@@ -10,7 +10,7 @@ def show_calm_colors_game():
     # ── LAYOUT CONTROL based on entry point ──
     if not from_sidebar:
         # Opened from navbar: hide sidebar and collapse icon completely
-        # Keep header height so navbar stays in same position as auth/home/about
+        # Navbar component handles padding-top, don't override it here
         st.markdown("""
         <style>
         [data-testid="stSidebar"]        { display: none !important; }
@@ -18,7 +18,6 @@ def show_calm_colors_game():
         .main { margin-left: 0rem !important; }
         header[data-testid="stHeader"]   { display: none !important; }
         footer, .stDeployButton          { display: none !important; }
-        .block-container                 { padding-top: 1.8rem !important; }
         </style>
         """, unsafe_allow_html=True)
     else:

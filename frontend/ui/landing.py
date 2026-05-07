@@ -350,21 +350,21 @@ def show_landing_page():
         .footer-container {
             background: #1e293b;
             color: #e2e8f0;
-            padding: 48px 40px 28px 40px;
+            padding: 48px 40px 24px 40px;
             margin-top: 60px;
             margin-bottom: 0 !important;
-            margin-left: -2rem;
-            margin-right: -2rem;
-            width: calc(100% + 4rem);
+            margin-left: -2rem !important;
+            margin-right: -2rem !important;
+            width: calc(100% + 4rem) !important;
             border-radius: 0;
         }
         
         @media (max-width: 768px) {
             .footer-container {
-                margin-left: -1rem;
-                margin-right: -1rem;
-                width: calc(100% + 2rem);
-                padding: 60px 20px 30px 20px;
+                margin-left: -1rem !important;
+                margin-right: -1rem !important;
+                width: calc(100% + 2rem) !important;
+                padding: 48px 20px 24px 20px;
             }
         }
         
@@ -399,6 +399,7 @@ def show_landing_page():
             text-align: center;
             margin-top: 48px;
             padding-top: 24px;
+            padding-bottom: 24px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             font-size: 0.75rem;
             color: #64748b;
@@ -534,19 +535,7 @@ def show_landing_page():
     
     """, unsafe_allow_html=True)
     
-    # ===== CSS (SAFE - NO NAVBAR BREAK) =====
-    st.markdown("""
-    <style>
-        header, footer, .stDeployButton {
-            display: none !important;
-        }
-
-        .block-container {
-            padding-top: 1rem !important;
-        }
-    </style>
-    """, unsafe_allow_html=True)
-
+    
     # ================= HERO SECTION =================
     col_t, col_v = st.columns([1, 1.2], gap="large")
     with col_t:

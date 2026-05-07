@@ -30,7 +30,6 @@ def show_auth_page():
     /* Hide Streamlit default headers & footers */
     header, footer, .stDeployButton { display: none !important; }
     #MainMenu { visibility: hidden; }
-    .block-container { padding-top: 1rem !important; }
 
     /* Clean White Background */
     .stApp { 
@@ -39,15 +38,11 @@ def show_auth_page():
         min-height: 100vh;
     }
     .main .block-container { 
-        padding-top: 2rem !important; 
+        padding-top: 85px !important; 
         padding-bottom: 2rem !important;
         max-width: 1000px;
         overflow-y: hidden !important;
     }
-    .block-container{
-        padding-top: 1rem !important; 
-
-                }
     
     /* Disable auto-scroll */
     section[data-testid="stAppViewContainer"] {
