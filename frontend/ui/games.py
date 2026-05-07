@@ -947,7 +947,7 @@ def show_calm_colors_game():
         # How to Play label
         st.markdown("""
         <div style="text-align:center;font-size:16px;font-weight:700;letter-spacing:1.2px;
-                    text-transform:uppercase;color:#6d28d9;margin:28px 0 14px;">
+                    text-transform:uppercase;color:black :;margin:28px 0 34px;">
             📖 How to Play
         </div>
         """, unsafe_allow_html=True)
@@ -1347,7 +1347,7 @@ def show_calm_colors_game():
             st.markdown('<div class="game-popup-btns">', unsafe_allow_html=True)
             b1, b2 = st.columns(2, gap="medium")
             with b1:
-                if st.button("✨ Create Free Account", key="popup_register", use_container_width=True):
+                if st.button("Create Account", key="popup_register", use_container_width=True):
                     st.session_state.page = "auth"
                     st.session_state.game_screen = "home"
                     st.session_state.public_game_mode = False
