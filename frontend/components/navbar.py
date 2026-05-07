@@ -188,7 +188,7 @@ def render_navbar():
                 st.session_state["_games_nav_trigger"] = None
                 st.rerun()
         with nav_col3:
-            if st.button("Exercises", key="nav_demo_shared", type="secondary"):
+            if st.button("🧘 Exercises", key="nav_demo_shared", type="secondary"):
                 st.session_state.page = "exercises"
                 st.session_state["_games_nav_trigger"] = None
                 st.rerun()
