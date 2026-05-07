@@ -19,6 +19,7 @@ AudioSegment._ffprobe = which("ffprobe")
 
 # ========== REST OF IMPORTS ==========
 import streamlit as st
+import streamlit.components.v1 as components
 import tempfile
 import speech_recognition as sr
 from streamlit_mic_recorder import mic_recorder
@@ -258,7 +259,7 @@ def show_chat(user_id):
     }
 
     /* ── STICKY INPUT BAR ── */
-    .input-bar-wrapper {
+    .st-key-chat_input_bar {
         position: fixed;
         bottom: 0;
         left: 280px;          /* sidebar width */
@@ -273,7 +274,7 @@ def show_chat(user_id):
     }
 
     /* ── INPUT FIELD ── */
-    .input-bar-wrapper div[data-testid="stTextInput"] input {
+    .st-key-chat_input_bar div[data-testid="stTextInput"] input {
         border: 2px solid rgba(99,102,241,0.35) !important;
         border-radius: 24px !important;
         padding: 10px 18px !important;
@@ -283,17 +284,17 @@ def show_chat(user_id):
         transition: border-color 0.2s, box-shadow 0.2s !important;
         box-shadow: 0 2px 8px rgba(99,102,241,0.08) !important;
     }
-    .input-bar-wrapper div[data-testid="stTextInput"] input:focus {
+    .st-key-chat_input_bar div[data-testid="stTextInput"] input:focus {
         border-color: #6366f1 !important;
         box-shadow: 0 0 0 3px rgba(99,102,241,0.15) !important;
         outline: none !important;
     }
-    .input-bar-wrapper div[data-testid="stTextInput"] input::placeholder {
+    .st-key-chat_input_bar div[data-testid="stTextInput"] input::placeholder {
         color: #94a3b8 !important;
     }
 
     /* ── SEND BUTTON ── */
-    .input-bar-wrapper .stButton > button {
+    .st-key-chat_input_bar .stButton > button {
         background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
         color: white !important;
         border-radius: 50% !important;
@@ -305,14 +306,14 @@ def show_chat(user_id):
         box-shadow: 0 4px 14px rgba(99,102,241,0.40) !important;
         transition: transform 0.18s, box-shadow 0.18s !important;
     }
-    .input-bar-wrapper .stButton > button:hover {
+    .st-key-chat_input_bar .stButton > button:hover {
         transform: scale(1.08) !important;
         box-shadow: 0 6px 20px rgba(99,102,241,0.55) !important;
     }
 
     /* ── MIC BUTTON (streamlit_mic_recorder renders a button) ── */
-    .input-bar-wrapper div[data-testid="stCustomComponentV1"] button,
-    .input-bar-wrapper iframe {
+    .st-key-chat_input_bar div[data-testid="stCustomComponentV1"] button,
+    .st-key-chat_input_bar iframe {
         border-radius: 50% !important;
     }
     /* Style the mic recorder container */
@@ -457,43 +458,23 @@ def show_chat(user_id):
     st.markdown('</div>', unsafe_allow_html=True)
 
     # ── AUTO-SCROLL TO BOTTOM (STRONG VERSION) ──
-    st.markdown("""
+    components.html("""
     <script>
-        function scrollToBottom() {
-            // Scroll chat area
-            const chatArea = document.querySelector('.chat-area');
-            if (chatArea) {
-                chatArea.scrollTop = chatArea.scrollHeight;
-            }
-            // Scroll main window
-            window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: 'smooth'
-            });
-        }
-        
-        // Scroll immediately
-        setTimeout(scrollToBottom, 100);
-        
-        // Keep trying to scroll (for dynamic content)
-        let scrollInterval = setInterval(function() {
-            const chatArea = document.querySelector('.chat-area');
-            if (chatArea && chatArea.scrollHeight > chatArea.clientHeight) {
-                scrollToBottom();
-            }
-        }, 500);
-        
-        // Stop interval after 10 seconds
-        setTimeout(function() {
-            clearInterval(scrollInterval);
-        }, 10000);
+      const scrollToBottom = () => {
+        const chatArea = window.parent.document.querySelector('.chat-area');
+        if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
+        window.parent.scrollTo({ top: window.parent.document.body.scrollHeight, behavior: 'smooth' });
+      };
+      setTimeout(scrollToBottom, 80);
+      setTimeout(scrollToBottom, 250);
     </script>
-    """, unsafe_allow_html=True)
+    """, height=0)
 
     # ── STICKY INPUT BAR ──
-    st.markdown('<div class="input-bar-wrapper">', unsafe_allow_html=True)
+    input_bar = st.container(key="chat_input_bar")
 
-    col1, col2, col3 = st.columns([10, 1, 1])
+    with input_bar:
+        col1, col2, col3 = st.columns([10, 1, 1])
 
     with col1:
         # Use a dynamic key that changes after each message to clear input
@@ -547,7 +528,6 @@ def show_chat(user_id):
             just_once=True
         )
 
-    st.markdown('</div>', unsafe_allow_html=True)
 
     # ================= TEXT SEND WITH TYPING ANIMATION =================
     if send_clicked and user_input.strip():
@@ -612,15 +592,13 @@ def show_chat(user_id):
         st.session_state["chat_history"].append(("assistant", response))
         add_message(user_id, "assistant", response, cid)
                 # Auto-scroll to bottom
-        st.markdown("""
+        components.html("""
         <script>
-            setTimeout(function() {
-                const chatArea = document.querySelector('.chat-area');
-                if(chatArea) chatArea.scrollTop = chatArea.scrollHeight;
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            }, 50);
+          const chatArea = window.parent.document.querySelector('.chat-area');
+          if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
+          window.parent.scrollTo({ top: window.parent.document.body.scrollHeight, behavior: 'smooth' });
         </script>
-        """, unsafe_allow_html=True)
+        """, height=0)
         
         st.rerun()
 
