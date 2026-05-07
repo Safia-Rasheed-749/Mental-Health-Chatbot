@@ -14,7 +14,7 @@ def render_navbar():
         .nav-container {
             background: var(--mc-surface) !important;
             border: 1px solid var(--mc-border) !important;
-            padding: 12px 22px !important;
+            padding: 12px 18px !important;
             border-radius: 999px !important;
             box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08) !important;
             margin: 4px 0 22px 0 !important;
@@ -114,14 +114,14 @@ def render_navbar():
             font-weight: 600 !important;
             padding: 8px 16px !important;
             border-radius: 999px !important;
-            font-size: 14px !important;
+            font-size: 13.5px !important;
             transition: background 0.2s ease, transform 0.2s ease !important;
             border: 1px solid var(--mc-border) !important;
             box-shadow: 0 2px 10px rgba(15,23,42,0.05) !important;
             width: auto !important;
             cursor: pointer !important;
             white-space: nowrap !important;
-            margin: 0 6px !important;
+            margin: 0 4px !important;
         }
         [data-testid="stHorizontalBlock"]:has(div.logo) div.stButton > button:hover {
             background: rgba(124, 58, 237, 0.08) !important;
@@ -151,6 +151,9 @@ def render_navbar():
             display: flex;
             justify-content: center;
         }
+        [data-testid="stHorizontalBlock"]:has(div.logo) div[data-testid="column"]:has(button[key^="nav_"]) {
+            min-width: 0 !important;
+        }
         @media (max-width: 768px) {
             .nav-container {
                 flex-direction: column;
@@ -176,7 +179,7 @@ def render_navbar():
         </div>
         """, unsafe_allow_html=True)
     with col2:
-        nav_col1, nav_col2, nav_col3, nav_col4, nav_col5 = st.columns(5)
+        nav_col1, nav_col2, nav_col3, nav_col4, nav_col5 = st.columns([1, 1, 1.25, 1, 1.35])
         with nav_col1:
             if st.button("🏠 Home", key="nav_home_shared", type="secondary"):
                 st.session_state.page = "landing"
@@ -188,7 +191,7 @@ def render_navbar():
                 st.session_state["_games_nav_trigger"] = None
                 st.rerun()
         with nav_col3:
-            if st.button("Exercises", key="nav_demo_shared", type="secondary"):
+            if st.button("🧘 Exercises", key="nav_demo_shared", type="secondary"):
                 st.session_state.page = "exercises"
                 st.session_state["_games_nav_trigger"] = None
                 st.rerun()
