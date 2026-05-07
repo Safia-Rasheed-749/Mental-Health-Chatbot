@@ -8,7 +8,7 @@ __pycache__/
 *.pyc
 
 # IDE files
-.vscode/
+.vscode/sreamlit
 .idea/
 
 # OS files
