@@ -41,7 +41,7 @@ def show_dashboard():
     html, body, .stApp { font-family:'Inter','Segoe UI',sans-serif !important; background:linear-gradient(135deg, #F8FAFC 0%, #EEF4FF 45%, #F5F3FF 100%) !important; }
 
     header[data-testid="stHeader"] { background:transparent !important; box-shadow:none !important; border-bottom:none !important; }
-    .stDeployButton { display:none !important; }
+    .stAppDeployButton { display:none !important; }
     #MainMenu       { visibility:hidden !important; }
     footer          { visibility:hidden !important; }
 

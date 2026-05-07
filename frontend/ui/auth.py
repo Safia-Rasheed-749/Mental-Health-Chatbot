@@ -43,6 +43,10 @@ def show_auth_page():
         max-width: 1000px;
         overflow-y: hidden !important;
     }
+    .block-container{
+        padding-top: 1rem !important; 
+
+                }
     
     /* Disable auto-scroll */
     section[data-testid="stAppViewContainer"] {

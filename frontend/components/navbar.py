@@ -2,15 +2,8 @@
 import streamlit as st
 
 def render_navbar():
-    # Move navbar to top
     st.markdown("""
     <style>
-        header, footer, .stDeployButton {
-            display: none !important;
-        }
-        .block-container {
-            padding-top: 1rem !important;
-        }
         :root {
             --mc-text: #0f172a;
             --mc-muted: #64748b;
@@ -43,7 +36,7 @@ def render_navbar():
             width: 46px;
             height: 46px;
             border-radius: 50%;
-           background: #e9d5ff;
+            background: linear-gradient(145deg, #7c3aed 0%, #6366f1 55%, #8b5cf6 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -110,7 +103,17 @@ def render_navbar():
             margin-top: 0 !important;
             margin-bottom: 0 !important;
         }
+        [data-testid="stHorizontalBlock"]:has(div.logo) {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 16px !important;
+    }
 
+        [data-testid="stHorizontalBlock"]:has(div.logo) div[data-testid="column"] {
+            flex: 0 0 auto !important;
+            width: auto !important;
+        }
         [data-testid="stHorizontalBlock"]:has(div.logo) div.stButton > button {
             all: unset !important;
             display: inline-flex !important;
@@ -128,7 +131,7 @@ def render_navbar():
             width: auto !important;
             cursor: pointer !important;
             white-space: nowrap !important;
-            margin: 0 6px !important;
+            margin: 0 4px !important;
         }
         [data-testid="stHorizontalBlock"]:has(div.logo) div.stButton > button:hover {
             background: rgba(124, 58, 237, 0.08) !important;
@@ -156,7 +159,7 @@ def render_navbar():
         }
         [data-testid="stHorizontalBlock"]:has(div.logo) .stColumn {
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;
         }
         @media (max-width: 768px) {
             .nav-container {
@@ -169,7 +172,7 @@ def render_navbar():
     </style>
     """, unsafe_allow_html=True)
 
-    col1, col2 = st.columns([1, 1.2])
+    col1, col2 = st.columns([1.2, 2])
     with col1:
         st.markdown("""
         <div class="logo">
@@ -183,7 +186,7 @@ def render_navbar():
         </div>
         """, unsafe_allow_html=True)
     with col2:
-        nav_col1, nav_col2, nav_col3, nav_col4, nav_col5 = st.columns(5)
+        nav_col1, nav_col2, nav_col3, nav_col4, nav_col5 = st.columns([1, 1, 1.2, 1.2, 1.3])   
         with nav_col1:
             if st.button("🏠 Home", key="nav_home_shared", type="secondary"):
                 st.session_state.page = "landing"
@@ -195,7 +198,7 @@ def render_navbar():
                 st.session_state["_games_nav_trigger"] = None
                 st.rerun()
         with nav_col3:
-            if st.button("💪 Exercises", key="nav_demo_shared", type="secondary"):
+            if st.button("🧘 Exercises", key="nav_demo_shared", type="secondary"):
                 st.session_state.page = "exercises"
                 st.session_state["_games_nav_trigger"] = None
                 st.rerun()
