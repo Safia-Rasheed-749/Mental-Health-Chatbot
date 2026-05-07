@@ -4,6 +4,25 @@ import streamlit as st
 def render_navbar():
     st.markdown("""
     <style>
+        header, footer, .stDeployButton {
+            display: none !important;
+        }
+        
+        /* Make the entire first horizontal block (navbar) sticky */
+        .main .block-container > div:first-child {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 9999 !important;
+            background: rgba(248, 250, 252, 0.98) !important;
+            backdrop-filter: blur(10px) !important;
+            padding: 0.5rem 0 !important;
+            margin: 0 0 1rem 0 !important;
+        }
+        
+        .block-container {
+            padding-top: 0 !important;
+        }
+        
         :root {
             --mc-text: #0f172a;
             --mc-muted: #64748b;
@@ -17,14 +36,14 @@ def render_navbar():
             padding: 12px 22px !important;
             border-radius: 999px !important;
             box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08) !important;
-            margin: 4px 0 22px 0 !important;
+            margin: 4px 0 !important;
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
             width: 100% !important;
             backdrop-filter: blur(14px);
         }
-        /* Brand row — MindCare + AI (scoped inside .logo) */
+        
         .logo {
             display: flex;
             align-items: center;
@@ -36,7 +55,7 @@ def render_navbar():
             width: 46px;
             height: 46px;
             border-radius: 50%;
-            background: linear-gradient(145deg, #7c3aed 0%, #6366f1 55%, #8b5cf6 100%);
+            background: #e9d5ff;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -97,23 +116,12 @@ def render_navbar():
             color: #64748b;
         }
 
-        /* ONLY nav row that contains the brand logo (not hero / forms) */
         [data-testid="stHorizontalBlock"]:has(div.logo) div[data-testid="column"] button {
-            padding: 6px 14px !important;
+            padding: 8px 14px !important;
             margin-top: 0 !important;
             margin-bottom: 0 !important;
         }
-        [data-testid="stHorizontalBlock"]:has(div.logo) {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        gap: 16px !important;
-    }
 
-        [data-testid="stHorizontalBlock"]:has(div.logo) div[data-testid="column"] {
-            flex: 0 0 auto !important;
-            width: auto !important;
-        }
         [data-testid="stHorizontalBlock"]:has(div.logo) div.stButton > button {
             all: unset !important;
             display: inline-flex !important;
@@ -122,7 +130,7 @@ def render_navbar():
             background: rgba(255,255,255,0.96) !important;
             color: var(--mc-text) !important;
             font-weight: 600 !important;
-            padding: 8px 16px !important;
+            padding: 8px 14px !important;
             border-radius: 999px !important;
             font-size: 14px !important;
             transition: background 0.2s ease, transform 0.2s ease !important;
@@ -131,7 +139,7 @@ def render_navbar():
             width: auto !important;
             cursor: pointer !important;
             white-space: nowrap !important;
-            margin: 0 4px !important;
+            margin: 0 !important;
         }
         [data-testid="stHorizontalBlock"]:has(div.logo) div.stButton > button:hover {
             background: rgba(124, 58, 237, 0.08) !important;
@@ -159,7 +167,8 @@ def render_navbar():
         }
         [data-testid="stHorizontalBlock"]:has(div.logo) .stColumn {
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
+            gap: 0.5rem;
         }
         @media (max-width: 768px) {
             .nav-container {
@@ -172,7 +181,7 @@ def render_navbar():
     </style>
     """, unsafe_allow_html=True)
 
-    col1, col2 = st.columns([1.2, 2])
+    col1, col2 = st.columns([1, 1.2])
     with col1:
         st.markdown("""
         <div class="logo">
@@ -186,7 +195,7 @@ def render_navbar():
         </div>
         """, unsafe_allow_html=True)
     with col2:
-        nav_col1, nav_col2, nav_col3, nav_col4, nav_col5 = st.columns([1, 1, 1.2, 1.2, 1.3])   
+        nav_col1, nav_col2, nav_col3, nav_col4, nav_col5 = st.columns(5)
         with nav_col1:
             if st.button("🏠 Home", key="nav_home_shared", type="secondary"):
                 st.session_state.page = "landing"
@@ -198,7 +207,7 @@ def render_navbar():
                 st.session_state["_games_nav_trigger"] = None
                 st.rerun()
         with nav_col3:
-            if st.button("🧘 Exercises", key="nav_demo_shared", type="secondary"):
+            if st.button("💪 Exercises", key="nav_demo_shared", type="secondary"):
                 st.session_state.page = "exercises"
                 st.session_state["_games_nav_trigger"] = None
                 st.rerun()

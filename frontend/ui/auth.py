@@ -30,6 +30,7 @@ def show_auth_page():
     /* Hide Streamlit default headers & footers */
     header, footer, .stDeployButton { display: none !important; }
     #MainMenu { visibility: hidden; }
+    .block-container { padding-top: 1rem !important; }
 
     /* Clean White Background */
     .stApp { 
@@ -82,7 +83,7 @@ def show_auth_page():
     .auth-header { 
         text-align: center; 
         margin-bottom: 1.5rem;
-        margin-top: 2rem;
+        margin-top: 1rem;
     }
     .auth-header h1 { 
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
