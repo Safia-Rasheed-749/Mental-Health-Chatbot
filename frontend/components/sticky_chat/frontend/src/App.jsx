@@ -17,10 +17,14 @@ function App() {
   // SEND TEXT
   const sendText = () => {
     if (!text.trim()) return;
+    
+    // Send the value
     Streamlit.setComponentValue({
       type: "text",
       data: text,
     });
+    
+    // Clear input immediately
     setText("");
   };
 
@@ -54,6 +58,7 @@ function App() {
         const arrayBuffer = await blob.arrayBuffer();
         const uint8Array = Array.from(new Uint8Array(arrayBuffer));
         
+        // Send the value
         Streamlit.setComponentValue({
           type: "audio",
           data: uint8Array,
@@ -87,14 +92,6 @@ function App() {
 
   return (
     <div className="sticky-bar">
-      <button
-        className={`mic-btn ${isRecording ? 'recording' : ''}`}
-        onClick={isRecording ? stopRecording : startRecording}
-        title={isRecording ? "Stop Recording" : "Start Recording"}
-      >
-        {isRecording ? "⏹️" : "🎤"}
-      </button>
-      
       <input
         type="text"
         value={text}
@@ -109,6 +106,14 @@ function App() {
         title="Send Message"
       >
         ➤
+      </button>
+      
+      <button
+        className={`mic-btn ${isRecording ? 'recording' : ''}`}
+        onClick={isRecording ? stopRecording : startRecording}
+        title={isRecording ? "Stop Recording" : "Start Recording"}
+      >
+        {isRecording ? "⏹️" : "🎤"}
       </button>
     </div>
   );

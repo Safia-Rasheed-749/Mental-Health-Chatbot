@@ -30,4 +30,11 @@ def sticky_chat_bar(key=None):
             - {"type": "audio", "data": list[int]} when user records audio
             - None when no input
     """
-    return _component_func(key=key, default=None)
+    component_value = _component_func(key=key, default=None)
+    
+    # Clear the component value after reading to prevent infinite loop
+    if component_value is not None:
+        # Return the value once, then it will be None on next render
+        return component_value
+    
+    return None
