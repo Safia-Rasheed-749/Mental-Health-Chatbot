@@ -1,24 +1,19 @@
-# ========== FORCE FFMPEG PATH ==========
 import os
-import sys
+import shutil
 
-# Set environment variable BEFORE importing pydub
-os.environ["PATH"] = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin" + os.pathsep + os.environ.get("PATH", "")
-
-# Now import pydub and force it to use our path
 from pydub import AudioSegment
 
-# Explicitly set the paths
-AudioSegment.converter = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin\ffmpeg.exe"
-AudioSegment.ffprobe = r"C:\ffmpeg\ffmpeg-8.1-essentials_build\bin\ffprobe.exe"
-
-# Force pydub to re-initialize
-from pydub.utils import which
-AudioSegment._ffmpeg = which("ffmpeg")
-AudioSegment._ffprobe = which("ffprobe")
+# Use system ffmpeg/ffprobe when available (cross-platform)
+ffmpeg_path = shutil.which("ffmpeg")
+ffprobe_path = shutil.which("ffprobe")
+if ffmpeg_path:
+    AudioSegment.converter = ffmpeg_path
+if ffprobe_path:
+    AudioSegment.ffprobe = ffprobe_path
 
 # ========== REST OF IMPORTS ==========
 import streamlit as st
+import streamlit.components.v1 as components
 import tempfile
 import speech_recognition as sr
 from streamlit_mic_recorder import mic_recorder
@@ -261,7 +256,7 @@ def show_chat(user_id):
     .input-bar-wrapper {
         position: fixed;
         bottom: 0;
-        left: 280px;          /* sidebar width */
+        left: 0;
         right: 0;
         z-index: 1000;
         background: rgba(238,242,255,0.92);
@@ -270,6 +265,10 @@ def show_chat(user_id):
         border-top: 1px solid rgba(99,102,241,0.18);
         padding: 12px 20px 14px;
         box-shadow: 0 -4px 24px rgba(99,102,241,0.10);
+    }
+    .input-bar-inner {
+        max-width: min(980px, calc(100vw - 2rem));
+        margin: 0 auto;
     }
 
     /* ── INPUT FIELD ── */
@@ -457,41 +456,25 @@ def show_chat(user_id):
     st.markdown('</div>', unsafe_allow_html=True)
 
     # ── AUTO-SCROLL TO BOTTOM (STRONG VERSION) ──
-    st.markdown("""
+    components.html("""
     <script>
-        function scrollToBottom() {
-            // Scroll chat area
-            const chatArea = document.querySelector('.chat-area');
-            if (chatArea) {
-                chatArea.scrollTop = chatArea.scrollHeight;
-            }
-            // Scroll main window
-            window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: 'smooth'
-            });
+      const scrollToBottom = () => {
+        const chatArea = parent.document.querySelector('.chat-area');
+        if (chatArea) {
+          chatArea.scrollTop = chatArea.scrollHeight;
         }
-        
-        // Scroll immediately
-        setTimeout(scrollToBottom, 100);
-        
-        // Keep trying to scroll (for dynamic content)
-        let scrollInterval = setInterval(function() {
-            const chatArea = document.querySelector('.chat-area');
-            if (chatArea && chatArea.scrollHeight > chatArea.clientHeight) {
-                scrollToBottom();
-            }
-        }, 500);
-        
-        // Stop interval after 10 seconds
-        setTimeout(function() {
-            clearInterval(scrollInterval);
-        }, 10000);
+        parent.window.scrollTo({ top: parent.document.body.scrollHeight, behavior: 'smooth' });
+      };
+      setTimeout(scrollToBottom, 100);
+      const observer = new MutationObserver(scrollToBottom);
+      const chatArea = parent.document.querySelector('.chat-area');
+      if (chatArea) observer.observe(chatArea, { childList: true, subtree: true });
+      setTimeout(() => observer.disconnect(), 12000);
     </script>
-    """, unsafe_allow_html=True)
+    """, height=0)
 
     # ── STICKY INPUT BAR ──
-    st.markdown('<div class="input-bar-wrapper">', unsafe_allow_html=True)
+    st.markdown('<div class="input-bar-wrapper"><div class="input-bar-inner">', unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns([10, 1, 1])
 
@@ -547,7 +530,7 @@ def show_chat(user_id):
             just_once=True
         )
 
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div></div>', unsafe_allow_html=True)
 
     # ================= TEXT SEND WITH TYPING ANIMATION =================
     if send_clicked and user_input.strip():
