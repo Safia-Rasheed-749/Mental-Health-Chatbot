@@ -2,8 +2,15 @@
 import streamlit as st
 
 def render_navbar():
+    # Move navbar to top
     st.markdown("""
     <style>
+        header, footer, .stDeployButton {
+            display: none !important;
+        }
+        .block-container {
+            padding-top: 1rem !important;
+        }
         :root {
             --mc-text: #0f172a;
             --mc-muted: #64748b;
@@ -188,7 +195,7 @@ def render_navbar():
                 st.session_state["_games_nav_trigger"] = None
                 st.rerun()
         with nav_col3:
-            if st.button("Exercises", key="nav_demo_shared", type="secondary"):
+            if st.button("💪 Exercises", key="nav_demo_shared", type="secondary"):
                 st.session_state.page = "exercises"
                 st.session_state["_games_nav_trigger"] = None
                 st.rerun()
