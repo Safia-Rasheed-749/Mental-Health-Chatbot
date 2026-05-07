@@ -91,11 +91,22 @@ def show_chat(user_id):
         height: 100%;
     }
 
-    /* ── BLOCK CONTAINER ── */
+    /* ── BLOCK CONTAINER (MINIMAL PADDING) ── */
     .block-container {
         padding-top: 0rem !important;
-        padding-bottom: 100px !important;
+        padding-bottom: 100px !important;  /* Space for chat input */
         max-width: 100% !important;
+    }
+    
+    /* Prevent layout shift when messages update */
+    .stApp {
+        overflow-y: scroll !important;  /* Always show scrollbar */
+    }
+    
+    /* Keep input bar always visible and stable */
+    [data-testid="stChatInput"] {
+        will-change: transform;
+        transform: translateZ(0);  /* GPU acceleration */
     }
 
     /* ── HEADER BANNER ── */
@@ -163,13 +174,28 @@ def show_chat(user_id):
         50%       { opacity: 0.4; }
     }
 
-    /* ── CHAT MESSAGES AREA ── */
+    /* ── CHAT MESSAGES AREA (OPTIMIZED HEIGHT) ── */
     .chat-area {
-        padding: 20px 16px 10px;
-        min-height: 60px;
-        max-height: calc(100vh - 180px);
+        padding: 10px 24px 20px;  /* Reduced top padding */
+        min-height: auto;  /* Let content determine height */
+        max-height: calc(100vh - 300px);
         overflow-y: auto;
+        overflow-x: hidden;
         scroll-behavior: smooth;
+        position: relative;
+        margin-bottom: 80px;  /* Space for chat input */
+    }
+    
+    /* Reduce empty space */
+    .main .block-container {
+        padding-bottom: 100px !important;
+        padding-top: 0 !important;
+    }
+    
+    /* Bring header closer */
+    .chat-header {
+        margin-top: 10px !important;
+        margin-bottom: 15px !important;
     }
 
     /* ── MESSAGE ROWS ── */
@@ -257,19 +283,58 @@ def show_chat(user_id):
         line-height: 1.6;
     }
 
-    /* ── STICKY INPUT BAR ── */
-    .input-bar-wrapper {
-        position: fixed;
-        bottom: 0;
-        left: 280px;          /* sidebar width */
-        right: 0;
-        z-index: 1000;
-        background: rgba(238,242,255,0.92);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border-top: 1px solid rgba(99,102,241,0.18);
-        padding: 12px 20px 14px;
-        box-shadow: 0 -4px 24px rgba(99,102,241,0.10);
+    /* ── STREAMLIT CHAT INPUT STYLING ── */
+    [data-testid="stChatInput"] {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 9999 !important;
+        background: rgba(255,255,255,0.98) !important;
+        backdrop-filter: blur(16px) !important;
+        border-top: 1px solid rgba(99,102,241,0.18) !important;
+        padding: 16px 24px !important;
+        box-shadow: 0 -4px 24px rgba(99,102,241,0.10) !important;
+    }
+    
+    /* Adjust for sidebar */
+    @media (min-width: 768px) {
+        [data-testid="stChatInput"] {
+            margin-left: 280px !important;
+        }
+    }
+    
+    /* Style the input field */
+    [data-testid="stChatInput"] textarea {
+        border: 2px solid rgba(99,102,241,0.35) !important;
+        border-radius: 24px !important;
+        padding: 12px 18px !important;
+        font-size: 14px !important;
+        background: #ffffff !important;
+        color: #1e293b !important;
+        transition: border-color 0.2s, box-shadow 0.2s !important;
+    }
+    
+    [data-testid="stChatInput"] textarea:focus {
+        border-color: #6366f1 !important;
+        box-shadow: 0 0 0 3px rgba(99,102,241,0.15) !important;
+        outline: none !important;
+    }
+    
+    /* Style the send button */
+    [data-testid="stChatInput"] button {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+        color: white !important;
+        border-radius: 50% !important;
+        width: 44px !important;
+        height: 44px !important;
+        border: none !important;
+        box-shadow: 0 4px 14px rgba(99,102,241,0.40) !important;
+    }
+    
+    [data-testid="stChatInput"] button:hover {
+        transform: scale(1.08) !important;
+        box-shadow: 0 6px 20px rgba(99,102,241,0.55) !important;
     }
 
     /* ── INPUT FIELD ── */
@@ -292,19 +357,24 @@ def show_chat(user_id):
         color: #94a3b8 !important;
     }
 
-    /* ── SEND BUTTON ── */
+    /* ── SEND BUTTON (FORM SUBMIT) ── */
+    .input-bar-wrapper button[kind="formSubmit"],
     .input-bar-wrapper .stButton > button {
         background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
         color: white !important;
         border-radius: 50% !important;
         width: 44px !important;
         height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
         padding: 0 !important;
         border: none !important;
         font-size: 18px !important;
         box-shadow: 0 4px 14px rgba(99,102,241,0.40) !important;
         transition: transform 0.18s, box-shadow 0.18s !important;
+        margin-top: 0 !important;
     }
+    .input-bar-wrapper button[kind="formSubmit"]:hover,
     .input-bar-wrapper .stButton > button:hover {
         transform: scale(1.08) !important;
         box-shadow: 0 6px 20px rgba(99,102,241,0.55) !important;
@@ -456,101 +526,124 @@ def show_chat(user_id):
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # ── AUTO-SCROLL TO BOTTOM (STRONG VERSION) ──
+    # ── AUTO-SCROLL TO BOTTOM (CHAT AREA ONLY) ──
     st.markdown("""
     <script>
-        function scrollToBottom() {
-            // Scroll chat area
+        function scrollChatToBottom() {
+            // Scroll chat area to bottom
             const chatArea = document.querySelector('.chat-area');
             if (chatArea) {
-                chatArea.scrollTop = chatArea.scrollHeight;
+                chatArea.scrollTo({
+                    top: chatArea.scrollHeight,
+                    behavior: 'smooth'
+                });
             }
-            // Scroll main window
+            
+            // Also scroll main window
             window.scrollTo({
                 top: document.body.scrollHeight,
                 behavior: 'smooth'
             });
         }
         
-        // Scroll immediately
-        setTimeout(scrollToBottom, 100);
+        // Multiple scroll attempts
+        scrollChatToBottom();
+        setTimeout(scrollChatToBottom, 100);
+        setTimeout(scrollChatToBottom, 300);
+        setTimeout(scrollChatToBottom, 600);
+        setTimeout(scrollChatToBottom, 1000);
         
-        // Keep trying to scroll (for dynamic content)
-        let scrollInterval = setInterval(function() {
-            const chatArea = document.querySelector('.chat-area');
-            if (chatArea && chatArea.scrollHeight > chatArea.clientHeight) {
-                scrollToBottom();
-            }
-        }, 500);
+        // Observe new messages
+        const observer = new MutationObserver(function() {
+            scrollChatToBottom();
+        });
         
-        // Stop interval after 10 seconds
-        setTimeout(function() {
-            clearInterval(scrollInterval);
-        }, 10000);
+        const chatArea = document.querySelector('.chat-area');
+        if (chatArea) {
+            observer.observe(chatArea, {
+                childList: true,
+                subtree: true
+            });
+        }
     </script>
     """, unsafe_allow_html=True)
 
-    # ── STICKY INPUT BAR ──
-    st.markdown('<div class="input-bar-wrapper">', unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns([10, 1, 1])
-
-    with col1:
-        # Use a dynamic key that changes after each message to clear input
-        input_key = f"text_input_{cid if cid else 'new'}_{len(st.session_state['chat_history'])}"
-        user_input = st.text_input(
-            "",
-            placeholder="Share what's on your mind...",
-            label_visibility="collapsed",
-            key=input_key
-        )
-
-    with col2:
-        send_clicked = st.button("➤", key=f"send_btn_{cid if cid else 'new'}")
-        
-
-    with col3:
-        # Custom styled mic button wrapper
-        st.markdown("""
-        <style>
-        /* Mic button custom styling */
+    # ── MIC BUTTON (POSITIONED OUTSIDE MAIN FLOW) ──
+    audio = mic_recorder(
+        start_prompt="🎤",
+        stop_prompt="⏹️",
+        key=f"voice_rec_{cid if cid else 'new'}",
+        just_once=True
+    )
+    
+    # Style mic button to be inline with chat input
+    st.markdown("""
+    <style>
+    /* Position mic button inline with chat input - FIXED POSITIONING */
+    div[data-testid="stCustomComponentV1"] {
+        position: fixed !important;
+        bottom: 22px !important;
+        left: 24px !important;
+        z-index: 10001 !important;
+        width: 48px !important;
+        height: 48px !important;
+    }
+    
+    /* Adjust for sidebar on desktop */
+    @media (min-width: 768px) {
         div[data-testid="stCustomComponentV1"] {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            left: calc(280px + 24px) !important;
         }
-        div[data-testid="stCustomComponentV1"] button {
-            width: 44px !important;
-            height: 44px !important;
-            border-radius: 50% !important;
-            background: linear-gradient(135deg, #10b981, #34d399) !important;
-            border: none !important;
-            box-shadow: 0 4px 14px rgba(16,185,129,0.40) !important;
-            transition: all 0.2s !important;
-            animation: micPulseBtn 2.5s ease-in-out infinite !important;
+    }
+    
+    /* Style the mic button itself */
+    div[data-testid="stCustomComponentV1"] button,
+    div[data-testid="stCustomComponentV1"] > div,
+    div[data-testid="stCustomComponentV1"] iframe {
+        width: 48px !important;
+        height: 48px !important;
+        min-width: 48px !important;
+        min-height: 48px !important;
+        border-radius: 50% !important;
+        background: linear-gradient(135deg, #10b981, #34d399) !important;
+        border: none !important;
+        box-shadow: 0 4px 14px rgba(16,185,129,0.40) !important;
+        transition: all 0.2s !important;
+        font-size: 20px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    div[data-testid="stCustomComponentV1"] button:hover {
+        transform: scale(1.08) !important;
+        box-shadow: 0 6px 20px rgba(16,185,129,0.55) !important;
+    }
+    
+    /* Adjust chat input to make room for mic button */
+    [data-testid="stChatInput"] {
+        padding-left: 80px !important;
+    }
+    
+    @media (min-width: 768px) {
+        [data-testid="stChatInput"] {
+            margin-left: 280px !important;
+            padding-left: 80px !important;
         }
-        div[data-testid="stCustomComponentV1"] button:hover {
-            transform: scale(1.08) !important;
-            box-shadow: 0 6px 20px rgba(16,185,129,0.55) !important;
-        }
-        @keyframes micPulseBtn {
-            0%, 100% { box-shadow: 0 4px 14px rgba(16,185,129,0.40); }
-            50%       { box-shadow: 0 4px 22px rgba(16,185,129,0.65), 0 0 0 8px rgba(16,185,129,0.15); }
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        audio = mic_recorder(
-            start_prompt="🎤",
-            stop_prompt="⏹️",
-            key=f"voice_rec_{cid if cid else 'new'}",
-            just_once=True
-        )
-
-    st.markdown('</div>', unsafe_allow_html=True)
+    }
+    
+    /* Ensure chat input container has proper spacing */
+    [data-testid="stChatInput"] > div {
+        padding-left: 0 !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # ── STICKY CHAT INPUT (ENTER KEY WORKS BY DEFAULT) ──
+    user_input = st.chat_input("Share what's on your mind...", key=f"chat_input_{cid if cid else 'new'}")
 
     # ================= TEXT SEND WITH TYPING ANIMATION =================
-    if send_clicked and user_input.strip():
+    if user_input and user_input.strip():
         # Create conversation on first message
         if not cid:
             cid = create_conversation(user_id)
@@ -559,68 +652,19 @@ def show_chat(user_id):
         
         st.session_state["chat_history"].append(("user", user_input))
         add_message(user_id, "user", user_input, cid)
-        # ✅ ADD ACTIVITY LOGGING HERE (CORRECT PLACE)
+        
+        # Log activity
         try:
-            log_user_activity(
-                user_id,  # Use the parameter, not session_state
-                "Send Message", 
-                "Chat", 
-                f"Message: {user_input[:50]}..."  # Use user_input variable
-            )
+            log_user_activity(user_id, "Send Message", "Chat", f"Message: {user_input[:50]}...")
         except Exception as e:
-            print(f"Activity logging error: {e}")  # Don't break the chat if logging fails
-
-        # Show bouncing dots FIRST
-        dots_placeholder = st.empty()
-        dots_placeholder.markdown("""
-        <div class="chat-row" style="justify-content:flex-start;">
-            <div class="ai-bubble-wrap">
-                <div class="ai-avatar">🧠</div>
-                <div class="assistant-bubble">
-                    <div class="thinking-dots">
-                        <span></span><span></span><span></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+            print(f"Activity logging error: {e}")
 
         # Get response from AI
         response = generate_response(user_input, st.session_state["chat_history"][-5:])
         
-        # Remove bouncing dots
-        dots_placeholder.empty()
-        
-        # Create placeholder for typing animation
-        response_placeholder = st.empty()
-        
-        # Character by character typing with proper word rendering
-        full_response = ""
-        for i in range(len(response)):
-            full_response = response[:i+1]  # Take characters one by one
-            response_placeholder.markdown(f"""
-            <div class="chat-row" style="justify-content:flex-start;">
-                <div class="ai-bubble-wrap">
-                    <div class="ai-avatar">🧠</div>
-                    <div class="assistant-bubble">{full_response}</div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-            time.sleep(0.01)  # 20ms per character
-       # Save to session and database
-
+        # Save to session and database
         st.session_state["chat_history"].append(("assistant", response))
         add_message(user_id, "assistant", response, cid)
-                # Auto-scroll to bottom
-        st.markdown("""
-        <script>
-            setTimeout(function() {
-                const chatArea = document.querySelector('.chat-area');
-                if(chatArea) chatArea.scrollTop = chatArea.scrollHeight;
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            }, 50);
-        </script>
-        """, unsafe_allow_html=True)
         
         st.rerun()
 

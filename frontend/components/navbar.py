@@ -99,7 +99,7 @@ def render_navbar():
 
         /* ONLY nav row that contains the brand logo (not hero / forms) */
         [data-testid="stHorizontalBlock"]:has(div.logo) div[data-testid="column"] button {
-            padding: 6px 14px !important;
+            padding: 8px 16px !important;
             margin-top: 0 !important;
             margin-bottom: 0 !important;
         }
@@ -131,7 +131,11 @@ def render_navbar():
             width: auto !important;
             cursor: pointer !important;
             white-space: nowrap !important;
+<<<<<<< Updated upstream
             margin: 0 4px !important;
+=======
+            margin: 0 !important;
+>>>>>>> Stashed changes
         }
         [data-testid="stHorizontalBlock"]:has(div.logo) div.stButton > button:hover {
             background: rgba(124, 58, 237, 0.08) !important;
@@ -159,8 +163,28 @@ def render_navbar():
         }
         [data-testid="stHorizontalBlock"]:has(div.logo) .stColumn {
             display: flex;
+<<<<<<< Updated upstream
             justify-content: flex-end;
+=======
+            justify-content: center;
+            padding: 0 8px !important;
+            min-width: auto !important;
+            flex: 1 !important;
+>>>>>>> Stashed changes
         }
+        
+        /* Ensure buttons stay in one line */
+        [data-testid="stHorizontalBlock"]:has(div.logo) [data-testid="column"] {
+            padding: 0 4px !important;
+            flex-shrink: 0 !important;
+        }
+        
+        /* Button text should not wrap */
+        [data-testid="stHorizontalBlock"]:has(div.logo) div.stButton > button {
+            white-space: nowrap !important;
+            overflow: visible !important;
+        }
+        
         @media (max-width: 768px) {
             .nav-container {
                 flex-direction: column;
@@ -172,7 +196,11 @@ def render_navbar():
     </style>
     """, unsafe_allow_html=True)
 
+<<<<<<< Updated upstream
     col1, col2 = st.columns([1.2, 2])
+=======
+    col1, col2 = st.columns([1, 1.5])
+>>>>>>> Stashed changes
     with col1:
         st.markdown("""
         <div class="logo">
@@ -186,7 +214,11 @@ def render_navbar():
         </div>
         """, unsafe_allow_html=True)
     with col2:
+<<<<<<< Updated upstream
         nav_col1, nav_col2, nav_col3, nav_col4, nav_col5 = st.columns([1, 1, 1.2, 1.2, 1.3])   
+=======
+        nav_col1, nav_col2, nav_col3, nav_col4, nav_col5 = st.columns([1, 1, 1, 1, 1.2])
+>>>>>>> Stashed changes
         with nav_col1:
             if st.button("🏠 Home", key="nav_home_shared", type="secondary"):
                 st.session_state.page = "landing"
