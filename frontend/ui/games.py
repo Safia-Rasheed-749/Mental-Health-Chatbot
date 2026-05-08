@@ -908,7 +908,7 @@ def show_calm_colors_game():
             <div class="game-page-header">
                 <div class="game-header-avatar">🎨</div>
                 <div class="game-header-text">
-                    <h1>Calm Colors</h1>
+                    <h1>Calm Colors Game</h1>
                     <p>Train your focus &amp; relax your mind</p>
                 </div>
                 <div class="game-header-status">
@@ -1055,6 +1055,7 @@ def show_calm_colors_game():
 
     # ── SCREEN: GAME ──
     def show_game():
+        top_padding = "4rem" if from_sidebar else "110px"
         st.markdown("""
         <style>
         @keyframes softShift {
@@ -1070,7 +1071,7 @@ def show_calm_colors_game():
         .stApp .block-container { 
             position: relative !important; 
             z-index: 10 !important;
-            padding-top: 0 !important;
+            padding-top: """ + top_padding + """ !important;
             background: transparent !important;
         }
         div.score-bar {
@@ -1231,75 +1232,90 @@ def show_calm_colors_game():
         emoji = "🎉"
         title = "Game Ended!"
 
-        # Push content below navbar — less space when sidebar is visible
-        top_space = "10px" if from_sidebar else "60px"
-        st.markdown(f"<div style='height:{top_space}'></div>", unsafe_allow_html=True)
+        st.markdown(f"""
+        <style>
+        .stApp {{
+            background: linear-gradient(160deg, #0a0e1a 0%, #0d1b3e 35%, #0f2352 60%, #0a1628 100%) !important;
+        }}
+        .main .block-container {{
+            padding-top: 2rem !important;
+            max-width: 100% !important;
+        }}
+        /* Form chrome */
+        div[data-testid="stForm"] {{
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            margin-top: 0 !important;
+        }}
+        /* Play Again button */
+        div[data-testid="stForm"] button {{
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 16px !important;
+            padding: 13px 0 !important;
+            border-radius: 40px !important;
+            border: none !important;
+            box-shadow: 0 6px 20px rgba(102,126,234,0.45) !important;
+            transition: all 0.3s ease !important;
+            width: 100% !important;
+        }}
+        div[data-testid="stForm"] button:hover {{
+            filter: brightness(1.1) !important;
+            transform: translateY(-3px) !important;
+        }}
+        /* Kill any gap Streamlit adds between the markdown and the column */
+        [data-testid="stVerticalBlock"] > [data-testid="stVerticalBlock"] {{
+            gap: 0 !important;
+        }}
+        </style>
 
-        # ── Centered column for card ──
-        _, col, _ = st.columns([1, 1.4, 1])
-        with col:
-            st.markdown(f"""
-            <div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 55%,#9b59b6 100%);
-                        border-radius:24px;padding:32px 28px 28px;text-align:center;
-                        box-shadow:0 20px 60px rgba(102,126,234,0.55),0 8px 32px rgba(118,75,162,0.4);
-                        border:1.5px solid rgba(255,255,255,0.25);">
-                <div style="font-size:52px;margin-bottom:12px;">{emoji}</div>
-                <div style="font-size:28px;font-weight:900;color:white;margin-bottom:20px;
+        <div style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 20px 0 20px;
+        ">
+            <div style="
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 55%, #9b59b6 100%);
+                border-radius: 24px 24px 0 0;
+                padding: 20px 36px 28px;
+                text-align: center;
+                box-shadow: 0 20px 60px rgba(102,126,234,0.55), 0 8px 32px rgba(118,75,162,0.4);
+                border: 1.5px solid rgba(255,255,255,0.25);
+                border-bottom: none;
+                width: 100%;
+                max-width: 400px;
+            ">
+                <div style="font-size:56px;margin-bottom:14px;">{emoji}</div>
+                <div style="font-size:30px;font-weight:900;color:white;margin-bottom:24px;
                             text-shadow:0 2px 12px rgba(0,0,0,0.3);">{title}</div>
-                <div style="display:flex;justify-content:center;gap:12px;margin-bottom:16px;">
-                    <div style="background:rgba(255,255,255,0.18);border-radius:14px;padding:14px 20px;
+                <div style="display:flex;justify-content:center;gap:14px;margin-bottom:20px;">
+                    <div style="background:rgba(255,255,255,0.18);border-radius:14px;padding:16px 24px;
                                 flex:1;border:1px solid rgba(255,255,255,0.3);">
                         <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.85);
-                                    margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;">🎯 Level</div>
-                        <div style="font-size:34px;font-weight:900;color:white;">{level}</div>
+                                    margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">🎯 Level</div>
+                        <div style="font-size:38px;font-weight:900;color:white;">{level}</div>
                     </div>
-                    <div style="background:rgba(255,255,255,0.18);border-radius:14px;padding:14px 20px;
+                    <div style="background:rgba(255,255,255,0.18);border-radius:14px;padding:16px 24px;
                                 flex:1;border:1px solid rgba(255,255,255,0.3);">
                         <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.85);
-                                    margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;">⭐ Score</div>
-                        <div style="font-size:34px;font-weight:900;color:white;">{score}</div>
+                                    margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">⭐ Score</div>
+                        <div style="font-size:38px;font-weight:900;color:white;">{score}</div>
                     </div>
                 </div>
-                <div style="font-size:13px;color:rgba(255,255,255,0.88);line-height:1.65;
-                            background:rgba(255,255,255,0.15);border-radius:12px;padding:12px 16px;">
-                    Every game is practice for mindfulness<br>Breathe deeply and try again
+                <div style="font-size:13px;color:rgba(255,255,255,0.88);line-height:1.7;
+                            background:rgba(255,255,255,0.15);border-radius:12px;padding:14px 18px;">
+                    Every game is practice for mindfulness<br>Breathe deeply and try again 🧘
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+        </div>
+        """, unsafe_allow_html=True)
 
-            # Spacing + centered form submit button (renders centered natively)
-            st.write("")
-            st.markdown("""
-            <style>
-            /* Remove form chrome */
-            div[data-testid="stForm"] {
-                background: transparent !important;
-                border: none !important;
-                padding: 0 !important;
-            }
-            /* Target form submit button with maximum specificity */
-            div[data-testid="stForm"] div[data-testid="stFormSubmitButton"] button,
-            div[data-testid="stForm"] button[kind="primaryFormSubmit"],
-            div[data-testid="stForm"] button[kind="secondaryFormSubmit"],
-            div[data-testid="stForm"] button {
-                background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
-                color: white !important;
-                font-weight: 600 !important;
-                font-size: 15px !important;
-                padding: 10px 0 !important;
-                border-radius: 40px !important;
-                border: none !important;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
-                transition: all 0.3s ease !important;
-                width: 100% !important;
-            }
-            div[data-testid="stForm"] button:hover {
-                filter: brightness(1.08) !important;
-                transform: translateY(-3px) !important;
-            }
-            </style>
-            """, unsafe_allow_html=True)
-
+        # Button sits immediately below the card — same max-width, no gap
+        _, btn_col, _ = st.columns([1, 1.4, 1])
+        with btn_col:
             with st.form("play_again_form", border=False):
                 submitted = st.form_submit_button("🎮 Play Again", use_container_width=True)
                 if submitted:
