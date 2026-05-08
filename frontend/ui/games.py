@@ -31,9 +31,14 @@ def show_calm_colors_game():
         <style>
         footer, .stAppDeployButton { display: none !important; }
         
-        /* Add padding for sidebar mode */
+        /* Logged-in/sidebar mode already has page chrome offset; avoid extra top gap */
         .main .block-container {
-            padding-top: 70px !important;
+            padding-top: 0.75rem !important;
+        }
+
+        /* Keep hero banner snug to top in sidebar mode */
+        .hero-banner {
+            margin-top: 0 !important;
         }
         </style>
         """, unsafe_allow_html=True)
