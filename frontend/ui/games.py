@@ -10,7 +10,7 @@ def show_calm_colors_game():
     # ── LAYOUT CONTROL based on entry point ──
     if not from_sidebar:
         # Opened from navbar: hide sidebar and collapse icon completely
-        # Navbar component handles padding-top, don't override it here
+        # Add top padding for fixed navbar
         st.markdown("""
         <style>
         [data-testid="stSidebar"]        { display: none !important; }
@@ -18,6 +18,11 @@ def show_calm_colors_game():
         .main { margin-left: 0rem !important; }
         header[data-testid="stHeader"]   { display: none !important; }
         footer, .stDeployButton          { display: none !important; }
+        
+        /* Add padding for navbar */
+        .main .block-container {
+            padding-top: 100px !important;
+        }
         </style>
         """, unsafe_allow_html=True)
     else:
@@ -25,6 +30,11 @@ def show_calm_colors_game():
         st.markdown("""
         <style>
         footer, .stDeployButton { display: none !important; }
+        
+        /* Add padding for sidebar mode */
+        .main .block-container {
+            padding-top: 70px !important;
+        }
         </style>
         """, unsafe_allow_html=True)
 
@@ -41,7 +51,6 @@ def show_calm_colors_game():
     }
 
     .main .block-container {
-        padding-top: 0rem !important;
         padding-left: 1.5rem !important;
         padding-right: 1.5rem !important;
         max-width: 100% !important;
@@ -854,7 +863,7 @@ def show_calm_colors_game():
                 box-shadow: 0 4px 24px rgba(91,141,239,0.28);
                 border-radius: 20px;
                 margin-bottom: 30px;
-                margin-top: -55px;
+                margin-top: 0px;
             }
             .game-header-avatar {
                 width: 46px;
@@ -1079,7 +1088,7 @@ def show_calm_colors_game():
             justify-content: space-around !important;
             align-items: center !important;
             margin-bottom: 24px !important;
-            margin-top: 38px !important;
+            margin-top: 100px !important;
             backdrop-filter: blur(12px) !important;
         }
         div.score-bar div.score-item {
@@ -1214,7 +1223,7 @@ def show_calm_colors_game():
                 }
                 </style>
                 """, unsafe_allow_html=True)
-                _, end_btn_col, _ = st.columns([0.2, 1.2, 0.6])
+                _, end_btn_col, _ = st.columns([1, 1.2, 1])
                 with end_btn_col:
                     with st.form("end_game_form", border=False):
                         if st.form_submit_button("⏹ End Game", use_container_width=True):

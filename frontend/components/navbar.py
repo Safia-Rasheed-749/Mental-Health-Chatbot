@@ -14,7 +14,7 @@ def render_navbar():
         
         /* Main content padding - adjusted for navbar height */
         .main .block-container {
-            padding-top: 85px !important;
+            padding-top: 100px !important;
             padding-left: 2rem !important;
             padding-right: 2rem !important;
             max-width: 100% !important;

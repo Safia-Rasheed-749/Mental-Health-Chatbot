@@ -101,19 +101,19 @@ function App() {
       />
       
       <button
-        className="send-btn"
-        onClick={sendText}
-        title="Send Message"
-      >
-        ➤
-      </button>
-      
-      <button
         className={`mic-btn ${isRecording ? 'recording' : ''}`}
         onClick={isRecording ? stopRecording : startRecording}
         title={isRecording ? "Stop Recording" : "Start Recording"}
       >
         {isRecording ? "⏹️" : "🎤"}
+      </button>
+      
+      <button
+        className="send-btn"
+        onClick={sendText}
+        title="Send Message"
+      >
+        ➤
       </button>
     </div>
   );

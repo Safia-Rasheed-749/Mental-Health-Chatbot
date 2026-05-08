@@ -28,7 +28,9 @@ def show_exercises_page():
         }
         
         .block-container {
-            padding-top: 1rem !important;
+            position: relative !important;
+            z-index: 10 !important;
+            padding-top: 125px !important;
             padding-bottom: 2rem !important;
             max-width: 1200px;
             margin: 0 auto;
@@ -43,8 +45,8 @@ def show_exercises_page():
         /* ========== PAGE HEADER ========== */
         .page-header {
             text-align: center;
-            margin: 20px 0 30px 0;
-            margin-top: 50px;
+            margin: 0 0 30px 0;
+            margin-top: 0px !important;
         }
         
         .page-header h1 {
@@ -53,7 +55,7 @@ def show_exercises_page():
             color: #3b82f6;   /* Nice blue */
             font-weight: 700;
             margin-bottom: 20px;
-            margin-top: 50px;
+            margin-top: 0px !important;
         }
         
         .page-header p {

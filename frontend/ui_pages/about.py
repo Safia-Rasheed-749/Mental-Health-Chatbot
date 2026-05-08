@@ -24,6 +24,20 @@ def show_about_page():
         
         .stApp {
             background: #f6f7fb !important;
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        
+        /* Force no bottom space */
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            height: 100% !important;
+        }
+        
+        .main, section.main {
+            padding-bottom: 0 !important;
+            margin-bottom: 0 !important;
         }
         
         /* Main content background — matches MindCare design tokens */

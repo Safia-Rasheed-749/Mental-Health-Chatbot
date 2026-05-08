@@ -44,6 +44,7 @@ def show_landing_page():
             min-height: 100vh !important;
             background: radial-gradient(circle at top left, rgba(124,58,237,0.06), transparent 32%), radial-gradient(circle at bottom right, rgba(99,102,241,0.05), transparent 32%), #f6f7fb !important;
             padding-bottom: 0 !important;
+            margin-bottom: 0 !important;
         }
         .main .block-container {
             padding: 0.5rem 2rem 0 2rem !important;
@@ -55,6 +56,20 @@ def show_landing_page():
             overflow-y: auto !important;
             min-height: 100% !important;
             scroll-behavior: smooth;
+            margin: 0 !important;
+            padding: 0 !important;
+            height: 100% !important;
+        }
+        
+        body, #root, [data-testid="stAppViewContainer"], [data-testid="stApp"], .stApp {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        
+        /* Force main container to have no bottom space */
+        .main, section.main {
+            padding-bottom: 0 !important;
+            margin-bottom: 0 !important;
         }
         
         .element-container:has(iframe) {

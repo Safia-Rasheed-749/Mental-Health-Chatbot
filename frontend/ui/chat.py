@@ -85,11 +85,43 @@ def show_chat(user_id):
         box-shadow: none !important;
         visibility: visible !important;
     }
+    
+    /* ── MAKE SIDEBAR TOGGLE VISIBLE ── */
+    [data-testid="collapsedControl"] {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+        color: white !important;
+        border-radius: 0 8px 8px 0 !important;
+        padding: 8px !important;
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3) !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    [data-testid="collapsedControl"]:hover {
+        transform: translateX(2px) !important;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4) !important;
+    }
 
     /* ── PAGE BACKGROUND ── */
     html, body, .stApp {
         font-family: 'Inter', 'Segoe UI', sans-serif !important;
         background: linear-gradient(135deg, #F8FAFC 0%, #EEF4FF 45%, #F5F3FF 100%) !important;
+    }
+    
+    /* ── SMOOTH PAGE TRANSITIONS ── */
+    .stApp {
+        animation: fadeIn 0.3s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
     }
 
     /* ── MAIN CONTAINER ── */
@@ -398,28 +430,91 @@ def show_chat(user_id):
 
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Auto-scroll to bottom to show latest messages
-    st.markdown("""
+    # Auto-scroll to bottom - FIXED VERSION
+    # Generate unique scroll trigger ID based on message count
+    scroll_trigger_id = f"scroll_trigger_{len(st.session_state['chat_history'])}"
+    
+    st.markdown(f"""
+    <div id="{scroll_trigger_id}" style="display:none;"></div>
     <script>
-        function scrollToBottom() {
-            window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: 'auto'
-            });
-        }
-        
-        // Immediate scroll
-        scrollToBottom();
-        
-        // Multiple attempts to ensure scroll
-        setTimeout(scrollToBottom, 50);
-        setTimeout(scrollToBottom, 150);
-        setTimeout(scrollToBottom, 300);
-        setTimeout(scrollToBottom, 500);
-        
-        // Watch for new content
-        const observer = new MutationObserver(scrollToBottom);
-        observer.observe(document.body, { childList: true, subtree: true });
+        (function() {{
+            function forceScrollToBottom() {{
+                // Method 1: Scroll window to absolute bottom
+                window.scrollTo({{
+                    top: 999999,
+                    behavior: 'instant'
+                }});
+                
+                // Method 2: Scroll main container
+                const mainContainer = document.querySelector('.main');
+                if (mainContainer) {{
+                    mainContainer.scrollTop = mainContainer.scrollHeight;
+                }}
+                
+                // Method 3: Scroll stApp
+                const stApp = document.querySelector('.stApp');
+                if (stApp) {{
+                    stApp.scrollTop = stApp.scrollHeight;
+                }}
+                
+                // Method 4: Scroll body
+                document.documentElement.scrollTop = document.documentElement.scrollHeight;
+                document.body.scrollTop = document.body.scrollHeight;
+            }}
+            
+            // Wait for DOM to be fully ready
+            if (document.readyState === 'loading') {{
+                document.addEventListener('DOMContentLoaded', function() {{
+                    setTimeout(forceScrollToBottom, 50);
+                    setTimeout(forceScrollToBottom, 150);
+                    setTimeout(forceScrollToBottom, 300);
+                }});
+            }} else {{
+                // DOM already loaded
+                setTimeout(forceScrollToBottom, 10);
+                setTimeout(forceScrollToBottom, 50);
+                setTimeout(forceScrollToBottom, 150);
+                setTimeout(forceScrollToBottom, 300);
+                setTimeout(forceScrollToBottom, 600);
+            }}
+            
+            // Watch for new messages being added
+            const observer = new MutationObserver(function(mutations) {{
+                let shouldScroll = false;
+                mutations.forEach(function(mutation) {{
+                    if (mutation.addedNodes.length > 0) {{
+                        mutation.addedNodes.forEach(function(node) {{
+                            if (node.nodeType === 1 && 
+                                (node.classList.contains('chat-row') || 
+                                 node.querySelector && node.querySelector('.chat-row'))) {{
+                                shouldScroll = true;
+                            }}
+                        }});
+                    }}
+                }});
+                
+                if (shouldScroll) {{
+                    setTimeout(forceScrollToBottom, 10);
+                    setTimeout(forceScrollToBottom, 100);
+                    setTimeout(forceScrollToBottom, 300);
+                }}
+            }});
+            
+            // Observe the chat area for new messages
+            const chatArea = document.querySelector('.chat-area');
+            if (chatArea) {{
+                observer.observe(chatArea, {{ 
+                    childList: true, 
+                    subtree: true 
+                }});
+            }}
+            
+            // Also observe the entire body
+            observer.observe(document.body, {{ 
+                childList: true, 
+                subtree: true 
+            }});
+        }})();
     </script>
     """, unsafe_allow_html=True)
 
@@ -461,6 +556,17 @@ def show_chat(user_id):
             
             # Update timestamp to reset component
             st.session_state["component_key_timestamp"] = time.time()
+            
+            # Force scroll after adding message (before rerun)
+            st.markdown("""
+            <script>
+                setTimeout(function() {
+                    window.scrollTo({ top: 999999, behavior: 'instant' });
+                    document.documentElement.scrollTop = document.documentElement.scrollHeight;
+                }, 50);
+            </script>
+            """, unsafe_allow_html=True)
+            
             st.rerun()
         
         # ===== AUDIO MESSAGE =====
@@ -506,6 +612,17 @@ def show_chat(user_id):
                     
                     # Update timestamp to reset component
                     st.session_state["component_key_timestamp"] = time.time()
+                    
+                    # Force scroll after adding message (before rerun)
+                    st.markdown("""
+                    <script>
+                        setTimeout(function() {
+                            window.scrollTo({ top: 999999, behavior: 'instant' });
+                            document.documentElement.scrollTop = document.documentElement.scrollHeight;
+                        }, 50);
+                    </script>
+                    """, unsafe_allow_html=True)
+                    
                     st.rerun()
                 else:
                     st.warning("Could not recognize speech. Please try again.")
