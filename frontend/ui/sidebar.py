@@ -39,9 +39,9 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
     /* ── SIDEBAR CONTAINER ── */
     section[data-testid="stSidebar"] {
         width: 260px !important;
-        background: linear-gradient(180deg, #44556C 0%, #526581 50%, #607592 100%) !important;
-        border-right: 1px solid rgba(180,200,220,0.15) !important;
-        box-shadow: 2px 0 12px rgba(15,23,42,0.06) !important;
+        background: linear-gradient(180deg, #EEF2FF 0%, #E8EDFF 50%, #EDE9FF 100%) !important;
+        border-right: 1px solid rgba(99,102,241,0.15) !important;
+        box-shadow: 2px 0 16px rgba(99,102,241,0.08) !important;
     }
     section[data-testid="stSidebar"] > div:first-child {
         padding-top: 0.5rem !important;
@@ -71,24 +71,24 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         width: 42px;
         height: 42px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.22);
-        border: 2px solid rgba(255,255,255,0.45);
+        background: linear-gradient(135deg, #5B8DEF, #7C9DF5);
+        border: 2px solid rgba(99,102,241,0.3);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 20px;
         flex-shrink: 0;
-        box-shadow: 0 0 0 4px rgba(255,255,255,0.12);
+        box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
         animation: avatarPulse 3s ease-in-out infinite;
     }
     @keyframes avatarPulse {
-        0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.12); }
-        50%       { box-shadow: 0 0 0 8px rgba(255,255,255,0.06); }
+        0%, 100% { box-shadow: 0 0 0 4px rgba(99,102,241,0.12); }
+        50%       { box-shadow: 0 0 0 8px rgba(99,102,241,0.06); }
     }
     .sidebar-brand {
-        font-size: 15px;
+        font-size: 25px;
         font-weight: 800;
-        color: #ffffff;
+        color: #3730a3;
         line-height: 1.2;
         letter-spacing: 0.2px;
     }
@@ -107,11 +107,11 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         letter-spacing: 1.6px !important;
         text-transform: uppercase !important;
         margin: 16px 0 10px 2px !important;
-        color: #ffffff !important;
+        color: #6366f1 !important;
         display: block !important;
         opacity: 1 !important;
     }
-
+     
     /* ── NAVIGATION RADIO ── */
     section[data-testid="stSidebar"] div[role="radiogroup"] {
         gap: 1px !important;
@@ -123,11 +123,11 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         cursor: pointer !important;
     }
     section[data-testid="stSidebar"] div[role="radiogroup"] label:hover {
-        background: rgba(255,255,255,0.12) !important;
+        background: rgba(99,102,241,0.1) !important;
     }
     section[data-testid="stSidebar"] div[role="radiogroup"] label p {
-        color: rgba(255,255,255,0.92) !important;
-        font-size: 13.5px !important;
+        color: #3730a3 !important;
+        font-size: 16.5px !important;
         font-weight: 500 !important;
         margin: 0 !important;
     }
@@ -142,11 +142,10 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         font-size: 13px !important;
         font-weight: 500 !important;
         text-align: left !important;
-        color: rgba(226,232,240,0.88) !important;
+        color: #3730a3 !important;
         width: 100% !important;
         transition: all 0.15s ease !important;
         box-shadow: none !important;
-        /* Neutralise any page-level overrides */
         height: auto !important;
         min-height: auto !important;
         max-width: none !important;
@@ -154,8 +153,8 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         transform: none !important;
     }
     section[data-testid="stSidebar"] .stButton button:hover {
-        background: rgba(255,255,255,0.12) !important;
-        color: #ffffff !important;
+        background: rgba(99,102,241,0.1) !important;
+        color: #312e81 !important;
         transform: translateX(2px) !important;
         box-shadow: none !important;
     }
@@ -176,7 +175,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
     section[data-testid="stSidebar"] hr {
         margin-top: 6px !important;
         margin-bottom: 6px !important;
-        border-color: rgba(255,255,255,0.15) !important;
+        border-color: rgba(99,102,241,0.2) !important;
         background: none !important;
         height: auto !important;
     }
@@ -197,22 +196,22 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         box-shadow: 0 4px 14px rgba(224,90,90,0.50) !important;
         transform: none !important;
     }
-    .logout-btn { margin-top: 36px !important; padding-top: 16px !important; border-top: 1px solid rgba(255,255,255,0.15) !important; }
+    .logout-btn { margin-top: 36px !important; padding-top: 16px !important; border-top: 1px solid rgba(99,102,241,0.2) !important; }
 
     /* ── NEW CHAT BUTTON ── */
     .new-chat-btn .stButton button {
-        background: rgba(74,127,212,0.18) !important;
-        border: 1px solid rgba(74,127,212,0.35) !important;
+        background: rgba(99,102,241,0.1) !important;
+        border: 1px solid rgba(99,102,241,0.3) !important;
         border-radius: 8px !important;
-        color: #93c5fd !important;
+        color: #4f46e5 !important;
         font-size: 12.5px !important;
         font-weight: 600 !important;
         padding: 7px 12px !important;
         margin-bottom: 6px !important;
     }
     .new-chat-btn .stButton button:hover {
-        background: rgba(74,127,212,0.28) !important;
-        border-color: rgba(74,127,212,0.6) !important;
+        background: rgba(99,102,241,0.18) !important;
+        border-color: rgba(99,102,241,0.5) !important;
         transform: none !important;
     }
 
@@ -225,12 +224,12 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
     }
     .session-item:hover { background: rgba(255,255,255,0.04); }
     .session-active {
-        background: rgba(74,127,212,0.2) !important;
-        border-left: 2px solid #5fa8e0 !important;
+        background: rgba(99,102,241,0.12) !important;
+        border-left: 2px solid #6366f1 !important;
         padding-left: 2px !important;
     }
     .session-title-btn .stButton button {
-        color: rgba(203,213,225,0.85) !important;
+        color: #4338ca !important;
         font-size: 12.5px !important;
         font-weight: 400 !important;
         padding: 5px 8px !important;
@@ -238,16 +237,16 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         text-align: left !important;
     }
     .session-title-btn .stButton button:hover {
-        color: #ffffff !important;
-        background: rgba(255,255,255,0.06) !important;
+        color: #312e81 !important;
+        background: rgba(99,102,241,0.1) !important;
         transform: none !important;
     }
     .session-active .session-title-btn .stButton button {
-        color: #93c5fd !important;
+        color: #4f46e5 !important;
         font-weight: 500 !important;
     }
     .session-menu-btn .stButton button {
-        color: rgba(148,163,184,0.45) !important;
+        color: rgba(99,102,241,0.5) !important;
         font-size: 14px !important;
         padding: 3px 6px !important;
         border-radius: 5px !important;
@@ -255,8 +254,8 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         min-width: 26px !important;
     }
     .session-menu-btn .stButton button:hover {
-        color: #e2e8f0 !important;
-        background: rgba(255,255,255,0.08) !important;
+        color: #4f46e5 !important;
+        background: rgba(99,102,241,0.1) !important;
         transform: none !important;
     }
     </style>
