@@ -26,14 +26,15 @@ def show_calm_colors_game():
         </style>
         """, unsafe_allow_html=True)
     else:
-        # Opened from sidebar: sidebar styling is handled exclusively in sidebar.py
+        # Opened from sidebar — match exact pattern used by mood.py / chat.py (proven to work)
         st.markdown("""
         <style>
         footer, .stAppDeployButton { display: none !important; }
-        
-        /* Add padding for sidebar mode */
-        .main .block-container {
-            padding-top: 70px !important;
+
+        /* Same as mood.py — simple, proven pattern */
+        .block-container {
+            padding-top: 0rem !important;
+            margin-top: 0rem !important;
         }
         </style>
         """, unsafe_allow_html=True)
@@ -55,12 +56,6 @@ def show_calm_colors_game():
         padding-right: 1.5rem !important;
         max-width: 100% !important;
         background: transparent !important;
-    }
-
-    /* Remove gap that pushes navbar down */
-    [data-testid="stVerticalBlock"] > :first-child {
-        margin-top: 0rem !important;
-        padding-top: 0rem !important;
     }
 
     .stApp::before {
@@ -149,7 +144,7 @@ def show_calm_colors_game():
     /* ── GAME SCREEN BACKGROUNDS ── */
     .game-screen-bg {
         position: fixed;
-        top: 70px;
+        top: 10px;
         left: 0;
         right: 0;
         bottom: 0;
@@ -221,7 +216,7 @@ def show_calm_colors_game():
             inset 0 1px 0 rgba(255,255,255,0.6);
         position: relative;
         overflow: hidden;
-        margin-top: 20px;
+        margin-top: 0;
     }
 
     .hero-banner::before {
@@ -466,7 +461,7 @@ def show_calm_colors_game():
         box-shadow: 0 8px 32px rgba(139,92,246,0.12) !important;
         border-radius: 0 0 24px 24px;
         margin-bottom: 24px;
-        margin-top: 38px;
+        margin-top: 10px;
     }
     
     .score-item { 
@@ -863,7 +858,7 @@ def show_calm_colors_game():
                 box-shadow: 0 4px 24px rgba(91,141,239,0.28);
                 border-radius: 20px;
                 margin-bottom: 30px;
-                margin-top: 0px;
+                margin-top: 20px;
             }
             .game-header-avatar {
                 width: 46px;
@@ -1075,7 +1070,7 @@ def show_calm_colors_game():
         .stApp .block-container { 
             position: relative !important; 
             z-index: 10 !important;
-            padding-top: 1rem !important;
+            padding-top: 0 !important;
             background: transparent !important;
         }
         div.score-bar {
@@ -1088,7 +1083,7 @@ def show_calm_colors_game():
             justify-content: space-around !important;
             align-items: center !important;
             margin-bottom: 24px !important;
-            margin-top: 100px !important;
+            margin-top: 0 !important;
             backdrop-filter: blur(12px) !important;
         }
         div.score-bar div.score-item {

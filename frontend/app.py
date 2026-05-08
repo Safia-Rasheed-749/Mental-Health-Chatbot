@@ -19,15 +19,26 @@ st.markdown("""
         padding: 0 !important;
     }
 
+    /* Header: fully transparent, stays in normal flow so collapsedControl stays positioned correctly */
     header[data-testid="stHeader"] {
-        background: rgba(0,0,0,0) !important;
-        height: 2.875rem !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        border-bottom: none !important;
+    }
+
+    /* Sidebar collapse/expand arrow — always fully visible */
+    [data-testid="collapsedControl"] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 99999 !important;
     }
 
     .stDeployButton { display: none !important; }
     #MainMenu { visibility: hidden !important; }
     footer { visibility: hidden !important; }
 
+    /* Block container: no top padding since header is out of flow */
     .main .block-container {
         padding-top: 0 !important;
     }
@@ -74,6 +85,69 @@ components.html(
             }
             window.addEventListener('popstate', scrollToTop);
         })();
+    </script>
+    """,
+    height=0,
+    scrolling=False
+)
+
+# ── SIDEBAR TOGGLE BUTTON STYLER (must target parent frame — st.markdown CSS can't reach it) ──
+components.html(
+    """
+    <script>
+    (function() {
+        function styleToggle() {
+            try {
+                var doc = window.parent.document;
+                // Inject a <style> tag into the parent document once
+                if (doc.getElementById('kiro-toggle-style')) return;
+                var style = doc.createElement('style');
+                style.id = 'kiro-toggle-style';
+                style.textContent = `
+                    [data-testid="collapsedControl"] button {
+                        background: linear-gradient(135deg, #5B8DEF, #7C9DF5) !important;
+                        border-radius: 50% !important;
+                        width: 32px !important;
+                        height: 32px !important;
+                        min-width: 32px !important;
+                        min-height: 32px !important;
+                        border: none !important;
+                        box-shadow: 0 2px 10px rgba(91,141,239,0.55) !important;
+                        padding: 6px !important;
+                        transition: all 0.2s ease !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                    }
+                    [data-testid="collapsedControl"] button:hover {
+                        background: linear-gradient(135deg, #4a7de0, #6b8ef0) !important;
+                        box-shadow: 0 4px 16px rgba(91,141,239,0.75) !important;
+                        transform: scale(1.1) !important;
+                    }
+                    [data-testid="collapsedControl"] button svg {
+                        fill: #ffffff !important;
+                        stroke: #ffffff !important;
+                        color: #ffffff !important;
+                    }
+                    [data-testid="collapsedControl"] button svg path {
+                        fill: #ffffff !important;
+                        stroke: #ffffff !important;
+                    }
+                `;
+                doc.head.appendChild(style);
+            } catch(e) {}
+        }
+        styleToggle();
+        setTimeout(styleToggle, 300);
+        setTimeout(styleToggle, 800);
+        // Re-apply on DOM changes (Streamlit reruns remove injected styles)
+        try {
+            new MutationObserver(function() {
+                var doc = window.parent.document;
+                if (!doc.getElementById('kiro-toggle-style')) styleToggle();
+            }).observe(window.parent.document.body, { childList: true, subtree: true });
+        } catch(e) {}
+    })();
     </script>
     """,
     height=0,

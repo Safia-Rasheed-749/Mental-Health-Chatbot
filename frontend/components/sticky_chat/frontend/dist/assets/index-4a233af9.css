@@ -101,7 +101,7 @@ body {
   transform: scale(0.95);
 }
 .mic-btn.recording {
-  background: linear-gradient(135deg, #ef4444, #f87171);
+  background:#fff;
   animation: recordingPulse 1s ease-in-out infinite;
 }
 @keyframes pulse {

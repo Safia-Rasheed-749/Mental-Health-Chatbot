@@ -44,7 +44,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         box-shadow: 2px 0 12px rgba(15,23,42,0.06) !important;
     }
     section[data-testid="stSidebar"] > div:first-child {
-        padding-top: 0rem !important;
+        padding-top: 0.5rem !important;
     }
     section[data-testid="stSidebar"] .block-container {
         padding-top: 0.6rem !important;
@@ -53,6 +53,10 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         padding-bottom: 0.7rem !important;
         max-width: 100% !important;
         margin-top: 0 !important;
+    }
+
+    section[data-testid="stSidebar"] {
+        position: relative !important;
     }
 
     /* ── HEADER ── */
