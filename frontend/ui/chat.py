@@ -428,6 +428,39 @@ def show_chat(user_id):
                 </div>
                 """, unsafe_allow_html=True)
 
+    # ── PHASE 2: AI is thinking — show dots, call AI, save response ──
+    if st.session_state.get("_ai_thinking"):
+        # Render thinking dots (Streamlit has already painted the page at this point)
+        st.markdown("""
+        <div class="chat-row" style="justify-content:flex-start;" id="thinking-row">
+            <div class="ai-bubble-wrap">
+                <div class="ai-avatar">🧠</div>
+                <div class="assistant-bubble" style="padding:14px 18px;min-width:70px;">
+                    <div class="thinking-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        pending = st.session_state.pop("_ai_thinking")
+        pending_type = pending["type"]   # "text" or "voice"
+        pending_text = pending["text"]
+
+        # Call AI now — dots are already visible on screen
+        response = generate_response(pending_text, st.session_state["chat_history"][-5:])
+
+        # Save response
+        st.session_state["chat_history"].append(("assistant", response))
+        add_message(user_id, "assistant", response, cid)
+
+        if pending_type == "voice":
+            speak_and_auto_play(response)
+
+        st.session_state["component_key_timestamp"] = time.time()
+        st.rerun()
+
     st.markdown('</div>', unsafe_allow_html=True)
     
     # Auto-scroll to bottom - FIXED VERSION
@@ -533,100 +566,60 @@ def show_chat(user_id):
             cid = create_conversation(user_id)
             st.session_state["conversation_id"] = cid
             st.session_state["last_loaded_chat"] = cid
-        
+
         # ===== TEXT MESSAGE =====
         if user_input["type"] == "text":
             text = user_input["data"]
-            
+
+            # Save user message
             st.session_state["chat_history"].append(("user", text))
             add_message(user_id, "user", text, cid)
-            
-            # Log activity
+
             try:
                 log_user_activity(user_id, "Send Message", "Chat", f"Message: {text[:50]}...")
             except Exception as e:
                 print(f"Activity logging error: {e}")
 
-            # Get response from AI
-            response = generate_response(text, st.session_state["chat_history"][-5:])
-            
-            # Save to session and database
-            st.session_state["chat_history"].append(("assistant", response))
-            add_message(user_id, "assistant", response, cid)
-            
-            # Update timestamp to reset component
-            st.session_state["component_key_timestamp"] = time.time()
-            
-            # Force scroll after adding message (before rerun)
-            st.markdown("""
-            <script>
-                setTimeout(function() {
-                    window.scrollTo({ top: 999999, behavior: 'instant' });
-                    document.documentElement.scrollTop = document.documentElement.scrollHeight;
-                }, 50);
-            </script>
-            """, unsafe_allow_html=True)
-            
+            # ── PHASE 1: store pending, rerun → dots will render on next pass ──
+            st.session_state["_ai_thinking"] = {"type": "text", "text": text}
             st.rerun()
-        
+
         # ===== AUDIO MESSAGE =====
         elif user_input["type"] == "audio":
             audio_bytes = bytes(user_input["data"])
-            
             recognizer = sr.Recognizer()
             try:
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp:
                     tmp.write(audio_bytes)
                     webm_path = tmp.name
-                
+
                 wav_path = webm_path.replace(".webm", ".wav")
                 audio_segment = AudioSegment.from_file(webm_path, format="webm")
                 audio_segment.export(wav_path, format="wav")
-                
+
                 with sr.AudioFile(wav_path) as source:
                     recognizer.adjust_for_ambient_noise(source, duration=0.5)
                     audio_data = recognizer.record(source)
                     voice_text = recognizer.recognize_google(audio_data)
-                
+
                 if voice_text.strip():
-                    # Add user message
+                    # Save user message
                     st.session_state["chat_history"].append(("user", voice_text))
                     add_message(user_id, "user", voice_text, cid)
-                    
-                    # Generate response
-                    response = generate_response(voice_text, st.session_state["chat_history"][-5:])
-                    
-                    # Add assistant response
-                    st.session_state["chat_history"].append(("assistant", response))
-                    add_message(user_id, "assistant", response, cid)
-                    
-                    # Speak with auto-play
-                    speak_and_auto_play(response)
-                    
-                    # Cleanup
+
+                    # Cleanup temp files
                     try:
                         os.unlink(webm_path)
                         os.unlink(wav_path)
                     except:
                         pass
-                    
-                    # Update timestamp to reset component
-                    st.session_state["component_key_timestamp"] = time.time()
-                    
-                    # Force scroll after adding message (before rerun)
-                    st.markdown("""
-                    <script>
-                        setTimeout(function() {
-                            window.scrollTo({ top: 999999, behavior: 'instant' });
-                            document.documentElement.scrollTop = document.documentElement.scrollHeight;
-                        }, 50);
-                    </script>
-                    """, unsafe_allow_html=True)
-                    
+
+                    # ── PHASE 1: store pending, rerun → dots will render on next pass ──
+                    st.session_state["_ai_thinking"] = {"type": "voice", "text": voice_text}
                     st.rerun()
                 else:
                     st.warning("Could not recognize speech. Please try again.")
-                    
+
             except sr.UnknownValueError:
                 st.warning("Sorry, I couldn't understand that. Please speak clearly.")
             except Exception as e:

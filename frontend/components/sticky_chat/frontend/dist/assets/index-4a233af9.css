@@ -118,12 +118,12 @@ body {
 @keyframes recordingPulse {
   0%,
   to {
-    box-shadow: 0 4px 14px #ef444466;
+    box-shadow: 0 4px 14px #6366f166;
   }
   50% {
     box-shadow:
-      0 4px 22px #ef4444a6,
-      0 0 0 8px #ef444426;
+      0 4px 22px #696cf366,
+      0 0 0 4px #6c6eef66;
   }
 }
 @media (max-width: 768px) {
