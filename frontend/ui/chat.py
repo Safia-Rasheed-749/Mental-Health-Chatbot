@@ -428,11 +428,12 @@ def show_chat(user_id):
                 </div>
                 """, unsafe_allow_html=True)
 
-    # ── PHASE 2: AI is thinking — show dots, call AI, save response ──
+    # ══════════════════════════════════════════════════════
+    # PHASE 2a — show dots, call AI, store response, rerun
+    # ══════════════════════════════════════════════════════
     if st.session_state.get("_ai_thinking"):
-        # Render thinking dots (Streamlit has already painted the page at this point)
         st.markdown("""
-        <div class="chat-row" style="justify-content:flex-start;" id="thinking-row">
+        <div class="chat-row" style="justify-content:flex-start;">
             <div class="ai-bubble-wrap">
                 <div class="ai-avatar">🧠</div>
                 <div class="assistant-bubble" style="padding:14px 18px;min-width:70px;">
@@ -444,14 +445,49 @@ def show_chat(user_id):
         </div>
         """, unsafe_allow_html=True)
 
-        pending = st.session_state.pop("_ai_thinking")
-        pending_type = pending["type"]   # "text" or "voice"
+        pending      = st.session_state.pop("_ai_thinking")
+        pending_type = pending["type"]
         pending_text = pending["text"]
 
-        # Call AI now — dots are already visible on screen
         response = generate_response(pending_text, st.session_state["chat_history"][-5:])
+        st.session_state["_ai_typing"] = {"type": pending_type, "response": response}
+        st.rerun()
 
-        # Save response
+    # ══════════════════════════════════════════════════════
+    # PHASE 2b — typewriter: one character at a time
+    # ══════════════════════════════════════════════════════
+    elif st.session_state.get("_ai_typing"):
+        import html as _html
+        data         = st.session_state.pop("_ai_typing")
+        pending_type = data["type"]
+        response     = data["response"]
+        safe         = _html.escape(response)
+        slot         = st.empty()
+
+        for i in range(1, len(safe) + 1):
+            slot.markdown(
+                f'<div class="chat-row" style="justify-content:flex-start;">'
+                f'<div class="ai-bubble-wrap">'
+                f'<div class="ai-avatar">🧠</div>'
+                f'<div class="assistant-bubble" style="white-space:pre-wrap;">{safe[:i]}'
+                f'<span style="display:inline-block;width:2px;height:1em;background:#8b5cf6;'
+                f'margin-left:1px;vertical-align:text-bottom;'
+                f'animation:cur 0.6s step-end infinite;"></span>'
+                f'</div></div></div>'
+                f'<style>@keyframes cur{{0%,100%{{opacity:1}}50%{{opacity:0}}}}</style>',
+                unsafe_allow_html=True,
+            )
+            time.sleep(0.01)
+
+        slot.markdown(
+            f'<div class="chat-row" style="justify-content:flex-start;">'
+            f'<div class="ai-bubble-wrap">'
+            f'<div class="ai-avatar">🧠</div>'
+            f'<div class="assistant-bubble" style="white-space:pre-wrap;">{safe}</div>'
+            f'</div></div>',
+            unsafe_allow_html=True,
+        )
+
         st.session_state["chat_history"].append(("assistant", response))
         add_message(user_id, "assistant", response, cid)
 
@@ -462,92 +498,27 @@ def show_chat(user_id):
         st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Auto-scroll to bottom - FIXED VERSION
-    # Generate unique scroll trigger ID based on message count
-    scroll_trigger_id = f"scroll_trigger_{len(st.session_state['chat_history'])}"
-    
+
+    # ── AUTO-SCROLL via parent frame ──
+    # st.markdown scripts run in the main Streamlit iframe and CAN access window.parent
+    msg_count = len(st.session_state["chat_history"])
     st.markdown(f"""
-    <div id="{scroll_trigger_id}" style="display:none;"></div>
     <script>
-        (function() {{
-            function forceScrollToBottom() {{
-                // Method 1: Scroll window to absolute bottom
-                window.scrollTo({{
-                    top: 999999,
-                    behavior: 'instant'
-                }});
-                
-                // Method 2: Scroll main container
-                const mainContainer = document.querySelector('.main');
-                if (mainContainer) {{
-                    mainContainer.scrollTop = mainContainer.scrollHeight;
-                }}
-                
-                // Method 3: Scroll stApp
-                const stApp = document.querySelector('.stApp');
-                if (stApp) {{
-                    stApp.scrollTop = stApp.scrollHeight;
-                }}
-                
-                // Method 4: Scroll body
-                document.documentElement.scrollTop = document.documentElement.scrollHeight;
-                document.body.scrollTop = document.body.scrollHeight;
-            }}
-            
-            // Wait for DOM to be fully ready
-            if (document.readyState === 'loading') {{
-                document.addEventListener('DOMContentLoaded', function() {{
-                    setTimeout(forceScrollToBottom, 50);
-                    setTimeout(forceScrollToBottom, 150);
-                    setTimeout(forceScrollToBottom, 300);
-                }});
-            }} else {{
-                // DOM already loaded
-                setTimeout(forceScrollToBottom, 10);
-                setTimeout(forceScrollToBottom, 50);
-                setTimeout(forceScrollToBottom, 150);
-                setTimeout(forceScrollToBottom, 300);
-                setTimeout(forceScrollToBottom, 600);
-            }}
-            
-            // Watch for new messages being added
-            const observer = new MutationObserver(function(mutations) {{
-                let shouldScroll = false;
-                mutations.forEach(function(mutation) {{
-                    if (mutation.addedNodes.length > 0) {{
-                        mutation.addedNodes.forEach(function(node) {{
-                            if (node.nodeType === 1 && 
-                                (node.classList.contains('chat-row') || 
-                                 node.querySelector && node.querySelector('.chat-row'))) {{
-                                shouldScroll = true;
-                            }}
-                        }});
-                    }}
-                }});
-                
-                if (shouldScroll) {{
-                    setTimeout(forceScrollToBottom, 10);
-                    setTimeout(forceScrollToBottom, 100);
-                    setTimeout(forceScrollToBottom, 300);
-                }}
-            }});
-            
-            // Observe the chat area for new messages
-            const chatArea = document.querySelector('.chat-area');
-            if (chatArea) {{
-                observer.observe(chatArea, {{ 
-                    childList: true, 
-                    subtree: true 
-                }});
-            }}
-            
-            // Also observe the entire body
-            observer.observe(document.body, {{ 
-                childList: true, 
-                subtree: true 
-            }});
-        }})();
+    (function(){{
+        var key = 'sc_{msg_count}';
+        if(window._sc === key) return;
+        window._sc = key;
+        function sc(){{
+            try{{
+                var p = window.parent;
+                var el = p.document.querySelector('[data-testid="stAppViewContainer"]');
+                if(!el) el = p.document.querySelector('section.main');
+                if(!el) el = p.document.documentElement;
+                if(el) el.scrollTop = el.scrollHeight + 9999;
+            }}catch(e){{}}
+        }}
+        sc(); setTimeout(sc,120); setTimeout(sc,400); setTimeout(sc,800);
+    }})();
     </script>
     """, unsafe_allow_html=True)
 
@@ -560,7 +531,8 @@ def show_chat(user_id):
     user_input = sticky_chat_bar(key=component_key)
 
     # ================= HANDLE INPUT FROM REACT COMPONENT =================
-    if user_input:
+    # Guard: skip if we're already in a thinking/typing phase
+    if user_input and not st.session_state.get("_ai_thinking") and not st.session_state.get("_ai_typing"):
         # Create conversation on first message
         if not cid:
             cid = create_conversation(user_id)
@@ -571,7 +543,6 @@ def show_chat(user_id):
         if user_input["type"] == "text":
             text = user_input["data"]
 
-            # Save user message
             st.session_state["chat_history"].append(("user", text))
             add_message(user_id, "user", text, cid)
 
@@ -580,7 +551,8 @@ def show_chat(user_id):
             except Exception as e:
                 print(f"Activity logging error: {e}")
 
-            # ── PHASE 1: store pending, rerun → dots will render on next pass ──
+            # Reset component key NOW so Phase 2a gets a blank input field
+            st.session_state["component_key_timestamp"] = time.time()
             st.session_state["_ai_thinking"] = {"type": "text", "text": text}
             st.rerun()
 
@@ -603,18 +575,17 @@ def show_chat(user_id):
                     voice_text = recognizer.recognize_google(audio_data)
 
                 if voice_text.strip():
-                    # Save user message
                     st.session_state["chat_history"].append(("user", voice_text))
                     add_message(user_id, "user", voice_text, cid)
 
-                    # Cleanup temp files
                     try:
                         os.unlink(webm_path)
                         os.unlink(wav_path)
                     except:
                         pass
 
-                    # ── PHASE 1: store pending, rerun → dots will render on next pass ──
+                    # Reset component key NOW so Phase 2a gets a blank input field
+                    st.session_state["component_key_timestamp"] = time.time()
                     st.session_state["_ai_thinking"] = {"type": "voice", "text": voice_text}
                     st.rerun()
                 else:
