@@ -17,7 +17,7 @@ def show_calm_colors_game():
         [data-testid="collapsedControl"]  { display: none !important; }
         .main { margin-left: 0rem !important; }
         header[data-testid="stHeader"]   { display: none !important; }
-        footer, .stDeployButton          { display: none !important; }
+        footer, .stAppDeployButton          { display: none !important; }
         
         /* Add padding for navbar */
         .main .block-container {
@@ -29,7 +29,7 @@ def show_calm_colors_game():
         # Opened from sidebar: sidebar styling is handled exclusively in sidebar.py
         st.markdown("""
         <style>
-        footer, .stDeployButton { display: none !important; }
+        footer, .stAppDeployButton { display: none !important; }
         
         /* Add padding for sidebar mode */
         .main .block-container {
