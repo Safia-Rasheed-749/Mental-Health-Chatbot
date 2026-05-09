@@ -247,6 +247,7 @@ def show_chat(user_id):
         color: rgba(255,255,255,0.78);
         font-weight: 400;
     }
+                /* available */    
     .chat-header-status {
         margin-left: auto;
         display: flex;
@@ -286,7 +287,7 @@ def show_chat(user_id):
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── USER BUBBLE ── */
+    /* ── USER BUBBLE (User Msg)── */
     .user-bubble {
         background: linear-gradient(135deg, #6366f1, #8b5cf6);
         color: #ffffff;
@@ -307,18 +308,24 @@ def show_chat(user_id):
         max-width: 82%;
     }
     .ai-avatar {
-        width: 34px;
-        height: 34px;
+         width: 42px;
+        height: 42px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #6366f1, #a78bfa);
+        background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%);
+        border: 2px solid rgba(99,102,241,0.3);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 16px;
+        font-size: 20px;
         flex-shrink: 0;
-        box-shadow: 0 2px 10px rgba(99,102,241,0.35);
-        margin-top: 2px;
+        box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
+        animation: avatarPulse 3s ease-in-out infinite;
     }
+    @keyframes avatarPulse {
+        0%, 100% { box-shadow: 0 0 0 4px rgba(99,102,241,0.12); }
+        50%       { box-shadow: 0 0 0 8px rgba(99,102,241,0.06); }
+    }
+    /* Chatbot Msg, also Thinking dots bubble bg color */
     .assistant-bubble {
         background: #ffffff;
         color: #1e293b;
@@ -331,12 +338,12 @@ def show_chat(user_id):
         border-left: 3px solid #8b5cf6;
     }
 
-    /* ── EMPTY STATE ── */
+    /* ── EMPTY STATE (Leaf area)── */
     .empty-state {
         text-align: center;
         padding: 60px 20px 40px;
-        color: #64748b;
     }
+    /* size of leaf */
     .empty-state-icon {
         font-size: 56px;
         margin-bottom: 16px;
@@ -347,6 +354,7 @@ def show_chat(user_id):
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-8px); }
     }
+     /* Hello I am here for u */
     .empty-state h3 {
         font-size: 20px;
         font-weight: 700;
@@ -370,6 +378,7 @@ def show_chat(user_id):
     .thinking-dots span {
         width: 8px;
         height: 8px;
+        /* Color of thinking dots */
         background: linear-gradient(135deg, #6366f1, #a78bfa);
         border-radius: 50%;
         animation: bounce 1.4s infinite ease-in-out;
@@ -523,7 +532,7 @@ def show_chat(user_id):
         """, unsafe_allow_html=True)
 
         # Longer pause so thinking dots are clearly visible (1.5 seconds)
-        time.sleep(1.5)
+        time.sleep(1.9)
 
         pending      = st.session_state.pop("_ai_thinking")
         pending_type = pending["type"]
@@ -558,7 +567,7 @@ def show_chat(user_id):
                 f'<style>@keyframes cur{{0%,100%{{opacity:1}}50%{{opacity:0}}}}</style>',
                 unsafe_allow_html=True,
             )
-            time.sleep(0.032)  # 32ms per character - matches landing page demo
+            time.sleep(0.01)  # 32ms per character - matches landing page demo
 
         slot.markdown(
             f'<div class="chat-row" style="justify-content:flex-start;">'
