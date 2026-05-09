@@ -98,7 +98,7 @@ def show_auth_page():
         /* GRADIENT TEXT - To change title color, modify these two hex codes  main headinds bckground color*/
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* CHANGE THIS: Title gradient colors */
         -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        -webkit-text-fill-color: transparent; /* TEXT MAIN HEADINGS changes.*/
         background-clip: text;
         font-size: 2rem !important; 
         font-weight: 800 !important; 
@@ -176,8 +176,8 @@ def show_auth_page():
     
     /* Primary Button with Gradient */
     button[kind="primary"] {
-        background: #FF0000 !important; /* CHANGE THIS: Button gradient colors */
-        color: #FFFFFF !important; 
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; /* CHANGE THIS: Button gradient colors */
+        color: #FFFFFF !important;  
         width: 100% !important;
         border-radius: 10px !important;
         font-weight: 600 !important;

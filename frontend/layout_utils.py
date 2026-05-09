@@ -100,7 +100,7 @@ def apply_professional_design_system():
             /* Main content CTAs — primary = blue (navbar uses secondary + :has(logo) overrides) */
             .stButton > button[kind="primary"] {
                 background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
-                color: #ff0000 !important;
+                color: #ffffff !important;
                 border: none !important;
                 border-radius: 14px !important;
                 font-weight: 800 !important;
