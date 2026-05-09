@@ -19,7 +19,7 @@ def render_navbar():
             padding-right: 2rem !important;
             max-width: 100% !important;
         }
-        
+        /* navbar container color change */
         /* NAVBAR CONTAINER - FIXED AT TOP */
         div[data-testid="stHorizontalBlock"]:has(.navbar-container) {
             position: fixed !important;
@@ -75,7 +75,7 @@ def render_navbar():
             flex-direction: column;
             gap: 2px;
         }
-        
+        /*title color change */
         .navbar-logo-text {
             font-size: 22px;
             font-weight: 700;

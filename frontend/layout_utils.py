@@ -96,7 +96,7 @@ def apply_professional_design_system():
                 border-color: rgba(124,58,237,0.55) !important;
                 color: #ffffff !important;
             }
-
+             /*learn more and chatting button color*/
             /* Main content CTAs — primary = blue (navbar uses secondary + :has(logo) overrides) */
             .stButton > button[kind="primary"] {
                 background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;

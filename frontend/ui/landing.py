@@ -20,6 +20,7 @@ def show_landing_page():
         .main {
             padding-top: 0 !important;
         }
+        /* main page margin top *
         [data-testid="stHorizontalBlock"]:has(h1.hero-title) {
             margin-top: 40px !important;
         }
@@ -37,7 +38,7 @@ def show_landing_page():
         footer, .stApp footer, .css-1lsmgbg, .egzxvld0, .viewerFooter, [data-testid="stFooter"] {
             display: none !important;
         }
-        
+        /* background color change*/
         /* min-height only — fixed 100vh caused extra empty scroll below footer */
         .stApp {
             overflow-y: auto !important;
@@ -107,7 +108,7 @@ def show_landing_page():
             margin-top: 32px;
             padding-right: 20px;
         }
-        
+        /* tile color change with important
         .hero-title {
             font-size: clamp(28px, 4vw, 48px);
             font-weight: 800;
@@ -124,7 +125,7 @@ def show_landing_page():
             -webkit-text-fill-color: #5b21b6;
             background: none;
         }
-        
+        /* hero description color change */
         .hero-description {
             font-size: 19px !important;
             line-height: 1.75;
@@ -134,7 +135,7 @@ def show_landing_page():
             font-weight: 500;
             animation: fadeInUp 0.35s ease-out 0.05s both;
         }
-
+        /* hero description color change */
         .hero-trust {
             color: #334155 !important;
             font-size: 17px !important;
@@ -218,7 +219,7 @@ def show_landing_page():
         }
         
        
-        
+        /* page headings color change  with important*/
         .section-title {
             text-align: center;
             font-size: clamp(1.5rem, 3vw, 2rem);
@@ -248,7 +249,7 @@ def show_landing_page():
             margin-top: -15px !important;
             margin-bottom: 10px !important;
         }
-        
+        /* core capabilities and trust and safety card color change*/
         .feature-card-custom {
             background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(20px);
@@ -292,8 +293,9 @@ def show_landing_page():
             line-height: 1.45;
             font-weight: 500;
         }
+        /* impact cards color change */
         .impact-card-custom {
-            background: rgba(255, 255, 255, 0.65);
+            background: rgba(200, 200, 200, 0.65);
             backdrop-filter: blur(20px);
             border-radius: 24px;
             padding: 28px 12px;
@@ -362,6 +364,7 @@ def show_landing_page():
         }
         
         /* Static footer — same pattern as About page (solid bar, grid, calm typography) */
+        /* footer background color change*/
         .footer-container {
             background: #1e293b;
             color: #e2e8f0;
@@ -402,7 +405,7 @@ def show_landing_page():
             color: #94a3b8;
             letter-spacing: 0.5px;
         }
-        
+        /* footer text color change*/
         .footer-text {
             font-size: 0.85rem;
             color: #cbd5e1;
@@ -473,8 +476,9 @@ def show_landing_page():
 }
 
 /* ================= WHO WE SERVE - RIGHT SIDE BOX ================= */
+/*card color change*/
 .who-box {
-    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+    background: linear-gradient(135deg, rgba(200,200,200,0.9), rgba(255,200,200,0.7));
     backdrop-filter: blur(16px);
     border-radius: 28px;
     padding: 12px 28px;
@@ -794,7 +798,8 @@ def show_landing_page():
                 st.session_state.page = "demo"
                 st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
-    
+        
+    # text color change how it works 
     # ================= HOW IT WORKS =================
     st.markdown('<div class="how-it-works-spacing">', unsafe_allow_html=True)
     
@@ -807,7 +812,7 @@ def show_landing_page():
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
-    
+    # how it works cards description color 
     with col1:
         st.markdown("""
         <div style="text-align: center; padding: 20px;">
@@ -856,6 +861,7 @@ def show_landing_page():
   body { margin:0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: transparent; }
   .ws-wrap { max-width: 920px; margin: 0 auto; padding: 4px 8px 12px; }
   .ws-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 18px; }
+  /* color change when not active*/
   .ws-pill {
     border: 1px solid rgba(15,23,42,0.12);
     background: rgba(255,255,255,0.95);
@@ -868,7 +874,8 @@ def show_landing_page():
     transition: transform 0.2s, box-shadow 0.2s;
     font-family: inherit;
   }
-  .ws-pill:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,23,42,0.08); }
+  .ws-pill:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,23,42,0.08); } 
+  /* color change when it is active*/
   .ws-pill.active {
     color: #fff;
     border-color: transparent;
@@ -900,11 +907,12 @@ def show_landing_page():
   <p class="ws-hint">Tap a topic to switch insights instantly.</p>
 </div>
 <script>
+/* background color for panel*/
 var topics = [
   { label: 'Calm', emoji: '🌿', grad: 'linear-gradient(135deg, rgba(124,58,237,0.11), rgba(99,102,241,0.07))',
     quote: '"Small pauses between tasks make space for clarity and peace."',
     tip: '<strong>Try now:</strong> Inhale for 4 counts, hold for 2, exhale for 6. Repeat three times.' },
-  { label: 'Focus', emoji: '🎯', grad: 'linear-gradient(135deg, rgba(59,130,246,0.12), rgba(14,165,233,0.07))',
+  { label: 'Focus', emoji: '🎯', grad: 'linear-gradient(135deg, rgba(59,120,246,0.12), rgba(14,165,233,0.07))',
     quote: '"One clear step forward beats ten distracted attempts."',
     tip: '<strong>Try now:</strong> Set a 12-minute timer and work on a single micro-task only.' },
   { label: 'Rest', emoji: '🌙', grad: 'linear-gradient(135deg, rgba(99,102,241,0.11), rgba(30,64,175,0.07))',
