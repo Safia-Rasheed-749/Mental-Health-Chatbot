@@ -30,7 +30,8 @@ def show_demo_chat():
             background-color: #f6f7fb !important;
         }
 
-        /* ===== NEW CHAT BUBBLE STYLES (FROM CHAT.PY) ===== */
+        /* ===== CHAT BUBBLE STYLES - SYNCED WITH CHAT.PY ===== */
+        /* Last synced: 2026-05-09 - Bubbles match chat.py exactly */
         .chat-row {
             display: flex;
             margin-bottom: 24px;
@@ -41,13 +42,12 @@ def show_demo_chat():
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ── USER BUBBLE (GRADIENT PURPLE) ── */
+        /* ── USER BUBBLE - Purple Gradient (matches chat.py) ── */
         .user-message {
             display: flex;
             justify-content: flex-end;
             margin: 18px 0;
         }
-         /* user bubble background color*/
         .user-bubble {
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
             color: #ffffff;
@@ -60,7 +60,7 @@ def show_demo_chat():
             box-shadow: 0 4px 14px rgba(99,102,241,0.30);
         }
 
-        /* ── AI BUBBLE (WHITE WITH AVATAR) ── */
+        /* ── AI BUBBLE - White with Avatar (matches chat.py) ── */
         .assistant-message {
             display: flex;
             justify-content: flex-start;
@@ -87,7 +87,6 @@ def show_demo_chat():
             box-shadow: 0 2px 10px rgba(99,102,241,0.35);
             margin-top: 2px;
         }
-        /* assistant bubble background color*/
         .assistant-bubble {
             background: #ffffff;
             color: #1e293b;

@@ -87,11 +87,33 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         50%       { box-shadow: 0 0 0 8px rgba(99,102,241,0.06); }
     }
     .sidebar-brand {
-        font-size: 25px;
-        font-weight: 800;
-        color: #3730a3;
-        line-height: 1.2;
-        letter-spacing: 0.2px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    .sidebar-brand-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1;
+        letter-spacing: -0.5px;
+    }
+    .sidebar-brand-title .ai-part {
+        background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .sidebar-brand-tagline {
+        font-size: 11px;
+        font-weight: 500;
+        background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: 1px;
+        line-height: 1;
+        text-transform: uppercase;
     }
 
     /* ── DIVIDER ── */
@@ -183,39 +205,56 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         height: auto !important;
     }
     /*logout button color changes*/
-    /* ── LOGOUT (primary) ── */
+    /* ── LOGOUT (primary) - Cool Red Color ── */
     section[data-testid="stSidebar"] .stButton button[kind="primary"] {
-        background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
+        background: linear-gradient(135deg, #ef4444 0%, #f87171 100%) !important;
         border: none !important;
         color: #ffffff !important;
         font-weight: 700 !important;
-        border-radius: 8px !important;
+        border-radius: 10px !important;
         text-align: center !important;
         margin-top: 4px !important;
-        box-shadow: 0 3px 10px rgba(224,90,90,0.35) !important;
+        box-shadow: 0 3px 12px rgba(239,68,68,0.25) !important;
+        transition: all 0.2s ease !important;
     }
     section[data-testid="stSidebar"] .stButton button[kind="primary"]:hover {
-        background: linear-gradient(135deg, #d04848 0%, #e06060 100%) !important;
-        box-shadow: 0 4px 14px rgba(224,90,90,0.50) !important;
-        transform: none !important;
+        background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%) !important;
+        box-shadow: 0 4px 16px rgba(239,68,68,0.35) !important;
+        transform: translateY(-1px) !important;
     }
-    .logout-btn { margin-top: 36px !important; padding-top: 16px !important; border-top: 1px solid rgba(99,102,241,0.2) !important; }
+    .logout-btn { 
+        margin-top: 36px !important; 
+        padding-top: 16px !important; 
+        border-top: 1px solid rgba(99,102,241,0.2) !important; 
+    }
 
-    /* ── NEW CHAT BUTTON ── */
-    .new-chat-btn .stButton button {
-        background: rgba(99,102,241,0.1) !important;
-        border: 1px solid rgba(99,102,241,0.3) !important;
-        border-radius: 8px !important;
-        color: #4f46e5 !important;
-        font-size: 12.5px !important;
-        font-weight: 600 !important;
-        padding: 7px 12px !important;
-        margin-bottom: 6px !important;
+    /* ── NEW CHAT BUTTON - Ultra Specific Selector with !important ── */
+    section[data-testid="stSidebar"] div.new-chat-btn {
+        margin-top: 16px !important;
+        margin-bottom: 12px !important;
+        padding: 0 !important;
     }
-    .new-chat-btn .stButton button:hover {
-        background: rgba(99,102,241,0.18) !important;
-        border-color: rgba(99,102,241,0.5) !important;
-        transform: none !important;
+    section[data-testid="stSidebar"] div.new-chat-btn div[data-testid="stButton"] {
+        margin: 0 !important;
+    }
+    section[data-testid="stSidebar"] div.new-chat-btn div[data-testid="stButton"] button {
+        background: linear-gradient(135deg, rgba(99,102,241,0.18) 0%, rgba(139,92,246,0.18) 100%) !important;
+        border: 1.5px solid rgba(99,102,241,0.4) !important;
+        border-radius: 10px !important;
+        color: #4f46e5 !important;
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        padding: 12px 16px !important;
+        box-shadow: 0 3px 10px rgba(99,102,241,0.15) !important;
+        transition: all 0.2s ease !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+    section[data-testid="stSidebar"] div.new-chat-btn div[data-testid="stButton"] button:hover {
+        background: linear-gradient(135deg, rgba(99,102,241,0.25) 0%, rgba(139,92,246,0.25) 100%) !important;
+        border-color: rgba(99,102,241,0.6) !important;
+        box-shadow: 0 5px 16px rgba(99,102,241,0.25) !important;
+        transform: translateY(-2px) !important;
     }
 
     /* ── SESSION ITEMS ── */
@@ -283,7 +322,10 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         st.markdown("""
         <div class="sidebar-header">
             <div class="sidebar-avatar">🧠</div>
-            <div class="sidebar-brand">MindCare AI</div>
+            <div class="sidebar-brand">
+                <span class="sidebar-brand-title">MindCare<span class="ai-part">AI</span></span>
+                <span class="sidebar-brand-tagline">Mental Wellness</span>
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -304,20 +346,78 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
                     del st.session_state[k]
             st.rerun()
 
+        # ═══════════════════════════════════════════════════════════
+        # NEW CHAT BUTTON - SIDEBAR (CHAT PAGE ONLY)
+        # ═══════════════════════════════════════════════════════════
+        # LOCATION: Sidebar mein "NAVIGATION" ke neeche
+        # STYLING: Simple, transparent background with border
+        # 
+        # CUSTOMIZATION GUIDE:
+        # 1. SPACING ABOVE: height: 32px (line 355) - YAHAN SE SPACE CHANGE KARO
+        # 2. BUTTON WIDTH: columns([1.5, 1]) - First number ko change karo
+        #    - [1.5, 1] = 60% width (current)
+        #    - [2, 1] = 67% width (wider)
+        #    - [1, 1] = 50% width (narrower)
+        # 3. BUTTON STYLING: CSS section mein (line 368)
+        #    - font-size: 14px = Button text size
+        #    - padding: 10px 14px = Button ke andar space
+        #    - border-radius: 8px = Corner roundness
+        # ═══════════════════════════════════════════════════════════
+        
         # ── SESSION TABS — only on Chat page ──
         if st.session_state.get("current_page") == "Chat":
             st.markdown("---")
 
-            st.markdown('<div class="new-chat-btn">', unsafe_allow_html=True)
-            if st.button("✏️  New Chat", key="new_chat_btn"):
-                st.session_state["conversation_id"] = None
-                st.session_state["chat_history"] = []
-                st.session_state["last_loaded_chat"] = None
-                for k in list(st.session_state.keys()):
-                    if k.startswith("rename_") or k.startswith("menu_open_"):
-                        del st.session_state[k]
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
+            # SPACING ABOVE BUTTON - Change height value to adjust space
+            st.markdown('<div style="height: 32px;"></div>', unsafe_allow_html=True)
+            
+            # BUTTON WIDTH & POSITION - Change column ratio to adjust width
+            # [1.5, 1] means button takes 60% width, left-aligned
+            col1, col2 = st.columns([1.5, 1])
+            with col1:
+                if st.button("✏️  New Chat", key="new_chat_btn", use_container_width=True):
+                    st.session_state["conversation_id"] = None
+                    st.session_state["chat_history"] = []
+                    st.session_state["last_loaded_chat"] = None
+                    for k in list(st.session_state.keys()):
+                        if k.startswith("rename_") or k.startswith("menu_open_"):
+                            del st.session_state[k]
+                    st.rerun()
+            
+            # ═══════════════════════════════════════════════════════════
+            # BUTTON STYLING - CSS
+            # ═══════════════════════════════════════════════════════════
+            # DESIGN: Transparent background with subtle border
+            # HOVER: Light background + slide right animation
+            # 
+            # CUSTOMIZATION:
+            # - background: transparent = No background color
+            # - border: 1px solid rgba(99,102,241,0.3) = Purple border
+            # - color: #4f46e5 = Text color (purple)
+            # - font-size: 14px = YAHAN SE TEXT SIZE CHANGE KARO
+            # - padding: 10px 14px = Button ke andar space
+            # ═══════════════════════════════════════════════════════════
+            st.markdown("""
+            <style>
+            /* New Chat Button - Simple, left-aligned, narrower */
+            section[data-testid="stSidebar"] button[key="new_chat_btn"] {
+                background: transparent !important;
+                border: 1px solid rgba(99,102,241,0.3) !important;
+                border-radius: 8px !important;
+                color: #4f46e5 !important;
+                font-size: 14px !important;  /* TEXT SIZE - YAHAN SE CHANGE KARO */
+                font-weight: 600 !important;
+                padding: 10px 14px !important;  /* BUTTON PADDING - YAHAN SE CHANGE KARO */
+                transition: all 0.2s ease !important;
+                text-align: left !important;
+            }
+            section[data-testid="stSidebar"] button[key="new_chat_btn"]:hover {
+                background: rgba(99,102,241,0.08) !important;  /* Hover background */
+                border-color: rgba(99,102,241,0.5) !important;  /* Hover border */
+                transform: translateX(2px) !important;  /* Slide right on hover */
+            }
+            </style>
+            """, unsafe_allow_html=True)
 
             st.markdown('<div class="sb-section-label">Recent Sessions</div>', unsafe_allow_html=True)
 

@@ -16,7 +16,7 @@ try:
         host="localhost",
         database="fyp_chatbot",
         user="postgres",
-        password="123456",
+        password="123456789",
         port=5432
     )
 except Exception as e:
@@ -100,7 +100,14 @@ def add_user(username, email, password):
 def check_login(email, password):
     """
     Returns (id, username, email, is_admin) if successful, else None
+    Validates that email and password are not empty before checking database
     """
+    # Frontend validation backup (should already be done in auth.py)
+    if not email or not email.strip():
+        return None
+    if not password or not password.strip():
+        return None
+    
     conn = None
     cur = None
     try:
@@ -113,7 +120,7 @@ def check_login(email, password):
             WHERE LOWER(email)=LOWER(%s)
             AND password_hash=%s
             """,
-            (email, hash_password(password))
+            (email.strip(), hash_password(password))
         )
         return cur.fetchone()
     except Exception as e:

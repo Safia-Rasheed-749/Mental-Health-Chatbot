@@ -584,6 +584,7 @@ def show_landing_page():
             <div id="chat-box" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px;"></div>
         </div>
         <style>
+            /* ===== SYNCED WITH CHAT.PY - EXACT BUBBLE STYLING ===== */
             @keyframes bounce {
                 0%, 60%, 100% { transform: translateY(0); }
                 30% { transform: translateY(-8px); }
@@ -592,7 +593,7 @@ def show_landing_page():
                 display: inline-flex;
                 align-items: center;
                 gap: 6px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: linear-gradient(135deg, #6366f1, #a78bfa);
                 padding: 10px 14px;
                 border-radius: 20px;
                 border-bottom-right-radius: 4px;
@@ -608,31 +609,56 @@ def show_landing_page():
             .typing-dot:nth-child(2) { animation-delay: 0.2s; }
             .typing-dot:nth-child(3) { animation-delay: 0.4s; }
             .message-bubble {
-                max-width: 85%;
+                max-width: 68%;
                 word-wrap: break-word;
-                line-height: 1.4;
+                line-height: 1.55;
             }
+            /* ── USER BUBBLE - Purple Gradient (matches chat.py) ── */
             .user-bubble {
-                background: #f1f5f9;
-                color: #1e293b;
-                padding: 10px 14px;
-                border-radius: 18px;
-                border-bottom-left-radius: 4px;
+                background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                color: #ffffff;
+                padding: 11px 16px;
+                border-radius: 20px 20px 4px 20px;
+                font-size: 14px;
                 display: inline-block;
+                box-shadow: 0 4px 14px rgba(99,102,241,0.30);
+            }
+            /* ── AI BUBBLE - White with Avatar (matches chat.py) ── */
+            .bot-bubble-wrap {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                max-width: 82%;
+            }
+            .ai-avatar {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #6366f1, #a78bfa);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                flex-shrink: 0;
+                box-shadow: 0 2px 10px rgba(99,102,241,0.35);
+                margin-top: 2px;
             }
             .bot-bubble {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                padding: 10px 14px;
-                border-radius: 18px;
-                border-bottom-right-radius: 4px;
+                background: #ffffff;
+                color: #1e293b;
+                padding: 12px 16px;
+                border-radius: 4px 20px 20px 20px;
+                font-size: 14px;
+                line-height: 1.65;
                 display: inline-block;
                 min-width: 60px;
+                box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+                border-left: 3px solid #8b5cf6;
             }
             .message-row {
                 display: flex;
                 width: 100%;
-                margin-bottom: 8px;
+                margin-bottom: 12px;
             }
             .user-row {
                 justify-content: flex-end;
@@ -674,7 +700,7 @@ def show_landing_page():
                 
                 var bubble = document.createElement('div');
                 bubble.className = 'message-bubble user-bubble';
-                bubble.innerText = "👤 " + text;
+                bubble.innerText = text;
                 
                 row.appendChild(bubble);
                 return row;
@@ -684,17 +710,34 @@ def show_landing_page():
                 var row = document.createElement('div');
                 row.className = 'message-row bot-row';
                 
-                var bubble = document.createElement('div');
-                bubble.className = 'message-bubble bot-bubble';
-                bubble.innerText = "🧠 ";
+                var wrap = document.createElement('div');
+                wrap.className = 'bot-bubble-wrap';
                 
-                row.appendChild(bubble);
+                var avatar = document.createElement('div');
+                avatar.className = 'ai-avatar';
+                avatar.innerText = '🧠';
+                
+                var bubble = document.createElement('div');
+                bubble.className = 'bot-bubble';
+                bubble.innerText = '';
+                
+                wrap.appendChild(avatar);
+                wrap.appendChild(bubble);
+                row.appendChild(wrap);
+                
                 return {row: row, bubble: bubble};
             }
             
             function createTypingIndicator() {
                 var row = document.createElement('div');
                 row.className = 'message-row bot-row';
+                
+                var wrap = document.createElement('div');
+                wrap.className = 'bot-bubble-wrap';
+                
+                var avatar = document.createElement('div');
+                avatar.className = 'ai-avatar';
+                avatar.innerText = '🧠';
                 
                 var indicator = document.createElement('div');
                 indicator.className = 'typing-indicator';
@@ -704,13 +747,16 @@ def show_landing_page():
                     indicator.appendChild(dot);
                 }
                 
-                row.appendChild(indicator);
+                wrap.appendChild(avatar);
+                wrap.appendChild(indicator);
+                row.appendChild(wrap);
+                
                 return row;
             }
             
             function typeTextWithDelay(bubble, fullText, callback) {
-                bubble.innerText = "🧠 ";
-                var currentText = "🧠 ";
+                bubble.innerText = '';
+                var currentText = '';
                 var charIndex = 0;
                 
                 function addNextChar() {
