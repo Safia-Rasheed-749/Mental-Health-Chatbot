@@ -236,34 +236,34 @@ def show_calm_colors_game():
     }
 
     .hero-title {
-        font-size: 48px;
-        font-weight: 900;
+        font-size: 48px !important;
+        font-weight: 900 !important;
         margin-bottom: 12px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        background: linear-gradient(135deg, #3b82f6, #60a5fa) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
         position: relative;
         z-index: 1;
     }
 
     .hero-subtitle {
-        font-size: 18px;
-        font-weight: 500;
-        color: #4a5568;
+        font-size: 18px !important;
+        font-weight: 500 !important;
+        color: #334155 !important;
         position: relative;
         z-index: 1;
     }
 
     /* ── HOW TO PLAY SECTION ── */
     .section-title {
-        text-align: center;
-        font-size: 14px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: #64748b;
-        margin: 40px 0 32px;
+        text-align: center !important;
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        letter-spacing: 2px !important;
+        text-transform: uppercase !important;
+        color: #1e293b !important;
+        margin: 40px 0 32px !important;
     }
 
     .play-cards {
@@ -306,18 +306,18 @@ def show_calm_colors_game():
     }
 
     .play-card.watch {
-        background: linear-gradient(135deg, rgba(139,92,246,0.9) 0%, rgba(167,139,250,0.9) 100%);
-        color: white;
+        background: linear-gradient(135deg, #8b5cf6, #c084fc) !important;
+        color: white !important;
     }
 
     .play-card.repeat {
-        background: linear-gradient(135deg, rgba(59,130,246,0.9) 0%, rgba(96,165,250,0.9) 100%);
-        color: white;
+        background: linear-gradient(135deg, #3b82f6, #60a5fa) !important;
+        color: white !important;
     }
 
     .play-card.level {
-        background: linear-gradient(135deg, rgba(16,185,129,0.9) 0%, rgba(52,211,153,0.9) 100%);
-        color: white;
+        background: linear-gradient(135deg, #10b981, #34d399) !important;
+        color: white !important;
     }
 
     .play-icon {
@@ -416,18 +416,14 @@ def show_calm_colors_game():
     }
     
     .start-btn-wrap .stButton > button {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #667eea 100%) !important;
-        background-size: 200% 200% !important;
-        animation: btnShift 4s ease infinite !important;
+        background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
         color: white !important;
         font-size: 20px !important;
         font-weight: 800 !important;
         padding: 16px 48px !important;
         border-radius: 50px !important;
-        border: 3px solid rgba(255,255,255,0.4) !important;
-        box-shadow: 
-            0 12px 40px rgba(240,147,251,0.4),
-            inset 0 1px 0 rgba(255,255,255,0.3) !important;
+        border: none !important;
+        box-shadow: 0 12px 40px rgba(236,72,153,0.35) !important;
         letter-spacing: 0.5px !important;
         transition: all 0.3s ease !important;
         backdrop-filter: blur(20px) !important;
@@ -437,10 +433,7 @@ def show_calm_colors_game():
     
     .start-btn-wrap .stButton > button:hover {
         transform: translateY(-6px) scale(1.05) !important;
-        box-shadow: 
-            0 20px 60px rgba(240,147,251,0.6),
-            inset 0 1px 0 rgba(255,255,255,0.5) !important;
-        border: 3px solid rgba(255,255,255,0.6) !important;
+        box-shadow: 0 20px 60px rgba(236,72,153,0.5) !important;
     }
     
     @keyframes btnShift {
@@ -545,92 +538,6 @@ def show_calm_colors_game():
         background: rgba(255,255,255,0.1); 
         border-radius: 10px; 
     }
-    }
-    @keyframes chipIn {
-        0%   { transform: scale(0.7); opacity: 0.2; }
-        60%  { transform: scale(1.12); }
-        100% { transform: scale(1); opacity: 1; }
-    }
-
-    /* ── COLOR BUTTONS ── */
-    div[data-testid="column"] button {
-        padding: 28px 18px !important;
-        font-size: 22px !important;
-        font-weight: 700 !important;
-        border-radius: 20px !important;
-        border: 3px solid rgba(255,255,255,0.55) !important;
-        transition: all 0.25s ease !important;
-        width: auto !important;
-        min-width: 140px !important;
-        color: white !important;
-    }
-    div[data-testid="column"] button:hover {
-        transform: scale(1.07) translateY(-6px) !important;
-        box-shadow: 0 14px 36px rgba(0,0,0,0.28) !important;
-    }
-    div[data-testid="column"] button:active { transform: scale(0.96) !important; }
-
-    /* ── PROGRESS BAR ── */
-    .stProgress > div > div {
-        background: linear-gradient(90deg, #6366f1, #8b5cf6) !important;
-        border-radius: 10px !important; height: 12px !important;
-    }
-    .stProgress > div {
-        background: rgba(99,102,241,0.18) !important;
-        border-radius: 10px !important; height: 12px !important;
-    }
-
-    /* ── MAIN BUTTONS ── */
-    .stButton > button {
-        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
-        color: white !important;
-        font-weight: 700 !important;
-        font-size: 18px !important;
-        padding: 12px 18px !important;
-        border-radius: 50px !important;
-        border: none !important;
-        box-shadow: 0 6px 24px rgba(99,102,241,0.38) !important;
-        transition: all 0.25s ease !important;
-        max-width: 320px !important;
-        margin: auto !important;
-        display: block !important;
-    }
-    .stButton > button:hover {
-        transform: translateY(-4px) !important;
-        box-shadow: 0 10px 32px rgba(99,102,241,0.52) !important;
-    }
-
-    /* ── START GAME BUTTON ── */
-    .start-btn-wrap .stButton > button {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #667eea 100%) !important;
-        background-size: 200% 200% !important;
-        animation: btnShift 4s ease infinite !important;
-        color: white !important;
-        font-size: 18px !important;
-        font-weight: 800 !important;
-        padding: 14px 0 !important;
-        border-radius: 50px !important;
-        border: 3px solid rgba(255,255,255,0.40) !important;
-        box-shadow: 0 8px 28px rgba(240,147,251,0.50) !important;
-        letter-spacing: 0.5px !important;
-        transition: all 0.3s ease !important;
-        width: 100% !important;
-        margin-top: 15px;
-    }
-    
-    .start-btn-wrap {
-        margin-top: 30px !important;
-        padding-left: 28px !important;
-    }
-    .start-btn-wrap .stButton > button:hover {
-        transform: translateY(-4px) scale(1.02) !important;
-        box-shadow: 0 14px 36px rgba(240,147,251,0.65) !important;
-    }
-    @keyframes btnShift {
-        0%   { background-position: 0% 50%; }
-        50%  { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
 
     /* ── PLAY AGAIN BUTTON ── */
     .play-again-wrap {
@@ -664,45 +571,74 @@ def show_calm_colors_game():
 
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.35); border-radius: 8px; }
+    
+    /* ═══════════════════════════════════════════════════════════════
+       COLOR GAME BUTTONS - Pure CSS Solution (No JavaScript)
+       VIVA NOTE: Ye buttons CSS se color hote hain, JavaScript nahi
+       Each button ko uske key se target karte hain
+    ═══════════════════════════════════════════════════════════════ */
+    
+    /* Target buttons by their unique keys */
+    button[data-testid*="color_blue"],
+    button:has(p:contains("Blue")),
+    div[data-testid="column"]:nth-child(1) button {
+        background: linear-gradient(135deg, #3b82f6, #60a5fa) !important;
+        color: white !important;
+    }
+    
+    button[data-testid*="color_green"],
+    button:has(p:contains("Green")),
+    div[data-testid="column"]:nth-child(2) button {
+        background: linear-gradient(135deg, #10b981, #34d399) !important;
+        color: white !important;
+    }
+    
+    button[data-testid*="color_purple"],
+    button:has(p:contains("Purple")),
+    div[data-testid="column"]:nth-child(3) button {
+        background: linear-gradient(135deg, #8b5cf6, #a78bfa) !important;
+        color: white !important;
+    }
+    
+    button[data-testid*="color_orange"],
+    button:has(p:contains("Orange")),
+    div[data-testid="column"]:nth-child(4) button {
+        background: linear-gradient(135deg, #f97316, #fb923c) !important;
+        color: white !important;
+    }
+    
+    /* Common styling for all color buttons */
+    div[data-testid="column"] button[data-testid*="color_"],
+    div[data-testid="column"] button {
+        height: 70px !important;
+        min-height: 70px !important;
+        border-radius: 20px !important;
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        border: 3px solid rgba(255,255,255,0.45) !important;
+        padding: 0 16px !important;
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 
+            0 8px 32px rgba(0,0,0,0.2),
+            inset 0 1px 0 rgba(255,255,255,0.3) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    div[data-testid="column"] button:hover {
+        transform: scale(1.05) translateY(-6px) !important;
+        box-shadow: 
+            0 16px 48px rgba(0,0,0,0.3),
+            inset 0 1px 0 rgba(255,255,255,0.5) !important;
+        border: 3px solid rgba(255,255,255,0.6) !important;
+    }
+    
+    div[data-testid="column"] button:active {
+        transform: scale(0.98) translateY(-2px) !important;
+    }
     </style>
-
-    <script>
-    /* Color the 4 game buttons by their text label and enforce uniform size */
-    (function() {
-        const map = {
-            '💙  Blue':   'linear-gradient(135deg,#3b82f6,#60a5fa)',
-            '💚  Green':  'linear-gradient(135deg,#10b981,#34d399)',
-            '💜  Purple': 'linear-gradient(135deg,#8b5cf6,#a78bfa)',
-            '🧡  Orange': 'linear-gradient(135deg,#f97316,#fb923c)',
-        };
-        function paint() {
-            const doc = window.parent.document;
-            doc.querySelectorAll('button').forEach(btn => {
-                const t = btn.innerText.trim();
-                if (map[t]) {
-                    btn.style.setProperty('background', map[t], 'important');
-                    btn.style.setProperty('color', '#fff', 'important');
-                    btn.style.setProperty('border', '3px solid rgba(255,255,255,0.45)', 'important');
-                    btn.style.setProperty('height', '60px', 'important');
-                    btn.style.setProperty('min-height', '60px', 'important');
-                    btn.style.setProperty('padding', '0 16px', 'important');
-                    btn.style.setProperty('font-size', '18px', 'important');
-                    btn.style.setProperty('font-weight', '700', 'important');
-                    btn.style.setProperty('border-radius', '20px', 'important');
-                    btn.style.setProperty('width', '100%', 'important');
-                    btn.style.setProperty('display', 'flex', 'important');
-                    btn.style.setProperty('align-items', 'center', 'important');
-                    btn.style.setProperty('justify-content', 'center', 'important');
-                }
-            });
-        }
-        setTimeout(paint, 120);
-        setTimeout(paint, 600);
-        new MutationObserver(paint).observe(
-            window.parent.document.body, { childList: true, subtree: true }
-        );
-    })();
-    </script>
     """, unsafe_allow_html=True)
 
     # ── SESSION STATE ──
@@ -950,7 +886,7 @@ def show_calm_colors_game():
         # How to Play label
         st.markdown("""
         <div style="text-align:center;font-size:16px;font-weight:700;letter-spacing:1.2px;
-                    text-transform:uppercase;color:black :;margin:28px 0 34px;">
+                    text-transform:uppercase;color:#111827;margin:28px 0 34px;">
             📖 How to Play
         </div>
         """, unsafe_allow_html=True)

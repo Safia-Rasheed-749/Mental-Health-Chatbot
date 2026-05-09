@@ -55,18 +55,16 @@ def render_navbar():
             justify-content: center;
             font-size: 22px;
             border: 2px solid rgba(124, 58, 237, 0.2);
-            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.15);
-            animation: avatarPulse 2s ease-in-out infinite;
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
+            animation: avatarPulse 3s ease-in-out infinite;
         }
         
         @keyframes avatarPulse {
             0%, 100% {
-                box-shadow: 0 2px 8px rgba(124, 58, 237, 0.15);
-                transform: scale(1);
+                box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
             }
             50% {
-                box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
-                transform: scale(1.05);
+                box-shadow: 0 0 0 8px rgba(124, 58, 237, 0.06);
             }
         }
         

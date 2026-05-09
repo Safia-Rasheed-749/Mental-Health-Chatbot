@@ -82,10 +82,9 @@ def show_chat(user_id):
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
     /* ═══════════════════════════════════════════════════════════════
-       HIDE STREAMLIT DEFAULT ELEMENTS
-       Purpose: Remove Streamlit branding and unnecessary UI elements
+       HIDE STREAMLIT DEFAULT ELEMENTS & SPINNER BLUR
+       Purpose: Remove Streamlit branding and prevent page blur on rerun
        Applied to: This page only (chat.py)
-       Also used in: All other pages (landing.py, auth.py, etc.)
     ═══════════════════════════════════════════════════════════════ */
     .stAppDeployButton {
         display: none;  /* Hide "Deploy" button */
@@ -100,6 +99,35 @@ def show_chat(user_id):
         background: transparent !important;  /* Transparent header for clean look */
         box-shadow: none !important;
         visibility: visible !important;  /* Keep header visible for sidebar toggle */
+    }
+    
+    /* ═══════════════════════════════════════════════════════════════
+       CRITICAL: HIDE STREAMLIT SPINNER & BLUR OVERLAY
+       This prevents the page from blurring during rerun
+       Makes the experience smooth and professional
+    ═══════════════════════════════════════════════════════════════ */
+    .stSpinner,
+    [data-testid="stStatusWidget"],
+    div[data-testid="stSpinner"],
+    div.stSpinner > div {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+    
+    /* Hide the blur overlay that appears during rerun */
+    .stApp > div[style*="pointer-events: none"],
+    .stApp > div[style*="opacity: 0.4"],
+    div[data-testid="stAppViewBlockingElement"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+    
+    /* Ensure smooth transitions without blur */
+    .stApp {
+        transition: none !important;
     }
     
     /* ═══════════════════════════════════════════════════════════════
@@ -165,6 +193,16 @@ def show_chat(user_id):
         padding-top: 0rem !important;
         padding-bottom: 100px !important;
         max-width: 100% !important;
+    }
+    
+    /* Prevent layout shift during animations */
+    .stMarkdown {
+        min-height: 0 !important;
+    }
+    
+    /* Smooth content updates without flicker */
+    [data-testid="stVerticalBlock"] {
+        transition: none !important;
     }
 
     /* ── HEADER BANNER ── */
@@ -484,6 +522,9 @@ def show_chat(user_id):
         </div>
         """, unsafe_allow_html=True)
 
+        # Longer pause so thinking dots are clearly visible (1.5 seconds)
+        time.sleep(1.5)
+
         pending      = st.session_state.pop("_ai_thinking")
         pending_type = pending["type"]
         pending_text = pending["text"]
@@ -493,7 +534,7 @@ def show_chat(user_id):
         st.rerun()
 
     # ══════════════════════════════════════════════════════
-    # PHASE 2b — typewriter: one character at a time
+    # PHASE 2b — typewriter: one character at a time (SMOOTH like demo)
     # ══════════════════════════════════════════════════════
     elif st.session_state.get("_ai_typing"):
         import html as _html
@@ -503,6 +544,7 @@ def show_chat(user_id):
         safe         = _html.escape(response)
         slot         = st.empty()
 
+        # Match landing page demo speed: 32ms per character
         for i in range(1, len(safe) + 1):
             slot.markdown(
                 f'<div class="chat-row" style="justify-content:flex-start;">'
@@ -516,7 +558,7 @@ def show_chat(user_id):
                 f'<style>@keyframes cur{{0%,100%{{opacity:1}}50%{{opacity:0}}}}</style>',
                 unsafe_allow_html=True,
             )
-            time.sleep(0.01)
+            time.sleep(0.032)  # 32ms per character - matches landing page demo
 
         slot.markdown(
             f'<div class="chat-row" style="justify-content:flex-start;">'

@@ -101,20 +101,25 @@ def show_auth_page():
     }
     /* text below main headings welcome back craete an account and reset password color changes.*/
     .auth-header p { 
-        color: #64748B !important;   /* CHANGE THIS: Subtitle text color */
-        font-size: 0.95rem !important; 
+        color: #475569 !important;   /* DARKER color for better visibility */
+        font-size: 1rem !important;  /* INCREASED from 0.95rem */
         margin-top: 0 !important;
-        font-weight: 400;
+        font-weight: 500 !important;  /* MEDIUM weight for better readability */
     }
 
     
-    /* input fields name color change.*/
-    .stTextInput label { 
-        font-size: 0.875rem !important; 
-        color: #1e293b !important;   /* CHANGE THIS: Label text color */
-        font-weight: 600 !important; 
-        margin-bottom: 0.5rem !important;
-        display: block !important;
+    /* input fields name color change - INCREASED FONT SIZE - ULTRA AGGRESSIVE */
+    .stTextInput label,
+    div[data-testid="stTextInput"] label,
+    div[data-testid="stTextInput"] > label,
+    label[data-testid="stWidgetLabel"],
+    .stTextInput > label,
+    [data-testid="column"] label {
+        display: none !important;  /* HIDE ALL STREAMLIT LABELS - we use custom HTML labels */
+        visibility: hidden !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     /* Remove Streamlit's default input wrapper border */
@@ -178,27 +183,28 @@ def show_auth_page():
         transform: translateY(0) !important;
     }
 
-    /* Tertiary Link Button */
+    /* Tertiary Link Button - SEMI-BOLD & IMPROVED VISIBILITY */
     button[kind="tertiary"] {
         background-color: transparent !important;
-        color: #667eea !important;  /* CHANGE THIS: Link button text color */
+        color: #5b21b6 !important;  /* Dark purple for visibility */
         width: 100% !important;
         border: none !important;
         box-shadow: none !important;
-        font-weight: 500 !important;
-        font-size: 0.9rem !important;
+        font-weight: 600 !important;  /* SEMI-BOLD */
+        font-size: 0.98rem !important;
         padding: 0.5rem !important;
         margin-top: 0.75rem !important;
         transition: all 0.2s ease !important;
     }
     
     button[kind="tertiary"]:hover { 
-        color: #764ba2 !important;  /* CHANGE THIS: Link button hover color (match gradient end) */
-        background-color: rgba(102, 126, 234, 0.05) !important;  /* CHANGE THIS: Hover background tint */
+        color: #7c3aed !important;
+        background-color: rgba(91, 33, 182, 0.08) !important;
         border-radius: 8px !important;
+        text-decoration: underline !important;
     }
 
-    /* Forgot Password Link Styling */
+    /* Forgot Password Link Styling - SEMI-BOLD & IMPROVED VISIBILITY */
     .forgot-password-link {
         text-align: right;
         margin-top: -8px;
@@ -206,11 +212,17 @@ def show_auth_page():
     }
     
     .forgot-password-link button {
-        font-size: 0.85rem !important;
-        color: #667eea !important;  /* CHANGE THIS: Forgot password link color */
+        font-size: 0.95rem !important;
+        color: #5b21b6 !important;  /* Dark purple for visibility */
+        font-weight: 600 !important;  /* SEMI-BOLD */
         padding: 0.25rem 0.5rem !important;
         width: auto !important;
         float: right;
+    }
+    
+    .forgot-password-link button:hover {
+        color: #7c3aed !important;
+        text-decoration: underline !important;
     }
 
     /* Divider with text */
@@ -278,9 +290,13 @@ def show_auth_page():
                     <p>Enter your details to sign in to your account.</p>
                 </div>
             """, unsafe_allow_html=True)
-
-            email = st.text_input("Email", key="login_email", placeholder="name@example.com")
-            password = st.text_input("Password", type="password", key="login_password", placeholder="••••••••")
+            
+            # Custom HTML labels with large font (semi-bold, not bold)
+            st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 16px;">Email</p>', unsafe_allow_html=True)
+            email = st.text_input("Email", key="login_email", placeholder="name@example.com", label_visibility="collapsed")
+            
+            st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 20px;">Password</p>', unsafe_allow_html=True)
+            password = st.text_input("Password", type="password", key="login_password", placeholder="••••••••", label_visibility="collapsed")
 
             # Forgot Password small link just under password
             st.markdown("<div class='forgot-password-link'>", unsafe_allow_html=True)
@@ -327,10 +343,16 @@ def show_auth_page():
                     <p>Join us and start your secure therapy journey.</p>
                 </div>
             """, unsafe_allow_html=True)
-
-            name = st.text_input("Full Name", key="reg_name", placeholder="John Doe")
-            reg_email = st.text_input("Email", key="reg_email", placeholder="name@example.com")
-            reg_password = st.text_input("Password", type="password", key="reg_password", placeholder="••••••••")
+            
+            # Custom HTML labels with large font (semi-bold, not bold)
+            st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 16px;">Full Name</p>', unsafe_allow_html=True)
+            name = st.text_input("Full Name", key="reg_name", placeholder="John Doe", label_visibility="collapsed")
+            
+            st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 20px;">Email</p>', unsafe_allow_html=True)
+            reg_email = st.text_input("Email", key="reg_email", placeholder="name@example.com", label_visibility="collapsed")
+            
+            st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 20px;">Password</p>', unsafe_allow_html=True)
+            reg_password = st.text_input("Password", type="password", key="reg_password", placeholder="••••••••", label_visibility="collapsed")
 
             def is_valid_email(e):
                 return re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', e)
@@ -377,7 +399,8 @@ def show_auth_page():
             """, unsafe_allow_html=True)
 
             if not st.session_state.get('show_reset_form', False):
-                reset_email_input = st.text_input("Registered Email", key="reset_email_widget", placeholder="name@example.com")
+                st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 16px;">Registered Email</p>', unsafe_allow_html=True)
+                reset_email_input = st.text_input("Registered Email", key="reset_email_widget", placeholder="name@example.com", label_visibility="collapsed")
                 
                 # Full Width Send Code Button
                 if st.button("Send Reset Code", key="send_reset_btn", type="primary", use_container_width=True):
@@ -404,9 +427,14 @@ def show_auth_page():
 
             else:
                 # User has the code, show reset fields
-                reset_code = st.text_input("6-Digit Code", key="reset_code_input", placeholder="123456", max_chars=6)
-                new_password = st.text_input("New Password", type="password", key="reset_new_password", placeholder="••••••••")
-                confirm_password = st.text_input("Confirm Password", type="password", key="reset_confirm_password", placeholder="••••••••")
+                st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 16px;">6-Digit Code</p>', unsafe_allow_html=True)
+                reset_code = st.text_input("6-Digit Code", key="reset_code_input", placeholder="123456", max_chars=6, label_visibility="collapsed")
+                
+                st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 20px;">New Password</p>', unsafe_allow_html=True)
+                new_password = st.text_input("New Password", type="password", key="reset_new_password", placeholder="••••••••", label_visibility="collapsed")
+                
+                st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 20px;">Confirm Password</p>', unsafe_allow_html=True)
+                confirm_password = st.text_input("Confirm Password", type="password", key="reset_confirm_password", placeholder="••••••••", label_visibility="collapsed")
                 
                 if st.button("Confirm Reset", key="reset_password_btn", type="primary", use_container_width=True):
                     if reset_code and new_password and confirm_password:
