@@ -1,151 +1,131 @@
 # email_utils.py
 import smtplib
-import random
-import string
-import secrets
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 
-load_dotenv()
+# Load .env file from frontend directory
+env_path = Path(__file__).parent.parent / '.env'
+load_dotenv(dotenv_path=env_path)
 
 # Email configuration from environment variables
-SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
-SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
-SENDER_EMAIL = os.getenv("SENDER_EMAIL")
-SENDER_PASSWORD = os.getenv("SENDER_PASSWORD")
-APP_URL = os.getenv("APP_URL", "http://localhost:8501")
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+SMTP_EMAIL = os.getenv("SENDER_EMAIL")
+SMTP_PASSWORD = os.getenv("SENDER_PASSWORD")
 
-def generate_reset_token():
-    """Generate a secure random token for password reset"""
-    # Method 1: Simple 6-digit code (user-friendly)
-    reset_code = ''.join(random.choices(string.digits, k=6))
-    
-    # Method 2: Secure URL token (more secure but less user-friendly)
-    secure_token = secrets.token_urlsafe(32)
-    
-    return {
-        'code': reset_code,          # For user to type
-        'token': secure_token,       # For URL-based reset
-        'expiry': datetime.now() + timedelta(hours=1)  # 1 hour expiry
-    }
+# Debug: Print if credentials are loaded
+print(f"\n{'='*70}")
+print(f"[EMAIL CONFIG] SMTP Server: {SMTP_SERVER}")
+print(f"[EMAIL CONFIG] SMTP Port: {SMTP_PORT}")
+print(f"[EMAIL CONFIG] SMTP Email: {SMTP_EMAIL}")
+print(f"[EMAIL CONFIG] SMTP Password: {'*' * len(SMTP_PASSWORD) if SMTP_PASSWORD else 'NOT SET'}")
+print(f"{'='*70}\n")
 
-def send_reset_email(to_email, reset_code, username):
+if not SMTP_EMAIL or not SMTP_PASSWORD:
+    print("⚠️ WARNING: Email credentials not loaded from .env file!")
+    print(f"   .env path: {env_path}")
+    print(f"   .env exists: {env_path.exists()}")
+
+
+def send_reset_email(to_email, code, username, is_signup=False):
     """
-    Send password reset email with professional template
+    Send password reset or signup verification email
     """
+    print(f"\n{'='*70}")
+    print(f"[EMAIL] Starting email send process")
+    print(f"[EMAIL] To: {to_email}")
+    print(f"[EMAIL] Code: {code}")
+    print(f"[EMAIL] Username: {username}")
+    print(f"[EMAIL] Is Signup: {is_signup}")
+    print(f"{'='*70}\n")
+    
     try:
-        # Create email message
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = "🔐 Password Reset Request - MindCare AI"
-        msg['From'] = f"MindCare AI <{SENDER_EMAIL}>"
-        msg['To'] = to_email
+        # Set subject and body based on type
+        if is_signup:
+            subject = "✉️ Verify Your Email - MindCare AI"
+            body = f"""
+Hello {username},
+
+Thank you for signing up with MindCare AI!
+
+Your verification code is:
+
+    {code}
+
+This code will expire in 1 hour.
+
+If you didn't request this, please ignore this email.
+
+Best regards,
+MindCare AI Team
+            """
+        else:
+            subject = "🔐 Password Reset Request - MindCare AI"
+            body = f"""
+Hello {username},
+
+We received a request to reset your password.
+
+Your verification code is:
+
+    {code}
+
+This code will expire in 1 hour.
+
+If you didn't request this, please ignore this email.
+
+Best regards,
+MindCare AI Team
+            """
         
-        # HTML Email Template (Professional)
-        html = f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="margin:0; padding:0; background-color:#f4f7fc; font-family: 'Segoe UI', Roboto, sans-serif;">
-            <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; margin:0 auto; background-color:#ffffff; border-radius:24px; margin-top:40px; box-shadow:0 20px 40px rgba(0,0,0,0.08);">
-                <!-- Header with gradient -->
-                <tr>
-                    <td style="background:linear-gradient(135deg, #4A90E2, #6B5B95); padding:30px; border-radius:24px 24px 0 0; text-align:center;">
-                        <h1 style="color:white; margin:0; font-size:28px; font-weight:600;">AI Therapist</h1>
-                        <p style="color:rgba(255,255,255,0.9); margin:10px 0 0 0;">Your Safe Space for Healing</p>
-                    </td>
-                </tr>
-                
-                <!-- Content -->
-                <tr>
-                    <td style="padding:40px 30px;">
-                        <h2 style="color:#1e293b; margin:0 0 20px 0;">Password Reset Request</h2>
-                        <p style="color:#475569; font-size:16px; line-height:1.6; margin:0 0 20px 0;">
-                            Hello <strong>{username}</strong>,<br><br>
-                            We received a request to reset your password. Use the verification code below to proceed:
-                        </p>
-                        
-                        <!-- Reset Code Box -->
-                        <div style="background:#f8fafc; border-radius:16px; padding:25px; text-align:center; border:1px solid #e2e8f0; margin:30px 0;">
-                            <div style="font-size:14px; color:#64748b; margin-bottom:10px;">Your Verification Code</div>
-                            <div style="font-size:48px; letter-spacing:8px; font-weight:700; color:#4A90E2; font-family:monospace;">
-                                {reset_code}
-                            </div>
-                            <div style="font-size:13px; color:#94a3b8; margin-top:15px;">
-                                This code will expire in 1 hour
-                            </div>
-                        </div>
-                        
-                        <!-- Alternative Link -->
-                        <div style="text-align:center; margin:30px 0;">
-                            <p style="color:#64748b; font-size:14px;">Or click the button below:</p>
-                            <a href="{APP_URL}/reset-password?code={reset_code}&email={to_email}" 
-                               style="display:inline-block; background:linear-gradient(135deg, #4A90E2, #6B5B95); color:white; text-decoration:none; padding:14px 32px; border-radius:30px; font-weight:600; margin:10px 0;">
-                                Reset Password
-                            </a>
-                        </div>
-                        
-                        <!-- Security Notice -->
-                        <div style="border-top:1px solid #e2e8f0; margin:30px 0 0 0; padding:20px 0 0 0;">
-                            <p style="color:#94a3b8; font-size:13px; margin:0;">
-                                ⚠️ If you didn't request this, please ignore this email or contact support.<br>
-                                Never share this code with anyone.
-                            </p>
-                        </div>
-                    </td>
-                </tr>
-                
-                <!-- Footer -->
-                <tr>
-                    <td style="background:#f8fafc; padding:20px 30px; border-radius:0 0 24px 24px; text-align:center; border-top:1px solid #e2e8f0;">
-                        <p style="color:#94a3b8; font-size:13px; margin:0;">
-                            © 2024 MindCare AI. All rights reserved.<br>
-                            Need help? Contact us at support@aitherapist.com
-                        </p>
-                    </td>
-                </tr>
-            </table>
-        </body>
-        </html>
-        """
+        # Create message
+        msg = MIMEMultipart()
+        msg["From"] = SMTP_EMAIL
+        msg["To"] = to_email
+        msg["Subject"] = subject
         
-        # Plain text alternative
-        text = f"""
-        Password Reset Request - AI Therapist
+        msg.attach(MIMEText(body, "plain"))
         
-        Hello {username},
-        
-        We received a request to reset your password.
-        
-        Your verification code is: {reset_code}
-        
-        This code will expire in 1 hour.
-        
-        If you didn't request this, please ignore this email.
-        
-        © 2024 AI Therapist
-        """
-        
-        # Attach parts
-        part1 = MIMEText(text, 'plain')
-        part2 = MIMEText(html, 'html')
-        msg.attach(part1)
-        msg.attach(part2)
-        
-        # Send email
+        print(f"[EMAIL] Connecting to {SMTP_SERVER}:{SMTP_PORT}...")
         server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        
+        print(f"[EMAIL] Starting TLS...")
         server.starttls()
-        server.login(SENDER_EMAIL, SENDER_PASSWORD)
-        server.send_message(msg)
+        
+        print(f"[EMAIL] Logging in as {SMTP_EMAIL}...")
+        server.login(SMTP_EMAIL, SMTP_PASSWORD)
+        
+        print(f"[EMAIL] Sending email...")
+        server.sendmail(SMTP_EMAIL, to_email, msg.as_string())
+        
+        print(f"[EMAIL] Closing connection...")
         server.quit()
         
-        return True, "Reset email sent successfully"
+        print(f"[EMAIL] ✅ EMAIL SENT SUCCESSFULLY to {to_email}")
+        print(f"{'='*70}\n")
+        
+        return True, "Email sent successfully"
+        
+    except smtplib.SMTPAuthenticationError as e:
+        error_msg = f"SMTP Authentication Failed: {str(e)}"
+        print(f"[EMAIL] ❌ {error_msg}")
+        print(f"[EMAIL] Check your Gmail App Password!")
+        print(f"{'='*70}\n")
+        return False, error_msg
+        
+    except smtplib.SMTPException as e:
+        error_msg = f"SMTP Error: {str(e)}"
+        print(f"[EMAIL] ❌ {error_msg}")
+        print(f"{'='*70}\n")
+        return False, error_msg
         
     except Exception as e:
-        print(f"Email sending error: {e}")
-        return False, f"Failed to send email: {str(e)}"
+        error_msg = f"Email Error: {str(e)}"
+        print(f"[EMAIL] ❌ {error_msg}")
+        import traceback
+        traceback.print_exc()
+        print(f"{'='*70}\n")
+        return False, error_msg

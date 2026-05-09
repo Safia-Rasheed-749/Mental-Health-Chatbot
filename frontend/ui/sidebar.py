@@ -346,14 +346,33 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
                     del st.session_state[k]
             st.rerun()
 
+        # ═══════════════════════════════════════════════════════════
+        # NEW CHAT BUTTON - SIDEBAR (CHAT PAGE ONLY)
+        # ═══════════════════════════════════════════════════════════
+        # LOCATION: Sidebar mein "NAVIGATION" ke neeche
+        # STYLING: Simple, transparent background with border
+        # 
+        # CUSTOMIZATION GUIDE:
+        # 1. SPACING ABOVE: height: 32px (line 355) - YAHAN SE SPACE CHANGE KARO
+        # 2. BUTTON WIDTH: columns([1.5, 1]) - First number ko change karo
+        #    - [1.5, 1] = 60% width (current)
+        #    - [2, 1] = 67% width (wider)
+        #    - [1, 1] = 50% width (narrower)
+        # 3. BUTTON STYLING: CSS section mein (line 368)
+        #    - font-size: 14px = Button text size
+        #    - padding: 10px 14px = Button ke andar space
+        #    - border-radius: 8px = Corner roundness
+        # ═══════════════════════════════════════════════════════════
+        
         # ── SESSION TABS — only on Chat page ──
         if st.session_state.get("current_page") == "Chat":
             st.markdown("---")
 
-            # Add more spacing above New Chat button
+            # SPACING ABOVE BUTTON - Change height value to adjust space
             st.markdown('<div style="height: 32px;"></div>', unsafe_allow_html=True)
             
-            # Use columns to make button narrower and left-aligned
+            # BUTTON WIDTH & POSITION - Change column ratio to adjust width
+            # [1.5, 1] means button takes 60% width, left-aligned
             col1, col2 = st.columns([1.5, 1])
             with col1:
                 if st.button("✏️  New Chat", key="new_chat_btn", use_container_width=True):
@@ -365,7 +384,19 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
                             del st.session_state[k]
                     st.rerun()
             
-            # Simple styling - no background bubble
+            # ═══════════════════════════════════════════════════════════
+            # BUTTON STYLING - CSS
+            # ═══════════════════════════════════════════════════════════
+            # DESIGN: Transparent background with subtle border
+            # HOVER: Light background + slide right animation
+            # 
+            # CUSTOMIZATION:
+            # - background: transparent = No background color
+            # - border: 1px solid rgba(99,102,241,0.3) = Purple border
+            # - color: #4f46e5 = Text color (purple)
+            # - font-size: 14px = YAHAN SE TEXT SIZE CHANGE KARO
+            # - padding: 10px 14px = Button ke andar space
+            # ═══════════════════════════════════════════════════════════
             st.markdown("""
             <style>
             /* New Chat Button - Simple, left-aligned, narrower */
@@ -374,16 +405,16 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
                 border: 1px solid rgba(99,102,241,0.3) !important;
                 border-radius: 8px !important;
                 color: #4f46e5 !important;
-                font-size: 14px !important;
+                font-size: 14px !important;  /* TEXT SIZE - YAHAN SE CHANGE KARO */
                 font-weight: 600 !important;
-                padding: 10px 14px !important;
+                padding: 10px 14px !important;  /* BUTTON PADDING - YAHAN SE CHANGE KARO */
                 transition: all 0.2s ease !important;
                 text-align: left !important;
             }
             section[data-testid="stSidebar"] button[key="new_chat_btn"]:hover {
-                background: rgba(99,102,241,0.08) !important;
-                border-color: rgba(99,102,241,0.5) !important;
-                transform: translateX(2px) !important;
+                background: rgba(99,102,241,0.08) !important;  /* Hover background */
+                border-color: rgba(99,102,241,0.5) !important;  /* Hover border */
+                transform: translateX(2px) !important;  /* Slide right on hover */
             }
             </style>
             """, unsafe_allow_html=True)

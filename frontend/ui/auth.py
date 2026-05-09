@@ -183,18 +183,24 @@ def show_auth_page():
         transform: translateY(0) !important;
     }
 
-    /* Tertiary Link Button - SEMI-BOLD & IMPROVED VISIBILITY */
+    /* Tertiary Link Button - LARGER FONT */
     button[kind="tertiary"] {
         background-color: transparent !important;
-        color: #5b21b6 !important;  /* Dark purple for visibility */
+        color: #5b21b6 !important;
         width: 100% !important;
         border: none !important;
         box-shadow: none !important;
-        font-weight: 600 !important;  /* SEMI-BOLD */
-        font-size: 0.98rem !important;
+        font-weight: 600 !important;
+        font-size: 18px !important;
         padding: 0.5rem !important;
         margin-top: 0.75rem !important;
         transition: all 0.2s ease !important;
+    }
+    
+    button[kind="tertiary"] p,
+    button[kind="tertiary"] span {
+        font-size: 18px !important;
+        font-weight: 600 !important;
     }
     
     button[kind="tertiary"]:hover { 
@@ -203,8 +209,34 @@ def show_auth_page():
         border-radius: 8px !important;
         text-decoration: underline !important;
     }
+    
+    /* Secondary Button (Cancel button) - Red/Gray gradient */
+    button[kind="secondary"] {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+        color: #ffffff !important;
+        width: 100% !important;
+        border-radius: 10px !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        padding: 0.75rem 1.5rem !important;
+        margin-top: 1rem !important;
+        border: none !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3) !important;
+        letter-spacing: 0.3px;
+    }
+    
+    button[kind="secondary"]:hover {
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4) !important;
+    }
+    
+    button[kind="secondary"]:active {
+        transform: translateY(0) !important;
+    }
 
-    /* Forgot Password Link Styling - SEMI-BOLD & IMPROVED VISIBILITY */
+    /* Forgot Password Link Styling - LARGER FONT */
     .forgot-password-link {
         text-align: right;
         margin-top: -8px;
@@ -212,12 +244,18 @@ def show_auth_page():
     }
     
     .forgot-password-link button {
-        font-size: 0.95rem !important;
-        color: #5b21b6 !important;  /* Dark purple for visibility */
-        font-weight: 600 !important;  /* SEMI-BOLD */
+        font-size: 18px !important;
+        color: #5b21b6 !important;
+        font-weight: 600 !important;
         padding: 0.25rem 0.5rem !important;
         width: auto !important;
         float: right;
+    }
+    
+    .forgot-password-link button p,
+    .forgot-password-link button span {
+        font-size: 18px !important;
+        font-weight: 600 !important;
     }
     
     .forgot-password-link button:hover {
@@ -291,10 +329,27 @@ def show_auth_page():
                 </div>
             """, unsafe_allow_html=True)
             
-            # Custom HTML labels with large font (semi-bold, not bold)
+            # ═══════════════════════════════════════════════════════════
+            # CUSTOM HTML LABELS - LOGIN PAGE
+            # ═══════════════════════════════════════════════════════════
+            # WHY: Streamlit ke default labels chote aur kam visible hain
+            # SOLUTION: Custom HTML <p> tags use kar ke labels ko control karte hain
+            # 
+            # STYLING GUIDE:
+            # - font-size: 18px = Label ka size (YAHAN SE SIZE CHANGE KARO)
+            # - font-weight: 600 = Semi-bold (400=normal, 600=semi-bold, 700=bold)
+            # - color: #1e293b = Dark color for visibility
+            # - margin-bottom: 16px = Label aur input ke beech space
+            # - margin-top: 16px/20px = Upar se space
+            # 
+            # NOTE: label_visibility="collapsed" se Streamlit ka default label hide hota hai
+            # ═══════════════════════════════════════════════════════════
+            
+            # Email Label - 18px, semi-bold, dark color
             st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 16px;">Email</p>', unsafe_allow_html=True)
             email = st.text_input("Email", key="login_email", placeholder="name@example.com", label_visibility="collapsed")
             
+            # Password Label - 18px, semi-bold, dark color, extra top margin
             st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 20px;">Password</p>', unsafe_allow_html=True)
             password = st.text_input("Password", type="password", key="login_password", placeholder="••••••••", label_visibility="collapsed")
 
@@ -344,7 +399,15 @@ def show_auth_page():
                 </div>
             """, unsafe_allow_html=True)
             
-            # Custom HTML labels with large font (semi-bold, not bold)
+            # ═══════════════════════════════════════════════════════════
+            # CUSTOM HTML LABELS - SIGNUP PAGE
+            # ═══════════════════════════════════════════════════════════
+            # Same styling as login page for consistency
+            # font-size: 18px = YAHAN SE SIZE CHANGE KARO
+            # font-weight: 600 = Semi-bold
+            # margin-bottom: 16px = Label aur input ke beech space
+            # ═══════════════════════════════════════════════════════════
+            
             st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 16px;">Full Name</p>', unsafe_allow_html=True)
             name = st.text_input("Full Name", key="reg_name", placeholder="John Doe", label_visibility="collapsed")
             
@@ -354,26 +417,126 @@ def show_auth_page():
             st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 20px;">Password</p>', unsafe_allow_html=True)
             reg_password = st.text_input("Password", type="password", key="reg_password", placeholder="••••••••", label_visibility="collapsed")
 
-            def is_valid_email(e):
-                return re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', e)
-
-            # Full-width Signup Button
-            if st.button("Create Account", key="signup_btn", type="primary", use_container_width=True):
-                if name and reg_email and reg_password:
-                    if not is_valid_email(reg_email):
-                        st.warning("Please enter a valid email address.")
-                    elif len(reg_password) < 8:
-                        st.warning("Password must be at least 8 characters.")
-                    else:
-                        success, message = add_user(name, reg_email, reg_password)
-                        if success:
-                            st.success("Account created! Please log in.")
-                            st.session_state.auth_mode = 'login'
-                            st.rerun()
+            # ═══════════════════════════════════════════════════════════
+            # SIMPLE EMAIL FORMAT VALIDATION - NO SMTP/DNS CHECKING
+            # ═══════════════════════════════════════════════════════════
+            def is_valid_email(email):
+                pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+                return re.fullmatch(pattern, email) is not None
+            
+            # ═══════════════════════════════════════════════════════════
+            # SIGNUP FLOW WITH OTP VERIFICATION
+            # ═══════════════════════════════════════════════════════════
+            
+            # Check if we're in verification mode
+            if st.session_state.get("show_verify_signup", False):
+                # Show success message if email was just sent
+                if st.session_state.get("email_sent_success", False):
+                    st.success(f"✅ Verification code sent to {st.session_state.get('pending_email', '')}!")
+                    st.session_state.email_sent_success = False  # Clear flag
+                
+                st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 20px;">Verification Code</p>', unsafe_allow_html=True)
+                otp = st.text_input("Enter 6-digit code", key="signup_otp", placeholder="123456", max_chars=6, label_visibility="collapsed")
+                
+                # Add spacing before buttons
+                st.markdown('<div style="margin-top: 24px;"></div>', unsafe_allow_html=True)
+                
+                # Buttons in columns - 60% verify, 40% cancel
+                col1, col2 = st.columns([1.5, 1])
+                with col1:
+                    if st.button("Verify & Create Account", key="verify_signup_btn", type="primary", use_container_width=True):
+                        if otp == str(st.session_state.get("signup_code", "")):
+                            # Create account
+                            success, message = add_user(
+                                st.session_state.pending_name,
+                                st.session_state.pending_email,
+                                st.session_state.pending_password
+                            )
+                            if success:
+                                st.success("✅ Account created successfully! Please log in.")
+                                # Clear session state
+                                st.session_state.show_verify_signup = False
+                                st.session_state.signup_code = None
+                                st.session_state.pending_email = None
+                                st.session_state.pending_name = None
+                                st.session_state.pending_password = None
+                                st.session_state.auth_mode = 'login'
+                                st.rerun()
+                            else:
+                                st.error(f"❌ {message}")
                         else:
-                            st.error(message)
-                else:
-                    st.warning("Please fill all fields.")
+                            st.error("❌ Invalid verification code. Please try again.")
+                
+                with col2:
+                    if st.button("Cancel", key="cancel_verify_btn", type="secondary", use_container_width=True):
+                        st.session_state.show_verify_signup = False
+                        st.rerun()
+            
+            else:
+                # Normal signup form
+            
+                # Normal signup form
+                if st.button("Create Account", key="signup_btn", type="primary", use_container_width=True):
+                    if name and reg_email and reg_password:
+                        # Clean email
+                        reg_email = reg_email.strip().lower()
+                        
+                        # Validate email format only
+                        if not is_valid_email(reg_email):
+                            st.error("❌ Invalid email format. Please enter a valid email address.")
+                        elif len(reg_password) < 8:
+                            st.warning("⚠️ Password must be at least 8 characters.")
+                        else:
+                            # Generate 6-digit OTP
+                            import random
+                            verification_code = random.randint(100000, 999999)
+                            
+                            # Store in session state
+                            st.session_state.signup_code = verification_code
+                            st.session_state.pending_email = reg_email
+                            st.session_state.pending_name = name
+                            st.session_state.pending_password = reg_password
+                            
+                            # Send verification email with progress indicator
+                            with st.spinner(f"Sending verification code to {reg_email}..."):
+                                try:
+                                    # Log to console
+                                    print(f"[SIGNUP] Attempting to send email to: {reg_email}")
+                                    print(f"[SIGNUP] Verification code: {verification_code}")
+                                    print(f"[SIGNUP] Name: {name}")
+                                    
+                                    email_sent, email_msg = send_reset_email(
+                                        reg_email,
+                                        str(verification_code),
+                                        name,
+                                        is_signup=True
+                                    )
+                                    
+                                    print(f"[SIGNUP] Email sent result: {email_sent}")
+                                    print(f"[SIGNUP] Email message: {email_msg}")
+                                    
+                                    if email_sent:
+                                        # Email sent successfully - show success and verification screen
+                                        st.session_state.show_verify_signup = True
+                                        st.session_state.email_sent_success = True
+                                        st.rerun()
+                                    else:
+                                        # Email failed to send
+                                        st.error(f"❌ Failed to send verification email: {email_msg}")
+                                        st.warning("⚠️ Please check the Streamlit terminal for detailed error logs.")
+                                        st.info(f"🔍 Debug: Code was {verification_code} (you can use this for testing)")
+                                        
+                                except Exception as e:
+                                    # Exception occurred
+                                    print(f"[SIGNUP] Exception occurred: {type(e).__name__}: {str(e)}")
+                                    import traceback
+                                    traceback.print_exc()
+                                    
+                                    st.error(f"❌ Error sending email: {str(e)}")
+                                    st.warning("⚠️ Please check the Streamlit terminal for detailed error logs.")
+                                    st.info(f"🔍 Debug: Code was {verification_code} (you can use this for testing)")
+                    else:
+                        st.warning("⚠️ Please fill all fields.")
 
             # Divider
             st.markdown("""
