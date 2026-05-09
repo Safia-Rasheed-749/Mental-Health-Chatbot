@@ -96,7 +96,7 @@ def apply_professional_design_system():
                 border-color: rgba(124,58,237,0.55) !important;
                 color: #ffffff !important;
             }
-             /*learn more and chatting button color*/
+          /*learn more and chatting button strat game signup  background and text color */
             /* Main content CTAs — primary = blue (navbar uses secondary + :has(logo) overrides) */
             .stButton > button[kind="primary"] {
                 background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
@@ -118,8 +118,9 @@ def apply_professional_design_system():
                 font-weight: 700 !important;
                 font-family: var(--mc-font) !important;
             }
+            
 
-            /* Inputs */
+            /* Inputs fields of auth page */
             div[data-testid="stTextInput"] input,
             div[data-testid="stTextInput"] > div input{
                 border-radius: 14px !important;

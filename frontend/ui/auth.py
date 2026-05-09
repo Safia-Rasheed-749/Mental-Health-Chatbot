@@ -27,13 +27,21 @@ def show_auth_page():
     /* Import Google Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
     
+    /* =========================================
+       COLOR CHANGE GUIDE - GLOBAL ELEMENTS
+       =========================================
+       To change MAIN BACKGROUND: Find 'background: #ffffff' below
+       To change FONT FAMILY: Find 'font-family: 'Inter'' below
+       To change CARD BACKGROUND: Find section '[data-testid="column"]:nth-child(2)' below
+    ========================================= */
+    
     /* Hide Streamlit default headers & footers */
     header, footer, .stDeployButton { display: none !important; }
     #MainMenu { visibility: hidden; }
 
     /* Clean White Background */
     .stApp { 
-        background: #ffffff;
+        background: #ffffff;  /* CHANGE THIS: Overall app background color */
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         min-height: 100vh;
     }
@@ -52,14 +60,20 @@ def show_auth_page():
     /* =========================================
        PROFESSIONAL AUTH CARD
        ========================================= */
+    /* NOTE: This card is actually a Streamlit column element.
+       If you change colors here and nothing happens, check:
+       1. The column index in the Python code (line ~180-190)
+       2. Streamlit's dynamic class names might have changed
+       3. The shadow/border might be overridden by parent elements
+    */
     [data-testid="column"]:nth-child(2) {
-        background: #ffffff !important;
+        background: #ffffff !important;  /* CHANGE THIS: Card background color */
         border-radius: 20px !important;
         padding: 2.5rem 3rem 3rem 3rem !important;
         box-shadow: 
             0 10px 40px rgba(0, 0, 0, 0.08),
             0 0 0 1px rgba(0, 0, 0, 0.05) inset !important;
-        border: 1px solid #e5e7eb !important;
+        border: 1px solid #e5e7eb !important;  /* CHANGE THIS: Card border color */
         animation: slideUp 0.5s ease-out;
     }
 
@@ -81,9 +95,10 @@ def show_auth_page():
         margin-top: 1rem;
     }
     .auth-header h1 { 
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        /* GRADIENT TEXT - To change title color, modify these two hex codes  main headinds bckground color*/
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* CHANGE THIS: Title gradient colors */
         -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        -webkit-text-fill-color: transparent; /* TEXT MAIN HEADINGS changes.*/
         background-clip: text;
         font-size: 2rem !important; 
         font-weight: 800 !important; 
@@ -91,8 +106,9 @@ def show_auth_page():
         padding-bottom: 0;
         letter-spacing: -0.5px;
     }
+    /* text below main headings welcome back craete an account and reset password color changes.*/
     .auth-header p { 
-        color: #64748B !important; 
+        color: #64748B !important;   /* CHANGE THIS: Subtitle text color */
         font-size: 0.95rem !important; 
         margin-top: 0 !important;
         font-weight: 400;
@@ -101,9 +117,14 @@ def show_auth_page():
     /* =========================================
        ENHANCED INPUT FIELDS (Single Border)
        ========================================= */
+    /* WARNING: Streamlit's dynamic class names can change with updates.
+       If input styling doesn't change, the selectors might be outdated.
+       The actual input element is deeply nested in Streamlit's shadow DOM.
+    */
+    /* input fields name color change.*/
     .stTextInput label { 
         font-size: 0.875rem !important; 
-        color: #1e293b !important; 
+        color: #1e293b !important;   /* CHANGE THIS: Label text color */
         font-weight: 600 !important; 
         margin-bottom: 0.5rem !important;
         display: block !important;
@@ -118,40 +139,45 @@ def show_auth_page():
     
     div[data-testid="stTextInputRootElement"] {
         border-radius: 10px !important;
-        border: 1px solid #e2e8f0 !important;
+        border: 1px solid #e2e8f0 !important;  /* NOT CHANGE THIS: Input border color */
         padding: 10px 14px !important;
-        background-color: #f8fafc !important;
+        background-color: #f8fafc !important;  /*  NOT CHANGE THIS: Input background color */
         transition: all 0.3s ease !important;
     }
     
     div[data-testid="stTextInputRootElement"]:focus-within {
-        border-color: #667eea !important;
-        background-color: #FFFFFF !important;
+        border-color: #667eea !important;  
+        background-color: #FFFFFF !important; 
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
         transform: translateY(-1px);
     }
     
     input {
-        color: #0F172A !important;
+        color: #FF0000 !important;  /* CHANGE THIS: Input text color */
         font-size: 0.95rem !important;
         font-weight: 500 !important;
         border: none !important;
         background: transparent !important;
     }
-    
+    /* by default values in palceholder color change.*/
     input::placeholder {
-        color: #94a3b8 !important;
+        color: #94a3b8 !important;  /* CHANGE THIS: Placeholder text color */
         font-weight: 400 !important;
     }
 
     /* =========================================
        MODERN BUTTON STYLES
        ========================================= */
+    /* IMPORTANT: The primary button gradient might not change if
+       you only modify the hex codes here because Streamlit's
+       default button styling might override it. Use !important
+       as shown below to force the change.
+    */
     
     /* Primary Button with Gradient */
     button[kind="primary"] {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        color: #FFFFFF !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; /* CHANGE THIS: Button gradient colors */
+        color: #FFFFFF !important;  
         width: 100% !important;
         border-radius: 10px !important;
         font-weight: 600 !important;
@@ -160,13 +186,13 @@ def show_auth_page():
         margin-top: 1rem !important;
         border: none !important;
         transition: all 0.3s ease !important;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3) !important;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3) !important;  /* CHANGE THIS: Button shadow color (match gradient start) */
         letter-spacing: 0.3px;
     }
     
     button[kind="primary"]:hover { 
         transform: translateY(-2px) !important;
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;  /* CHANGE THIS: Hover shadow color */
     }
     
     button[kind="primary"]:active {
@@ -176,7 +202,7 @@ def show_auth_page():
     /* Tertiary Link Button */
     button[kind="tertiary"] {
         background-color: transparent !important;
-        color: #667eea !important;
+        color: #667eea !important;  /* CHANGE THIS: Link button text color */
         width: 100% !important;
         border: none !important;
         box-shadow: none !important;
@@ -188,8 +214,8 @@ def show_auth_page():
     }
     
     button[kind="tertiary"]:hover { 
-        color: #764ba2 !important;
-        background-color: rgba(102, 126, 234, 0.05) !important;
+        color: #764ba2 !important;  /* CHANGE THIS: Link button hover color (match gradient end) */
+        background-color: rgba(102, 126, 234, 0.05) !important;  /* CHANGE THIS: Hover background tint */
         border-radius: 8px !important;
     }
 
@@ -202,7 +228,7 @@ def show_auth_page():
     
     .forgot-password-link button {
         font-size: 0.85rem !important;
-        color: #667eea !important;
+        color: #667eea !important;  /* CHANGE THIS: Forgot password link color */
         padding: 0.25rem 0.5rem !important;
         width: auto !important;
         float: right;
@@ -218,17 +244,18 @@ def show_auth_page():
     .divider-line {
         flex: 1;
         height: 1px;
-        background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+        background: linear-gradient(to right, transparent, #e2e8f0, transparent); /* CHANGE THIS: Divider line color */
     }
     
     .divider-text {
         padding: 0 1rem;
-        color: #94a3b8;
+        color: #94a3b8;  /* CHANGE THIS: Divider text color */
         font-size: 0.85rem;
         font-weight: 500;
     }
 
     /* Success/Error Messages */
+    /* WARNING: Streamlit's alert classes might be renamed in future versions */
     .stAlert {
         border-radius: 10px !important;
         border: none !important;
@@ -238,7 +265,7 @@ def show_auth_page():
     
     /* Loading State */
     .stSpinner > div {
-        border-top-color: #667eea !important;
+        border-top-color: #667eea !important;  /* CHANGE THIS: Spinner color */
     }
 
     /* Responsive Design */
@@ -251,11 +278,41 @@ def show_auth_page():
             font-size: 1.8rem !important;
         }
     }
+    
+    /* =========================================
+       COMMON PITFALLS & SOLUTIONS
+       =========================================
+       If a color change doesn't work:
+       
+       1. Streamlit's dynamic class names: 
+          - Try adding more specific selectors
+          - Use !important flag (already added)
+          - Use data attributes like [data-testid="stTextInput"]
+       
+       2. Shadow DOM elements:
+          - input elements are sometimes inside shadow roots
+          - Use the selector we have: div[data-testid="stTextInputRootElement"]
+       
+       3. Element not found:
+          - The column might be [data-testid="column"]:nth-child(1) or (3)
+          - Check browser DevTools to verify the actual structure
+       
+       4. Gradient text:
+          - Only works with -webkit-background-clip
+          - Must have webkit prefix for cross-browser
+       
+       5. Button colors:
+          - If gradient doesn't apply, check if Streamlit added inline styles
+          - Try using exact class names from browser DevTools
+    ========================================= */
     </style>
     """, unsafe_allow_html=True)
     
     # 3-Column Layout to center the Card perfectly
-    _, center_col, _ = st.columns([1, 1.2, 1])
+    # NOTE: The card styling targets [data-testid="column"]:nth-child(2)
+    # If you change this layout (e.g., different column ratios or more columns),
+    # you'll need to update the CSS selector to match the correct column.
+    _, center_col, _ = st.columns([1, 1.2, 1])  # This creates the 3 columns
     
     with center_col:
         

@@ -70,44 +70,76 @@ def show_chat(user_id):
     apply_clean_layout(hide_header_completely=False)
 
     # ========== REDESIGNED CSS ==========
+    # NOTE: This CSS controls the ENTIRE chat page styling
+    # Colors are consistent with landing.py and dashboard.py
+    # Main brand colors: #5B8DEF (blue), #8b5cf6 (purple), #10b981 (green)
     st.markdown("""
     <style>
+    /* ═══════════════════════════════════════════════════════════════
+       FONT IMPORT - Used across all pages for consistency
+       Same font as: landing.py, dashboard.py, auth.py, mood.py
+    ═══════════════════════════════════════════════════════════════ */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-    /* ── HIDE CLUTTER ── */
+    /* ═══════════════════════════════════════════════════════════════
+       HIDE STREAMLIT DEFAULT ELEMENTS
+       Purpose: Remove Streamlit branding and unnecessary UI elements
+       Applied to: This page only (chat.py)
+       Also used in: All other pages (landing.py, auth.py, etc.)
+    ═══════════════════════════════════════════════════════════════ */
     .stAppDeployButton {
-        display: none;
+        display: none;  /* Hide "Deploy" button */
     }  
-    #MainMenu { visibility: hidden !important; }
-    footer { visibility: hidden !important; }
+    #MainMenu { 
+        visibility: hidden !important;  /* Hide hamburger menu */
+    }
+    footer { 
+        visibility: hidden !important;  /* Hide "Made with Streamlit" footer */
+    }
     header {
-        background: transparent !important;
+        background: transparent !important;  /* Transparent header for clean look */
         box-shadow: none !important;
-        visibility: visible !important;
+        visibility: visible !important;  /* Keep header visible for sidebar toggle */
     }
     
-    /* ── MAKE SIDEBAR TOGGLE VISIBLE ── */
+    /* ═══════════════════════════════════════════════════════════════
+       SIDEBAR TOGGLE BUTTON STYLING
+       Purpose: Make sidebar toggle button visible and styled
+       Location: Top-left corner when sidebar is collapsed
+       Color: Gradient blue-purple (#6366f1 to #8b5cf6)
+       Same gradient used in: auth.py buttons, dashboard.py cards
+       Controlled by: Streamlit's built-in sidebar component
+    ═══════════════════════════════════════════════════════════════ */
     [data-testid="collapsedControl"] {
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;  /* Brand gradient */
         color: white !important;
-        border-radius: 0 8px 8px 0 !important;
+        border-radius: 0 8px 8px 0 !important;  /* Rounded right side only */
         padding: 8px !important;
-        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3) !important;
-        transition: all 0.2s ease !important;
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3) !important;  /* Subtle shadow */
+        transition: all 0.2s ease !important;  /* Smooth animation */
     }
     
     [data-testid="collapsedControl"]:hover {
-        transform: translateX(2px) !important;
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4) !important;
+        transform: translateX(2px) !important;  /* Slide right on hover */
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4) !important;  /* Stronger shadow on hover */
     }
 
-    /* ── PAGE BACKGROUND ── */
+    /* ═══════════════════════════════════════════════════════════════
+       PAGE BACKGROUND GRADIENT
+       Purpose: Consistent background across all logged-in pages
+       Colors: Light blue to light purple gradient
+       Same background in: dashboard.py, mood.py, journal.py, games.py
+       Different from: landing.py (uses radial gradient)
+    ═══════════════════════════════════════════════════════════════ */
     html, body, .stApp {
         font-family: 'Inter', 'Segoe UI', sans-serif !important;
         background: linear-gradient(135deg, #F8FAFC 0%, #EEF4FF 45%, #F5F3FF 100%) !important;
+        /* #F8FAFC = Very light gray-blue (start) */
+        /* #EEF4FF = Light blue (middle) */
+        /* #F5F3FF = Light purple (end) */
     }
     
     /* ── SMOOTH PAGE TRANSITIONS ── */
@@ -362,7 +394,14 @@ def show_chat(user_id):
     </style>
     """, unsafe_allow_html=True)
 
-    # ── HEADER BANNER ──
+    # ═══════════════════════════════════════════════════════════════
+    # HEADER BANNER - Blue Gradient Header at Top
+    # VIVA: "Chat page ka header color kahan se change hoga?"
+    # ANSWER: "Is file mein line ~140 pe .chat-header class mein"
+    # COLOR: background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%)
+    # SAME STYLE: mood.py, journal.py headers
+    # TO CHANGE: Neeche CSS section mein .chat-header background change karo
+    # ═══════════════════════════════════════════════════════════════
     st.markdown("""
     <div class="chat-header">
         <div class="chat-header-avatar">🧠</div>
