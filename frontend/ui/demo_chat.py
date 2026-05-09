@@ -25,7 +25,7 @@ def show_demo_chat():
         .block-container {
             padding-top: 1rem !important;
         }
-
+         /*page background color change */
         .stApp {
             background-color: #f6f7fb !important;
         }
@@ -47,7 +47,7 @@ def show_demo_chat():
             justify-content: flex-end;
             margin: 18px 0;
         }
-
+         /* user bubble background color*/
         .user-bubble {
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
             color: #ffffff;
@@ -87,7 +87,7 @@ def show_demo_chat():
             box-shadow: 0 2px 10px rgba(99,102,241,0.35);
             margin-top: 2px;
         }
-        
+        /* assistant bubble background color*/
         .assistant-bubble {
             background: #ffffff;
             color: #1e293b;
@@ -99,7 +99,7 @@ def show_demo_chat():
             box-shadow: 0 2px 12px rgba(0,0,0,0.07);
             border-left: 3px solid #8b5cf6;
         }
-
+         /* banner color and text color changes */
         /* ===== ORIGINAL TRIAL BOX STYLING ===== */
         .trial-box {
             background: linear-gradient(135deg, #667eea, #764ba2);
@@ -122,13 +122,48 @@ def show_demo_chat():
             color: #FFE66D;
             font-weight: 600;
         }
-
+        /*pop up color change*/
         .trial-complete-container {
             text-align: center;
-            margin: 20px 0;
-            padding: 20px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+             color: Black ! important;
+             margin: 20px 0;
+             padding: 20px;
+             margin-bottom: 20px;
+            
         }
+        /*back to home button color changes*/
+        .stButton > button {
+           background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+           color: white !important;
+            border-radius: 10px !important;
+            font-weight: 700 !important;
+}
+    /*create free account button color changes*/
+      .stButton > button {
+        background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
+        color: #f3f4f5 !important;
+        border: none !important;
+        border-radius: 14px !important;
+        font-weight: 800 !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.18) !important;
+        font-family: 'Segoe UI', sans-serif !important;
+        transition: all 0.2s ease !important;
+}      .stButton > button:hover {
+           filter: brightness(1.05) !important;
+           transform: translateY(-2px) !important;
+           box-shadow: 0 12px 28px rgba(37, 99, 235, 0.4) !important;
+}
+  /* input bar styling colors*/
+  div[data-testid="stChatInput"] {
+    background-color:#ffffff !important;
+    border-radius: 14px !important;
+}
+
+div[data-testid="stChatInput"] textarea {
+    background-color: #ffffff!important;
+    color:  #000000 !important;
+}
     </style>
     """, unsafe_allow_html=True)
     # ===== BACK BUTTON =====
