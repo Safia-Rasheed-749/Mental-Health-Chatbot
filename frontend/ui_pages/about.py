@@ -21,7 +21,7 @@ def show_about_page():
             padding-bottom: 0 !important;
             max-width: 1200px !important;
         }
-        
+        /* page background color*/
         .stApp {
             background: #f6f7fb !important;
             margin-bottom: 0 !important;
@@ -56,7 +56,7 @@ def show_about_page():
                 transform: translateY(0);
             }
         }
-        
+        /*background color hero section*/
         /* Hero Section - Professional - adjusted for navbar */
         .hero-section {
             background: linear-gradient(135deg, #1a3c5e 0%, #2c5f8a 50%, #1a3c5e 100%);
@@ -83,7 +83,7 @@ def show_about_page():
             max-width: 700px;
             margin: 0 auto;
         }
-        
+        /* all headings outside cards colors*/
         /* Section Headings - Centered - NO LINE */
         .section-title {
             font-size: 1.75rem;
@@ -108,7 +108,7 @@ def show_about_page():
             transition: all 0.3s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
-        
+        /*cards background color */
         .mission-card-1 {
             background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
             border: 1px solid #93c5fd;
@@ -134,7 +134,7 @@ def show_about_page():
             margin-bottom: 20px;
             display: inline-block;
         }
-        
+        /*cards title*/
         .mission-title {
             font-size: 1.25rem;
             font-weight: 600;
@@ -206,7 +206,7 @@ def show_about_page():
             color: #475569;
             font-size: 0.85rem;
         }
-        
+        /*background color*/
         /* Flow Card */
         .flow-card {
             background: #ffffff;
@@ -217,7 +217,7 @@ def show_about_page():
             text-align: center;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
-        
+        /*inside card heading color*/
         .flow-card h3 {
             color: #1e293b;
             margin-bottom: 24px;
@@ -243,7 +243,7 @@ def show_about_page():
             font-size: 2rem;
             margin-bottom: 8px;
         }
-        
+        /*inside card text color*/
         .flow-label {
             font-size: 0.85rem;
             color: #475569;
@@ -291,7 +291,7 @@ def show_about_page():
             transform: translateY(-4px);
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
         }
-        
+        /* inside card heading color*/
         .sdg-number {
             font-size: 2.5rem;
             font-weight: 700;
@@ -299,14 +299,14 @@ def show_about_page():
             margin-bottom: 12px;
             display: inline-block;
         }
-        
+        /*inside card subhaeding color*/
         .sdg-title {
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 12px;
             color: #0f172a;
         }
-        
+        /* card text color */
         .sdg-desc {
             color: #334155;
             line-height: 1.5;
@@ -371,7 +371,7 @@ def show_about_page():
             transform: translateY(-2px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
         }
-        
+        /* inside card heading color*/
         .stat-number {
             font-size: 2rem;
             font-weight: 700;
@@ -526,7 +526,7 @@ def show_about_page():
         .references-card li a:hover {
             text-decoration: underline;
         }
-        
+        /* background and text color*/
         /* Footer */
         .footer-container {
             background: #1e293b;
