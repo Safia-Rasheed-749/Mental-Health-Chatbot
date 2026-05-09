@@ -185,7 +185,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
     /*logout button color changes*/
     /* ── LOGOUT (primary) ── */
     section[data-testid="stSidebar"] .stButton button[kind="primary"] {
-        background: linear-gradient(135deg, #e05a5a 0%, #f07070 100%) !important;
+        background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
         border: none !important;
         color: #ffffff !important;
         font-weight: 700 !important;
