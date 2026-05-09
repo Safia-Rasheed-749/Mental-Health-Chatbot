@@ -2,43 +2,31 @@ import streamlit as st
 import time
 import random
 
-
 def show_calm_colors_game():
     # Detect if opened from sidebar (logged-in) or navbar (public)
     from_sidebar = st.session_state.get("games_from_sidebar", False)
 
     # ── LAYOUT CONTROL based on entry point ──
     if not from_sidebar:
-        # Opened from navbar: hide sidebar and collapse icon completely
-        # Add top padding for fixed navbar
         st.markdown("""
         <style>
         [data-testid="stSidebar"]        { display: none !important; }
         [data-testid="collapsedControl"]  { display: none !important; }
         .main { margin-left: 0rem !important; }
         header[data-testid="stHeader"]   { display: none !important; }
-        footer, .stAppDeployButton          { display: none !important; }
-        
-        /* Add padding for navbar */
-        .main .block-container {
-            padding-top: 100px !important;
-        }
+        footer, .stAppDeployButton       { display: none !important; }
+        .main .block-container { padding-top: 100px !important; }
         </style>
         """, unsafe_allow_html=True)
     else:
-        # Opened from sidebar — match exact pattern used by mood.py / chat.py (proven to work)
         st.markdown("""
         <style>
         footer, .stAppDeployButton { display: none !important; }
-
-        /* Same as mood.py — simple, proven pattern */
-        .block-container {
-            padding-top: 0rem !important;
-            margin-top: 0rem !important;
-        }
+        .block-container { padding-top: 0rem !important; margin-top: 0rem !important; }
         </style>
         """, unsafe_allow_html=True)
 
+    # ======================= COMPLETE FIXED CSS =======================
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
@@ -74,9 +62,7 @@ def show_calm_colors_game():
         transition: opacity 0.5s ease;
     }
 
-    .stApp.game-active::before {
-        opacity: 1;
-    }
+    .stApp.game-active::before { opacity: 1; }
 
     @keyframes gradientShift {
         0% { background-position: 0% 50%; }
@@ -85,11 +71,7 @@ def show_calm_colors_game():
     }
 
     @media (max-width: 1200px) {
-        .block-container {
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
-           
-        }
+        .block-container { padding-left: 1rem !important; padding-right: 1rem !important; }
     }
 
     /* ── FLOATING ELEMENTS ── */
@@ -103,38 +85,15 @@ def show_calm_colors_game():
         z-index: -1;
         overflow: hidden;
     }
-
     .floating-circle {
         position: absolute;
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.2);
         animation: float 20s infinite linear;
     }
-
-    .floating-circle:nth-child(1) {
-        width: 80px;
-        height: 80px;
-        top: 20%;
-        left: 10%;
-        animation-delay: 0s;
-    }
-
-    .floating-circle:nth-child(2) {
-        width: 120px;
-        height: 120px;
-        top: 60%;
-        right: 15%;
-        animation-delay: -5s;
-    }
-
-    .floating-circle:nth-child(3) {
-        width: 60px;
-        height: 60px;
-        top: 80%;
-        left: 70%;
-        animation-delay: -10s;
-    }
-
+    .floating-circle:nth-child(1) { width: 80px; height: 80px; top: 20%; left: 10%; animation-delay: 0s; }
+    .floating-circle:nth-child(2) { width: 120px; height: 120px; top: 60%; right: 15%; animation-delay: -5s; }
+    .floating-circle:nth-child(3) { width: 60px; height: 60px; top: 80%; left: 70%; animation-delay: -10s; }
     @keyframes float {
         0% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
         50% { transform: translateY(-20px) rotate(180deg); opacity: 0.3; }
@@ -154,33 +113,6 @@ def show_calm_colors_game():
         z-index: -1;
         pointer-events: none;
     }
-
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    .countdown-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        min-height: 100vh;
-        background: linear-gradient(135deg, #a7f3d0 0%, #bfdbfe 50%, #ddd6fe 100%);
-        background-image: 
-            radial-gradient(circle at 20% 50%, rgba(255,255,255,0.3) 0%, transparent 50%),
-            radial-gradient(circle at 80% 50%, rgba(255,255,255,0.2) 0%, transparent 50%),
-            url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='3'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: #1f2937;
-        z-index: 1000;
-    }
-
     .result-screen {
         position: fixed;
         top: 0;
@@ -189,9 +121,8 @@ def show_calm_colors_game():
         bottom: 0;
         min-height: 100vh;
         background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 50%, #fce7f3 100%);
-        background-image: 
-            radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
-            radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
+        background-image: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.4) 0%, transparent 50%),
+                          radial-gradient(circle at 75% 75%, rgba(255,255,255,0.3) 0%, transparent 50%);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -201,24 +132,15 @@ def show_calm_colors_game():
         overflow-y: auto;
     }
 
-    /* ── HERO BANNER ── */
+    /* ── HERO BANNER (HTML ADDED IN HOME SCREEN) ── bannner backgroubnd color changes */
     .hero-banner {
-        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.3);
-        border-radius: 24px;
-        padding: 60px 40px;
-        text-align: center;
-        color: #1a202c;
-        margin-bottom: 40px;
-        box-shadow: 
-            0 20px 60px rgba(0,0,0,0.1),
-            inset 0 1px 0 rgba(255,255,255,0.6);
-        position: relative;
-        overflow: hidden;
-        margin-top: 0;
-    }
-
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    border-radius: 24px;
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(102,126,234,0.25);
+    color: white;
+}
     .hero-banner::before {
         content: '';
         position: absolute;
@@ -229,314 +151,194 @@ def show_calm_colors_game():
         background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
         animation: shimmer 3s infinite;
     }
-
     @keyframes shimmer {
         0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
         100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
     }
-
+    /* hero main title color changes.*?
     .hero-title {
-        font-size: 48px !important;
-        font-weight: 900 !important;
+        font-size: 50px !important;
+        font-weight: 900;
         margin-bottom: 12px;
-        background: linear-gradient(135deg, #3b82f6, #60a5fa) !important;
-        -webkit-background-clip: text !important;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
         -webkit-text-fill-color: transparent !important;
-        background-clip: text !important;
+        background-clip: text;
         position: relative;
         z-index: 1;
     }
-
+    /* line under the main heading c of hero heading .*/
     .hero-subtitle {
-        font-size: 18px !important;
-        font-weight: 500 !important;
+        font-size: 18px;
+        font-weight: 500;
         color: #334155 !important;
         position: relative;
         z-index: 1;
     }
 
-    /* ── HOW TO PLAY SECTION ── */
-    .section-title {
-        text-align: center !important;
-        font-size: 14px !important;
-        font-weight: 700 !important;
-        letter-spacing: 2px !important;
-        text-transform: uppercase !important;
-        color: #1e293b !important;
-        margin: 40px 0 32px !important;
-    }
-
-    .play-cards {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
-        margin-bottom: 32px;
-    }
-
-    .play-card {
-        background: white;
-        border: 1px solid #e2e8f0;
-        border-radius: 20px;
-        padding: 36px 28px;
-        text-align: center;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .play-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-        transition: left 0.5s;
-    }
-
-    .play-card:hover::before {
-        left: 100%;
-    }
-
-    .play-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-    }
-
-    .play-card.watch {
-        background: linear-gradient(135deg, #8b5cf6, #c084fc) !important;
-        color: white !important;
-    }
-
-    .play-card.repeat {
-        background: linear-gradient(135deg, #3b82f6, #60a5fa) !important;
-        color: white !important;
-    }
-
-    .play-card.level {
-        background: linear-gradient(135deg, #10b981, #34d399) !important;
-        color: white !important;
-    }
-
-    .play-icon {
-        font-size: 36px;
-        margin-bottom: 20px;
-        display: block;
-        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
-    }
-
-    .play-title {
-        font-size: 20px;
-        font-weight: 700;
-        margin-bottom: 12px;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .play-desc {
-        font-size: 14px;
-        opacity: 0.95;
-        line-height: 1.5;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    }
-
-    /* ── BREATHING TIP ── */
-    .breathing-tip {
-        background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-        border-radius: 20px;
-        padding: 24px 36px;
-        text-align: center;
-        color: white;
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 40px;
-        box-shadow: 0 4px 16px rgba(245,158,11,0.3);
-        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .breathing-tip::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 200px;
-        height: 200px;
-        background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-        transform: translate(-50%, -50%);
-        animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-        0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-        50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.2; }
-    }
-
-    /* ── COLOR BUTTONS WITH BETTER SPACING ── */
-
-    div[data-testid="column"] {
-        padding: 0 12px !important;
-    }
-
-    div[data-testid="column"] button {
-        padding: 28px 18px !important;
-        font-size: 22px !important;
-        font-weight: 700 !important;
-        border-radius: 24px !important;
-        border: 3px solid rgba(255,255,255,0.6) !important;
-        transition: all 0.3s ease !important;
-        width: auto !important;
-        min-width: 140px !important;
-        color: white !important;
-        margin: 8px 0 !important;
-        box-shadow: 
-            0 8px 32px rgba(0,0,0,0.2),
-            inset 0 1px 0 rgba(255,255,255,0.3) !important;
-        backdrop-filter: blur(10px) !important;
-    }
-
-    div[data-testid="column"] button:hover {
-        transform: scale(1.05) translateY(-8px) !important;
-        box-shadow: 
-            0 16px 48px rgba(0,0,0,0.3),
-            inset 0 1px 0 rgba(255,255,255,0.5) !important;
-        border: 3px solid rgba(255,255,255,0.8) !important;
-    }
-
-    div[data-testid="column"] button:active { 
-        transform: scale(0.98) translateY(-4px) !important; 
-    }
-
-    /* ── START GAME BUTTON ── */
-    .start-btn-wrap {
-        margin-top: 40px !important;
-        text-align: center;
-    }
-    
-    .start-btn-wrap .stButton > button {
-        background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
-        color: white !important;
-        font-size: 20px !important;
-        font-weight: 800 !important;
-        padding: 16px 48px !important;
-        border-radius: 50px !important;
-        border: none !important;
-        box-shadow: 0 12px 40px rgba(236,72,153,0.35) !important;
-        letter-spacing: 0.5px !important;
-        transition: all 0.3s ease !important;
-        backdrop-filter: blur(20px) !important;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
-        margin-top: 10px !important;
-    }
-    
-    .start-btn-wrap .stButton > button:hover {
-        transform: translateY(-6px) scale(1.05) !important;
-        box-shadow: 0 20px 60px rgba(236,72,153,0.5) !important;
-    }
-    
-    @keyframes btnShift {
-        0%   { background-position: 0% 50%; }
-        50%  { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    /* ── SCORE BAR ── */
-    .score-bar {
-        background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 50%, #fdf4ff 100%) !important;
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(167,139,250,0.25) !important;
-        padding: 20px 40px;
-        display: flex; 
-        justify-content: space-around; 
+    /* ── LOGGED-IN HEADER (game-page-header) ── */
+    .game-page-header {
+        background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
+        padding: 18px 28px 16px;
+        display: flex;
         align-items: center;
-        box-shadow: 0 8px 32px rgba(139,92,246,0.12) !important;
-        border-radius: 0 0 24px 24px;
-        margin-bottom: 24px;
-        margin-top: 10px;
+        gap: 14px;
+        box-shadow: 0 4px 24px rgba(91,141,239,0.28);
+        border-radius: 20px;
+        margin-bottom: 30px;
+        margin-top: 20px;
     }
-    
-    .score-item { 
-        font-size: 18px; 
-        font-weight: 700; 
-        color: #6d28d9 !important; 
+    .game-header-avatar {
+        width: 46px; height: 46px; border-radius: 50%;
+        background: rgba(255,255,255,0.22);
+        border: 2px solid rgba(255,255,255,0.45);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 22px; flex-shrink: 0;
+        box-shadow: 0 0 0 4px rgba(255,255,255,0.12);
+        animation: headerPulse 3s ease-in-out infinite;
     }
-    
-    .score-val { 
-        font-size: 28px; 
-        font-weight: 900; 
-        background: linear-gradient(135deg, #8b5cf6, #a78bfa) !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-        background-clip: text !important;
+    .game-header-text h1 { margin: 0; font-size: 20px; font-weight: 700; color: #ffffff; line-height: 1.2; }
+    .game-header-text p { margin: 2px 0 0; font-size: 14px; color: rgba(255,255,255,0.78); font-weight: 400; }
+    .game-header-status {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: rgba(255,255,255,0.85);
+        font-weight: 500;
+    }
+    .game-status-dot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: #4ade80;
+        box-shadow: 0 0 6px #4ade80;
+        animation: statusBlink 2s ease-in-out infinite;
+    }
+    @keyframes headerPulse {
+        0%,100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.12); }
+        50% { box-shadow: 0 0 0 8px rgba(255,255,255,0.06); }
+    }
+    @keyframes statusBlink {
+        0%,100% { opacity: 1; }
+        50% { opacity: 0.4; }
     }
 
     .game-msg {
         background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%) !important;
         backdrop-filter: blur(20px);
         border: 1px solid rgba(167,139,250,0.25) !important;
-        padding: 24px 40px; 
+        padding: 24px 40px;
         border-radius: 20px;
-        font-size: 18px; 
-        font-weight: 600; 
+        font-size: 18px; font-weight: 600;
         color: #6d28d9 !important;
-        margin: 10px auto; 
-        max-width: 600px; 
+        margin: 10px auto;
+        max-width: 600px;
         text-align: center;
         box-shadow: 0 8px 32px rgba(139,92,246,0.1) !important;
     }
 
+
+    /* ── START GAME BUTTON ── */
+    .start-btn-wrap {
+        margin-top: 40px !important;
+        text-align: center;
+    }
+    .start-btn-wrap .stButton > button {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #667eea 100%) !important;
+        background-size: 200% 200% !important;
+        animation: btnShift 4s ease infinite !important;
+        color: white !important;
+        font-size: 20px !important;
+        font-weight: 800 !important;
+        padding: 16px 48px !important;
+        border-radius: 50px !important;
+        border: 3px solid rgba(255,255,255,0.4) !important;
+        box-shadow: 0 12px 40px rgba(240,147,251,0.4), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+        letter-spacing: 0.5px !important;
+        transition: all 0.3s ease !important;
+        backdrop-filter: blur(20px) !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+        margin-top: 10px !important;
+    }
+    .start-btn-wrap .stButton > button:hover {
+        transform: translateY(-6px) scale(1.05) !important;
+        box-shadow: 0 20px 60px rgba(240,147,251,0.6), inset 0 1px 0 rgba(255,255,255,0.5) !important;
+        border: 3px solid rgba(255,255,255,0.6) !important;
+    }
+    @keyframes btnShift {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* ── SEQ CHIP ANIMATION ── */
     .seq-chip {
         display: inline-block;
-        padding: 32px 40px; 
+        padding: 32px 40px;
         border-radius: 24px;
-        margin: 12px; 
-        font-size: 56px; 
+        margin: 12px;
+        font-size: 56px;
         color: white;
-        box-shadow: 
-            0 12px 40px rgba(0,0,0,0.3),
-            inset 0 1px 0 rgba(255,255,255,0.3);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3);
         animation: chipIn 0.6s ease;
         backdrop-filter: blur(10px);
         border: 2px solid rgba(255,255,255,0.3);
     }
-    
     @keyframes chipIn {
         0%   { transform: scale(0.6) rotate(-10deg); opacity: 0; }
         60%  { transform: scale(1.15) rotate(5deg); }
         100% { transform: scale(1) rotate(0deg); opacity: 1; }
     }
-
     @keyframes popIn {
         0%   { transform: scale(0.6); opacity: 0; }
         70%  { transform: scale(1.08); opacity: 1; }
         100% { transform: scale(1); opacity: 1; }
     }
 
+    /* ── PROGRESS BAR ── */
     .stProgress > div > div {
         background: linear-gradient(90deg, #667eea, #764ba2) !important;
-        border-radius: 12px !important; 
+        border-radius: 12px !important;
         height: 16px !important;
         box-shadow: 0 4px 12px rgba(102,126,234,0.3) !important;
     }
-    
     .stProgress > div {
         background: rgba(255,255,255,0.2) !important;
-        border-radius: 12px !important; 
+        border-radius: 12px !important;
         height: 16px !important;
         backdrop-filter: blur(10px) !important;
     }
 
+    /* ── SCROLLBAR (fixed duplicate) ── */
     ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-thumb { 
-        background: linear-gradient(135deg, #667eea, #764ba2); 
-        border-radius: 10px; 
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 10px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
-    ::-webkit-scrollbar-track { 
-        background: rgba(255,255,255,0.1); 
-        border-radius: 10px; 
+    ::-webkit-scrollbar-track {
+        background: rgba(255,255,255,0.1);
+        border-radius: 10px;
+    }
+
+    /* ── MAIN BUTTONS ── */
+    .stButton > button {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+        color: white !important;
+        font-weight: 700 !important;
+        font-size: 18px !important;
+        padding: 12px 18px !important;
+        border-radius: 50px !important;
+        border: none !important;
+        box-shadow: 0 6px 24px rgba(99,102,241,0.38) !important;
+        transition: all 0.25s ease !important;
+        max-width: 320px !important;
+        margin: auto !important;
+        display: block !important;
+    }
+    .stButton > button:hover {
+        transform: translateY(-4px) !important;
+        box-shadow: 0 10px 32px rgba(99,102,241,0.52) !important;
     }
 
     /* ── PLAY AGAIN BUTTON ── */
@@ -544,104 +346,28 @@ def show_calm_colors_game():
         margin-top: 40px !important;
         text-align: center;
     }
-    
     .play-again-wrap .stButton > button {
         background: linear-gradient(135deg, #667eea, #764ba2) !important;
-        color: white !important; 
+        color: white !important;
         font-weight: 800 !important;
-        font-size: 20px !important; 
+        font-size: 20px !important;
         padding: 16px 48px !important;
-        border-radius: 50px !important; 
+        border-radius: 50px !important;
         border: 3px solid rgba(255,255,255,0.4) !important;
-        box-shadow: 
-            0 12px 40px rgba(102,126,234,0.4),
-            inset 0 1px 0 rgba(255,255,255,0.3) !important;
+        box-shadow: 0 12px 40px rgba(102,126,234,0.4), inset 0 1px 0 rgba(255,255,255,0.3) !important;
         backdrop-filter: blur(20px) !important;
         text-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
         transition: all 0.3s ease !important;
     }
-    
     .play-again-wrap .stButton > button:hover {
         transform: translateY(-6px) scale(1.05) !important;
-        box-shadow: 
-            0 20px 60px rgba(102,126,234,0.6),
-            inset 0 1px 0 rgba(255,255,255,0.5) !important;
+        box-shadow: 0 20px 60px rgba(102,126,234,0.6), inset 0 1px 0 rgba(255,255,255,0.5) !important;
         border: 3px solid rgba(255,255,255,0.6) !important;
-    }
-
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.35); border-radius: 8px; }
-    
-    /* ═══════════════════════════════════════════════════════════════
-       COLOR GAME BUTTONS - Pure CSS Solution (No JavaScript)
-       VIVA NOTE: Ye buttons CSS se color hote hain, JavaScript nahi
-       Each button ko uske key se target karte hain
-    ═══════════════════════════════════════════════════════════════ */
-    
-    /* Target buttons by their unique keys */
-    button[data-testid*="color_blue"],
-    button:has(p:contains("Blue")),
-    div[data-testid="column"]:nth-child(1) button {
-        background: linear-gradient(135deg, #3b82f6, #60a5fa) !important;
-        color: white !important;
-    }
-    
-    button[data-testid*="color_green"],
-    button:has(p:contains("Green")),
-    div[data-testid="column"]:nth-child(2) button {
-        background: linear-gradient(135deg, #10b981, #34d399) !important;
-        color: white !important;
-    }
-    
-    button[data-testid*="color_purple"],
-    button:has(p:contains("Purple")),
-    div[data-testid="column"]:nth-child(3) button {
-        background: linear-gradient(135deg, #8b5cf6, #a78bfa) !important;
-        color: white !important;
-    }
-    
-    button[data-testid*="color_orange"],
-    button:has(p:contains("Orange")),
-    div[data-testid="column"]:nth-child(4) button {
-        background: linear-gradient(135deg, #f97316, #fb923c) !important;
-        color: white !important;
-    }
-    
-    /* Common styling for all color buttons */
-    div[data-testid="column"] button[data-testid*="color_"],
-    div[data-testid="column"] button {
-        height: 70px !important;
-        min-height: 70px !important;
-        border-radius: 20px !important;
-        font-size: 20px !important;
-        font-weight: 700 !important;
-        border: 3px solid rgba(255,255,255,0.45) !important;
-        padding: 0 16px !important;
-        width: 100% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        box-shadow: 
-            0 8px 32px rgba(0,0,0,0.2),
-            inset 0 1px 0 rgba(255,255,255,0.3) !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    div[data-testid="column"] button:hover {
-        transform: scale(1.05) translateY(-6px) !important;
-        box-shadow: 
-            0 16px 48px rgba(0,0,0,0.3),
-            inset 0 1px 0 rgba(255,255,255,0.5) !important;
-        border: 3px solid rgba(255,255,255,0.6) !important;
-    }
-    
-    div[data-testid="column"] button:active {
-        transform: scale(0.98) translateY(-2px) !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # ── SESSION STATE ──
+    # ── SESSION STATE (unchanged) ──
     if 'game_screen' not in st.session_state:
         st.session_state.game_screen    = "home"
         st.session_state.game_active    = False
@@ -661,7 +387,7 @@ def show_calm_colors_game():
         {"name": "Orange", "color": "#f97316", "emoji": "🧡", "id": 3},
     ]
 
-    # ── HELPERS ──
+    # ── HELPERS (unchanged) ──
     def start_game():
         st.session_state.game_active    = True
         st.session_state.game_sequence  = [random.randint(0, 3)]
@@ -689,8 +415,6 @@ def show_calm_colors_game():
         st.session_state.waiting        = False
         st.session_state.game_message   = ""
 
-    # Complete replacement for handle_move function
-
     def handle_move(color_id):
         if not st.session_state.game_active or not st.session_state.waiting:
             return
@@ -706,42 +430,31 @@ def show_calm_colors_game():
                 st.session_state.is_playing_seq = True
                 level = st.session_state.game_level
                 
-                # 🔥 PROFESSIONAL LOGIC:  
-                # 1. Sequence length slowly increases
-                # 2. Every round has completely NEW random colors
-                # 3. Difficulty maintains through constraints
-                
-                # Calculate new sequence length based on level
+                # Sequence length progression
                 if level <= 3:
-                    new_length = 3  # Level 1-3: Always 3 colors
+                    new_length = 3
                 elif level <= 6:
-                    new_length = 4  # Level 4-6: 4 colors
+                    new_length = 4
                 elif level <= 9:
-                    new_length = 5  # Level 7-9: 5 colors
+                    new_length = 5
                 elif level <= 12:
-                    new_length = 6  # Level 10-12: 6 colors
+                    new_length = 6
                 else:
-                    new_length = min(8, 6 + (level - 12) // 3)  # Max 8 colors
+                    new_length = min(8, 6 + (level - 12) // 3)
                 
-                # Generate brand new random sequence with difficulty constraints
                 new_sequence = []
                 for i in range(new_length):
                     if level < 5:
-                        # Easy: Totally random
                         new_color = random.randint(0, 3)
-                        
                     elif level < 10:
-                        # Medium: No consecutive repeats
                         if len(new_sequence) > 0:
                             last = new_sequence[-1]
-                            choices = [0, 1, 2, 3]
+                            choices = [0,1,2,3]
                             choices.remove(last)
                             new_color = random.choice(choices)
                         else:
                             new_color = random.randint(0, 3)
-                            
                     else:
-                        # Hard: Pattern + No consecutive repeats
                         patterns = [[0,1,2,3], [3,2,1,0], [0,2,1,3], [1,3,0,2]]
                         if random.random() > 0.6 and i < len(patterns):
                             pattern = random.choice(patterns)
@@ -749,98 +462,25 @@ def show_calm_colors_game():
                         else:
                             if len(new_sequence) > 0:
                                 last = new_sequence[-1]
-                                choices = [0, 1, 2, 3]
+                                choices = [0,1,2,3]
                                 choices.remove(last)
                                 new_color = random.choice(choices)
                             else:
                                 new_color = random.randint(0, 3)
-                    
                     new_sequence.append(new_color)
                 
-                # Replace with completely new sequence
                 st.session_state.game_sequence = new_sequence
-                
-                # Public demo restriction
-                if (
-                    st.session_state.get("public_game_mode", False)
-                    and st.session_state.game_level > 5
-                ):
+                if st.session_state.get("public_game_mode", False) and st.session_state.game_level > 5:
                     st.session_state.game_screen = "login_popup"
                     return
-                st.session_state.game_message = f"&#9989; Perfect! +{pts} points!"
+                st.session_state.game_message = f"✅ Perfect! +{pts} points!"
         else:
             end_game()
 
-    # ── SCREEN: HOME ──
+    # ── SCREEN: HOME (with hero-banner HTML added) ──
     def show_home():
         if from_sidebar:
-            # After login — match chat/mood/journal banner style exactly
             st.markdown("""
-            <style>
-            @keyframes headerPulse {
-                0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.12); }
-                50%       { box-shadow: 0 0 0 8px rgba(255,255,255,0.06); }
-            }
-            @keyframes statusBlink {
-                0%, 100% { opacity: 1; }
-                50%       { opacity: 0.4; }
-            }
-            .game-page-header {
-                background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
-                padding: 18px 28px 16px;
-                display: flex;
-                align-items: center;
-                gap: 14px;
-                box-shadow: 0 4px 24px rgba(91,141,239,0.28);
-                border-radius: 20px;
-                margin-bottom: 30px;
-                margin-top: 20px;
-            }
-            .game-header-avatar {
-                width: 46px;
-                height: 46px;
-                border-radius: 50%;
-                background: rgba(255,255,255,0.22);
-                border: 2px solid rgba(255,255,255,0.45);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 22px;
-                flex-shrink: 0;
-                box-shadow: 0 0 0 4px rgba(255,255,255,0.12);
-                animation: headerPulse 3s ease-in-out infinite;
-            }
-            .game-header-text h1 {
-                margin: 0;
-                font-size: 20px;
-                font-weight: 700;
-                color: #ffffff;
-                line-height: 1.2;
-            }
-            .game-header-text p {
-                margin: 2px 0 0;
-                font-size: 14px;
-                color: rgba(255,255,255,0.78);
-                font-weight: 400;
-            }
-            .game-header-status {
-                margin-left: auto;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                font-size: 12px;
-                color: rgba(255,255,255,0.85);
-                font-weight: 500;
-            }
-            .game-status-dot {
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                background: #4ade80;
-                box-shadow: 0 0 6px #4ade80;
-                animation: statusBlink 2s ease-in-out infinite;
-            }
-            </style>
             <div class="game-page-header">
                 <div class="game-header-avatar">🎨</div>
                 <div class="game-header-text">
@@ -854,26 +494,14 @@ def show_calm_colors_game():
             </div>
             """, unsafe_allow_html=True)
         else:
-            # Before login (navbar) — softer version of the purple/blue banner
+            # HERO BANNER – now using the CSS class
             st.markdown("""
-            <div style="
-                background: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 55%, #e9d5ff 100%);
-                border-radius: 20px;
-                margin: 40px 10px 0 10px;
-                padding: 36px 20px 44px;
-                text-align: center;
-                color: #3730a3;
-                box-shadow: 0 8px 32px rgba(165,180,252,0.3);
-            ">
-                <div style="font-size:44px;font-weight:900;margin-bottom:10px;
-                            text-shadow:0 2px 8px rgba(99,102,241,0.15);">🎨 Calm Colors</div>
-                <div style="font-size:16px;font-weight:500;opacity:0.85;">
-                    Train your focus &amp; relax your mind
-                </div>
+            <div class="hero-banner">
+                <div class="hero-title">🎨 Calm Colors</div>
+                <div class="hero-subtitle">Train your focus &amp; relax your mind</div>
             </div>
             """, unsafe_allow_html=True)
 
-        # Start Game button — centered, styled via CSS class
         st.markdown("<div style='height:28px'></div>", unsafe_allow_html=True)
         c1, c2, c3 = st.columns([2, 1, 2])
         with c2:
@@ -882,16 +510,16 @@ def show_calm_colors_game():
                 st.session_state.game_screen = "countdown"
                 st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
-
-        # How to Play label
+        #how to play button ka color
+        # How to Play text (fixed colon)
         st.markdown("""
-        <div style="text-align:center;font-size:16px;font-weight:700;letter-spacing:1.2px;
-                    text-transform:uppercase;color:#111827;margin:28px 0 34px;">
+        <div style="text-align:center; font-size:18px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:black; margin:28px 0 34px;">
             📖 How to Play
         </div>
         """, unsafe_allow_html=True)
-
-        # How to Play — lighter animated gradient cards
+        
+#how to play and play cards col,ors and background changes
+        # How to Play cards (animated)
         st.markdown("""
         <style>
         @keyframes cardShift1 { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
@@ -909,7 +537,7 @@ def show_calm_colors_game():
                     <div style="font-size:12px;color:#4338ca;line-height:1.5;">Colored squares flash in a sequence</div>
                 </div>
                 <div class="card2" style="border-radius:16px;padding:18px 14px;text-align:center;box-shadow:0 4px 16px rgba(147,197,253,0.3);">
-                    <div style="font-size:26px;margin-bottom:8px;">&#127919;</div>
+                    <div style="font-size:26px;margin-bottom:8px;">🎯</div>
                     <div style="font-size:13px;font-weight:700;color:#1d4ed8;margin-bottom:4px;">Repeat</div>
                     <div style="font-size:12px;color:#1e40af;line-height:1.5;">Click the same colors in order</div>
                 </div>
@@ -926,9 +554,8 @@ def show_calm_colors_game():
         </div>
         """, unsafe_allow_html=True)
 
-    # ── SCREEN: COUNTDOWN ──
+    # ── SCREEN: COUNTDOWN (unchanged) ──
     def show_countdown():
-        # Apply animated teal-blue background only for countdown
         st.markdown("""
         <style>
         @keyframes countdownShift {
@@ -942,16 +569,7 @@ def show_calm_colors_game():
             100% { transform: translateY(0px) translateX(0px); opacity: 0.8; }
         }
         .stApp {
-            background: linear-gradient(
-                135deg,
-                #0d3b4f 0%,
-                #0a4a5e 15%,
-                #0e6b7a 30%,
-                #1a7a6e 45%,
-                #0d5c6e 60%,
-                #0a3d52 75%,
-                #0d3b4f 100%
-            ) !important;
+            background: linear-gradient(135deg, #0d3b4f 0%, #0a4a5e 15%, #0e6b7a 30%, #1a7a6e 45%, #0d5c6e 60%, #0a3d52 75%, #0d3b4f 100%) !important;
             background-size: 400% 400% !important;
             animation: countdownShift 8s ease infinite !important;
         }
@@ -961,12 +579,12 @@ def show_calm_colors_game():
         }
         </style>
         """, unsafe_allow_html=True)
-
         placeholder = st.empty()
         for num, hint in [("3", "Take a deep breath in..."),
                           ("2", "Focus your mind..."),
                           ("1", "Get ready..."),
                           ("GO!", "Let's begin!")]:
+            #countdown screen color changes
             placeholder.markdown(f"""
             <div style="position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#0d3b4f 0%,#0a4a5e 15%,#0e6b7a 30%,#1a7a6e 45%,#0d5c6e 60%,#0a3d52 75%,#0d3b4f 100%);background-size:400% 400%;animation:countdownShift 8s ease infinite;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;overflow:hidden;">
                 <div style="position:absolute;top:8%;left:15%;width:3px;height:3px;background:white;border-radius:50%;animation:starFloat 3s ease infinite;opacity:0.8;"></div>
@@ -980,7 +598,7 @@ def show_calm_colors_game():
                 <div style="position:absolute;bottom:0;left:0;right:0;height:45%;background:linear-gradient(180deg,transparent 0%,#0a3347 40%,#071f2e 100%);border-radius:60% 60% 0 0 / 20% 20% 0 0;"></div>
                 <div style="position:absolute;bottom:0;left:-10%;right:-10%;height:35%;background:linear-gradient(180deg,transparent 0%,#0d4a3a 40%,#082a20 100%);border-radius:50% 50% 0 0 / 15% 15% 0 0;opacity:0.7;"></div>
                 <div style="position:absolute;bottom:0;left:5%;right:-5%;height:25%;background:linear-gradient(180deg,transparent 0%,#0a3d2e 50%,#051a14 100%);border-radius:55% 45% 0 0 / 18% 18% 0 0;opacity:0.8;"></div>
-                <div style="font-size:140px;font-weight:900;color:white;text-shadow:0 0 40px rgba(100,220,200,0.6),0 4px 20px rgba(0,0,0,0.4);line-height:1;margin-bottom:24px;position:relative;z-index:10;animation:chipIn 0.6s ease;">{num}</div>
+                <div style="font-size:140px;font-weight:900;color:white;text-shadow:0 0 40px rgba(100,220,200,0.6),0 4px 20px rgba(0,0,0,0.4);line-height:1;margin-bottom:24px;position:relative;z-index:10;animation:popIn 0.6s ease;">{num}</div>
                 <div style="font-size:22px;font-weight:500;color:rgba(180,230,220,0.9);text-shadow:0 2px 12px rgba(0,0,0,0.3);position:relative;z-index:10;letter-spacing:1px;">{hint}</div>
             </div>
             """, unsafe_allow_html=True)
@@ -989,53 +607,28 @@ def show_calm_colors_game():
         st.session_state.game_screen = "game"
         st.rerun()
 
-    # ── SCREEN: GAME ──
+    # ── SCREEN: GAME (unchanged, but ensures .game-msg, .score-bar etc. are used) ──
     def show_game():
         top_padding = "4rem" if from_sidebar else "110px"
-        st.markdown("""
+        st.markdown(f"""
         <style>
-        @keyframes softShift {
-            0%   { background-position: 0% 50%; }
-            50%  { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .stApp {
+        @keyframes softShift {{
+            0%   {{ background-position: 0% 50%; }}
+            50%  {{ background-position: 100% 50%; }}
+            100% {{ background-position: 0% 50%; }}
+        }}
+        .stApp {{
             background: linear-gradient(135deg, #c9d6ff, #e2c9ff, #ffd6e7, #c9f0ff, #c9ffe8, #c9d6ff) !important;
             background-size: 400% 400% !important;
             animation: softShift 10s ease infinite !important;
-        }
-        .stApp .block-container { 
+        }}
+        .stApp .block-container {{ 
             position: relative !important; 
             z-index: 10 !important;
-            padding-top: """ + top_padding + """ !important;
+            padding-top: {top_padding} !important;
             background: transparent !important;
-        }
-        div.score-bar {
-            background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.35)) !important;
-            border: 1.5px solid rgba(255,255,255,0.5) !important;
-            box-shadow: 0 4px 24px rgba(100,180,180,0.2) !important;
-            border-radius: 16px !important;
-            padding: 20px 40px !important;
-            display: flex !important;
-            justify-content: space-around !important;
-            align-items: center !important;
-            margin-bottom: 24px !important;
-            margin-top: 0 !important;
-            backdrop-filter: blur(12px) !important;
-        }
-        div.score-bar div.score-item {
-            font-size: 18px !important;
-            font-weight: 700 !important;
-            color: #5b4fcf !important;
-        }
-        div.score-bar div.score-item span.score-val {
-            font-size: 28px !important;
-            font-weight: 900 !important;
-            color: #7c3aed !important;
-            -webkit-text-fill-color: #7c3aed !important;
-            background: none !important;
-        }
-        div.game-msg {
+        }}
+        div.game-msg {{
             background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.35)) !important;
             border: 1.5px solid rgba(255,255,255,0.5) !important;
             color: #5b4fcf !important;
@@ -1048,65 +641,73 @@ def show_calm_colors_game():
             max-width: 600px !important;
             text-align: center !important;
             backdrop-filter: blur(12px) !important;
-        }
+        }}
         </style>
         """, unsafe_allow_html=True)
         
-        st.markdown(f"""
-        <div class="score-bar">
-            <div class="score-item">&#127919; Level  <span class="score-val">{st.session_state.game_level}</span></div>
-            <div class="score-item">&#127942; Score  <span class="score-val">{st.session_state.game_score}</span></div>
-            <div class="score-item">&#128202; Length <span class="score-val">{len(st.session_state.game_sequence)}</span></div>
-        </div>
-        """, unsafe_allow_html=True)
+        #score bar container bacxkground color headings color 
 
-        # Sequence playback
+        st.markdown(f"""
+        <div style="
+            background:rgba(255,255,255,0.45);
+            backdrop-filter:blur(12px);
+            border:1.5px solid rgba(255,255,255,0.5);
+            border-radius:20px;
+            padding:18px 30px;
+            display:flex;
+            justify-content:space-around;
+            align-items:center;
+            margin-bottom:24px;
+             box-shadow:0 6px 24px rgba(0,0,0,0.12);
+        ">
+                <div style="text-align:center;">
+                    <div style="font-size:14px;font-weight:600;color:#5b4fcf;">🎯 LEVEL</div>
+                    <div style="font-size:30px;font-weight:900;color:#7c3aed;">
+                        {st.session_state.game_level}
+                    </div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:14px;font-weight:600;color:#5b4fcf;">🏆 SCORE</div>
+                    <div style="font-size:30px;font-weight:900;color:#7c3aed;">
+                        {st.session_state.game_score}
+                   </div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:14px;font-weight:600;color:#5b4fcf;">📏 LENGTH</div>
+                    <div style="font-size:30px;font-weight:900;color:#7c3aed;">
+                        {len(st.session_state.game_sequence)}
+                    </div>
+                </div>
+             </div>
+            """, unsafe_allow_html=True)
+
         if st.session_state.is_playing_seq:
-            st.markdown(
-                f'<div class="game-msg">🎵 Watch the sequence — Length: {len(st.session_state.game_sequence)}</div>',
-                unsafe_allow_html=True
-            )
+            st.markdown(f'<div class="game-msg">🎵 Watch the sequence — Length: {len(st.session_state.game_sequence)}</div>', unsafe_allow_html=True)
             slot = st.empty()
-            for i, idx in enumerate(st.session_state.game_sequence):
+            for idx in st.session_state.game_sequence:
                 c = colors[idx]
-                # Show the color chip
                 slot.markdown(f"""
                 <div style="text-align:center;margin:40px 0;animation:popIn 0.3s ease;">
-                    <div class="seq-chip" style="background:{c['color']};">
-                        {c['emoji']} {c['name']}
-                    </div>
+                    <div class="seq-chip" style="background:{c['color']};">{c['emoji']} {c['name']}</div>
                 </div>
                 """, unsafe_allow_html=True)
                 time.sleep(1.2)
-                # Clear between steps so repeated colors are visually distinct
                 slot.empty()
                 time.sleep(0.15)
-            time.sleep(0.2)
             st.session_state.is_playing_seq = False
-            st.session_state.waiting        = True
-            st.session_state.game_message   = "Your turn! Repeat the sequence..."
+            st.session_state.waiting = True
             st.rerun()
 
-        # Player turn
         if st.session_state.waiting:
-            st.markdown(
-                '<div class="game-msg">🎮 Your turn! Click the colors in order...</div>',
-                unsafe_allow_html=True
-            )
-            total    = len(st.session_state.game_sequence)
+            st.markdown('<div class="game-msg">🎮 Your turn! Click the colors in order...</div>', unsafe_allow_html=True)
+            total = len(st.session_state.game_sequence)
             progress = st.session_state.player_index
             if total > 0:
                 st.progress(progress / total)
-                st.markdown(
-                    f"<p style='text-align:center;color:#4b5563;font-weight:600;margin:8px 0 20px;text-shadow:0 2px 4px rgba(0,0,0,0.1);width:100%;display:block;'>"
-                    f"Progress: {progress} / {total}</p>",
-                    unsafe_allow_html=True
-                )
+                st.markdown(f"<p style='text-align:center;color:#4b5563;font-weight:600;margin:8px 0 20px;text-shadow:0 2px 4px rgba(0,0,0,0.1);'>Progress: {progress} / {total}</p>", unsafe_allow_html=True)
 
-            # Color buttons + End Game — all in one centered column
             _, center, _ = st.columns([1, 2, 1])
             with center:
-                # Row 1
                 r1c1, r1c2 = st.columns(2, gap="large")
                 with r1c1:
                     if st.button(f"{colors[0]['emoji']}  {colors[0]['name']}", key="color_blue", use_container_width=True):
@@ -1114,10 +715,7 @@ def show_calm_colors_game():
                 with r1c2:
                     if st.button(f"{colors[1]['emoji']}  {colors[1]['name']}", key="color_green", use_container_width=True):
                         handle_move(1); st.rerun()
-
                 st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
-
-                # Row 2
                 r2c1, r2c2 = st.columns(2, gap="large")
                 with r2c1:
                     if st.button(f"{colors[2]['emoji']}  {colors[2]['name']}", key="color_purple", use_container_width=True):
@@ -1125,18 +723,44 @@ def show_calm_colors_game():
                 with r2c2:
                     if st.button(f"{colors[3]['emoji']}  {colors[3]['name']}", key="color_orange", use_container_width=True):
                         handle_move(3); st.rerun()
-
-                # Spacer
                 st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
-
-                # End Game — inside same column, fills full width = perfectly centered
                 st.markdown("""
                 <style>
-                div[data-testid="stForm"] {
-                    background: transparent !important;
-                    border: none !important;
-                    padding: 0 !important;
-                }
+
+/* ─── PASTED FINAL GAME CSS ─── */
+
+    
+/* ─── BASE BUTTON STYLE ─── */
+div[data-testid="stButton"] > button {
+    color: white !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    padding: 22px 16px !important;
+    border-radius: 22px !important;
+    border: none !important;
+    transition: all 0.25s ease !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important;
+}
+
+/* ─── TARGET BY KEY (WORKING METHOD) ─── */
+
+button[key="color_blue"]   { background: #1E88E5 !important; }  /* navy blue */
+button[key="color_green"]  { background: #2E7D32 !important; }  /* dark green */
+button[key="color_purple"] { background: #8E24AA !important; }  /* real purple */
+button[key="color_orange"] { background: #FF0000 !important; }  /* deep orange */
+
+/* ─── HOVER EFFECT ─── */
+div[data-testid="stButton"] > button:hover {
+    transform: scale(1.06) translateY(-4px) !important;
+    filter: brightness(1.1) !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+                #End game color changes
+                st.markdown("""
+                <style>
+                div[data-testid="stForm"] { background: transparent !important; border: none !important; padding: 0 !important; }
                 div[data-testid="stFormSubmitButton"] > button {
                     background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
                     color: white !important;
@@ -1149,10 +773,7 @@ def show_calm_colors_game():
                     transition: all 0.3s ease !important;
                     width: 100% !important;
                 }
-                div[data-testid="stFormSubmitButton"] > button:hover {
-                    filter: brightness(1.08) !important;
-                    transform: translateY(-2px) !important;
-                }
+                div[data-testid="stFormSubmitButton"] > button:hover { filter: brightness(1.08) !important; transform: translateY(-2px) !important; }
                 </style>
                 """, unsafe_allow_html=True)
                 _, end_btn_col, _ = st.columns([1, 1.2, 1])
@@ -1161,13 +782,12 @@ def show_calm_colors_game():
                         if st.form_submit_button("⏹ End Game", use_container_width=True):
                             end_game(); st.rerun()
 
-    # ── SCREEN: RESULT ──
+    # ── SCREEN: RESULT (unchanged) ──
     def show_result():
         level = st.session_state.game_level
         score = st.session_state.game_score
         emoji = "🎉"
         title = "Game Ended!"
-
         st.markdown(f"""
         <style>
         .stApp {{
@@ -1177,14 +797,12 @@ def show_calm_colors_game():
             padding-top: 2rem !important;
             max-width: 100% !important;
         }}
-        /* Form chrome */
         div[data-testid="stForm"] {{
             background: transparent !important;
             border: none !important;
             padding: 0 !important;
             margin-top: 0 !important;
         }}
-        /* Play Again button */
         div[data-testid="stForm"] button {{
             background: linear-gradient(135deg, #667eea, #764ba2) !important;
             color: white !important;
@@ -1201,55 +819,30 @@ def show_calm_colors_game():
             filter: brightness(1.1) !important;
             transform: translateY(-3px) !important;
         }}
-        /* Kill any gap Streamlit adds between the markdown and the column */
         [data-testid="stVerticalBlock"] > [data-testid="stVerticalBlock"] {{
             gap: 0 !important;
         }}
         </style>
-
-        <div style="
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 20px 0 20px;
-        ">
-            <div style="
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 55%, #9b59b6 100%);
-                border-radius: 24px 24px 0 0;
-                padding: 20px 36px 28px;
-                text-align: center;
-                box-shadow: 0 20px 60px rgba(102,126,234,0.55), 0 8px 32px rgba(118,75,162,0.4);
-                border: 1.5px solid rgba(255,255,255,0.25);
-                border-bottom: none;
-                width: 100%;
-                max-width: 400px;
-            ">
+        <div style="display: flex; flex-direction: column; align-items: center; padding: 20px 20px 0 20px;">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 55%, #9b59b6 100%); border-radius: 24px 24px 0 0; padding: 20px 36px 28px; text-align: center; box-shadow: 0 20px 60px rgba(102,126,234,0.55), 0 8px 32px rgba(118,75,162,0.4); border: 1.5px solid rgba(255,255,255,0.25); border-bottom: none; width: 100%; max-width: 400px;">
                 <div style="font-size:56px;margin-bottom:14px;">{emoji}</div>
-                <div style="font-size:30px;font-weight:900;color:white;margin-bottom:24px;
-                            text-shadow:0 2px 12px rgba(0,0,0,0.3);">{title}</div>
+                <div style="font-size:30px;font-weight:900;color:white;margin-bottom:24px;text-shadow:0 2px 12px rgba(0,0,0,0.3);">{title}</div>
                 <div style="display:flex;justify-content:center;gap:14px;margin-bottom:20px;">
-                    <div style="background:rgba(255,255,255,0.18);border-radius:14px;padding:16px 24px;
-                                flex:1;border:1px solid rgba(255,255,255,0.3);">
-                        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.85);
-                                    margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">🎯 Level</div>
+                    <div style="background:rgba(255,255,255,0.18);border-radius:14px;padding:16px 24px;flex:1;border:1px solid rgba(255,255,255,0.3);">
+                        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">🎯 Level</div>
                         <div style="font-size:38px;font-weight:900;color:white;">{level}</div>
                     </div>
-                    <div style="background:rgba(255,255,255,0.18);border-radius:14px;padding:16px 24px;
-                                flex:1;border:1px solid rgba(255,255,255,0.3);">
-                        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.85);
-                                    margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">⭐ Score</div>
+                    <div style="background:rgba(255,255,255,0.18);border-radius:14px;padding:16px 24px;flex:1;border:1px solid rgba(255,255,255,0.3);">
+                        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">⭐ Score</div>
                         <div style="font-size:38px;font-weight:900;color:white;">{score}</div>
                     </div>
                 </div>
-                <div style="font-size:13px;color:rgba(255,255,255,0.88);line-height:1.7;
-                            background:rgba(255,255,255,0.15);border-radius:12px;padding:14px 18px;">
+                <div style="font-size:13px;color:rgba(255,255,255,0.88);line-height:1.7;background:rgba(255,255,255,0.15);border-radius:12px;padding:14px 18px;">
                     Every game is practice for mindfulness<br>Breathe deeply and try again 🧘
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
-
-        # Button sits immediately below the card — same max-width, no gap
         _, btn_col, _ = st.columns([1, 1.4, 1])
         with btn_col:
             with st.form("play_again_form", border=False):
@@ -1257,6 +850,7 @@ def show_calm_colors_game():
                 if submitted:
                     st.session_state.game_screen = "countdown"
                     st.rerun()
+
     def show_login_popup():
         _, col, _ = st.columns([1, 1.2, 1])
         with col:
@@ -1273,11 +867,7 @@ def show_calm_colors_game():
                 </p>
             </div>
             """, unsafe_allow_html=True)
-
-            # Generous gap between popup and buttons
             st.markdown("<div style='height:48px'></div>", unsafe_allow_html=True)
-
-            # Scoped button styles — won't affect navbar
             st.markdown("""
             <style>
             .game-popup-btns .stButton > button {
@@ -1298,7 +888,6 @@ def show_calm_colors_game():
             }
             </style>
             """, unsafe_allow_html=True)
-
             st.markdown('<div class="game-popup-btns">', unsafe_allow_html=True)
             b1, b2 = st.columns(2, gap="medium")
             with b1:
@@ -1315,20 +904,14 @@ def show_calm_colors_game():
             st.markdown('</div>', unsafe_allow_html=True)
 
     # ── ROUTER ──
-    # Demo-chat style: always render base content, conditionally show popup on same page
     screen = st.session_state.game_screen
-
     if screen == "home":
         show_home()
-
     elif screen == "countdown":
         show_countdown()
-
     elif screen == "game":
         show_game()
-
     elif screen in ("result", "login_popup"):
-        # Page background matching the dark navy from the image
         st.markdown("""
         <style>
         .stApp {
@@ -1338,12 +921,10 @@ def show_calm_colors_game():
         .main .block-container { position: relative !important; z-index: 10 !important; }
         </style>
         """, unsafe_allow_html=True)
-
         if screen == "result":
             show_result()
         else:
             show_login_popup()
 
-
 def show_aesthetic_game_selector():
-    show_calm_colors_game();
+    show_calm_colors_game()
