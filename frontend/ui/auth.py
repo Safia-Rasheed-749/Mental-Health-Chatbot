@@ -38,6 +38,44 @@ def show_auth_page():
     /* Hide Streamlit default headers & footers */
     header, footer, .stDeployButton { display: none !important; }
     #MainMenu { visibility: hidden; }
+    
+    /* ═══════════════════════════════════════════════════════════════
+       FIX NAVBAR BUTTON ALIGNMENT - FORCE ALL BUTTONS TO SAME HEIGHT
+       ═══════════════════════════════════════════════════════════════ */
+    
+    /* Target navbar container - ensure it's at the top */
+    div[data-testid="stHorizontalBlock"]:has(.navbar-container) {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 999999 !important;
+    }
+    
+    /* Force all navbar buttons to same vertical alignment */
+    div[data-testid="stHorizontalBlock"]:has(.navbar-container) button {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        vertical-align: middle !important;
+        align-self: center !important;
+    }
+    
+    /* Force button containers to same height */
+    div[data-testid="stHorizontalBlock"]:has(.navbar-container) div[data-testid="column"] {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    /* Ensure primary button (Get Started) has same alignment */
+    div[data-testid="stHorizontalBlock"]:has(.navbar-container) button[kind="primary"] {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        line-height: 1 !important;
+        vertical-align: middle !important;
+    }
 
     /* Clean White Background */
     .stApp { 
@@ -46,7 +84,7 @@ def show_auth_page():
         min-height: 100vh;
     }
     .main .block-container { 
-        padding-top: 85px !important; 
+        padding-top: 100px !important; 
         padding-bottom: 2rem !important;
         max-width: 1000px;
         overflow-y: hidden !important;
