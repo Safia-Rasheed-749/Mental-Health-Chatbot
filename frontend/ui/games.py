@@ -155,14 +155,13 @@ def show_calm_colors_game():
         0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
         100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
     }
-    /* hero main title color changes.*?
+    /* hero main title color changes.*/
     .hero-title {
         font-size: 50px !important;
         font-weight: 900;
         margin-bottom: 12px;
         background: linear-gradient(135deg, #667eea, #764ba2);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent !important;
+        color: white !important;
         background-clip: text;
         position: relative;
         z-index: 1;
@@ -171,7 +170,7 @@ def show_calm_colors_game():
     .hero-subtitle {
         font-size: 18px;
         font-weight: 500;
-        color: #334155 !important;
+        color: white !important;
         position: relative;
         z-index: 1;
     }
@@ -744,10 +743,21 @@ div[data-testid="stButton"] > button {
 
 /* ─── TARGET BY KEY (WORKING METHOD) ─── */
 
-button[key="color_blue"]   { background: #1E88E5 !important; }  /* navy blue */
-button[key="color_green"]  { background: #2E7D32 !important; }  /* dark green */
-button[key="color_purple"] { background: #8E24AA !important; }  /* real purple */
-button[key="color_orange"] { background: #FF0000 !important; }  /* deep orange */
+button[aria-label*="Blue"] {
+    background: linear-gradient(135deg,#2563eb,#1d4ed8) !important;
+}
+
+button[aria-label*="Green"] {
+    background: linear-gradient(135deg,#16a34a,#15803d) !important;
+}
+
+button[aria-label*="Purple"] {
+    background: linear-gradient(135deg,#9333ea,#7e22ce) !important;
+}
+
+button[aria-label*="Orange"] {
+    background: linear-gradient(135deg,#f97316,#ea580c) !important;
+}
 
 /* ─── HOVER EFFECT ─── */
 div[data-testid="stButton"] > button:hover {
