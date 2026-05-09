@@ -125,7 +125,7 @@ def show_exercises_page():
         }
         
         .exercise-content { flex: 1; }
-        
+        /* colors changes inside the card*/
         .exercise-title {
             font-size: 1.4rem;
             font-weight: 700;

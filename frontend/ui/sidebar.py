@@ -36,6 +36,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
     st.markdown("""
     <style>
+    /* sidebar background color change*/
     /* ── SIDEBAR CONTAINER ── */
     section[data-testid="stSidebar"] {
         width: 260px !important;
@@ -71,7 +72,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         width: 42px;
         height: 42px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #5B8DEF, #7C9DF5);
+        background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%);
         border: 2px solid rgba(99,102,241,0.3);
         display: flex;
         align-items: center;
@@ -99,7 +100,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         margin-bottom: 6px !important;
         border-color: rgba(74,127,212,0.2) !important;
     }
-
+    /*navigation label color change*/
     /* ── SECTION LABEL ── */
     section[data-testid="stSidebar"] .sb-section-label {
         font-size: 13px !important;
@@ -107,7 +108,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         letter-spacing: 1.6px !important;
         text-transform: uppercase !important;
         margin: 16px 0 10px 2px !important;
-        color: #6366f1 !important;
+        color: black!important;
         display: block !important;
         opacity: 1 !important;
     }
@@ -125,8 +126,10 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
     section[data-testid="stSidebar"] div[role="radiogroup"] label:hover {
         background: rgba(99,102,241,0.1) !important;
     }
+    
+    /* text color in sidebar changes*/
     section[data-testid="stSidebar"] div[role="radiogroup"] label p {
-        color: #3730a3 !important;
+        color: black !important;
         font-size: 16.5px !important;
         font-weight: 500 !important;
         margin: 0 !important;
@@ -179,7 +182,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         background: none !important;
         height: auto !important;
     }
-
+    /*logout button color changes*/
     /* ── LOGOUT (primary) ── */
     section[data-testid="stSidebar"] .stButton button[kind="primary"] {
         background: linear-gradient(135deg, #e05a5a 0%, #f07070 100%) !important;
@@ -228,18 +231,20 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         border-left: 2px solid #6366f1 !important;
         padding-left: 2px !important;
     }
-    .session-title-btn .stButton button {
-        color: #4338ca !important;
-        font-size: 12.5px !important;
-        font-weight: 400 !important;
-        padding: 5px 8px !important;
-        border-radius: 6px !important;
-        text-align: left !important;
-    }
-    .session-title-btn .stButton button:hover {
-        color: #312e81 !important;
-        background: rgba(99,102,241,0.1) !important;
-        transform: none !important;
+    /*session tabs and label color*/
+    /* FORCE SESSION BUTTON TEXT COLOR (ALL STATES) */
+      section[data-testid="stSidebar"] div[data-testid="stButton"] button,
+      section[data-testid="stSidebar"] div[data-testid="stButton"] button p {
+    color: #111827 !important;
+    opacity: 1 !important;
+}
+
+/* ACTIVE SESSION */
+      section[data-testid="stSidebar"] .session-active div[data-testid="stButton"] button,
+      section[data-testid="stSidebar"] .session-active div[data-testid="stButton"] button p {
+      color: #4f46e5 !important;
+      font-weight: 700 !important;
+}
     }
     .session-active .session-title-btn .stButton button {
         color: #4f46e5 !important;

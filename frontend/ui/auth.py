@@ -57,15 +57,7 @@ def show_auth_page():
         overflow-y: auto !important;
     }
 
-    /* =========================================
-       PROFESSIONAL AUTH CARD
-       ========================================= */
-    /* NOTE: This card is actually a Streamlit column element.
-       If you change colors here and nothing happens, check:
-       1. The column index in the Python code (line ~180-190)
-       2. Streamlit's dynamic class names might have changed
-       3. The shadow/border might be overridden by parent elements
-    */
+    
     [data-testid="column"]:nth-child(2) {
         background: #ffffff !important;  /* CHANGE THIS: Card background color */
         border-radius: 20px !important;
@@ -94,6 +86,7 @@ def show_auth_page():
         margin-bottom: 1.5rem;
         margin-top: 1rem;
     }
+    /*welcome back background color*/
     .auth-header h1 { 
         /* GRADIENT TEXT - To change title color, modify these two hex codes  main headinds bckground color*/
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* CHANGE THIS: Title gradient colors */
@@ -114,13 +107,7 @@ def show_auth_page():
         font-weight: 400;
     }
 
-    /* =========================================
-       ENHANCED INPUT FIELDS (Single Border)
-       ========================================= */
-    /* WARNING: Streamlit's dynamic class names can change with updates.
-       If input styling doesn't change, the selectors might be outdated.
-       The actual input element is deeply nested in Streamlit's shadow DOM.
-    */
+    
     /* input fields name color change.*/
     .stTextInput label { 
         font-size: 0.875rem !important; 
@@ -165,14 +152,6 @@ def show_auth_page():
         font-weight: 400 !important;
     }
 
-    /* =========================================
-       MODERN BUTTON STYLES
-       ========================================= */
-    /* IMPORTANT: The primary button gradient might not change if
-       you only modify the hex codes here because Streamlit's
-       default button styling might override it. Use !important
-       as shown below to force the change.
-    */
     
     /* Primary Button with Gradient */
     button[kind="primary"] {
@@ -279,32 +258,7 @@ def show_auth_page():
         }
     }
     
-    /* =========================================
-       COMMON PITFALLS & SOLUTIONS
-       =========================================
-       If a color change doesn't work:
-       
-       1. Streamlit's dynamic class names: 
-          - Try adding more specific selectors
-          - Use !important flag (already added)
-          - Use data attributes like [data-testid="stTextInput"]
-       
-       2. Shadow DOM elements:
-          - input elements are sometimes inside shadow roots
-          - Use the selector we have: div[data-testid="stTextInputRootElement"]
-       
-       3. Element not found:
-          - The column might be [data-testid="column"]:nth-child(1) or (3)
-          - Check browser DevTools to verify the actual structure
-       
-       4. Gradient text:
-          - Only works with -webkit-background-clip
-          - Must have webkit prefix for cross-browser
-       
-       5. Button colors:
-          - If gradient doesn't apply, check if Streamlit added inline styles
-          - Try using exact class names from browser DevTools
-    ========================================= */
+    
     </style>
     """, unsafe_allow_html=True)
     
