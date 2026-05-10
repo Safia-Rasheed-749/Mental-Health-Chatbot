@@ -1000,53 +1000,136 @@ div[data-testid="stButton"] > button:hover {
             padding-top: 2rem !important;
             max-width: 100% !important;
         }}
+        
+        /* ═══════════════════════════════════════════════════════════════
+           PLAY AGAIN BUTTON - RESULT SCREEN (EASY CUSTOMIZATION)
+           ═══════════════════════════════════════════════════════════════
+           
+           📍 LOCATION: Result screen after game ends
+           
+           🎨 HOW TO CHANGE BUTTON COLOR:
+           
+           1. BACKGROUND GRADIENT:
+              Change colors in: linear-gradient(135deg, COLOR1, COLOR2)
+              Current: #667eea (Blue-Purple) → #764ba2 (Deep Purple)
+           
+           2. TEXT COLOR:
+              Change: color: white !important;
+           
+           3. BORDER:
+              Change: border: 3px solid rgba(255,255,255,0.4) !important;
+           
+           4. SHADOW COLOR:
+              Change: box-shadow: 0 12px 40px rgba(102,126,234,0.4)
+              Match with your gradient color (use same RGB values)
+           
+           🌈 COLOR PRESETS (Copy & Paste):
+           
+           🟢 GREEN:
+           background: linear-gradient(135deg, #10b981, #059669) !important;
+           box-shadow: 0 12px 40px rgba(16,185,129,0.4) !important;
+           
+           🟠 ORANGE:
+           background: linear-gradient(135deg, #f59e0b, #dc2626) !important;
+           box-shadow: 0 12px 40px rgba(245,158,11,0.4) !important;
+           
+           🔴 RED:
+           background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+           box-shadow: 0 12px 40px rgba(239,68,68,0.4) !important;
+           
+           💜 PURPLE (Current):
+           background: linear-gradient(135deg, #667eea, #764ba2) !important;
+           box-shadow: 0 12px 40px rgba(102,126,234,0.4) !important;
+           
+           💙 BLUE:
+           background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+           box-shadow: 0 12px 40px rgba(59,130,246,0.4) !important;
+           
+           🌸 PINK:
+           background: linear-gradient(135deg, #ec4899, #db2777) !important;
+           box-shadow: 0 12px 40px rgba(236,72,153,0.4) !important;
+           
+           ═══════════════════════════════════════════════════════════════ */
+        
         div[data-testid="stForm"] {{
             background: transparent !important;
             border: none !important;
             padding: 0 !important;
             margin-top: 0 !important;
         }}
+        
+        /* ── PLAY AGAIN BUTTON STYLING ── */
         div[data-testid="stForm"] button {{
+            /* 🎨 BACKGROUND GRADIENT - Change these two colors */
             background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            
+            /* 🎨 TEXT COLOR */
             color: white !important;
-            font-weight: 700 !important;
-            font-size: 16px !important;
-            padding: 13px 0 !important;
-            border-radius: 40px !important;
-            border: none !important;
-            box-shadow: 0 6px 20px rgba(102,126,234,0.45) !important;
+            
+            /* 📏 SIZE & SPACING */
+            font-weight: 800 !important;
+            font-size: 20px !important;
+            padding: 16px 48px !important;
+            border-radius: 50px !important;
+            
+            /* 🎨 BORDER - Change color here */
+            border: 3px solid rgba(255,255,255,0.4) !important;
+            
+            /* 🎨 SHADOW - Match with gradient color */
+            box-shadow: 0 12px 40px rgba(102,126,234,0.4), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+            
+            /* ✨ EFFECTS */
+            backdrop-filter: blur(20px) !important;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
             transition: all 0.3s ease !important;
+            
+            /* 📐 WIDTH - Button width control */
             width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 auto !important;
+            display: block !important;
         }}
+        
+        /* ── HOVER STATE ── */
         div[data-testid="stForm"] button:hover {{
+            /* 🎨 HOVER SHADOW - Match with gradient color */
+            box-shadow: 0 20px 60px rgba(102,126,234,0.6), inset 0 1px 0 rgba(255,255,255,0.5) !important;
+            
+            /* 🎨 HOVER BORDER */
+            border: 3px solid rgba(255,255,255,0.6) !important;
+            
+            /* ✨ ANIMATION */
+            transform: translateY(-6px) scale(1.05) !important;
             filter: brightness(1.1) !important;
-            transform: translateY(-3px) !important;
         }}
+        
         [data-testid="stVerticalBlock"] > [data-testid="stVerticalBlock"] {{
             gap: 0 !important;
         }}
         </style>
-        <div style="display: flex; flex-direction: column; align-items: center; padding: 20px 20px 0 20px;">
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 55%, #9b59b6 100%); border-radius: 24px 24px 0 0; padding: 20px 36px 28px; text-align: center; box-shadow: 0 20px 60px rgba(102,126,234,0.55), 0 8px 32px rgba(118,75,162,0.4); border: 1.5px solid rgba(255,255,255,0.25); border-bottom: none; width: 100%; max-width: 400px;">
-                <div style="font-size:56px;margin-bottom:14px;">{emoji}</div>
-                <div style="font-size:30px;font-weight:900;color:white;margin-bottom:24px;text-shadow:0 2px 12px rgba(0,0,0,0.3);">{title}</div>
-                <div style="display:flex;justify-content:center;gap:14px;margin-bottom:20px;">
-                    <div style="background:rgba(255,255,255,0.18);border-radius:14px;padding:16px 24px;flex:1;border:1px solid rgba(255,255,255,0.3);">
-                        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">🎯 Level</div>
-                        <div style="font-size:38px;font-weight:900;color:white;">{level}</div>
+        <div style="display: flex; flex-direction: column; align-items: center; padding: 80px 20px 0 20px;">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 55%, #9b59b6 100%); border-radius: 24px; padding: 20px 30px 24px; text-align: center; box-shadow: 0 20px 60px rgba(102,126,234,0.55), 0 8px 32px rgba(118,75,162,0.4); border: 1.5px solid rgba(255,255,255,0.25); width: 100%; max-width: 380px; margin-bottom: 30px;">
+                <div style="font-size:52px;margin-bottom:12px;">{emoji}</div>
+                <div style="font-size:28px;font-weight:900;color:white;margin-bottom:20px;text-shadow:0 2px 12px rgba(0,0,0,0.3);">{title}</div>
+                <div style="display:flex;justify-content:center;gap:12px;margin-bottom:18px;">
+                    <div style="background:rgba(255,255,255,0.18);border-radius:14px;padding:14px 20px;flex:1;border:1px solid rgba(255,255,255,0.3);">
+                        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;">🎯 Level</div>
+                        <div style="font-size:36px;font-weight:900;color:white;">{level}</div>
                     </div>
-                    <div style="background:rgba(255,255,255,0.18);border-radius:14px;padding:16px 24px;flex:1;border:1px solid rgba(255,255,255,0.3);">
-                        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">⭐ Score</div>
-                        <div style="font-size:38px;font-weight:900;color:white;">{score}</div>
+                    <div style="background:rgba(255,255,255,0.18);border-radius:14px;padding:14px 20px;flex:1;border:1px solid rgba(255,255,255,0.3);">
+                        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;">⭐ Score</div>
+                        <div style="font-size:36px;font-weight:900;color:white;">{score}</div>
                     </div>
                 </div>
-                <div style="font-size:13px;color:rgba(255,255,255,0.88);line-height:1.7;background:rgba(255,255,255,0.15);border-radius:12px;padding:14px 18px;">
+                <div style="font-size:13px;color:rgba(255,255,255,0.88);line-height:1.6;background:rgba(255,255,255,0.15);border-radius:12px;padding:12px 16px;">
                     Every game is practice for mindfulness<br>Breathe deeply and try again 🧘
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
-        _, btn_col, _ = st.columns([1, 1.4, 1])
+        
+        # Button outside card - centered with proper width
+        _, btn_col, _ = st.columns([1, 1, 1])
         with btn_col:
             with st.form("play_again_form", border=False):
                 submitted = st.form_submit_button("🎮 Play Again", use_container_width=True)

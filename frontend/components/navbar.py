@@ -23,29 +23,26 @@ def render_navbar():
            NAVBAR BACKGROUND COLOR - EASY CUSTOMIZATION
            ═══════════════════════════════════════════════════════════
            
-           🎨 CURRENT: Purple gradient (matching screenshot)
-           - Start: #667eea (Blue-Purple)
-           - End: #764ba2 (Deep Purple)
+           🎨 CURRENT: Soft purple gradient (RECOMMENDED - Best theme match)
+           - Start: #a78bfa (Light purple)
+           - End: #c4b5fd (Lighter purple)
            
            💡 HOW TO CHANGE:
            Replace the gradient colors below with your preferred colors
            
            🌈 COLOR PRESETS:
            
-           OPTION 1 - Purple Gradient (Current - from screenshot):
-           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+           OPTION 1 - Soft Purple (Current - RECOMMENDED):
+           background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%) !important;
            
-           OPTION 2 - Pure White:
+           OPTION 2 - Blue-Purple Blend:
+           background: linear-gradient(135deg, #8b7dd8 0%, #c77dbb 100%) !important;
+           
+           OPTION 3 - Calm Blue:
+           background: linear-gradient(135deg, #93c5fd 0%, #a5b4fc 100%) !important;
+           
+           OPTION 4 - Pure White:
            background: white !important;
-           
-           OPTION 3 - Light Gray:
-           background: #f8f9fa !important;
-           
-           OPTION 4 - Soft Lavender:
-           background: linear-gradient(90deg, #e9d5ff 0%, #f3e8ff 100%) !important;
-           
-           OPTION 5 - Mint Fresh:
-           background: linear-gradient(90deg, #d1fae5 0%, #a7f3d0 100%) !important;
            
            ═══════════════════════════════════════════════════════════════ */
         
@@ -58,11 +55,17 @@ def render_navbar():
             width: 100% !important;
             z-index: 999999 !important;
             
-            /* 🎨 NAVBAR BACKGROUND - Purple gradient from screenshot */
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            /* 🎨 NAVBAR BACKGROUND - Soft purple (best theme match) */
+            background: linear-gradient(90deg, 
+    #6366F1 0%, 
+    #7C3AED 25%, 
+    #A855F7 50%, 
+    #D946EF 75%, 
+    #EC4899 100%
+); !important;
             
-            border-bottom: 1px solid rgba(118, 75, 162, 0.3) !important;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25) !important;
+            border-bottom: 1px solid rgba(167, 139, 250, 0.3) !important;
+            box-shadow: 0 4px 12px rgba(167, 139, 250, 0.25) !important;
             padding: 12px 40px !important;
             margin: 0 !important;
             display: flex !important;
