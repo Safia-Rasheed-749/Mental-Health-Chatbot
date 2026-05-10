@@ -138,7 +138,7 @@ def show_mood_analytics(user_id):
     }
      /* Quick Mood Log , Mood Trend Timeline*/
     .section-title {
-        font-size: 26px;
+        font-size: 20px;
         font-weight: 700;
         color: #1e293b;
         margin-bottom: 18px;
