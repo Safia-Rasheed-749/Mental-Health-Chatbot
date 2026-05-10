@@ -131,7 +131,7 @@ def show_calm_colors_game():
         z-index: 1000;
         overflow-y: auto;
     }
-
+    /* Header color before login*/
     /* ── HERO BANNER (HTML ADDED IN HOME SCREEN) ── bannner backgroubnd color changes */
     .hero-banner {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
@@ -174,10 +174,11 @@ def show_calm_colors_game():
         position: relative;
         z-index: 1;
     }
-
+    
+     /* header color after login*/
     /* ── LOGGED-IN HEADER (game-page-header) ── */
     .game-page-header {
-        background: purple ! important;
+        background:  linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
         padding: 18px 28px 16px;
         display: flex;
         align-items: center;
@@ -221,7 +222,8 @@ def show_calm_colors_game():
         0%,100% { opacity: 1; }
         50% { opacity: 0.4; }
     }
-
+    
+    /* your turn game message background color changes*/
     .game-msg {
         background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%) !important;
         backdrop-filter: blur(20px);
@@ -293,7 +295,7 @@ def show_calm_colors_game():
         70%  { transform: scale(1.08); opacity: 1; }
         100% { transform: scale(1); opacity: 1; }
     }
-
+     /* progess bar background color changes*/
     /* ── PROGRESS BAR ── */
     .stProgress > div > div {
         background: linear-gradient(90deg, #667eea, #764ba2) !important;
@@ -344,7 +346,6 @@ def show_calm_colors_game():
     .play-again-wrap {
         margin-top: 40px !important;
         text-align: center;
-        background color :pink !important;
     }
     .play-again-wrap .stButton > button {
         background: linear-gradient(135deg, #667eea, #764ba2) !important;
@@ -519,7 +520,7 @@ def show_calm_colors_game():
         </div>
         """, unsafe_allow_html=True)
         
-        #how to play and play cards colors and background changes
+        #how to play cards colors and background changes
         # How to Play cards (animated)
         st.markdown("""
         <style>
@@ -652,11 +653,11 @@ def show_calm_colors_game():
         
         
         
-        #score bar container bacxkground color headings color 
+        #score bar  bacxkground color changes headings color 
 
         st.markdown(f"""
         <div style="
-            background:rgba(255,255,255,0.45);
+            background:pink ;
             backdrop-filter:blur(12px);
             border:1.5px solid rgba(255,255,255,0.5);
             border-radius:20px;
