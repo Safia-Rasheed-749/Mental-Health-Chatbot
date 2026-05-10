@@ -1094,7 +1094,7 @@ render();
     with col2:
         st.markdown('<div class="feature-card-custom"><div>📊</div><div>Mood Tracking</div><div>Visual progress analytics</div></div>', unsafe_allow_html=True)
     with col3:
-        st.markdown('<div class="feature-card-custom"><div>🛡️</div><div>Crisis Guard</div><div>High-risk keyword detection</div></div>', unsafe_allow_html=True)
+        st.markdown('<div class="feature-card-custom"><div>🎮</div><div>Mindfulness Games</div><div>Memory & focus training</div></div>', unsafe_allow_html=True)
     
     col4, col5, col6 = st.columns(3)
     with col4:

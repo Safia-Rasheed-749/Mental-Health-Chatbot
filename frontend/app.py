@@ -202,12 +202,18 @@ if st.session_state.user is None:
     elif st.session_state.page == "games":
         st.session_state["games_from_sidebar"] = False
         st.session_state["public_game_mode"] = True
-        # Reset to home only on fresh navigation (not on reruns during gameplay)
+        # Reset to home screen when navigating from navbar (fresh navigation)
+        # Check if this is a fresh navigation (navbar click) or a rerun during gameplay
         if st.session_state.get("_games_nav_trigger") != "public":
             st.session_state["game_screen"] = "home"
             st.session_state["game_active"] = False
             st.session_state["is_playing_seq"] = False
             st.session_state["waiting"] = False
+            st.session_state["game_sequence"] = []
+            st.session_state["player_index"] = 0
+            st.session_state["game_level"] = 1
+            st.session_state["game_score"] = 0
+            st.session_state["game_message"] = ""
         st.session_state["_games_nav_trigger"] = "public"
         show_aesthetic_game_selector()
 

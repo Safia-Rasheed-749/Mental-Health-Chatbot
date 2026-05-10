@@ -338,9 +338,24 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
         if st.session_state.get("current_page") != new_page:
             st.session_state["current_page"] = new_page
-            # Clear game nav trigger so next visit to Games resets to home
+            
+            # Reset game state when navigating TO Games from sidebar
+            if new_page == "Games":
+                st.session_state["game_screen"] = "home"
+                st.session_state["game_active"] = False
+                st.session_state["game_sequence"] = []
+                st.session_state["player_index"] = 0
+                st.session_state["game_level"] = 1
+                st.session_state["game_score"] = 0
+                st.session_state["is_playing_seq"] = False
+                st.session_state["waiting"] = False
+                st.session_state["game_message"] = ""
+                st.session_state["_games_nav_trigger"] = None
+            
+            # Clear game nav trigger when leaving Games
             if new_page != "Games":
                 st.session_state["_games_nav_trigger"] = None
+            
             for k in list(st.session_state.keys()):
                 if k.startswith("rename_") or k.startswith("menu_open_"):
                     del st.session_state[k]
