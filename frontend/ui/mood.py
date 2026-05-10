@@ -202,19 +202,62 @@ def show_mood_analytics(user_id):
         box-shadow: 0 6px 22px rgba(91,141,239,0.40) !important;
     }
 
-    /* ── SELECTBOX ── */
-    div[data-testid="stSelectbox"] div[data-baseweb="select"] {
-        border: 2px solid rgba(99,102,241,0.25) !important;
-        border-radius: 12px !important;
-        background: rgba(255,255,255,0.90) !important;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(99,102,241,0.08) !important;
-    }
+    /*  trend line color change── SELECTBOX ── */
+    
+    div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+    background: white !important;
+    border: 2px solid rgba(99,102,241,0.25) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.08) !important;
+    color: black !important;
+}
 
-    div[data-testid="stSelectbox"] div[data-baseweb="select"]:hover {
-        border-color: #6366f1 !important;
-        box-shadow: 0 4px 14px rgba(99,102,241,0.15) !important;
-    }
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div:hover {
+    border-color: #6366f1 !important;
+    box-shadow: 0 4px 14px rgba(99,102,241,0.15) !important;
+}
+
+div[data-testid="stSelectbox"] * {
+    color: black !important;
+}
+
+/* ── SELECTBOX DROPDOWN MENU ──  */
+
+/* dropdown container */
+div[data-baseweb="popover"] {
+    background: #fbcfe8 !important;
+    border-radius: 12px !important;
+    border: 1px solid #f9a8d4 !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+}
+
+/* listbox */
+ul[role="listbox"] {
+    background: blue !important;
+    padding: 6px !important;
+    border-radius: 12px !important;
+}
+
+/* each option */
+li[role="option"] {
+    background: white !important;
+    color: #111827 !important;
+    margin-bottom: 4px !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+/* hover effect */
+li[role="option"]:hover {
+    background: blue !important;
+    color: white !important;
+}
+
+/* selected option */
+li[aria-selected="true"] {
+    background:blue !important;
+    color: white !important;
+}
 
     /* ── INSIGHT CARD ── */
     .insight-card {
