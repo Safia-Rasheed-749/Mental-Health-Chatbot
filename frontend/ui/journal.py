@@ -78,7 +78,7 @@ def show_journal(user_id):
         color: rgba(255,255,255,0.78);
         font-weight: 400;
     }
-
+     /* card background color*/
     /* ── INFO CARD ── */
     .info-card {
         background: rgba(255,255,255,0.92);
@@ -177,7 +177,7 @@ def show_journal(user_id):
         align-items: center;
         gap: 10px;
     }
-
+     /*recent entries background color*/
     .journal-entry {
         background: rgba(255,255,255,0.92);
         border-left: 4px solid #5B8DEF;

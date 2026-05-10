@@ -30,7 +30,7 @@ def show_calm_colors_game():
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
+     /* main game screen background color*/
     html, body, .stApp {
         font-family: 'Inter', sans-serif !important;
         background: linear-gradient(135deg, #F8FAFC 0%, #EEF4FF 45%, #F5F3FF 100%) !important;
@@ -131,7 +131,7 @@ def show_calm_colors_game():
         z-index: 1000;
         overflow-y: auto;
     }
-
+    /* Header color before login*/
     /* ── HERO BANNER (HTML ADDED IN HOME SCREEN) ── bannner backgroubnd color changes */
     .hero-banner {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
@@ -174,10 +174,11 @@ def show_calm_colors_game():
         position: relative;
         z-index: 1;
     }
-
+    
+     /* header color after login*/
     /* ── LOGGED-IN HEADER (game-page-header) ── */
     .game-page-header {
-        background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
+        background:  linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
         padding: 18px 28px 16px;
         display: flex;
         align-items: center;
@@ -221,7 +222,8 @@ def show_calm_colors_game():
         0%,100% { opacity: 1; }
         50% { opacity: 0.4; }
     }
-
+    
+    /* your turn game message background color changes*/
     .game-msg {
         background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%) !important;
         backdrop-filter: blur(20px);
@@ -293,7 +295,7 @@ def show_calm_colors_game():
         70%  { transform: scale(1.08); opacity: 1; }
         100% { transform: scale(1); opacity: 1; }
     }
-
+     /* progess bar background color changes*/
     /* ── PROGRESS BAR ── */
     .stProgress > div > div {
         background: linear-gradient(90deg, #667eea, #764ba2) !important;
@@ -509,7 +511,8 @@ def show_calm_colors_game():
                 st.session_state.game_screen = "countdown"
                 st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
-        #how to play button ka color
+            
+        #how to play button  color
         # How to Play text (fixed colon)
         st.markdown("""
         <div style="text-align:center; font-size:18px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:black; margin:28px 0 34px;">
@@ -517,7 +520,7 @@ def show_calm_colors_game():
         </div>
         """, unsafe_allow_html=True)
         
-#how to play and play cards col,ors and background changes
+        #how to play cards colors and background changes
         # How to Play cards (animated)
         st.markdown("""
         <style>
@@ -583,6 +586,7 @@ def show_calm_colors_game():
                           ("2", "Focus your mind..."),
                           ("1", "Get ready..."),
                           ("GO!", "Let's begin!")]:
+            
             #countdown screen color changes
             placeholder.markdown(f"""
             <div style="position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#0d3b4f 0%,#0a4a5e 15%,#0e6b7a 30%,#1a7a6e 45%,#0d5c6e 60%,#0a3d52 75%,#0d3b4f 100%);background-size:400% 400%;animation:countdownShift 8s ease infinite;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;overflow:hidden;">
@@ -627,6 +631,9 @@ def show_calm_colors_game():
             padding-top: {top_padding} !important;
             background: transparent !important;
         }}
+        
+        
+        # your turn message backgrouns color
         div.game-msg {{
             background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.35)) !important;
             border: 1.5px solid rgba(255,255,255,0.5) !important;
@@ -644,11 +651,13 @@ def show_calm_colors_game():
         </style>
         """, unsafe_allow_html=True)
         
-        #score bar container bacxkground color headings color 
+        
+        
+        #score bar  bacxkground color changes headings color 
 
         st.markdown(f"""
         <div style="
-            background:rgba(255,255,255,0.45);
+            background:pink ;
             backdrop-filter:blur(12px);
             border:1.5px solid rgba(255,255,255,0.5);
             border-radius:20px;
@@ -767,6 +776,7 @@ div[data-testid="stButton"] > button:hover {
 
 </style>
 """, unsafe_allow_html=True)
+                
                 #End game color changes
                 st.markdown("""
                 <style>
@@ -792,6 +802,7 @@ div[data-testid="stButton"] > button:hover {
                         if st.form_submit_button("⏹ End Game", use_container_width=True):
                             end_game(); st.rerun()
 
+    
     # ── SCREEN: RESULT (unchanged) ──
     def show_result():
         level = st.session_state.game_level

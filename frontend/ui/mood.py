@@ -209,29 +209,57 @@ def show_mood_analytics(user_id):
         transform: translateY(-2px) !important;
         box-shadow: 0 6px 22px rgba(91,141,239,0.40) !important;
     }
-    /* Select Time Range */
-    div[data-testid="stSelectbox"] label p {
+<</* Select Time Range label */
+div[data-testid="stSelectbox"] label p {
     font-size: 17px !important;
     color: black !important;
     font-weight: 500 !important;
 }
-    /* ── SELECTBOX ── */
-    div[data-testid="stSelectbox"] div[data-baseweb="select"] >div {
-        border: 2px solid rgba(99,102,241,0.25) !important;
-        border-radius: 12px !important;
-        background: rgba(255,255,255,0.90) !important;  /* open krte hi select box ka bgcolor */
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(99,102,241,0.08) !important;
-    }
-     /* On click in selectbox */
-    div[data-testid="stSelectbox"] div[data-baseweb="select"]:hover {
-        border-color: #6366f1 !important;
-        box-shadow: 0 4px 14px rgba(99,102,241,0.15) !important;
-    }
-    # Dropdown opened menu ka color
-    #     ul {
-    #     background: #1e293b !important;
-    # }
+
+/* SELECTBOX MAIN */
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+    background: white !important;
+    border: 2px solid rgba(99,102,241,0.25) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.08) !important;
+    color: black !important;
+}
+
+div[data-testid="stSelectbox"] div[data-baseweb="select"]:hover {
+    border-color: #6366f1 !important;
+    box-shadow: 0 4px 14px rgba(99,102,241,0.15) !important;
+}
+
+/* dropdown menu */
+div[data-baseweb="popover"] {
+    background: #fbcfe8 !important;
+    border-radius: 12px !important;
+    border: 1px solid #f9a8d4 !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+}
+
+ul[role="listbox"] {
+    background: white !important;
+    padding: 6px !important;
+    border-radius: 12px !important;
+}
+
+li[role="option"] {
+    background: white !important;
+    color: #111827 !important;
+    margin-bottom: 4px !important;
+    border-radius: 8px !important;
+}
+
+li[role="option"]:hover {
+    background: #6366f1 !important;
+    color: white !important;
+}
+
+li[aria-selected="true"] {
+    background: #6366f1 !important;
+    color: white !important;
+}
 
     # li {
     #     color: white !important;

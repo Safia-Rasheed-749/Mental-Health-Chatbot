@@ -137,7 +137,7 @@ def show_auth_page():
         padding-bottom: 0;
         letter-spacing: -0.5px;
     }
-    /* text below main headings welcome back craete an account and reset password color changes.*/
+    /* text below main headings below welcome back craete an account and reset password color changes.*/
     .auth-header p { 
         color: #475569 !important;   /* DARKER color for better visibility */
         font-size: 1rem !important;  /* INCREASED from 0.95rem */
@@ -220,7 +220,7 @@ def show_auth_page():
     button[kind="primary"]:active {
         transform: translateY(0) !important;
     }
-
+     /* forget password ,dont have an account text color*/
     /* Tertiary Link Button - LARGER FONT */
     button[kind="tertiary"] {
         background-color: transparent !important;
@@ -240,14 +240,14 @@ def show_auth_page():
         font-size: 18px !important;
         font-weight: 600 !important;
     }
-    
+    /* forget password ,dont have an account background hover color*/
     button[kind="tertiary"]:hover { 
         color: #7c3aed !important;
         background-color: rgba(91, 33, 182, 0.08) !important;
         border-radius: 8px !important;
         text-decoration: underline !important;
     }
-    
+     /* cancel button color */ 
     /* Secondary Button (Cancel button) - Red/Gray gradient */
     button[kind="secondary"] {
         background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
@@ -383,7 +383,7 @@ def show_auth_page():
             # NOTE: label_visibility="collapsed" se Streamlit ka default label hide hota hai
             # ═══════════════════════════════════════════════════════════
             
-            # Email Label - 18px, semi-bold, dark color
+            # Email Label  login - 18px, semi-bold, dark color
             st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 16px;">Email</p>', unsafe_allow_html=True)
             email = st.text_input("Email", key="login_email", placeholder="name@example.com", label_visibility="collapsed")
             
@@ -445,13 +445,13 @@ def show_auth_page():
             # font-weight: 600 = Semi-bold
             # margin-bottom: 16px = Label aur input ke beech space
             # ═══════════════════════════════════════════════════════════
-            
+            # full name label create account
             st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 16px;">Full Name</p>', unsafe_allow_html=True)
             name = st.text_input("Full Name", key="reg_name", placeholder="John Doe", label_visibility="collapsed")
-            
+            # email label
             st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 20px;">Email</p>', unsafe_allow_html=True)
             reg_email = st.text_input("Email", key="reg_email", placeholder="name@example.com", label_visibility="collapsed")
-            
+            #password label
             st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 20px;">Password</p>', unsafe_allow_html=True)
             reg_password = st.text_input("Password", type="password", key="reg_password", placeholder="••••••••", label_visibility="collapsed")
 
