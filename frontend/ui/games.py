@@ -232,7 +232,7 @@ def show_calm_colors_game():
         border-radius: 20px;
         font-size: 18px; font-weight: 600;
         color: #6d28d9 !important;
-        margin: 10px auto;
+        margin: 20px auto;
         max-width: 600px;
         text-align: center;
         box-shadow: 0 8px 32px rgba(139,92,246,0.1) !important;
@@ -322,9 +322,9 @@ def show_calm_colors_game():
         border-radius: 10px;
     }
 
-    /* ── MAIN BUTTONS ── */
+    /* ── MAIN BUTTONS() ── */
     .stButton > button {
-        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important; #Change this to change backgroung color of game(on which to click) buttons
         color: white !important;
         font-weight: 700 !important;
         font-size: 18px !important;
@@ -868,9 +868,9 @@ def show_calm_colors_game():
    ═══════════════════════════════════════════════════════════════ */
 
     
-/* ─── BASE BUTTON STYLE ─── */
+/* ───  BUTTON STYLEs(On which we have to click for play game) ─── */
 div[data-testid="stButton"] > button {
-    color: white !important;
+    color: white !important; # To change text color of buttons
     font-size: 20px !important;
     font-weight: 700 !important;
     padding: 22px 16px !important;
@@ -880,33 +880,7 @@ div[data-testid="stButton"] > button {
     box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   INDIVIDUAL BUTTON COLORS - CHANGE HERE
-   ═══════════════════════════════════════════════════════════════ */
 
-/* 💙 BLUE BUTTON - Change colors here */
-button[aria-label*="Blue"] {
-    /* 🎨 GRADIENT: Light Blue → Dark Blue */
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
-}
-
-/* 💚 GREEN BUTTON - Change colors here */
-button[aria-label*="Green"] {
-    /* 🎨 GRADIENT: Light Green → Dark Green */
-    background: linear-gradient(135deg, #16a34a, #15803d) !important;
-}
-
-/* 💜 PURPLE BUTTON - Change colors here */
-button[aria-label*="Purple"] {
-    /* 🎨 GRADIENT: Light Purple → Dark Purple */
-    background: linear-gradient(135deg, #9333ea, #7e22ce) !important;
-}
-
-/* 🧡 ORANGE BUTTON - Change colors here */
-button[aria-label*="Orange"] {
-    /* 🎨 GRADIENT: Light Orange → Dark Orange */
-    background: linear-gradient(135deg, #f97316, #ea580c) !important;
-}
 
 /* ═══════════════════════════════════════════════════════════════
    HOVER EFFECT - Applied to all buttons
@@ -1102,7 +1076,9 @@ div[data-testid="stButton"] > button:hover {
             transform: translateY(-6px) scale(1.05) !important;
             filter: brightness(1.1) !important;
         }}
-        
+        div[data-testid="stForm"] button p{{
+            font-size: 20px !important;    #Play Again
+        }}
         [data-testid="stVerticalBlock"] > [data-testid="stVerticalBlock"] {{
             gap: 0 !important;
         }}
