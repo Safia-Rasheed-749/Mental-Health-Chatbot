@@ -68,6 +68,7 @@ def show_mood_analytics(user_id):
         0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.12); }
         50%       { box-shadow: 0 0 0 8px rgba(255,255,255,0.06); }
     }
+    /* Mood Analytics */
     .page-header-text h1 {
         margin: 0;
         font-size: 20px;
@@ -135,9 +136,9 @@ def show_mood_analytics(user_id):
     .block-container > div {
         background: transparent !important;
     }
-
+     /* Quick Mood Log , Mood Trend Timeline*/
     .section-title {
-        font-size: 20px;
+        font-size: 26px;
         font-weight: 700;
         color: #1e293b;
         margin-bottom: 18px;
@@ -153,24 +154,28 @@ def show_mood_analytics(user_id):
         margin: 16px 0 !important;
         flex-wrap: wrap !important;
     }
-
-    .main div[role="radiogroup"] label {
-        background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.95)) !important;
-        padding: 12px 24px !important;
-        border-radius: 16px !important;
-        border: 2px solid rgba(99,102,241,0.20) !important;
-        transition: all 0.3s ease !important;
-        font-size: 15px !important;
-        font-weight: 600 !important;
-        cursor: pointer !important;
-        box-shadow: 0 2px 8px rgba(99,102,241,0.08) !important;
+    
+    div[data-testid="stRadio"] input[id*="mood_radio"] + div {
+     background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.95)) !important;
+    padding: 12px 24px !important;
+    # Not applying
+    border-radius: 16px !important;
+    border: 2px solid rgba(99,102,241,0.20) !important;
+}
+      /* Radio buttons label color Happy etc */
+    .mood-radio-wrapper div[data-testid="stRadio"] div[role="radiogroup"] label p {
+        font-size: 18px !important;
+        font-weight: 500 !important;
+        color: black !important;
+        margin: 0 !important;
     }
-
-    .main div[role="radiogroup"] label:hover {
-        transform: translateY(-2px);
-        border-color: #6366f1 !important;
-        box-shadow: 0 4px 14px rgba(99,102,241,0.20) !important;
-    }
+      /* On hover, radio button styling , also change in sidebar */
+     div[data-testid="stRadio"] div[role="radiogroup"] label:hover {
+    background: rgba(99,102,241,0.08) !important;
+    border-color: #6366f1 !important;
+    box-shadow: 0 4px 14px rgba(99,102,241,0.20) !important;
+    transform: translateY(-2px);
+}
 
     .main div[role="radiogroup"] label[data-checked="true"] {
         background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
@@ -183,43 +188,57 @@ def show_mood_analytics(user_id):
     div[data-testid="stButton"] button {
         background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
         color: white !important;
-        font-weight: 700 !important;
-        font-size: 15px !important;
         border-radius: 12px !important;
         height: 48px !important;
-        padding: 0 36px !important;
+        padding: 0 26px !important;
         border: none !important;
         transition: all 0.2s !important;
         cursor: pointer !important;
         box-shadow: 0 4px 16px rgba(91,141,239,0.30) !important;
-        margin-top: 15px;
+        margin-top: 7px;
         margin-bottom: 25px;
     }
+    /* Log My Mood */
+    div[data-testid="stButton"] button p {
+    font-size: 17px !important;
+    font-weight: 700 !important;
 
+}
     div[data-testid="stButton"] button:hover {
         filter: brightness(1.05) !important;
         transform: translateY(-2px) !important;
         box-shadow: 0 6px 22px rgba(91,141,239,0.40) !important;
     }
-
+    /* Select Time Range */
+    div[data-testid="stSelectbox"] label p {
+    font-size: 17px !important;
+    color: black !important;
+    font-weight: 500 !important;
+}
     /* ── SELECTBOX ── */
-    div[data-testid="stSelectbox"] div[data-baseweb="select"] {
+    div[data-testid="stSelectbox"] div[data-baseweb="select"] >div {
         border: 2px solid rgba(99,102,241,0.25) !important;
         border-radius: 12px !important;
-        background: rgba(255,255,255,0.90) !important;
+        background: rgba(255,255,255,0.90) !important;  /* open krte hi select box ka bgcolor */
         transition: all 0.3s ease;
         box-shadow: 0 2px 8px rgba(99,102,241,0.08) !important;
     }
-
+     /* On click in selectbox */
     div[data-testid="stSelectbox"] div[data-baseweb="select"]:hover {
         border-color: #6366f1 !important;
         box-shadow: 0 4px 14px rgba(99,102,241,0.15) !important;
     }
+    # Dropdown opened menu ka color
+    #     ul {
+    #     background: #1e293b !important;
+    # }
 
+    # li {
+    #     color: white !important;
+    # }
     /* ── INSIGHT CARD ── */
     .insight-card {
         background: linear-gradient(135deg, rgba(139,92,246,0.10), rgba(99,102,241,0.10));
-        border-left: 4px solid #8b5cf6;
         padding: 20px 24px;
         border-radius: 16px;
         margin: 24px 0;
@@ -240,7 +259,7 @@ def show_mood_analytics(user_id):
         margin: 24px 0;
         flex-wrap: wrap;
     }
-
+    /* Total Entries etc Cards Styling) */
     .stat-card {
         flex: 1;
         min-width: 200px;
@@ -257,17 +276,19 @@ def show_mood_analytics(user_id):
         transform: translateY(-4px);
         box-shadow: 0 8px 24px rgba(99,102,241,0.18);
     }
-
+        /* 1st stat card's bottom border */
     .stat-card:nth-child(1) { 
         border-bottom: 3px solid #10b981;
     }
+        /* 2nd card's bottom border */
     .stat-card:nth-child(2) { 
         border-bottom: 3px solid #6366f1;
     }
+         /* 3rd card's bottom border */
     .stat-card:nth-child(3) { 
         border-bottom: 3px solid #ec4899;
     }
-
+    /* Value of Total Entries etc */
     .stat-value { 
         font-size: 32px; 
         font-weight: 800; 
@@ -334,6 +355,7 @@ def show_mood_analytics(user_id):
     # ================= QUICK MOOD LOG =================
      
     st.markdown('<div class="section-title">😊 Quick Mood Log</div>', unsafe_allow_html=True)
+    st.markdown('<div class="mood-radio-wrapper">', unsafe_allow_html=True)
 
     mood = st.radio(
         "",
@@ -341,7 +363,7 @@ def show_mood_analytics(user_id):
         horizontal=True,
         key="mood_radio"
     )
-
+    st.markdown('</div>', unsafe_allow_html=True)
     # Centralized Log Button (no empty columns)
     st.markdown('<div style="display: flex; justify-content: center; margin: 20px 0;">', unsafe_allow_html=True)
     if st.button(" Log My Mood", key="log_mood_btn"):
@@ -423,6 +445,7 @@ def show_mood_analytics(user_id):
 
         # ================= MOOD TREND GRAPH =================
         if len(filtered) > 1:
+# /* h3, can be changed to h1 by #, h2 by ##, so on */
             st.markdown("### 📊 Mood Trend Analysis")
 
             y_map = {"Happy": 5, "Neutral": 3, "Sad": 2, "Anxious": 1, "Angry": 0}
@@ -434,7 +457,7 @@ def show_mood_analytics(user_id):
             ax.plot(x, y, marker='o', linewidth=2.5, markersize=8, 
                    color='#3b82f6', markerfacecolor='#2563eb', 
                    markeredgecolor='white', markeredgewidth=2)
-            
+            # In above code, color for graph ploting line parts, markerfacecolor for dots , markeredgecolor for around dots
             # Add gradient fill under the line
             ax.fill_between(x, y, alpha=0.2, color='#3b82f6')
 
@@ -447,7 +470,9 @@ def show_mood_analytics(user_id):
             ax.set_xlabel("Timeline", fontsize=9)
             ax.set_ylabel("Mood Level", fontsize=9)
             ax.grid(alpha=0.15, linestyle='--')
+            # full graph color
             ax.set_facecolor('#f8fafc')
+            # graph outer color
             fig.patch.set_facecolor('white')
 
             st.pyplot(fig)
@@ -470,7 +495,7 @@ def show_mood_analytics(user_id):
             </div>
             """, unsafe_allow_html=True)
 
-            # Create pie chart with much smaller size
+            # Create pie chart with much smaller size , for color change, change in both place down
             fig2, ax2 = plt.subplots(figsize=(10, 3.5))
             colors = ['#10b981', '#3b82f6', '#ef4444', '#f59e0b', '#ec4899']
             mood_colors = {
@@ -507,6 +532,7 @@ def show_mood_analytics(user_id):
                     autotext.set_weight('bold')
                 
                 ax2.set_title(f"Emotional Balance – {range_option}", fontsize=6, pad=9)
+                # pie chart circle outer color
                 fig2.patch.set_facecolor('white')
                 
             col1, col2, col3 = st.columns([1.4,5,0.6])
@@ -581,9 +607,10 @@ def show_mood_analytics(user_id):
                 fig2, ax2 = plt.subplots(figsize=(9, 4))
                 ax2.plot(x2, counts, marker='o', linewidth=2.5, markersize=7, 
                         label="Messages per day", color='#10b981')
+                    # also the graph line color changes
                 ax2.plot(x2, stress, marker='s', linewidth=2.5, markersize=7, 
                         label="Stress indicators", color='#ef4444')
-                
+                # extra
                 ax2.fill_between(x2, counts, alpha=0.1, color='#10b981')
                 ax2.fill_between(x2, stress, alpha=0.1, color='#ef4444')
                 
@@ -591,11 +618,13 @@ def show_mood_analytics(user_id):
                 ax2.set_xlabel("Date", fontsize=11)
                 ax2.set_ylabel("Count / Score", fontsize=11)
                 ax2.set_xticks(x2)
-                ax2.set_xticklabels([d.strftime("%b %d") for d in days_sorted], rotation=45, ha="right")
+                ax2.set_xticklabels([d.strftime("%b %d") for d in days_sorted], rotation=45, ha="right",    # color="#ef4444"   # May 3, 4 etc<- label color
+)                 
+                # ax2.tick_params(axis='y', colors='#ef4444') For changing label of y-axis                       
                 ax2.grid(alpha=0.15, linestyle='--')
                 ax2.legend(loc='upper left', framealpha=0.9)
-                ax2.set_facecolor('#f8fafc')
-                fig2.patch.set_facecolor('white')
+                ax2.set_facecolor('#f8fafc') #graph's face color
+                fig2.patch.set_facecolor('white') #graph's back coloe
 
                 st.pyplot(fig2)
                 st.markdown("</div>", unsafe_allow_html=True)
