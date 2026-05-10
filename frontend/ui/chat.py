@@ -69,23 +69,11 @@ def speak_and_auto_play(text):
 def show_chat(user_id):
     apply_clean_layout(hide_header_completely=False)
 
-    # ========== REDESIGNED CSS ==========
-    # NOTE: This CSS controls the ENTIRE chat page styling
-    # Colors are consistent with landing.py and dashboard.py
-    # Main brand colors: #5B8DEF (blue), #8b5cf6 (purple), #10b981 (green)
     st.markdown("""
     <style>
-    /* ═══════════════════════════════════════════════════════════════
-       FONT IMPORT - Used across all pages for consistency
-       Same font as: landing.py, dashboard.py, auth.py, mood.py
-    ═══════════════════════════════════════════════════════════════ */
+    
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-    /* ═══════════════════════════════════════════════════════════════
-       HIDE STREAMLIT DEFAULT ELEMENTS & SPINNER BLUR
-       Purpose: Remove Streamlit branding and prevent page blur on rerun
-       Applied to: This page only (chat.py)
-    ═══════════════════════════════════════════════════════════════ */
     .stAppDeployButton {
         display: none;  /* Hide "Deploy" button */
     }  
@@ -99,35 +87,6 @@ def show_chat(user_id):
         background: transparent !important;  /* Transparent header for clean look */
         box-shadow: none !important;
         visibility: visible !important;  /* Keep header visible for sidebar toggle */
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════
-       CRITICAL: HIDE STREAMLIT SPINNER & BLUR OVERLAY
-       This prevents the page from blurring during rerun
-       Makes the experience smooth and professional
-    ═══════════════════════════════════════════════════════════════ */
-    .stSpinner,
-    [data-testid="stStatusWidget"],
-    div[data-testid="stSpinner"],
-    div.stSpinner > div {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-    }
-    
-    /* Hide the blur overlay that appears during rerun */
-    .stApp > div[style*="pointer-events: none"],
-    .stApp > div[style*="opacity: 0.4"],
-    div[data-testid="stAppViewBlockingElement"] {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-    }
-    
-    /* Ensure smooth transitions without blur */
-    .stApp {
-        transition: none !important;
     }
     
     /* ═══════════════════════════════════════════════════════════════
@@ -155,13 +114,7 @@ def show_chat(user_id):
         box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4) !important;  /* Stronger shadow on hover */
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       PAGE BACKGROUND GRADIENT
-       Purpose: Consistent background across all logged-in pages
-       Colors: Light blue to light purple gradient
-       Same background in: dashboard.py, mood.py, journal.py, games.py
-       Different from: landing.py (uses radial gradient)
-    ═══════════════════════════════════════════════════════════════ */
+    /*page background color */
     html, body, .stApp {
         font-family: 'Inter', 'Segoe UI', sans-serif !important;
         background: linear-gradient(135deg, #F8FAFC 0%, #EEF4FF 45%, #F5F3FF 100%) !important;
@@ -194,17 +147,7 @@ def show_chat(user_id):
         padding-bottom: 100px !important;
         max-width: 100% !important;
     }
-    
-    /* Prevent layout shift during animations */
-    .stMarkdown {
-        min-height: 0 !important;
-    }
-    
-    /* Smooth content updates without flicker */
-    [data-testid="stVerticalBlock"] {
-        transition: none !important;
-    }
-
+     /* Banner color */
     /* ── HEADER BANNER ── */
     .chat-header {
         background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
@@ -247,7 +190,6 @@ def show_chat(user_id):
         color: rgba(255,255,255,0.78);
         font-weight: 400;
     }
-                /* available */    
     .chat-header-status {
         margin-left: auto;
         display: flex;
@@ -287,7 +229,7 @@ def show_chat(user_id):
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── USER BUBBLE (User Msg)── */
+    /* ── USER BUBBLE ── */
     .user-bubble {
         background: linear-gradient(135deg, #6366f1, #8b5cf6);
         color: #ffffff;
@@ -308,24 +250,18 @@ def show_chat(user_id):
         max-width: 82%;
     }
     .ai-avatar {
-         width: 42px;
-        height: 42px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%);
-        border: 2px solid rgba(99,102,241,0.3);
+        background: linear-gradient(135deg, #6366f1, #a78bfa);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 20px;
+        font-size: 16px;
         flex-shrink: 0;
-        box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
-        animation: avatarPulse 3s ease-in-out infinite;
+        box-shadow: 0 2px 10px rgba(99,102,241,0.35);
+        margin-top: 2px;
     }
-    @keyframes avatarPulse {
-        0%, 100% { box-shadow: 0 0 0 4px rgba(99,102,241,0.12); }
-        50%       { box-shadow: 0 0 0 8px rgba(99,102,241,0.06); }
-    }
-    /* Chatbot Msg, also Thinking dots bubble bg color */
     .assistant-bubble {
         background: #ffffff;
         color: #1e293b;
@@ -337,13 +273,14 @@ def show_chat(user_id):
         box-shadow: 0 2px 12px rgba(0,0,0,0.07);
         border-left: 3px solid #8b5cf6;
     }
-
-    /* ── EMPTY STATE (Leaf area)── */
+    
+    
+    /* ── EMPTY STATE ── */
     .empty-state {
         text-align: center;
         padding: 60px 20px 40px;
+        color: #64748b;
     }
-    /* size of leaf */
     .empty-state-icon {
         font-size: 56px;
         margin-bottom: 16px;
@@ -354,7 +291,7 @@ def show_chat(user_id):
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-8px); }
     }
-     /* Hello I am here for u */
+    /* page content styling that is in center*/
     .empty-state h3 {
         font-size: 20px;
         font-weight: 700;
@@ -378,7 +315,6 @@ def show_chat(user_id):
     .thinking-dots span {
         width: 8px;
         height: 8px;
-        /* Color of thinking dots */
         background: linear-gradient(135deg, #6366f1, #a78bfa);
         border-radius: 50%;
         animation: bounce 1.4s infinite ease-in-out;
@@ -441,14 +377,7 @@ def show_chat(user_id):
     </style>
     """, unsafe_allow_html=True)
 
-    # ═══════════════════════════════════════════════════════════════
-    # HEADER BANNER - Blue Gradient Header at Top
-    # VIVA: "Chat page ka header color kahan se change hoga?"
-    # ANSWER: "Is file mein line ~140 pe .chat-header class mein"
-    # COLOR: background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%)
-    # SAME STYLE: mood.py, journal.py headers
-    # TO CHANGE: Neeche CSS section mein .chat-header background change karo
-    # ═══════════════════════════════════════════════════════════════
+   
     st.markdown("""
     <div class="chat-header">
         <div class="chat-header-avatar">🧠</div>
@@ -487,7 +416,7 @@ def show_chat(user_id):
 
     # ── MESSAGES ──
     st.markdown('<div class="chat-area" id="chat-messages">', unsafe_allow_html=True)
-
+    # hello i am here for you content */
     if not st.session_state["chat_history"]:
         st.markdown("""
         <div class="empty-state">
@@ -531,9 +460,6 @@ def show_chat(user_id):
         </div>
         """, unsafe_allow_html=True)
 
-        # Longer pause so thinking dots are clearly visible (1.5 seconds)
-        time.sleep(1.9)
-
         pending      = st.session_state.pop("_ai_thinking")
         pending_type = pending["type"]
         pending_text = pending["text"]
@@ -543,7 +469,7 @@ def show_chat(user_id):
         st.rerun()
 
     # ══════════════════════════════════════════════════════
-    # PHASE 2b — typewriter: one character at a time (SMOOTH like demo)
+    # PHASE 2b — typewriter: one character at a time
     # ══════════════════════════════════════════════════════
     elif st.session_state.get("_ai_typing"):
         import html as _html
@@ -553,7 +479,6 @@ def show_chat(user_id):
         safe         = _html.escape(response)
         slot         = st.empty()
 
-        # Match landing page demo speed: 32ms per character
         for i in range(1, len(safe) + 1):
             slot.markdown(
                 f'<div class="chat-row" style="justify-content:flex-start;">'
@@ -567,7 +492,7 @@ def show_chat(user_id):
                 f'<style>@keyframes cur{{0%,100%{{opacity:1}}50%{{opacity:0}}}}</style>',
                 unsafe_allow_html=True,
             )
-            time.sleep(0.01)  # 32ms per character - matches landing page demo
+            time.sleep(0.01)
 
         slot.markdown(
             f'<div class="chat-row" style="justify-content:flex-start;">'
