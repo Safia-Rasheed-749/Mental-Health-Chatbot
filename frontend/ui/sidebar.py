@@ -159,7 +159,8 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
     /* ── ALL SIDEBAR BUTTONS ── */
     section[data-testid="stSidebar"] .stButton button {
-        background: transparent !important;
+        /*  For background color of session tabs and new chat */
+        background: transparent !important; 
         border: none !important;
         border-radius: 8px !important;
         padding: 5px 10px !important;
@@ -217,6 +218,10 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         box-shadow: 0 3px 12px rgba(239,68,68,0.25) !important;
         transition: all 0.2s ease !important;
     }
+        /* For logout button text color and size 
+    section[data-testid="stSidebar"] .stButton button[kind="primary"] p{
+                font-size: 18px;
+                color: white !important;}
     section[data-testid="stSidebar"] .stButton button[kind="primary"]:hover {
         background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%) !important;
         box-shadow: 0 4px 16px rgba(239,68,68,0.35) !important;
@@ -270,11 +275,12 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         border-left: 2px solid #6366f1 !important;
         padding-left: 2px !important;
     }
-    /*session tabs and label color*/
+    /*session tabs and label color and new chat text*/
     /* FORCE SESSION BUTTON TEXT COLOR (ALL STATES) */
       section[data-testid="stSidebar"] div[data-testid="stButton"] button,
       section[data-testid="stSidebar"] div[data-testid="stButton"] button p {
     color: #111827 !important;
+    /* font-size: 28px; */
     opacity: 1 !important;
 }
 

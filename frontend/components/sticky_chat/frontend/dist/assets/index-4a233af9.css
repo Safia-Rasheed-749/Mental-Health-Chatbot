@@ -86,14 +86,14 @@ body {
     min-width: 48px;
     border-radius: 50%;
     border: none;
-    background: linear-gradient(135deg, #10b981, #34d399);
+    background: #fff;
     color: #fff;
     font-size: 20px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 14px #10b98166;
+    box-shadow: 0 4px 14px #bfb0f466;
     transition: all .2s ease;
     animation: pulse 2.5s ease-in-out infinite
 }
@@ -108,7 +108,7 @@ body {
 }
 
 .mic-btn.recording {
-    background: linear-gradient(135deg, #ef4444, #f87171);
+    background: linear-gradient(135deg, #f8efef, #f6f0f0);
     animation: recordingPulse 1s ease-in-out infinite
 }
 
@@ -116,11 +116,11 @@ body {
 
     0%,
     to {
-        box-shadow: 0 4px 14px #10b98166
+        box-shadow: 0 4px 14px #bfb0f466
     }
 
     50% {
-        box-shadow: 0 4px 22px #10b981a6, 0 0 0 8px #10b98126
+        box-shadow: 0 4px 4px #bfb0f466, 0 0 0 8px #bfb0f466
     }
 }
 
@@ -128,11 +128,11 @@ body {
 
     0%,
     to {
-        box-shadow: 0 4px 14px #ef444466
+        box-shadow: 0 4px 14px #f8e2e266
     }
 
     50% {
-        box-shadow: 0 4px 22px #ef4444a6, 0 0 0 8px #ef444426
+        box-shadow: 0 4px 22px #faf8f8a6, 0 0 0 8px #adacac26
     }
 }
 
