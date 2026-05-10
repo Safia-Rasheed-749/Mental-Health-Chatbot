@@ -342,29 +342,106 @@ def show_calm_colors_game():
         box-shadow: 0 10px 32px rgba(99,102,241,0.52) !important;
     }
 
-    /* ── PLAY AGAIN BUTTON ── */
+    /* ═══════════════════════════════════════════════════════════════
+       PLAY AGAIN BUTTON STYLING
+       ═══════════════════════════════════════════════════════════════
+       
+       📍 LOCATION: Result screen (after game over)
+       🎨 EASY COLOR CUSTOMIZATION GUIDE:
+       
+       1. BACKGROUND GRADIENT:
+          - Change colors in: linear-gradient(135deg, COLOR1, COLOR2)
+          - Current: #667eea (Blue-Purple) → #764ba2 (Deep Purple)
+          - Try: #10b981 (Green) → #059669 (Dark Green)
+          - Try: #f59e0b (Orange) → #dc2626 (Red)
+          - Try: #ec4899 (Pink) → #8b5cf6 (Purple)
+       
+       2. TEXT COLOR:
+          - Change: color: white !important;
+          - Try: color: #1e293b !important; (Dark text)
+       
+       3. BORDER COLOR:
+          - Change: border: 3px solid rgba(255,255,255,0.4) !important;
+          - Try: border: 3px solid rgba(124,58,237,0.5) !important; (Purple)
+       
+       4. SHADOW COLOR:
+          - Change: box-shadow: 0 12px 40px rgba(102,126,234,0.4)
+          - Match with your gradient color (use same RGB values)
+       
+       ═══════════════════════════════════════════════════════════════ */
+    
     .play-again-wrap {
         margin-top: 40px !important;
         text-align: center;
     }
+    
+    /* ── DEFAULT STATE ── */
     .play-again-wrap .stButton > button {
+        /* 🎨 BACKGROUND GRADIENT - Change these two colors */
         background: linear-gradient(135deg, #667eea, #764ba2) !important;
+        
+        /* 🎨 TEXT COLOR */
         color: white !important;
+        
+        /* 📏 SIZE & SPACING */
         font-weight: 800 !important;
         font-size: 20px !important;
         padding: 16px 48px !important;
         border-radius: 50px !important;
+        
+        /* 🎨 BORDER - Change color here */
         border: 3px solid rgba(255,255,255,0.4) !important;
+        
+        /* 🎨 SHADOW - Match with gradient color */
         box-shadow: 0 12px 40px rgba(102,126,234,0.4), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+        
+        /* ✨ EFFECTS */
         backdrop-filter: blur(20px) !important;
         text-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
         transition: all 0.3s ease !important;
     }
+    
+    /* ── HOVER STATE ── */
     .play-again-wrap .stButton > button:hover {
-        transform: translateY(-6px) scale(1.05) !important;
+        /* 🎨 HOVER SHADOW - Match with gradient color */
         box-shadow: 0 20px 60px rgba(102,126,234,0.6), inset 0 1px 0 rgba(255,255,255,0.5) !important;
+        
+        /* 🎨 HOVER BORDER */
         border: 3px solid rgba(255,255,255,0.6) !important;
+        
+        /* ✨ ANIMATION */
+        transform: translateY(-6px) scale(1.05) !important;
     }
+    
+    /* ═══════════════════════════════════════════════════════════════
+       COLOR PRESETS (Copy & Paste to change button color)
+       ═══════════════════════════════════════════════════════════════
+       
+       🟢 GREEN THEME:
+       background: linear-gradient(135deg, #10b981, #059669) !important;
+       box-shadow: 0 12px 40px rgba(16,185,129,0.4) !important;
+       
+       🟠 ORANGE THEME:
+       background: linear-gradient(135deg, #f59e0b, #dc2626) !important;
+       box-shadow: 0 12px 40px rgba(245,158,11,0.4) !important;
+       
+       🔴 RED THEME:
+       background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+       box-shadow: 0 12px 40px rgba(239,68,68,0.4) !important;
+       
+       💜 PURPLE THEME:
+       background: linear-gradient(135deg, #a78bfa, #8b5cf6) !important;
+       box-shadow: 0 12px 40px rgba(167,139,250,0.4) !important;
+       
+       💙 BLUE THEME:
+       background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+       box-shadow: 0 12px 40px rgba(59,130,246,0.4) !important;
+       
+       🌸 PINK THEME:
+       background: linear-gradient(135deg, #ec4899, #db2777) !important;
+       box-shadow: 0 12px 40px rgba(236,72,153,0.4) !important;
+       
+       ═══════════════════════════════════════════════════════════════ */
     </style>
     """, unsafe_allow_html=True)
 
@@ -653,20 +730,20 @@ def show_calm_colors_game():
         
         
         
-        #score bar  bacxkground color changes headings color 
+        #score bar background color changes headings color 
 
         st.markdown(f"""
         <div style="
-            background:pink ;
-            backdrop-filter:blur(12px);
-            border:1.5px solid rgba(255,255,255,0.5);
-            border-radius:20px;
-            padding:18px 30px;
-            display:flex;
-            justify-content:space-around;
-            align-items:center;
-            margin-bottom:24px;
-             box-shadow:0 6px 24px rgba(0,0,0,0.12);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(148, 163, 184, 0.2);
+            border-radius: 20px;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
         ">
                 <div style="text-align:center;">
                     <div style="font-size:14px;font-weight:600;color:#5b4fcf;">🎯 LEVEL</div>
@@ -735,7 +812,60 @@ def show_calm_colors_game():
                 st.markdown("""
                 <style>
 
-/* ─── PASTED FINAL GAME CSS ─── */
+/* ═══════════════════════════════════════════════════════════════
+   GAME COLOR BUTTONS - EASY CUSTOMIZATION GUIDE
+   ═══════════════════════════════════════════════════════════════
+   
+   📍 LOCATION: Game screen - 4 color buttons (Blue, Green, Purple, Orange)
+   
+   🎨 HOW TO CHANGE BUTTON COLORS:
+   
+   Each button has TWO colors in a gradient:
+   - First color = Light shade (left side)
+   - Second color = Dark shade (right side)
+   
+   💡 FIND YOUR BUTTON:
+   - Blue Button: button[aria-label*="Blue"]
+   - Green Button: button[aria-label*="Green"]
+   - Purple Button: button[aria-label*="Purple"]
+   - Orange Button: button[aria-label*="Orange"]
+   
+   💡 CHANGE THE GRADIENT:
+   Replace the two color codes in linear-gradient(135deg, COLOR1, COLOR2)
+   
+   🌈 COLOR CODE EXAMPLES:
+   
+   BLUES:
+   - Light Blue: #3b82f6
+   - Sky Blue: #0ea5e9
+   - Navy Blue: #1e40af
+   
+   GREENS:
+   - Emerald: #10b981
+   - Lime: #84cc16
+   - Forest: #15803d
+   
+   PURPLES:
+   - Violet: #8b5cf6
+   - Fuchsia: #d946ef
+   - Deep Purple: #7e22ce
+   
+   REDS/ORANGES:
+   - Orange: #f97316
+   - Red: #ef4444
+   - Rose: #f43f5e
+   
+   YELLOWS:
+   - Amber: #f59e0b
+   - Yellow: #eab308
+   - Gold: #ca8a04
+   
+   PINKS:
+   - Pink: #ec4899
+   - Hot Pink: #db2777
+   - Rose Pink: #fb7185
+   
+   ═══════════════════════════════════════════════════════════════ */
 
     
 /* ─── BASE BUTTON STYLE ─── */
@@ -750,29 +880,81 @@ div[data-testid="stButton"] > button {
     box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important;
 }
 
-/* ─── TARGET BY KEY (WORKING METHOD) ─── */
+/* ═══════════════════════════════════════════════════════════════
+   INDIVIDUAL BUTTON COLORS - CHANGE HERE
+   ═══════════════════════════════════════════════════════════════ */
 
+/* 💙 BLUE BUTTON - Change colors here */
 button[aria-label*="Blue"] {
-    background: linear-gradient(135deg,#2563eb,#1d4ed8) !important;
+    /* 🎨 GRADIENT: Light Blue → Dark Blue */
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
 }
 
+/* 💚 GREEN BUTTON - Change colors here */
 button[aria-label*="Green"] {
-    background: linear-gradient(135deg,#16a34a,#15803d) !important;
+    /* 🎨 GRADIENT: Light Green → Dark Green */
+    background: linear-gradient(135deg, #16a34a, #15803d) !important;
 }
 
+/* 💜 PURPLE BUTTON - Change colors here */
 button[aria-label*="Purple"] {
-    background: linear-gradient(135deg,#9333ea,#7e22ce) !important;
+    /* 🎨 GRADIENT: Light Purple → Dark Purple */
+    background: linear-gradient(135deg, #9333ea, #7e22ce) !important;
 }
 
+/* 🧡 ORANGE BUTTON - Change colors here */
 button[aria-label*="Orange"] {
-    background: linear-gradient(135deg,#f97316,#ea580c) !important;
+    /* 🎨 GRADIENT: Light Orange → Dark Orange */
+    background: linear-gradient(135deg, #f97316, #ea580c) !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   HOVER EFFECT - Applied to all buttons
+   ═══════════════════════════════════════════════════════════════
+   
+   💡 WHAT IT DOES:
+   - Scales button up slightly (1.06x)
+   - Lifts button up (-4px)
+   - Makes colors brighter (1.1x)
+   
+   💡 TO CHANGE HOVER EFFECT:
+   - Scale: Change 1.06 to 1.08 (bigger) or 1.04 (smaller)
+   - Lift: Change -4px to -6px (higher) or -2px (lower)
+   - Brightness: Change 1.1 to 1.15 (brighter) or 1.05 (dimmer)
+   
+   ═══════════════════════════════════════════════════════════════ */
 
 /* ─── HOVER EFFECT ─── */
 div[data-testid="stButton"] > button:hover {
     transform: scale(1.06) translateY(-4px) !important;
     filter: brightness(1.1) !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   QUICK COLOR CHANGE EXAMPLES
+   ═══════════════════════════════════════════════════════════════
+   
+   🔥 EXAMPLE 1 - Make Blue button RED:
+   button[aria-label*="Blue"] {
+       background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+   }
+   
+   🔥 EXAMPLE 2 - Make Green button YELLOW:
+   button[aria-label*="Green"] {
+       background: linear-gradient(135deg, #eab308, #ca8a04) !important;
+   }
+   
+   🔥 EXAMPLE 3 - Make Purple button PINK:
+   button[aria-label*="Purple"] {
+       background: linear-gradient(135deg, #ec4899, #db2777) !important;
+   }
+   
+   🔥 EXAMPLE 4 - Make Orange button CYAN:
+   button[aria-label*="Orange"] {
+       background: linear-gradient(135deg, #06b6d4, #0891b2) !important;
+   }
+   
+   ═══════════════════════════════════════════════════════════════ */
 
 </style>
 """, unsafe_allow_html=True)

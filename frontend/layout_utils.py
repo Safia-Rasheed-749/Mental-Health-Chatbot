@@ -96,7 +96,7 @@ def apply_professional_design_system():
                 border-color: rgba(124,58,237,0.55) !important;
                 color: #ffffff !important;
             }
-          /*learn more and chatting button strat game signup  background and text color */
+          /*learn more and chatting button start game signup background and text color */
             /* Main content CTAs — primary = blue (navbar uses secondary + :has(logo) overrides) */
             .stButton > button[kind="primary"] {
                 background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
@@ -106,12 +106,10 @@ def apply_professional_design_system():
                 font-weight: 800 !important;
                 font-family: var(--mc-font) !important;
                 box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35) !important;
-                transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease !important;
             }
             .stButton > button[kind="primary"]:hover {
                 filter: brightness(1.05) !important;
-                transform: translateY(-2px) !important;
-                box-shadow: 0 12px 28px rgba(37, 99, 235, 0.4) !important;
+                box-shadow: 0 12px 32px rgba(37, 99, 235, 0.45) !important;
             }
             .stButton > button[kind="secondary"] {
                 border-radius: 14px !important;
@@ -129,6 +127,11 @@ def apply_professional_design_system():
                 border: 1.5px solid rgba(15,23,42,0.14) !important;
                 font-family: var(--mc-font) !important;
             }
+            div[data-testid="stTextInput"] input:focus,
+            div[data-testid="stTextInput"] > div input:focus{
+                border-color: #3b82f6 !important;
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+            }
 
             /* Selectbox / textarea */
             div[data-baseweb="select"]{
@@ -136,26 +139,18 @@ def apply_professional_design_system():
                 border-radius: 14px !important;
                 border: 1.5px solid rgba(15,23,42,0.14) !important;
             }
+            div[data-baseweb="select"]:hover{
+                border-color: #3b82f6 !important;
+            }
             div[data-testid="stTextArea"] textarea{
                 background: #ffffff !important;
                 color: var(--mc-text) !important;
                 border-radius: 14px !important;
                 border: 1.5px solid rgba(15,23,42,0.14) !important;
             }
-
-            /* Page transition on navigation / rerun */
-            .main .block-container {
-                animation: mcPageIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-            }
-            @keyframes mcPageIn {
-                from {
-                    opacity: 0.94;
-                    transform: translateY(5px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+            div[data-testid="stTextArea"] textarea:focus{
+                border-color: #3b82f6 !important;
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
             }
         </style>
         """,
