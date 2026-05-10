@@ -100,19 +100,23 @@ def show_dashboard():
     .nc-chat    .nav-card-stripe { background:linear-gradient(90deg,#5B8DEF,#7C9DF5); }
     .nc-mood    .nav-card-stripe { background:linear-gradient(90deg,#22C55E,#4ade80); }
     .nc-journal .nav-card-stripe { background:linear-gradient(90deg,#f97316,#fbbf24); }
+    .nc-games   .nav-card-stripe { background: linear-gradient(90deg,#8b5cf6,#c084fc);}
     .nc-chat    { background:linear-gradient(180deg,#EEF4FF 0%,rgba(255,255,255,0.92) 55%); }
     .nc-mood    { background:linear-gradient(180deg,#f0fdf4 0%,rgba(255,255,255,0.92) 55%); }
     .nc-journal { background:linear-gradient(180deg,#fff7f0 0%,rgba(255,255,255,0.92) 55%); }
+    .nc-games   { background: linear-gradient(180deg,#f5f0ff 0%,#ffffff 55%); }
     .nav-card-icon  { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; margin:6px 0 14px; }
     .nc-chat    .nav-card-icon { background:#dbeafe; }
     .nc-mood    .nav-card-icon { background:#dcfce7; }
     .nc-journal .nav-card-icon { background:#ffedd5; }
+    .nc-games   .nav-card-icon { background: #ede9fe;}
     .nav-card-title { font-size:16px; font-weight:700; color:#1E293B; margin-bottom:6px; }
     .nav-card-desc  { font-size:13px; color:#64748B; line-height:1.55; }
     .nav-card-tag   { display:inline-block; margin-top:14px; padding:4px 12px; border-radius:50px; font-size:11px; font-weight:600; }
     .nc-chat    .nav-card-tag { background:#dbeafe; color:#2563eb; }
     .nc-mood    .nav-card-tag { background:#dcfce7; color:#16a34a; }
     .nc-journal .nav-card-tag { background:#ffedd5; color:#ea580c; }
+    .nc-games .nav-card-tag { background: #ede9fe; color: #7c3aed;}
 
     /* FOOTER */
     .dash-footer { text-align:center; color:#94a3b8; font-size:13px; padding:28px 0 10px; border-top:1px solid rgba(148,163,184,0.15); margin-top:12px; }
@@ -267,11 +271,10 @@ def show_dashboard():
             st.session_state.current_page = "Journal"; st.query_params["page"] = "Journal"; st.rerun()
 
     with col4:
-        st.markdown("""<div class="nav-card nc-chat" style="background:linear-gradient(180deg,#f5f0ff 0%,#fff 55%)"><div class="nav-card-stripe" style="background:linear-gradient(90deg,#8b5cf6,#c084fc)"></div>
-            <div class="nav-card-icon" style="background:#ede9fe">🎮</div><div class="nav-card-title">Games</div>
-            <div class="nav-card-desc">Play mindfulness games to relax and sharpen your focus.</div>
-            <span class="nav-card-tag" style="background:#ede9fe;color:#7c3aed">Play Now →</span></div>""", unsafe_allow_html=True)
+        st.markdown("""<div class="nav-card nc-games"> <div class="nav-card-stripe"></div>
+             <div class="nav-card-icon">🎮</div><div class="nav-card-title">Games</div>
+             <div class="nav-card-desc"> Play mindfulness games to relax and sharpen your focus.
+             </div> <span class="nav-card-tag">Play Now →</span></div>""", unsafe_allow_html=True)
         if st.button("Open Games", key="games_btn", use_container_width=True):
-            st.session_state.current_page = "Games"; st.query_params["page"] = "Games"; st.rerun()
-
+             st.session_state.current_page = "Games";st.query_params["page"] = "Games";st.rerun()
     st.markdown('<div class="dash-footer">🌿 MindCare AI &nbsp;·&nbsp; Take care of your mental wellness — one day at a time.</div>', unsafe_allow_html=True)
