@@ -89,6 +89,9 @@ def show_auth_page():
         max-width: 1000px;
         overflow-y: hidden !important;
     }
+                /* Removed top spacing */
+    .block-container {
+        padding-top: 2.4rem !important}
     
     /* Disable auto-scroll */
     section[data-testid="stAppViewContainer"] {
@@ -250,7 +253,7 @@ def show_auth_page():
      /* cancel button color */ 
     /* Secondary Button (Cancel button) - Red/Gray gradient */
     button[kind="secondary"] {
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+        background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%)  !important;
         color: #ffffff !important;
         width: 100% !important;
         border-radius: 10px !important;
@@ -260,12 +263,11 @@ def show_auth_page():
         margin-top: 1rem !important;
         border: none !important;
         transition: all 0.3s ease !important;
-        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3) !important;
+        box-shadow: 0 4px 15px rgba(9, 68, 239, 0.3) !important;
         letter-spacing: 0.3px;
     }
     
     button[kind="secondary"]:hover {
-        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
         transform: translateY(-2px) !important;
         box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4) !important;
     }

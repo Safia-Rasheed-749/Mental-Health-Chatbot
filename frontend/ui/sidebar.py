@@ -452,7 +452,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
                     valid_convos.append((convo, msgs))
 
             if not valid_convos:
-                st.markdown('<p style="color:rgba(148,163,184,0.5);font-size:11.5px;padding:3px 2px;">No sessions yet. Start chatting!</p>', unsafe_allow_html=True)
+                st.markdown('<p style="color:#111827 ;font-size:15.5px;padding:6px 2px;">No sessions yet. Start chatting!</p>', unsafe_allow_html=True)
             else:
                 active_cid = str(st.session_state.get("conversation_id", ""))
 
