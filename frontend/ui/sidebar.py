@@ -214,7 +214,8 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         font-weight: 700 !important;
         border-radius: 10px !important;
         text-align: center !important;
-        margin-top: 4px !important;
+        margin-top: 20px !important;
+        margin-right: 14px ! important;
         box-shadow: 0 3px 12px rgba(239,68,68,0.25) !important;
         transition: all 0.2s ease !important;
     }
@@ -422,7 +423,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             <style>
             /* New Chat Button - Simple, left-aligned, narrower */
             section[data-testid="stSidebar"] button[key="new_chat_btn"] {
-                background: transparent !important;
+                background: Blue !important;
                 border: 1px solid rgba(99,102,241,0.3) !important;
                 border-radius: 8px !important;
                 color: #4f46e5 !important;

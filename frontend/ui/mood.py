@@ -184,32 +184,38 @@ def show_mood_analytics(user_id):
         box-shadow: 0 4px 16px rgba(99,102,241,0.35) !important;
     }
 
-    /* ── LOG BUTTON ── */
-    div[data-testid="stButton"] button {
-        background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
-        color: white !important;
-        border-radius: 12px !important;
-        height: 48px !important;
-        padding: 0 26px !important;
-        border: none !important;
-        transition: all 0.2s !important;
-        cursor: pointer !important;
-        box-shadow: 0 4px 16px rgba(91,141,239,0.30) !important;
-        margin-top: 7px;
-        margin-bottom: 25px;
-    }
-    /* Log My Mood */
-    div[data-testid="stButton"] button p {
-    font-size: 17px !important;
-    font-weight: 700 !important;
+    
+    /
+/* LOG MOOD BUTTON ONLY */
 
+/* LOG MOOD BUTTON ONLY  button styling*/
+
+.st-key-log_mood_btn button {
+    background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%) !important;
+    color: white !important;
+    border-radius: 12px !important;
+    height: 48px !important;
+    padding: 0 26px !important;
+    border: none !important;
+    transition: all 0.2s !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 16px rgba(91,141,239,0.30) !important;
+    margin-top:14px;
+    margin-bottom:14px;
 }
-    div[data-testid="stButton"] button:hover {
-        filter: brightness(1.05) !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 22px rgba(91,141,239,0.40) !important;
-    }
-<</* Select Time Range label */
+
+.st-key-log_mood_btn button p {
+    color: white !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+}
+
+.st-key-log_mood_btn button:hover {
+    filter: brightness(1.05) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 22px rgba(91,141,239,0.40) !important;
+}
+/* Select Time Range label */
 div[data-testid="stSelectbox"] label p {
     font-size: 17px !important;
     color: black !important;
@@ -393,8 +399,10 @@ li[aria-selected="true"] {
     )
     st.markdown('</div>', unsafe_allow_html=True)
     # Centralized Log Button (no empty columns)
-    st.markdown('<div style="display: flex; justify-content: center; margin: 20px 0;">', unsafe_allow_html=True)
+    
+    
     if st.button(" Log My Mood", key="log_mood_btn"):
+
         mood_text = mood.split(" ", 1)[1]
         add_mood(user_id, mood_text)
         log_user_activity(
@@ -405,7 +413,6 @@ li[aria-selected="true"] {
         )
         st.toast(f"🎉 Mood '{mood_text}' logged successfully!", icon="✅")
 
-    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)  # Close mood-section-card
 
