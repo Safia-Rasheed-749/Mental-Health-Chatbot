@@ -234,7 +234,7 @@ def show_calm_colors_game():
         margin-top: 40px !important;
         text-align: center;
     }
-    /* options buttons color changes*/
+    /*startt buttons color changes*/
     .start-btn-wrap .stButton > button {
         background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #667eea 100%) !important;
         background-size: 200% 200% !important;
@@ -313,18 +313,18 @@ def show_calm_colors_game():
         border-radius: 10px;
     }
 
-    /* ── MAIN BUTTONS() ── */
+    /* ── MAIN BUTTONS() ── * background and width changes color text changes from 751 line fo game options*/
     .stButton > button {
         background: linear-gradient(135deg, #6366f1, #8b5cf6) !important; #Change this to change backgroung color of game(on which to click) buttons
         color: white !important;
         font-weight: 700 !important;
         font-size: 18px !important;
         padding: 12px 18px !important;
-        border-radius: 50px !important;
+        border-radius: 30px !important;
         border: none !important;
         box-shadow: 0 6px 24px rgba(99,102,241,0.38) !important;
         transition: all 0.25s ease !important;
-        max-width: 320px !important;
+        max-width: 250px !important;
         margin: auto !important;
         display: block !important;
     }
@@ -748,13 +748,13 @@ def show_calm_colors_game():
                 <style>
 
 
-   /* options button color changes*/ 
+   /* options  text button color changes*/ 
 /* ───  BUTTON STYLEs(On which we have to click for play game) ─── */
 div[data-testid="stButton"] > button {
     color: white !important; # To change text color of buttons
     font-size: 20px !important;
     font-weight: 700 !important;
-    padding: 22px 16px !important;
+    padding: 15px 10px !important;
     border-radius: 22px !important;
     border: none !important;
     transition: all 0.25s ease !important;
