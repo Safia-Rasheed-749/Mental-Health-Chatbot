@@ -190,29 +190,45 @@ def show_mood_analytics(user_id):
 
 /* LOG MOOD BUTTON ONLY  button styling*/
 
+/* LOG MOOD BUTTON */
+
 .st-key-log_mood_btn button {
     background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%) !important;
-    color: white !important;
-    border-radius: 12px !important;
+    background-color: #5B8DEF !important;
+   color: white !important;
+    border: none !important;
+    outline: none !important;
+   border-radius: 12px !important;
     height: 48px !important;
     padding: 0 26px !important;
-    border: none !important;
-    transition: all 0.2s !important;
-    cursor: pointer !important;
-    box-shadow: 0 4px 16px rgba(91,141,239,0.30) !important;
-    margin-top:14px;
-    margin-bottom:14px;
+   box-shadow: 0 4px 16px rgba(91,141,239,0.30) !important;
+    margin-top: 24px !important;
+    margin-bottom: 24px !important;
+   transition: all 0.2s ease !important;
+   opacity: 1 !important;
+}
+/* FORCE INNER BUTTON LAYER */
+.st-key-log_mood_btn button[kind="secondary"] {
+    background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%) !important;
+    background-color: #5B8DEF !important;
+    margin-top: 24px !important;
+    margin-bottom: 24px !important;
 }
 
+/* TEXT */
 .st-key-log_mood_btn button p {
     color: white !important;
     font-size: 14px !important;
     font-weight: 600 !important;
 }
 
+/* HOVER */
 .st-key-log_mood_btn button:hover {
-    filter: brightness(1.05) !important;
+    background: linear-gradient(135deg, #4F83E3 0%, #6D8EF0 100%) !important;
+    background-color: #4F83E3 !important;
+
     transform: translateY(-2px) !important;
+
     box-shadow: 0 6px 22px rgba(91,141,239,0.40) !important;
 }
 /* Select Time Range label */
