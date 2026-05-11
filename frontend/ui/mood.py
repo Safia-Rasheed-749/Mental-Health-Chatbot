@@ -184,14 +184,6 @@ def show_mood_analytics(user_id):
         box-shadow: 0 4px 16px rgba(99,102,241,0.35) !important;
     }
 
-    
-    /
-/* LOG MOOD BUTTON ONLY */
-
-/* LOG MOOD BUTTON ONLY  button styling*/
-
-/* LOG MOOD BUTTON */
-
 .st-key-log_mood_btn button {
     background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%) !important;
     background-color: #5B8DEF !important;
@@ -205,6 +197,7 @@ def show_mood_analytics(user_id):
    transition: all 0.2s ease !important;
    opacity: 1 !important;
 }
+/*log mood background color changes*/
 /* FORCE INNER BUTTON LAYER */
 .st-key-log_mood_btn button[kind="secondary"] {
     background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%) !important;
@@ -212,6 +205,7 @@ def show_mood_analytics(user_id):
     margin-top: 24px !important;
     margin-bottom: 24px !important;
     padding-left:20px;
+    justify-content: center;
 }
 
 /* TEXT */

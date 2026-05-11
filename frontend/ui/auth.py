@@ -84,7 +84,7 @@ def show_auth_page():
         min-height: 100vh;
     }
     .main .block-container { 
-        padding-top: 100px !important; 
+        padding-top: 140px !important; 
         padding-bottom: 2rem !important;
         max-width: 1000px;
         overflow-y: hidden !important;
