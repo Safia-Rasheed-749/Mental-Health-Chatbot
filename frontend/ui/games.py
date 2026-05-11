@@ -133,24 +133,14 @@ def show_calm_colors_game():
     }
     /* Header color before login*/
     /* ── HERO BANNER (HTML ADDED IN HOME SCREEN) ── bannner backgroubnd color changes */
-    .hero-banner {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  .hero-banner {
+    background: linear-gradient(135deg, #2B3B5C 0%, #415A77 50%, #5E4B6E 100%);
     border-radius: 24px;
     padding: 60px 40px;
     text-align: center;
-    box-shadow: 0 20px 60px rgba(102,126,234,0.25);
-    color: white;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    color: #F0F3FA;
 }
-    .hero-banner::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-        animation: shimmer 3s infinite;
-    }
     @keyframes shimmer {
         0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
         100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
@@ -244,6 +234,7 @@ def show_calm_colors_game():
         margin-top: 40px !important;
         text-align: center;
     }
+    /* options buttons color changes*/
     .start-btn-wrap .stButton > button {
         background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #667eea 100%) !important;
         background-size: 200% 200% !important;
