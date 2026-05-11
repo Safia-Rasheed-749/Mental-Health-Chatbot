@@ -22,7 +22,7 @@ def show_admin_panel():
 
         /* ── HEADER ── */
         .admin-header {
-            margin-top: -3rem;
+            margin-top: -5rem;
             background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
             border: 1px solid #4338ca;
             padding: 1.4rem 2rem;
@@ -163,6 +163,7 @@ def show_admin_panel():
             font-size: 0.85rem !important;
             font-family: 'Inter', sans-serif !important;
         }
+        /*all users buttons color change*/
         div[role="tablist"] button[role="tab"][aria-selected="true"] {
             background: #6366F1 !important;
             border-color: #6366F1 !important;

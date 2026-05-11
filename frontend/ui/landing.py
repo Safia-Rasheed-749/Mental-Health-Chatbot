@@ -108,7 +108,7 @@ def show_landing_page():
             margin-top: 32px;
             padding-right: 20px;
         }
-        /* tile color change with important
+        /* tile color change with important*/
         .hero-title {
             font-size: clamp(28px, 4vw, 48px);
             font-weight: 800;
@@ -566,7 +566,6 @@ def show_landing_page():
             Talk, reflect, and find support through emotionally intelligent AI.
         </p>
         <p class="hero-trust"> You're not alone. We listen to you without judgement.Your safe space for emotional support, self-reflection, and mental wellness growth.</p>
-        
         <div class="hero-button-wrapper"></div>
         """, unsafe_allow_html=True)
         # Compact CTA — not full column width
@@ -858,6 +857,7 @@ def show_landing_page():
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
+    
     # how it works cards description color 
     with col1:
         st.markdown("""

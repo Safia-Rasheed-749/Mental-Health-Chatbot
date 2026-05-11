@@ -36,6 +36,7 @@ def show_exercises_page():
             margin: 0 auto;
         }
         
+        
         .stApp {
             margin-top: 0px !important;
             padding-top: 0px !important;
@@ -146,7 +147,7 @@ def show_exercises_page():
             border-left: 3px solid #8b5cf6;
             line-height: 1.5;
         }
-        
+        /* why it help exericse card description color*/
         .exercise-description-text {
             font-size: 0.85rem;
             color: #64748b;
@@ -176,7 +177,7 @@ def show_exercises_page():
             flex-direction: column;
             gap: 8px;
         }
-        
+         /* exercise steps color change*/
         .exercise-steps li {
             background: rgba(255, 255, 255, 0.8);
             padding: 8px 12px;

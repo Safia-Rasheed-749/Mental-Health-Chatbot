@@ -234,7 +234,7 @@ def show_calm_colors_game():
         margin-top: 40px !important;
         text-align: center;
     }
-    /*startt buttons color changes*/
+    /*start buttons color changes*/
     .start-btn-wrap .stButton > button {
         background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #667eea 100%) !important;
         background-size: 200% 200% !important;
@@ -313,7 +313,7 @@ def show_calm_colors_game():
         border-radius: 10px;
     }
 
-    /* ── MAIN BUTTONS() ── * background and width changes color text changes from 751 line fo game options*/
+    /* ── MAIN BUTTONS() ── *  option buttons background and width changes color text changes from 751 line fo game options*/
     .stButton > button {
         background: linear-gradient(135deg, #6366f1, #8b5cf6) !important; #Change this to change backgroung color of game(on which to click) buttons
         color: white !important;
@@ -748,7 +748,7 @@ def show_calm_colors_game():
                 <style>
 
 
-   /* options  text button color changes*/ 
+   /* text option buttons color changes*/ 
 /* ───  BUTTON STYLEs(On which we have to click for play game) ─── */
 div[data-testid="stButton"] > button {
     color: white !important; # To change text color of buttons
@@ -807,8 +807,9 @@ div[data-testid="stButton"] > button:hover {
         title = "Game Ended!"
         st.markdown(f"""
         <style>
+       /* result screnen background color*/
         .stApp {{
-            background: linear-gradient(160deg, #0a0e1a 0%, #0d1b3e 35%, #0f2352 60%, #0a1628 100%) !important;
+            background: pink ! important;
         }}
         .main .block-container {{
             padding-top: 2rem !important;
@@ -904,7 +905,7 @@ div[data-testid="stButton"] > button:hover {
                 if submitted:
                     st.session_state.game_screen = "countdown"
                     st.rerun()
-
+   # login pop up
     def show_login_popup():
         _, col, _ = st.columns([1, 1.2, 1])
         with col:
