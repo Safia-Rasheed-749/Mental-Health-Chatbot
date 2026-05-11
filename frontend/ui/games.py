@@ -134,7 +134,7 @@ def show_calm_colors_game():
     /* Header color before login*/
     /* ── HERO BANNER (HTML ADDED IN HOME SCREEN) ── bannner backgroubnd color changes */
   .hero-banner {
-   background: linear-gradient(-45deg, #A886AB, #D9AEB9, #9198E5, #A886AB) !important;
+     background: linear-gradient(-45deg, #4B6CB7, #182848, #4B6CB7) !important;
     border-radius: 24px;
     padding: 60px 40px;
     text-align: center;
@@ -151,7 +151,7 @@ def show_calm_colors_game():
         font-weight: 900;
         margin-bottom: 12px;
         background: linear-gradient(135deg, #667eea, #764ba2);
-        color: black!important;
+        color: white!important;
         background-clip: text;
         position: relative;
         z-index: 1;
@@ -160,7 +160,7 @@ def show_calm_colors_game():
     .hero-subtitle {
         font-size: 18px;
         font-weight: 500;
-        color:black!important;
+        color:white!important;
         position: relative;
         z-index: 1;
     }
