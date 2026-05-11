@@ -219,7 +219,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         box-shadow: 0 3px 12px rgba(239,68,68,0.25) !important;
         transition: all 0.2s ease !important;
     }
-        /* For logout button text color and size 
+        /* For logout button text color and size */
     section[data-testid="stSidebar"] .stButton button[kind="primary"] p{
                 font-size: 18px;
                 color: white !important;}
