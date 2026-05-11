@@ -202,8 +202,6 @@ def show_mood_analytics(user_id):
     height: 48px !important;
     padding: 0 26px !important;
    box-shadow: 0 4px 16px rgba(91,141,239,0.30) !important;
-    margin-top: 24px !important;
-    margin-bottom: 24px !important;
    transition: all 0.2s ease !important;
    opacity: 1 !important;
 }
@@ -213,13 +211,14 @@ def show_mood_analytics(user_id):
     background-color: #5B8DEF !important;
     margin-top: 24px !important;
     margin-bottom: 24px !important;
+    padding-left:20px;
 }
 
 /* TEXT */
 .st-key-log_mood_btn button p {
     color: white !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
+    font-size: 17px !important;
+    font-weight: 700 !important;
 }
 
 /* HOVER */
