@@ -45,10 +45,10 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         box-shadow: 2px 0 16px rgba(99,102,241,0.08) !important;
     }
     section[data-testid="stSidebar"] > div:first-child {
-        padding-top: 0.5rem !important;
+        padding-top: 0rem !important;
     }
     section[data-testid="stSidebar"] .block-container {
-        padding-top: 0.6rem !important;
+        padding-top: 0rem !important;
         padding-left: 0.8rem !important;
         padding-right: 0.8rem !important;
         padding-bottom: 0.7rem !important;
@@ -69,18 +69,17 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         margin-bottom: 4px;
     }
     .sidebar-avatar {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%);
-        border: 2px solid rgba(99,102,241,0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        flex-shrink: 0;
-        box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
-        animation: avatarPulse 3s ease-in-out infinite;
+        width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
+            animation: avatarPulse 3s ease-in-out infinite;
     }
     @keyframes avatarPulse {
         0%, 100% { box-shadow: 0 0 0 4px rgba(99,102,241,0.12); }

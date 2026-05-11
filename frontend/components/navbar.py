@@ -84,7 +84,7 @@ def render_navbar():
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.25);
+            background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%);
             display: flex;
             align-items: center;
             justify-content: center;
