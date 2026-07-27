@@ -369,21 +369,6 @@ def show_auth_page():
                 </div>
             """, unsafe_allow_html=True)
             
-            # ═══════════════════════════════════════════════════════════
-            # CUSTOM HTML LABELS - LOGIN PAGE
-            # ═══════════════════════════════════════════════════════════
-            # WHY: Streamlit ke default labels chote aur kam visible hain
-            # SOLUTION: Custom HTML <p> tags use kar ke labels ko control karte hain
-            # 
-            # STYLING GUIDE:
-            # - font-size: 18px = Label ka size (YAHAN SE SIZE CHANGE KARO)
-            # - font-weight: 600 = Semi-bold (400=normal, 600=semi-bold, 700=bold)
-            # - color: #1e293b = Dark color for visibility
-            # - margin-bottom: 16px = Label aur input ke beech space
-            # - margin-top: 16px/20px = Upar se space
-            # 
-            # NOTE: label_visibility="collapsed" se Streamlit ka default label hide hota hai
-            # ═══════════════════════════════════════════════════════════
             
             # Email Label  login - 18px, semi-bold, dark color
             st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 16px;">Email</p>', unsafe_allow_html=True)

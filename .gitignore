@@ -1,15 +1,50 @@
-# Virtual Environment
-venv/
-frontend/venv/
-.env                    
-
-# Python cache
+# ==========================
+# Python
+# ==========================
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
 
-# IDE files
-.vscode/sreamlit
+# Virtual Environments
+venv/
+backend/venv/
+frontend/venv/
+
+# Environment
+.env
+
+# IDE
+.vscode/
 .idea/
 
-# OS files
+# Logs
+*.log
+
+# ==========================
+# AI Models
+# ==========================
+backend/models/
+backend/models/**
+
+# HuggingFace cache
+.cache/
+huggingface/
+
+# Torch cache
+torch/
+
+# Checkpoints
+checkpoint-*/
+
+# OS
 .DS_Store
+Thumbs.db
+# Raw datasets
+backend/datasets/GoEmotions/
+backend/datasets/raw/
+# Datasets
+backend/datasets/GoEmotions/
+backend/datasets/raw/
+backend/datasets/depression/raw/
+backend/datasets/stress/raw/
+backend/datasets/tokenized/

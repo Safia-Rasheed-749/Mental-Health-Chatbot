@@ -809,7 +809,7 @@ div[data-testid="stButton"] > button:hover {
         <style>
        /* result screnen background color*/
         .stApp {{
-            background: pink ! important;
+            background: linear-gradient(160deg, #0a0e1a 0%, #0d1b3e 35%, #0f2352 60%, #0a1628 100%) !important;
         }}
         .main .block-container {{
             padding-top: 2rem !important;

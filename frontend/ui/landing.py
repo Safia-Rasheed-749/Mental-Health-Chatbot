@@ -922,6 +922,7 @@ def show_landing_page():
   }
   .ws-pill:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,23,42,0.08); } 
   /* color change when it is active*/
+  /* calm focus background color*/
   .ws-pill.active {
     color: #fff;
     border-color: transparent;

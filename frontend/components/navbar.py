@@ -19,32 +19,6 @@ def render_navbar():
             padding-right: 2rem !important;
             max-width: 100% !important;
         }
-        /* ═══════════════════════════════════════════════════════════════
-           NAVBAR BACKGROUND COLOR - EASY CUSTOMIZATION
-           ═══════════════════════════════════════════════════════════
-           
-           🎨 CURRENT: Soft purple gradient (RECOMMENDED - Best theme match)
-           - Start: #a78bfa (Light purple)
-           - End: #c4b5fd (Lighter purple)
-           
-           💡 HOW TO CHANGE:
-           Replace the gradient colors below with your preferred colors
-           
-           🌈 COLOR PRESETS:
-           
-           OPTION 1 - Soft Purple (Current - RECOMMENDED):
-           background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%) !important;
-           
-           OPTION 2 - Blue-Purple Blend:
-           background: linear-gradient(135deg, #8b7dd8 0%, #c77dbb 100%) !important;
-           
-           OPTION 3 - Calm Blue:
-           background: linear-gradient(135deg, #93c5fd 0%, #a5b4fc 100%) !important;
-           
-           OPTION 4 - Pure White:
-           background: white !important;
-           
-           ═══════════════════════════════════════════════════════════════ */
         
         /* NAVBAR CONTAINER - FIXED AT TOP */
         div[data-testid="stHorizontalBlock"]:has(.navbar-container) {
@@ -130,23 +104,7 @@ def render_navbar():
             text-transform: uppercase;
         }
         
-        /* ═══════════════════════════════════════════════════════════════
-           BUTTON SPACING - Equal gap between all buttons
-           ═══════════════════════════════════════════════════════════════
-           
-           💡 HOW TO CHANGE GAP:
-           Change the "gap" value below
-           
-           CURRENT: 12px (equal spacing)
-           
-           OPTIONS:
-           - Tight: gap: 8px !important;
-           - Normal: gap: 12px !important;
-           - Loose: gap: 16px !important;
-           - Extra Loose: gap: 20px !important;
-           
-           ═══════════════════════════════════════════════════════════════ */
-        
+       
         /* Navigation buttons container - align right with equal gap */
         div[data-testid="stHorizontalBlock"]:has(.navbar-container) > div:last-child {
             display: flex !important;
@@ -157,30 +115,6 @@ def render_navbar():
             gap: 12px !important;
         }
         
-        /* ═══════════════════════════════════════════════════════════════
-           NAVBAR BUTTONS - WHITE TEXT ON PURPLE BACKGROUND
-           ═══════════════════════════════════════════════════════════
-           
-           🎨 DESIGN: White text buttons (matching screenshot)
-           - Transparent background
-           - White text color
-           - Subtle hover effect with lighter background
-           
-           💡 HOW TO CHANGE BUTTON TEXT COLOR:
-           Change the "color" property below
-           
-           🌈 COLOR OPTIONS:
-           
-           CURRENT - White (from screenshot):
-           color: #ffffff !important;
-           
-           OPTION 2 - Light Purple:
-           color: #e9d5ff !important;
-           
-           OPTION 3 - Light Pink:
-           color: #fbcfe8 !important;
-           
-           ═══════════════════════════════════════════════════════════════ */
         
         /* Navigation buttons styling - prevent text wrapping */
         div[data-testid="stHorizontalBlock"]:has(.navbar-container) button {
