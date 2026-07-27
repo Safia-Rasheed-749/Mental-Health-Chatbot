@@ -89,7 +89,7 @@ function App() {
       mediaRecorderRef.current.stop();
     }
   };
-  /*To change this placeholder text, 1stly run npm build in   components\sticky_chat/frontend*/
+  /*To change this placeholder text, firstly run npm build in   components\sticky_chat/frontend*/
   return (
     <div className="sticky-bar">
       <input

@@ -1,0 +1,84 @@
+# ==============================
+# Backend Framework
+# ==============================
+
+fastapi
+uvicorn
+python-dotenv
+python-multipart
+
+# ==============================
+# Database
+# ==============================
+
+sqlalchemy
+psycopg2-binary
+
+# ==============================
+# Machine Learning
+# ==============================
+
+torch
+torchvision
+torchaudio
+
+transformers
+datasets
+accelerate
+evaluate
+sentencepiece
+tokenizers
+safetensors
+huggingface_hub
+
+scikit-learn
+numpy
+pandas
+
+# ==============================
+# NLP
+# ==============================
+
+nltk
+spacy
+
+# ==============================
+# Visualization
+# ==============================
+
+matplotlib
+seaborn
+
+# ==============================
+# RAG
+# ==============================
+
+langchain
+langchain-community
+langchain-huggingface
+
+faiss-cpu
+pypdf
+
+# ==============================
+# Voice
+# ==============================
+
+openai-whisper
+gtts
+pydub
+sounddevice
+librosa
+
+# ==============================
+# Redis
+# ==============================
+
+redis
+
+# ==============================
+# Utilities
+# ==============================
+
+requests
+tqdm

@@ -1,0 +1,109 @@
+"""
+=========================================================
+DistilRoBERTa Emotion Classification Model
+
+Project : AI Mental Health Chatbot (FYP)
+
+Purpose:
+1. Load DistilRoBERTa Pretrained Model
+2. Add Emotion Classification Layer
+3. Ready for Fine-Tuning
+
+Author : Shamsa Akram
+=========================================================
+"""
+
+import torch
+import torch.nn as nn
+from transformers import AutoModel
+
+
+class EmotionClassifier(nn.Module):
+
+    def __init__(self, num_labels=28):
+
+        super(EmotionClassifier, self).__init__()
+
+        print("Loading DistilRoBERTa Model...\n")
+
+        # Load DistilRoBERTa
+        self.transformer = AutoModel.from_pretrained(
+            "distilroberta-base"
+        )
+
+        # Hidden Size (768)
+        hidden_size = self.transformer.config.hidden_size
+
+        # Dropout Layer
+        self.dropout = nn.Dropout(0.3)
+
+        # Classification Layer
+        self.classifier = nn.Linear(
+            hidden_size,
+            num_labels
+        )
+
+    def forward(self, input_ids, attention_mask):
+
+        outputs = self.transformer(
+            input_ids=input_ids,
+            attention_mask=attention_mask
+        )
+
+        # CLS Token Embedding
+        cls_embedding = outputs.last_hidden_state[:, 0, :]
+
+        # Apply Dropout
+        cls_embedding = self.dropout(cls_embedding)
+
+        # Final Classification Layer
+        logits = self.classifier(cls_embedding)
+
+        return logits
+
+
+def count_parameters(model):
+    """
+    Count total trainable parameters
+    """
+
+    return sum(
+        p.numel()
+        for p in model.parameters()
+        if p.requires_grad
+    )
+
+
+if __name__ == "__main__":
+
+    print("=" * 60)
+    print(" AI Mental Health Chatbot ")
+    print(" Emotion Detection Module ")
+    print("=" * 60)
+
+    # Create Model
+    model = EmotionClassifier(num_labels=28)
+
+    print("\n===================================")
+    print("Model Loaded Successfully")
+    print("===================================\n")
+
+    print(model)
+
+    print("\n===================================")
+    print("Model Information")
+    print("===================================\n")
+
+    print(f"Model Name        : DistilRoBERTa")
+
+    print(f"Hidden Size       : {model.transformer.config.hidden_size}")
+
+    print(f"Dropout           : 0.3")
+
+    print(f"Emotion Classes   : 28")
+
+    print(f"Trainable Params  : {count_parameters(model):,}")
+
+    print("\n===================================")
+    print("Model Ready For Training")
+    print("===================================\n")

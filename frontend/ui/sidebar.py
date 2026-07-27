@@ -69,7 +69,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         margin-bottom: 4px;
     }
     .sidebar-avatar {
-        width: 40px;
+           width: 40px;
             height: 40px;
             border-radius: 50%;
             background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%);
@@ -440,7 +440,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             </style>
             """, unsafe_allow_html=True)
 
-            st.markdown('<div class="sb-section-label">Recent Sessions</div>', unsafe_allow_html=True)
+            st.markdown('<div class="sb-section-label">Recents</div>', unsafe_allow_html=True)
 
             conversations = get_conversations(user_id)
 
@@ -491,10 +491,10 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
                                 st.rerun()
 
                     elif menu_open:
-                        st.markdown(f'<p style="color:rgba(226,232,240,0.65);font-size:11.5px;padding:2px 4px;margin:0;">📝 {display_title}</p>', unsafe_allow_html=True)
+                        st.markdown(f'<p style="color:rgba(226,232,240,0.65);font-size:11.5px;padding:2px 4px;margin:0;">{display_title}</p>', unsafe_allow_html=True)
                         col_r, col_d, col_c = st.columns([1, 1, 1])
                         with col_r:
-                            if st.button("✏️ Rename", key=f"do_rename_{convo_id}"):
+                            if st.button("✏️ Edit", key=f"do_rename_{convo_id}"):
                                 st.session_state[f"menu_open_{convo_id}"] = False
                                 st.session_state[f"rename_{convo_id}"] = True
                                 st.rerun()

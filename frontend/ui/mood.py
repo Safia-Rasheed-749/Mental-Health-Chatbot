@@ -501,6 +501,7 @@ li[aria-selected="true"] {
             ax.plot(x, y, marker='o', linewidth=2.5, markersize=8, 
                    color='#3b82f6', markerfacecolor='#2563eb', 
                    markeredgecolor='white', markeredgewidth=2)
+            
             # In above code, color for graph ploting line parts, markerfacecolor for dots , markeredgecolor for around dots
             # Add gradient fill under the line
             ax.fill_between(x, y, alpha=0.2, color='#3b82f6')
@@ -576,6 +577,7 @@ li[aria-selected="true"] {
                     autotext.set_weight('bold')
                 
                 ax2.set_title(f"Emotional Balance – {range_option}", fontsize=6, pad=9)
+                
                 # pie chart circle outer color
                 fig2.patch.set_facecolor('white')
                 
@@ -647,10 +649,11 @@ li[aria-selected="true"] {
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
-
+                
                 fig2, ax2 = plt.subplots(figsize=(9, 4))
                 ax2.plot(x2, counts, marker='o', linewidth=2.5, markersize=7, 
                         label="Messages per day", color='#10b981')
+                
                     # also the graph line color changes
                 ax2.plot(x2, stress, marker='s', linewidth=2.5, markersize=7, 
                         label="Stress indicators", color='#ef4444')
