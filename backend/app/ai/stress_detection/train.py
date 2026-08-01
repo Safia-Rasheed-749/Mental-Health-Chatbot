@@ -14,8 +14,27 @@ Author : Shamsa Akram
 =========================================================
 """
 
+import importlib.util
 import os
 import glob
+from pathlib import Path
+
+# =====================================================
+# Hugging Face Cache (Cross Platform)
+# Centralized in app/ai/hf_cache.py
+# Loaded by absolute file path so sys.path is never
+# modified and installed packages are never shadowed.
+# Must run before importing any Hugging Face library.
+# =====================================================
+
+HF_CACHE_PATH = Path(__file__).resolve().parents[1] / "hf_cache.py"
+
+_hf_cache_spec = importlib.util.spec_from_file_location(
+    "hf_cache", HF_CACHE_PATH
+)
+_hf_cache_module = importlib.util.module_from_spec(_hf_cache_spec)
+_hf_cache_spec.loader.exec_module(_hf_cache_module)
+
 import numpy as np
 
 from datasets import load_dataset

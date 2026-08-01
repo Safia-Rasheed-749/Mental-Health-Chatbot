@@ -15,17 +15,25 @@ Features
 =========================================================
 """
 
+import importlib.util
 import os
 from pathlib import Path
 
 # =====================================================
-# HuggingFace Cache (D Drive)
+# Hugging Face Cache (Cross Platform)
+# Centralized in app/ai/hf_cache.py
+# Loaded by absolute file path so sys.path is never
+# modified and installed packages are never shadowed.
+# Must run before importing any Hugging Face library.
 # =====================================================
 
-os.environ["HF_HOME"] = r"D:\AI_Cache\huggingface"
-os.environ["HF_DATASETS_CACHE"] = r"D:\AI_Cache\datasets"
-os.environ["TRANSFORMERS_CACHE"] = r"D:\AI_Cache\transformers"
-os.environ["TORCH_HOME"] = r"D:\AI_Cache\torch"
+HF_CACHE_PATH = Path(__file__).resolve().parents[1] / "hf_cache.py"
+
+_hf_cache_spec = importlib.util.spec_from_file_location(
+    "hf_cache", HF_CACHE_PATH
+)
+_hf_cache_module = importlib.util.module_from_spec(_hf_cache_spec)
+_hf_cache_spec.loader.exec_module(_hf_cache_module)
 
 import numpy as np
 

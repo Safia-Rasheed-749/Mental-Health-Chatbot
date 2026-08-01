@@ -22,15 +22,14 @@ torch
 torchvision
 torchaudio
 
-transformers
-datasets
-accelerate
+transformers==4.55.4
+datasets==4.0.0
+accelerate==1.9.0
+huggingface_hub==0.36.2
 evaluate
 sentencepiece
 tokenizers
 safetensors
-huggingface_hub
-
 scikit-learn
 numpy
 pandas
