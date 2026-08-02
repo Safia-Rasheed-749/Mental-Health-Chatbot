@@ -2,8 +2,6 @@
 =========================================================
 Depression Detection Prediction
 Project : AI Mental Health Chatbot (FYP)
-
-Predict Depression using trained DistilRoBERTa model.
 =========================================================
 """
 
@@ -26,11 +24,9 @@ MODEL_PATH = os.path.join(
 )
 
 print("Loading Depression Tokenizer...")
-
 tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
 
 print("Loading Depression Model...")
-
 model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH)
 
 model.eval()
@@ -40,16 +36,12 @@ labels = {
     1: "Depression"
 }
 
-print("\n==============================")
-print("Depression Prediction")
-print("==============================")
 
-while True:
+# =====================================================
+# Prediction Function (For FastAPI)
+# =====================================================
 
-    text = input("\nEnter Text (or type exit): ")
-
-    if text.lower() == "exit":
-        break
+def predict_depression(text: str):
 
     inputs = tokenizer(
         text,
@@ -75,8 +67,32 @@ while True:
 
     label = prediction.item()
 
-    print("\nPrediction")
-    print("-------------------------")
-    print(f"Depression : {labels[label]}")
-    print(f"Label      : {label}")
-    print(f"Confidence : {confidence.item()*100:.2f} %")
+    return {
+    "depression": labels[label],
+    "label": label,
+    "confidence": round(confidence.item() * 100, 2)
+}
+
+# =====================================================
+# Command Line Mode
+# =====================================================
+
+if __name__ == "__main__":
+
+    print("\n==============================")
+    print("Depression Prediction")
+    print("==============================")
+
+    while True:
+
+        text = input("\nEnter Text (or type exit): ")
+
+        if text.lower() == "exit":
+            break
+
+        prediction, confidence = predict_depression(text)
+
+        print("\nPrediction")
+        print("-------------------------")
+        print(f"Depression : {prediction}")
+        print(f"Confidence : {confidence} %")

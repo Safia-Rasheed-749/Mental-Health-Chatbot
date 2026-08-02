@@ -1,17 +1,20 @@
 """
 =========================================================
-Stress Prediction
+Stress Detection Prediction
 Project : AI Mental Health Chatbot (FYP)
 
 Purpose
 1. Load trained DistilRoBERTa Stress model
-2. Predict Stress / No Stress
+2. Load tokenizer
+3. Predict Stress / No Stress
+4. Return prediction for FastAPI
 =========================================================
 """
 
 from pathlib import Path
 
 import torch
+
 from transformers import (
     AutoTokenizer,
     AutoModelForSequenceClassification,
@@ -70,15 +73,21 @@ def predict_stress(text):
 
         outputs = model(**inputs)
 
-        prediction = torch.argmax(outputs.logits, dim=1).item()
+        prediction = torch.argmax(
+            outputs.logits,
+            dim=1
+        ).item()
 
-        confidence = torch.softmax(outputs.logits, dim=1)[0][prediction].item()
+        confidence = torch.softmax(
+            outputs.logits,
+            dim=1
+        )[0][prediction].item()
 
     return {
-        "stress": label_mapping[prediction],
-        "label": prediction,
-        "confidence": round(confidence * 100, 2)
-    }
+    "stress": label_mapping[prediction],
+    "label": prediction,
+    "confidence": round(confidence * 100, 2)
+}
 
 # -----------------------------------------------------
 # Interactive Testing
