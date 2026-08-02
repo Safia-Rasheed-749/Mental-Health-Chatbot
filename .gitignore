@@ -48,3 +48,6 @@ backend/datasets/raw/
 backend/datasets/depression/raw/
 backend/datasets/stress/raw/
 backend/datasets/tokenized/
+# Archives
+*.7z
+*.zip
