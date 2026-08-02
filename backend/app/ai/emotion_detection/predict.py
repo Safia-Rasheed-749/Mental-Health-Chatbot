@@ -74,19 +74,23 @@ def predict_emotion(text):
 
         outputs = model(**inputs)
 
-        prediction = torch.argmax(outputs.logits, dim=1).item()
+        prediction = torch.argmax(
+            outputs.logits,
+            dim=1
+        ).item()
 
-        confidence = torch.softmax(outputs.logits, dim=1)[0][prediction].item()
+        confidence = torch.softmax(
+            outputs.logits,
+            dim=1
+        )[0][prediction].item()
 
     emotion = label_mapping[str(prediction)]
 
     return {
-        "emotion": emotion,
-        "label": prediction,
-        "confidence": round(confidence * 100, 2)
-    }
-
-
+    "emotion": emotion,
+    "label": prediction,
+    "confidence": round(confidence * 100, 2)
+}
 # -----------------------------------------------------
 # Interactive Testing
 # -----------------------------------------------------
@@ -104,10 +108,9 @@ if __name__ == "__main__":
         if text.lower() == "exit":
             break
 
-        result = predict_emotion(text)
+        emotion, confidence = predict_emotion(text)
 
         print("\nPrediction")
         print("---------------------")
-        print("Emotion   :", result["emotion"])
-        print("Label     :", result["label"])
-        print("Confidence:", result["confidence"], "%")
+        print(f"Emotion   : {emotion}")
+        print(f"Confidence: {confidence} %")
