@@ -81,3 +81,6 @@ redis
 
 requests
 tqdm
+#For RAG
+sentence-transformers==5.6.1
+beautifulsoup4==4.15.0

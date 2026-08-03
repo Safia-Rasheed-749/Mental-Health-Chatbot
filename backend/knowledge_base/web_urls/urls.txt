@@ -1,0 +1,14 @@
+# =========================================================
+# Knowledge Base Web URLs
+# Project : AI Mental Health Chatbot (FYP)
+#
+# Add one URL per line.
+# Lines starting with '#' are ignored by the loader.
+# Blank lines are also ignored.
+#
+# Example:
+# https://www.who.int/news-room/fact-sheets/detail/depression
+# https://www.nimh.nih.gov/health/topics/depression
+# =========================================================
+https://www.who.int/news-room/fact-sheets/detail/depression
+
