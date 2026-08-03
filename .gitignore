@@ -51,3 +51,14 @@ backend/datasets/tokenized/
 # Archives
 *.7z
 *.zip
+# RAG Knowledge Base
+# Ignore only PDFs
+backend/knowledge_base/pdfs/**/*.pdf
+
+# Ignore generated data
+backend/knowledge_base/vector_store/*
+!backend/knowledge_base/vector_store/.gitkeep
+
+backend/knowledge_base/processed/*
+!backend/knowledge_base/processed/.gitkeep
+TODO.md
