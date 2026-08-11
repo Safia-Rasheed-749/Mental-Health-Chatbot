@@ -117,9 +117,12 @@ def build_retriever(
         chunk_overlap:
             Splitter chunk overlap. Defaults to 100.
         search_type:
-            Retriever search type (e.g. ``"similarity"``).
+            Retriever search type (e.g. ``"similarity"`` or ``"mmr"``).
         search_kwargs:
-            Retriever search options (e.g. ``{"k": 4}``).
+            Retriever search options.
+            For ``"similarity"``: ``{"k": 4}`` applied by default.
+            For ``"mmr"``: ``{"k": 4, "fetch_k": 8, "lambda_mult": 0.5}``
+            applied by default. Pass an explicit dict to override.
 
     Returns:
         A ready-to-use retriever object.
@@ -179,9 +182,12 @@ def run_pipeline(
         chunk_overlap:
             Splitter chunk overlap. Defaults to 100.
         search_type:
-            Retriever search type.
+            Retriever search type (``"similarity"`` or ``"mmr"``).
         search_kwargs:
             Retriever search options.
+            For ``"similarity"``: ``{"k": 4}`` applied by default.
+            For ``"mmr"``: ``{"k": 4, "fetch_k": 8, "lambda_mult": 0.5}``
+            applied by default. Pass an explicit dict to override.
 
     Returns:
         A ready-to-use retriever object.
