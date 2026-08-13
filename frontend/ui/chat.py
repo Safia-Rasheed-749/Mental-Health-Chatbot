@@ -1,3 +1,4 @@
+import requests
 # ========== FORCE FFMPEG PATH ==========
 import os
 import sys
@@ -23,7 +24,7 @@ import tempfile
 import speech_recognition as sr
 from gtts import gTTS
 from db import add_message, create_conversation, get_messages_by_conversation, log_user_activity
-from utils.ai_engine import generate_response
+# from utils.ai_engine import generate_response
 from layout_utils import apply_clean_layout
 import time
 import base64
@@ -64,7 +65,20 @@ def speak_and_auto_play(text):
         os.unlink(audio_path)
     except:
         pass
+def generate_response_from_backend(message: str) -> str:
+    url = "http://127.0.0.1:8000/chat"
 
+    response = requests.post(
+        url,
+        json={"message": message},
+        timeout=120
+    )
+
+    response.raise_for_status()
+
+    data = response.json()
+
+    return data["response"]
 # ---------------- CHAT ----------------
 def show_chat(user_id):
     apply_clean_layout(hide_header_completely=False)
@@ -465,7 +479,8 @@ def show_chat(user_id):
         pending_type = pending["type"]
         pending_text = pending["text"]
 
-        response = generate_response(pending_text, st.session_state["chat_history"][-5:])
+        # response = generate_response(pending_text, st.session_state["chat_history"][-5:])
+        response = generate_response_from_backend(pending_text)
         st.session_state["_ai_typing"] = {"type": pending_type, "response": response}
         st.rerun()
 
