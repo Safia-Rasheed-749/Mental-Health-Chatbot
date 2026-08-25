@@ -75,3 +75,6 @@ backend/knowledge_base/processed/*
 # ==========================
 .DS_Store
 Thumbs.db
+# Large dataset files
+backend/datasets/reddit_mental_health/raw/train.csv
+backend/datasets/reddit_mental_health/processed/train_processed.csv
