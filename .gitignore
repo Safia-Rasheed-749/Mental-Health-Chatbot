@@ -5,60 +5,73 @@ __pycache__/
 *.py[cod]
 *.pyo
 
+# ==========================
 # Virtual Environments
+# ==========================
 venv/
 backend/venv/
 frontend/venv/
 
+# ==========================
 # Environment
+# ==========================
 .env
+.env.*
 
+# ==========================
 # IDE
+# ==========================
 .vscode/
 .idea/
 
+# ==========================
 # Logs
+# ==========================
 *.log
 
 # ==========================
-# AI Models
+# AI Models / Training Outputs
 # ==========================
 backend/models/
-backend/models/**
-
-# HuggingFace cache
-.cache/
-huggingface/
-
-# Torch cache
-torch/
-
-# Checkpoints
 checkpoint-*/
 
-# OS
-.DS_Store
-Thumbs.db
-# Raw datasets
-backend/datasets/GoEmotions/
-backend/datasets/raw/
+# HuggingFace / ML caches
+.cache/
+huggingface/
+torch/
+
+# ==========================
 # Datasets
+# ==========================
 backend/datasets/GoEmotions/
 backend/datasets/raw/
 backend/datasets/depression/raw/
 backend/datasets/stress/raw/
 backend/datasets/tokenized/
+
+# ==========================
 # Archives
+# ==========================
 *.7z
 *.zip
+
+# ==========================
 # RAG Knowledge Base
-# Ignore only PDFs
+# ==========================
+
+# Ignore PDFs
 backend/knowledge_base/pdfs/**/*.pdf
 
-# Ignore generated data
+# Ignore generated vector store
 backend/knowledge_base/vector_store/*
 !backend/knowledge_base/vector_store/.gitkeep
 
+# Ignore processed/generated knowledge-base data
 backend/knowledge_base/processed/*
 !backend/knowledge_base/processed/.gitkeep
-TODO.md
+
+# ==========================
+# OS
+# ==========================
+.DS_Store
+Thumbs.db
