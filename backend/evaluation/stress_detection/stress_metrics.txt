@@ -1,0 +1,105 @@
+======================================================================
+STRESS DETECTION MODEL - FINAL EVALUATION
+======================================================================
+
+MODEL INFORMATION
+----------------------------------------
+Base Model: roberta-base
+Fine-tuned Model: stress_roberta
+Task: Binary Classification (Stress vs No Stress)
+Number of Classes: 2
+Classes: 0 = No Stress, 1 = Stress
+Device: cpu
+Evaluation Time: 323.12 seconds
+
+DATASET INFORMATION
+----------------------------------------
+Test Samples: 715
+Class Distribution:
+  No Stress: 346
+  Stress: 369
+
+LABEL MAPPING
+----------------------------------------
+  0 -> No Stress
+  1 -> Stress
+
+TEST METRICS
+----------------------------------------
+Accuracy: 0.8140 (81.40%)
+Precision (binary): 0.8155 (81.55%)
+Recall (binary): 0.8266 (82.66%)
+F1 (binary): 0.8210 (82.10%)
+Macro Precision: 0.8139
+Macro Recall: 0.8136
+Macro F1: 0.8137
+
+PER-CLASS PERFORMANCE
+----------------------------------------
+No Stress:
+  Precision: 0.8123
+  Recall: 0.8006
+  F1: 0.8064
+Stress:
+  Precision: 0.8155
+  Recall: 0.8266
+  F1: 0.8210
+
+PREDICTION COUNTS
+----------------------------------------
+Correct Predictions: 582
+Wrong Predictions: 133
+Accuracy: 81.40%
+
+CONFUSION MATRIX
+----------------------------------------
+Rows: Actual Labels, Columns: Predicted Labels
+           No Stress  Stress
+No Stress        277      69
+Stress            64     305
+
+CLASSIFICATION REPORT
+----------------------------------------
+              precision    recall  f1-score   support
+
+   No Stress     0.8123    0.8006    0.8064       346
+      Stress     0.8155    0.8266    0.8210       369
+
+    accuracy                         0.8140       715
+   macro avg     0.8139    0.8136    0.8137       715
+weighted avg     0.8140    0.8140    0.8139       715
+
+SAMPLE PREDICTIONS
+----------------------------------------
+Correct Predictions:
+  Text: its like that, if you want or not. me i have no problem, if it takes longer. but...
+  Actual: nan | Predicted: nan (Confidence: 99.84%)
+
+  Text: i man the front desk and my title is hr customer service representative. about 5...
+  Actual: nan | Predicted: nan (Confidence: 99.83%)
+
+  Text: we d be saving so much money with this new housr...its such an expensive city......
+  Actual: nan | Predicted: nan (Confidence: 99.79%)
+
+  Text: my ex used to shoot back with do you want me to go with you? all the time, no ma...
+  Actual: nan | Predicted: nan (Confidence: 99.78%)
+
+  Text: i haven t said anything to him yet because i m not sure how someone would take h...
+  Actual: nan | Predicted: nan (Confidence: 99.76%)
+
+Wrong Predictions:
+  Text: ptsd is life changing for the worse. every day fight. getting in a fist fight in...
+  Actual: nan | Predicted: nan (Confidence: 99.91%)
+
+  Text: i have a lot of self esteem. i value myself, i believe i m smart, have a good pe...
+  Actual: nan | Predicted: nan (Confidence: 99.53%)
+
+  Text: if i go to an interview for example, i ll know that i m a good candidate, i ll k...
+  Actual: nan | Predicted: nan (Confidence: 99.43%)
+
+  Text: i ve been texting rebecca on and off for the last week, always about my breakup....
+  Actual: nan | Predicted: nan (Confidence: 99.74%)
+
+  Text: his reason was that he would rather save money and stay home where he can smoke ...
+  Actual: nan | Predicted: nan (Confidence: 98.89%)
+

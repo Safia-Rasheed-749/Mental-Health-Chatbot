@@ -1,0 +1,105 @@
+======================================================================
+DEPRESSION V2 MODEL - FINAL TEST EVALUATION
+======================================================================
+
+MODEL INFORMATION
+----------------------------------------
+Base Model: roberta-base
+Fine-tuned Model: depression_v2
+Task: Binary Classification (Depression vs No Depression)
+Number of Classes: 2
+Classes: 0 = No Depression, 1 = Depression
+Device: cpu
+Evaluation Time: 579.49 seconds
+
+DATASET INFORMATION
+----------------------------------------
+Test Samples: 1148
+Class Distribution:
+  No Depression: 584
+  Depression: 564
+
+LABEL MAPPING
+----------------------------------------
+  0 -> No Depression
+  1 -> Depression
+
+TEST METRICS
+----------------------------------------
+Accuracy: 0.9800 (98.00%)
+Precision (binary): 0.9874 (98.74%)
+Recall (binary): 0.9716 (97.16%)
+F1 (binary): 0.9794 (97.94%)
+Macro Precision: 0.9802
+Macro Recall: 0.9798
+Macro F1: 0.9800
+
+PER-CLASS PERFORMANCE
+----------------------------------------
+No Depression:
+  Precision: 0.9730
+  Recall: 0.9880
+  F1: 0.9805
+Depression:
+  Precision: 0.9874
+  Recall: 0.9716
+  F1: 0.9794
+
+PREDICTION COUNTS
+----------------------------------------
+Correct Predictions: 1125
+Wrong Predictions: 23
+Accuracy: 98.00%
+
+CONFUSION MATRIX
+----------------------------------------
+Rows: Actual Labels, Columns: Predicted Labels
+               No Depression  Depression
+No Depression            577           7
+Depression                16         548
+
+CLASSIFICATION REPORT
+----------------------------------------
+               precision    recall  f1-score   support
+
+No Depression     0.9730    0.9880    0.9805       584
+   Depression     0.9874    0.9716    0.9794       564
+
+     accuracy                         0.9800      1148
+    macro avg     0.9802    0.9798    0.9800      1148
+ weighted avg     0.9801    0.9800    0.9800      1148
+
+SAMPLE PREDICTIONS
+----------------------------------------
+Correct Predictions:
+  Text: work today...
+  Actual: nan | Predicted: nan (Confidence: 100.00%)
+
+  Text: i m so damn tired today actually i need to take a nap when i m at home but there...
+  Actual: nan | Predicted: nan (Confidence: 100.00%)
+
+  Text: i m   about to spend most of my life try to meet s end got out of high school an...
+  Actual: nan | Predicted: nan (Confidence: 100.00%)
+
+  Text: fuck toxic positivity you have every right to feel angry pissed depressed frustr...
+  Actual: nan | Predicted: nan (Confidence: 100.00%)
+
+  Text: so i m have had depression since i wa snd i suffered from anxiety since   my anx...
+  Actual: nan | Predicted: nan (Confidence: 100.00%)
+
+Wrong Predictions:
+  Text: it s all rainy and cloudy and stuff today for me but even if it wasn t i d still...
+  Actual: nan | Predicted: nan (Confidence: 100.00%)
+
+  Text: my last post goodbye...
+  Actual: nan | Predicted: nan (Confidence: 99.98%)
+
+  Text: the last season of the hill what will one do with oneself when it end...
+  Actual: nan | Predicted: nan (Confidence: 62.63%)
+
+  Text: let s not leave anyone alone...
+  Actual: nan | Predicted: nan (Confidence: 99.55%)
+
+  Text: i think to much on the past i cant change it i deserved so much more then wat i ...
+  Actual: nan | Predicted: nan (Confidence: 99.99%)
+

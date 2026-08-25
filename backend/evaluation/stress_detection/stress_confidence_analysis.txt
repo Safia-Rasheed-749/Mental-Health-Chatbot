@@ -1,0 +1,15 @@
+Confidence Analysis - Stress Detection Model
+============================================================
+
+Correct Predictions: 582
+Wrong Predictions: 133
+
+Confidence Scores:
+  Correct Mean: 0.9866
+  Correct Std: 0.0512
+  Correct Min: 0.5499
+  Correct Max: 0.9996
+  Wrong Mean: 0.9528
+  Wrong Std: 0.1077
+  Wrong Min: 0.5246
+  Wrong Max: 0.9993

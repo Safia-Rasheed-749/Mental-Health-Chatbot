@@ -1,0 +1,17 @@
+STRESS DETECTION - EVALUATION FROM NOTEBOOK
+======================================================================
+
+Accuracy: 0.8140 (81.40%)
+Precision: 0.8155
+Recall: 0.8266
+F1: 0.8210
+
+CLASSIFICATION REPORT
+              precision    recall  f1-score   support
+
+   No Stress     0.8123    0.8006    0.8064       346
+      Stress     0.8155    0.8266    0.8210       369
+
+    accuracy                         0.8140       715
+   macro avg     0.8139    0.8136    0.8137       715
+weighted avg     0.8140    0.8140    0.8139       715

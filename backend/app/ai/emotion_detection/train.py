@@ -1,6 +1,6 @@
 """
 =========================================================
-Train DistilRoBERTa Emotion Classifier
+Train RoBERTa Emotion Classifier
 Project : AI Mental Health Chatbot (FYP)
 
 Features
@@ -18,6 +18,8 @@ Features
 import importlib.util
 import os
 from pathlib import Path
+from transformers import DataCollatorWithPadding
+
 
 # =====================================================
 # Hugging Face Cache (Cross Platform)
@@ -59,7 +61,7 @@ from transformers.trainer_utils import get_last_checkpoint
 # Startup Verification
 # =====================================================
 print("=" * 60)
-print("NEW TRAIN.PY IS RUNNING")
+print("RoBERTa Emotion Training Started")
 print("=" * 60)
 
 # =====================================================
@@ -68,10 +70,11 @@ print("=" * 60)
 
 BACKEND_DIR = Path(__file__).resolve().parents[3]
 
-DATASET_PATH = BACKEND_DIR / "datasets" / "processed"
+GOEMOTION_PATH = BACKEND_DIR / "datasets" / "processed"
 
-MODEL_SAVE_PATH = BACKEND_DIR / "models" / "emotion"
+MERGED_PATH = BACKEND_DIR / "datasets" / "final_emotion"
 
+MODEL_SAVE_PATH = BACKEND_DIR / "models" / "emotion_roberta"
 LOG_DIR = MODEL_SAVE_PATH / "logs"
 
 MODEL_SAVE_PATH.mkdir(parents=True, exist_ok=True)
@@ -93,34 +96,50 @@ print("\nLoading Processed Dataset...\n")
 dataset = load_dataset(
     "csv",
     data_files={
-        "train": str(DATASET_PATH / "clean_train.csv"),
-        "validation": str(DATASET_PATH / "clean_dev.csv"),
+        "train": str(MERGED_PATH / "merged_train.csv"),
+        "validation": str(GOEMOTION_PATH / "clean_dev.csv"),
     },
 )
 
+
 print(dataset)
+print("\nDataset Information")
+print("=" * 60)
+
+print("Training Samples   :", len(dataset["train"]))
+print("Validation Samples :", len(dataset["validation"]))
+
+print("\nTraining Columns")
+print(dataset["train"].column_names)
+
+print("=" * 60)
 # =====================================================
 # Load Tokenizer
 # =====================================================
 
-print("\nLoading DistilRoBERTa Tokenizer...\n")
+print("\nLoading roberta-baseTokenizer...\n")
 
 tokenizer = AutoTokenizer.from_pretrained(
-    "distilroberta-base"
+    "roberta-base"
 )
+
 
 # =====================================================
 # Tokenization
 # =====================================================
+
+MAX_LENGTH = 64
 
 def tokenize_function(example):
 
     return tokenizer(
         example["text"],
         truncation=True,
-        padding="max_length",
-        max_length=96
+        max_length=MAX_LENGTH
     )
+data_collator = DataCollatorWithPadding(
+    tokenizer=tokenizer
+)
 
 print("\nTokenizing Dataset...\n")
 
@@ -147,10 +166,10 @@ tokenized_dataset.set_format(
 # Load Model (always from base, Trainer will restore checkpoint)
 # =====================================================
 
-print("\nLoading DistilRoBERTa Model...\n")
+print("\nLoading roberta-base Model...\n")
 
 model = AutoModelForSequenceClassification.from_pretrained(
-    "distilroberta-base",
+    "roberta-base",
     num_labels=28
 )
 
@@ -190,41 +209,25 @@ def compute_metrics(eval_pred):
 
 training_args = TrainingArguments(
 
-    # ---------------------------------------
-    # Output
-    # ---------------------------------------
-
     output_dir=str(MODEL_SAVE_PATH),
 
     overwrite_output_dir=False,
 
-    # ---------------------------------------
-    # Training
-    # ---------------------------------------
-
-    num_train_epochs=5,
+    num_train_epochs=3,
 
     learning_rate=2e-5,
 
-    per_device_train_batch_size=1,
+    per_device_train_batch_size=2,
 
-    per_device_eval_batch_size=1,
+    per_device_eval_batch_size=2,
 
-    gradient_accumulation_steps=8,
+    gradient_accumulation_steps=4,
 
     weight_decay=0.01,
-
-    # ---------------------------------------
-    # Evaluation
-    # ---------------------------------------
 
     eval_strategy="steps",
 
     eval_steps=500,
-
-    # ---------------------------------------
-    # Checkpoints
-    # ---------------------------------------
 
     save_strategy="steps",
 
@@ -232,31 +235,17 @@ training_args = TrainingArguments(
 
     save_total_limit=3,
 
-    save_only_model=False,
-
-    save_safetensors=True,
-
     load_best_model_at_end=True,
 
     metric_for_best_model="accuracy",
 
     greater_is_better=True,
 
-    # ---------------------------------------
-    # Logging
-    # ---------------------------------------
-
-    logging_strategy="steps",
-
     logging_steps=100,
 
     logging_dir=str(LOG_DIR),
 
     report_to="none",
-
-    # ---------------------------------------
-    # CPU Optimizations
-    # ---------------------------------------
 
     dataloader_pin_memory=False,
 
@@ -268,13 +257,8 @@ training_args = TrainingArguments(
 
     remove_unused_columns=False,
 
-    seed=42
+    seed=42,
 )
-
-# -------------------------------------------------------
-# Resume Training Automatically
-# -------------------------------------------------------
-
 resume_checkpoint = get_last_checkpoint(str(MODEL_SAVE_PATH))
 
 print("\n===================================")
@@ -302,6 +286,7 @@ trainer = Trainer(
     train_dataset=tokenized_dataset["train"],
     eval_dataset=tokenized_dataset["validation"],
     tokenizer=tokenizer,
+    data_collator=data_collator,
     compute_metrics=compute_metrics,
     callbacks=[
         EarlyStoppingCallback(
@@ -309,7 +294,6 @@ trainer = Trainer(
         )
     ]
 )
-
 # -------------------------------------------------------
 # Train Model
 # -------------------------------------------------------
@@ -362,7 +346,7 @@ metrics_file = MODEL_SAVE_PATH / "evaluation_results.txt"
 
 with open(metrics_file, "w") as f:
 
-    f.write("GoEmotions Model Evaluation\n")
+    f.write("RoBERTa Emotion Model Evaluation\n")
     f.write("=" * 50 + "\n\n")
 
     for key, value in results.items():
@@ -384,7 +368,7 @@ print("\nSummary")
 
 print("----------------------------------------")
 
-print("Model              : DistilRoBERTa")
+print("Model              : RoBERTa-base")
 print("Number of Labels   : 28")
 print(f"Epochs             : {training_args.num_train_epochs}")
 print(f"Learning Rate      : {training_args.learning_rate}")

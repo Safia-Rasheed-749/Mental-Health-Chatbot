@@ -1,0 +1,19 @@
+RoBERTa Emotion Detection Classification Report
+======================================================================
+
+Model: roberta-base / emotion_dair_ai_roberta
+Dataset: dair-ai/emotion
+Test Samples: 2000
+
+              precision    recall  f1-score   support
+
+     sadness     0.9786    0.9466    0.9624       581
+         joy     0.9332    0.9655    0.9491       695
+        love     0.9360    0.7358    0.8239       159
+       anger     0.9307    0.9273    0.9290       275
+        fear     0.8277    0.9866    0.9002       224
+    surprise     0.8491    0.6818    0.7563        66
+
+    accuracy                         0.9295      2000
+   macro avg     0.9092    0.8739    0.8868      2000
+weighted avg     0.9317    0.9295    0.9284      2000

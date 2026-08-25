@@ -1,0 +1,32 @@
+REDDIT MENTAL HEALTH - INDEPENDENT TEST EVALUATION
+======================================================================
+
+Test samples: 125
+Accuracy: 0.8560 (85.60%)
+Weighted Precision: 0.8982
+Weighted Recall: 0.8560
+Weighted F1: 0.8556
+Macro Precision: 0.8982
+Macro Recall: 0.8560
+Macro F1: 0.8556
+
+CLASSIFICATION REPORT
+              precision    recall  f1-score   support
+
+        ADHD     1.0000    0.6000    0.7500        25
+         OCD     1.0000    0.8800    0.9362        25
+   aspergers     0.8333    1.0000    0.9091        25
+  depression     0.6579    1.0000    0.7937        25
+        ptsd     1.0000    0.8000    0.8889        25
+
+    accuracy                         0.8560       125
+   macro avg     0.8982    0.8560    0.8556       125
+weighted avg     0.8982    0.8560    0.8556       125
+
+
+CONFUSION MATRIX
+[[15  0  5  5  0]
+ [ 0 22  0  3  0]
+ [ 0  0 25  0  0]
+ [ 0  0  0 25  0]
+ [ 0  0  0  5 20]]

@@ -1,16 +1,16 @@
 """
 =========================================================
-Train Stress Detection Model
+Train Stress Detection Model (RoBERTa-base)
 Project : AI Mental Health Chatbot (FYP)
 
 Purpose
 1. Load processed dataset
-2. Tokenize text
-3. Fine-tune DistilRoBERTa
+2. Tokenize text using RoBERTa tokenizer
+3. Fine-tune RoBERTa-base
 4. Resume from checkpoint automatically
 5. Save best model
 
-Author : Shamsa Akram
+Author : Shamsa Akram (modified)
 =========================================================
 """
 
@@ -21,10 +21,6 @@ from pathlib import Path
 
 # =====================================================
 # Hugging Face Cache (Cross Platform)
-# Centralized in app/ai/hf_cache.py
-# Loaded by absolute file path so sys.path is never
-# modified and installed packages are never shadowed.
-# Must run before importing any Hugging Face library.
 # =====================================================
 
 HF_CACHE_PATH = Path(__file__).resolve().parents[1] / "hf_cache.py"
@@ -66,7 +62,7 @@ DATASET_PATH = os.path.join(
 MODEL_SAVE_PATH = os.path.join(
     os.getcwd(),
     "models",
-    "stress"
+    "stress_roberta"   # changed to avoid overwriting DistilRoBERTa model
 )
 
 os.makedirs(MODEL_SAVE_PATH, exist_ok=True)
@@ -88,13 +84,13 @@ dataset = load_dataset(
 print(dataset)
 
 # -------------------------------------------------------
-# Tokenizer
+# Tokenizer (RoBERTa-base)
 # -------------------------------------------------------
 
-print("\nLoading DistilRoBERTa Tokenizer...\n")
+print("\nLoading RoBERTa-base Tokenizer...\n")
 
 tokenizer = AutoTokenizer.from_pretrained(
-    "distilroberta-base"
+    "roberta-base"   # changed from distilroberta-base
 )
 
 # -------------------------------------------------------
@@ -102,65 +98,43 @@ tokenizer = AutoTokenizer.from_pretrained(
 # -------------------------------------------------------
 
 def tokenize(example):
-
     return tokenizer(
-
         example["text"],
-
         truncation=True,
-
         padding="max_length",
-
         max_length=128
-
     )
 
 print("\nTokenizing Dataset...\n")
 
 tokenized_dataset = dataset.map(
-
     tokenize,
-
     batched=True
-
 )
 
 tokenized_dataset = tokenized_dataset.rename_column(
-
     "label",
-
     "labels"
-
 )
 
 tokenized_dataset.set_format(
-
     type="torch",
-
     columns=[
-
         "input_ids",
-
         "attention_mask",
-
         "labels"
-
     ]
-
 )
 
 # -------------------------------------------------------
-# Model
+# Model (RoBERTa-base)
 # -------------------------------------------------------
 
-print("\nLoading DistilRoBERTa Model...\n")
+print("\nLoading RoBERTa-base Model...\n")
 
 model = AutoModelForSequenceClassification.from_pretrained(
-
-    "distilroberta-base",
-
+    "roberta-base",   # changed from distilroberta-base
     num_labels=2
-
 )
 
 # -------------------------------------------------------
@@ -168,47 +142,22 @@ model = AutoModelForSequenceClassification.from_pretrained(
 # -------------------------------------------------------
 
 def compute_metrics(eval_pred):
-
     logits, labels = eval_pred
-
-    predictions = np.argmax(
-
-        logits,
-
-        axis=-1
-
-    )
+    predictions = np.argmax(logits, axis=-1)
 
     precision, recall, f1, _ = precision_recall_fscore_support(
-
         labels,
-
         predictions,
-
         average="binary",
-
         zero_division=0
-
     )
-
-    accuracy = accuracy_score(
-
-        labels,
-
-        predictions
-
-    )
+    accuracy = accuracy_score(labels, predictions)
 
     return {
-
         "accuracy": accuracy,
-
         "precision": precision,
-
         "recall": recall,
-
         "f1": f1
-
     }
 
 # -------------------------------------------------------
@@ -216,66 +165,39 @@ def compute_metrics(eval_pred):
 # -------------------------------------------------------
 
 training_args = TrainingArguments(
-
     output_dir=MODEL_SAVE_PATH,
-
     num_train_epochs=5,
-
     learning_rate=2e-5,
-
     per_device_train_batch_size=8,
-
     per_device_eval_batch_size=8,
-
     weight_decay=0.01,
-
     eval_strategy="epoch",
-
     save_strategy="epoch",
-
     logging_strategy="steps",
-
     logging_steps=50,
-
     save_total_limit=3,
-
     load_best_model_at_end=True,
-
     metric_for_best_model="accuracy",
-
     greater_is_better=True,
-
     report_to="none"
-
 )
+
 # -------------------------------------------------------
 # Trainer
 # -------------------------------------------------------
 
 trainer = Trainer(
-
     model=model,
-
     args=training_args,
-
     train_dataset=tokenized_dataset["train"],
-
     eval_dataset=tokenized_dataset["validation"],
-
     processing_class=tokenizer,
-
     compute_metrics=compute_metrics,
-
     callbacks=[
-
         EarlyStoppingCallback(
-
             early_stopping_patience=2
-
         )
-
     ]
-
 )
 
 # -------------------------------------------------------
@@ -283,39 +205,24 @@ trainer = Trainer(
 # -------------------------------------------------------
 
 checkpoint_dirs = sorted(
-
     glob.glob(
-
         os.path.join(
-
             MODEL_SAVE_PATH,
-
             "checkpoint-*"
-
         )
-
     ),
-
     key=os.path.getmtime
-
 )
 
 resume_checkpoint = None
-
 if len(checkpoint_dirs) > 0:
-
     resume_checkpoint = checkpoint_dirs[-1]
-
     print("\n===================================")
     print("Checkpoint Found")
     print("===================================")
-
     print("\nResuming From:\n")
-
     print(resume_checkpoint)
-
 else:
-
     print("\n===================================")
     print("No Previous Checkpoint Found")
     print("Starting Fresh Training")
@@ -330,9 +237,7 @@ print("Training Started...")
 print("===================================\n")
 
 trainer.train(
-
     resume_from_checkpoint=resume_checkpoint
-
 )
 
 # -------------------------------------------------------
@@ -344,7 +249,6 @@ print("Evaluating Model...")
 print("===================================\n")
 
 results = trainer.evaluate()
-
 print(results)
 
 # -------------------------------------------------------
@@ -355,17 +259,8 @@ print("\n===================================")
 print("Saving Final Model...")
 print("===================================\n")
 
-trainer.save_model(
-
-    MODEL_SAVE_PATH
-
-)
-
-tokenizer.save_pretrained(
-
-    MODEL_SAVE_PATH
-
-)
+trainer.save_model(MODEL_SAVE_PATH)
+tokenizer.save_pretrained(MODEL_SAVE_PATH)
 
 # -------------------------------------------------------
 # Training Completed
@@ -376,5 +271,4 @@ print("Training Completed Successfully")
 print("===================================")
 
 print("\nModel Saved At:\n")
-
 print(MODEL_SAVE_PATH)

@@ -1,0 +1,52 @@
+EMOTION DETECTION - EVALUATION RESULTS
+======================================================================
+
+MODEL INFORMATION
+Pretrained/Base Model: roberta-base
+Fine-tuned Model: emotion_dair_ai_roberta
+Dataset: dair-ai/emotion
+Test Samples: 2000
+Number of Classes: 6
+Device: cpu
+
+LABEL MAPPING
+0 = sadness
+1 = joy
+2 = love
+3 = anger
+4 = fear
+5 = surprise
+
+TEST METRICS
+Accuracy: 0.929500 (92.95%)
+Weighted Precision: 0.931699 (93.17%)
+Weighted Recall: 0.929500 (92.95%)
+Weighted F1: 0.928393 (92.84%)
+Macro Precision: 0.909220
+Macro Recall: 0.873943
+Macro F1: 0.886812
+Evaluation Time: 227.94 seconds
+Correct Predictions: 1859
+Wrong Predictions: 141
+
+CONFUSION MATRIX
+[[550   4   0  18   9   0]
+ [  4 671   8   1   3   8]
+ [  0  42 117   0   0   0]
+ [  3   2   0 255  15   0]
+ [  3   0   0   0 221   0]
+ [  2   0   0   0  19  45]]
+
+CLASSIFICATION REPORT
+              precision    recall  f1-score   support
+
+     sadness     0.9786    0.9466    0.9624       581
+         joy     0.9332    0.9655    0.9491       695
+        love     0.9360    0.7358    0.8239       159
+       anger     0.9307    0.9273    0.9290       275
+        fear     0.8277    0.9866    0.9002       224
+    surprise     0.8491    0.6818    0.7563        66
+
+    accuracy                         0.9295      2000
+   macro avg     0.9092    0.8739    0.8868      2000
+weighted avg     0.9317    0.9295    0.9284      2000

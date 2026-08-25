@@ -1,0 +1,15 @@
+Confidence Analysis - Depression V2 Model
+============================================================
+
+Correct Predictions: 1125
+Wrong Predictions: 23
+
+Confidence Scores:
+  Correct Mean: 0.9997
+  Correct Std: 0.0077
+  Correct Min: 0.7413
+  Correct Max: 1.0000
+  Wrong Mean: 0.9655
+  Wrong Std: 0.0946
+  Wrong Min: 0.6263
+  Wrong Max: 1.0000
