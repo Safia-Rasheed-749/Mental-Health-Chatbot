@@ -1,3 +1,4 @@
+
 """
 =========================================================
 RAG Pipeline
@@ -5,11 +6,21 @@ Project : AI Mental Health Chatbot (FYP)
 
 Wires together the RAG components into a modular flow:
 
-    Load documents
-        -> Split documents
-        -> Generate embeddings
-        -> Create the vector store (requires embedding model)
-        -> Return retriever
+    Load existing knowledge-base documents
+        +
+    Load CounselChat documents
+        ->
+    Combine documents
+        ->
+    Split documents
+        ->
+    Generate embeddings
+        ->
+    Create FAISS vector store
+        ->
+    Save vector store
+        ->
+    Return retriever
 
 This module intentionally does NOT:
     - Make automatic create/load decisions (caller chooses).
@@ -30,6 +41,8 @@ from langchain_core.embeddings import Embeddings
 from langchain_core.vectorstores import VectorStoreRetriever
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+from app.ai.counsel_chat.rag_documents import load_counsel_chat_documents
+
 from .embeddings import get_embedding_model
 from .loader import (
     PDFS_DIR,
@@ -42,6 +55,7 @@ from .vector_store import (
     create_vector_store,
     save_vector_store,
 )
+
 
 # -------------------------------------------------------
 # Defaults (single place to change)
@@ -66,15 +80,17 @@ def split_documents(
     Args:
         documents:
             LangChain documents to split.
+
         chunk_size:
             Target chunk size in characters.
             Defaults to 500.
+
         chunk_overlap:
             Overlap between adjacent chunks.
             Defaults to 100.
 
     Returns:
-        A list of chunked LangChain ``Document`` objects.
+        A list of chunked LangChain Document objects.
     """
 
     splitter = RecursiveCharacterTextSplitter(
@@ -84,7 +100,11 @@ def split_documents(
 
     chunks = splitter.split_documents(documents)
 
-    print(f"Split {len(documents)} documents into {len(chunks)} chunks.")
+    print(
+        f"Split {len(documents)} documents into "
+        f"{len(chunks)} chunks."
+    )
+
     return chunks
 
 
@@ -103,23 +123,31 @@ def build_retriever(
     """
     Build a ready-to-use retriever from documents.
 
-    This is the scaffold pipeline: split -> embed -> create the
-    vector store -> return the retriever. The caller is expected
-    to ``save_vector_store`` afterwards to persist the index.
+    Process:
+        documents
+        -> split
+        -> FAISS vector store
+        -> retriever
 
     Args:
         documents:
-            Raw documents (e.g. from ``load_all_documents``).
+            Raw LangChain documents.
+
         embeddings:
-            Embedding model (e.g. ``get_embedding_model``).
+            Embedding model.
+
         chunk_size:
-            Splitter chunk size. Defaults to 500.
+            Chunk size. Defaults to 500.
+
         chunk_overlap:
-            Splitter chunk overlap. Defaults to 100.
+            Chunk overlap. Defaults to 100.
+
         search_type:
-            Retriever search type (e.g. ``"similarity"``).
+            Retriever search type.
+            "similarity" or "mmr".
+
         search_kwargs:
-            Retriever search options (e.g. ``{"k": 4}``).
+            Retriever search settings.
 
     Returns:
         A ready-to-use retriever object.
@@ -132,13 +160,13 @@ def build_retriever(
         chunk_overlap=chunk_overlap,
     )
 
-    # 2. Create the FAISS vector store from the chunks.
+    # 2. Create FAISS vector store.
     vector_store = create_vector_store(
         documents=chunks,
         embeddings=embeddings,
     )
 
-    # 3. Return the retriever.
+    # 3. Create and return retriever.
     return get_retriever(
         vector_store=vector_store,
         search_type=search_type,
@@ -147,7 +175,7 @@ def build_retriever(
 
 
 # =====================================================
-# End-to-End Pipeline (explicit create/save)
+# End-to-End Pipeline
 # =====================================================
 
 def run_pipeline(
@@ -160,67 +188,130 @@ def run_pipeline(
     search_kwargs: dict = None,
 ) -> VectorStoreRetriever:
     """
-    End-to-end convenience pipeline: load -> split -> embed -> create.
+    End-to-end RAG pipeline.
 
-    Note: this pipeline always *creates* a fresh vector store. It does
-    NOT automatically load an existing one — the caller decides when
-    to rebuild vs. reuse. To reuse an existing index, call
-    ``load_vector_store`` directly.
+    Process:
 
-    Args:
-        pdfs_directory:
-            Root folder scanned recursively for PDFs.
-        urls_file:
-            Text file containing web URLs.
-        vector_store_directory:
-            Where to save the built vector store.
-        chunk_size:
-            Splitter chunk size. Defaults to 500.
-        chunk_overlap:
-            Splitter chunk overlap. Defaults to 100.
-        search_type:
-            Retriever search type.
-        search_kwargs:
-            Retriever search options.
+        1. Load PDFs + web documents
+        2. Load CounselChat documents
+        3. Combine all documents
+        4. Split documents into chunks
+        5. Generate embeddings
+        6. Create FAISS vector store
+        7. Save vector store
+        8. Return retriever
 
-    Returns:
-        A ready-to-use retriever object.
+    Notes:
+        This function always creates a fresh vector store.
+
+        It does NOT automatically load an existing vector store.
+        To reuse an existing store, use load_vector_store().
     """
 
-    # 1. Load documents.
+    # -------------------------------------------------
+    # 1. Load existing knowledge-base documents
+    # -------------------------------------------------
+
+    print("=" * 60)
+    print("Loading existing knowledge-base documents...")
+    print("=" * 60)
+
     documents = load_all_documents(
         pdfs_directory=pdfs_directory,
         urls_file=urls_file,
     )
 
-    # 2. Split documents.
+    print(
+        f"Existing knowledge-base documents: {len(documents)}"
+    )
+
+    # -------------------------------------------------
+    # 2. Load CounselChat documents
+    # -------------------------------------------------
+
+    print("\n" + "=" * 60)
+    print("Loading CounselChat documents...")
+    print("=" * 60)
+
+    counsel_documents = load_counsel_chat_documents()
+
+    print(
+        f"CounselChat documents: {len(counsel_documents)}"
+    )
+
+    # -------------------------------------------------
+    # 3. Combine all knowledge sources
+    # -------------------------------------------------
+
+    documents.extend(counsel_documents)
+
+    print("\n" + "=" * 60)
+    print(
+        f"Total combined documents: {len(documents)}"
+    )
+    print("=" * 60)
+
+    # -------------------------------------------------
+    # 4. Split documents into chunks
+    # -------------------------------------------------
+
+    print("\nSplitting documents...")
+
     chunks = split_documents(
         documents,
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap,
     )
 
-    # 3. Generate embeddings.
+    # -------------------------------------------------
+    # 5. Generate embeddings
+    # -------------------------------------------------
+
+    print("\nLoading embedding model...")
+
     embeddings = get_embedding_model()
 
-    # 4. Create the vector store.
+    print("Embedding model ready.")
+
+    # -------------------------------------------------
+    # 6. Create FAISS vector store
+    # -------------------------------------------------
+
+    print("\nCreating FAISS vector store...")
+
     vector_store = create_vector_store(
         documents=chunks,
         embeddings=embeddings,
     )
 
-    # 5. Persist the vector store.
+    # -------------------------------------------------
+    # 7. Save FAISS vector store
+    # -------------------------------------------------
+
+    print("\nSaving vector store...")
+
     save_vector_store(
         vector_store=vector_store,
         store_directory=vector_store_directory,
     )
 
-    # 6. Return the retriever.
-    return get_retriever(
+    # -------------------------------------------------
+    # 8. Return retriever
+    # -------------------------------------------------
+
+    print("\nCreating retriever...")
+
+    retriever = get_retriever(
         vector_store=vector_store,
         search_type=search_type,
         search_kwargs=search_kwargs,
     )
+
+    print("\n" + "=" * 60)
+    print("RAG Pipeline completed successfully!")
+    print("=" * 60)
+
+    return retriever
 
 
 # =====================================================
@@ -229,12 +320,13 @@ def run_pipeline(
 
 if __name__ == "__main__":
 
-    print("==============================")
+    print("=" * 60)
     print("RAG Pipeline")
-    print("==============================")
+    print("=" * 60)
 
     retriever = run_pipeline()
 
-    print("------------------------------")
+    print("\n" + "-" * 60)
     print("Pipeline complete. Retriever ready.")
-    print("------------------------------")
+    print("-" * 60)
+

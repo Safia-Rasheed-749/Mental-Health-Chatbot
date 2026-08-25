@@ -2,11 +2,14 @@ from fastapi import APIRouter
 
 from app.database.schemas import (
     PredictionRequest,
-    PredictionResponse
+    PredictionResponse,
+    ChatRequest,
+    ChatResponse
+
 )
 
-from app.services.chat_service import analyze_text
-
+# from app.services.chat_service import analyze_text
+from app.services.rag_chat_service import generate_chat_response
 
 router = APIRouter()
 
@@ -16,7 +19,7 @@ router = APIRouter()
     response_model=PredictionResponse
 )
 def predict(request: PredictionRequest):
-
+    from app.services.chat_service import analyze_text
     result = analyze_text(request.text)
 
     return PredictionResponse(
@@ -30,4 +33,15 @@ def predict(request: PredictionRequest):
         depression=result["depression"],
         depression_confidence=result["depression_confidence"]
 
+    )
+@router.post(
+"/chat",
+response_model=ChatResponse
+)
+def chat(request: ChatRequest):
+
+    response = generate_chat_response(request.message)
+
+    return ChatResponse(
+        response=response
     )

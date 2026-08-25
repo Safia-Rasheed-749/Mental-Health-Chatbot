@@ -14,3 +14,8 @@ class PredictionResponse(BaseModel):
 
     depression: str
     depression_confidence: float
+class ChatRequest(BaseModel):
+    message: str
+
+class ChatResponse(BaseModel):
+    response: str

@@ -18,7 +18,14 @@ from langchain_core.vectorstores import VectorStoreRetriever
 # -------------------------------------------------------
 
 DEFAULT_SEARCH_TYPE = "similarity"
+
+# Used when search_type == "similarity"
 DEFAULT_SEARCH_KWARGS = {"k": 4}
+
+# Used when search_type == "mmr"
+# fetch_k  : candidate pool size before MMR re-ranking
+# lambda_mult : diversity weight (0 = max diversity, 1 = max relevance)
+DEFAULT_MMR_SEARCH_KWARGS = {"k": 4, "fetch_k": 8, "lambda_mult": 0.5}
 
 
 # =====================================================
@@ -40,20 +47,31 @@ def get_retriever(
         vector_store:
             A FAISS vector store (created or loaded).
         search_type:
-            Type of search. Supported values include
-            ``"similarity"`` and ``"mmr"``.
+            Type of search.
+            ``"similarity"`` — standard cosine/dot-product retrieval.
+            ``"mmr"``        — Maximum Marginal Relevance retrieval,
+                               which balances relevance with diversity.
             Defaults to ``"similarity"``.
         search_kwargs:
-            Extra search options, e.g. ``{"k": 4}``.
-            Defaults to ``{"k": 4}``.
+            Extra search options.
+            For ``"similarity"``: ``{"k": 4}`` (default).
+            For ``"mmr"``: ``{"k": 4, "fetch_k": 8, "lambda_mult": 0.5}``
+            (default). Pass an explicit dict to override any value.
 
     Returns:
         A ready-to-use retriever object. Chunk retrieval only —
         no LLM, no QA.
     """
 
+    # Pick the right defaults when the caller passes nothing
     if search_kwargs is None:
-        search_kwargs = DEFAULT_SEARCH_KWARGS
+        if search_type == "mmr":
+            search_kwargs = DEFAULT_MMR_SEARCH_KWARGS
+        else:
+            search_kwargs = DEFAULT_SEARCH_KWARGS
+
+    # Simple log so every run shows which retrieval mode is active
+    print(f"[Retriever] search_type={search_type}  search_kwargs={search_kwargs}")
 
     return vector_store.as_retriever(
         search_type=search_type,
@@ -71,7 +89,8 @@ if __name__ == "__main__":
     print("RAG Retriever Module")
     print("==============================")
 
-    print(f"Default search type : {DEFAULT_SEARCH_TYPE}")
-    print(f"Default search kwargs : {DEFAULT_SEARCH_KWARGS}")
+    print(f"Default search type        : {DEFAULT_SEARCH_TYPE}")
+    print(f"Default similarity kwargs  : {DEFAULT_SEARCH_KWARGS}")
+    print(f"Default MMR kwargs         : {DEFAULT_MMR_SEARCH_KWARGS}")
     print("Retriever factory ready (requires a vector store).")
 
