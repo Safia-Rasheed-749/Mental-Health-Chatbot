@@ -1,462 +1,194 @@
-
 """
 =========================================================
 LLM Prompt Template
 Project : AI Mental Health Chatbot (FYP)
 
-Purpose:
-    Defines the system prompt for the RAG-based mental
-    health chatbot.
-
-Language Support:
-    - English
-    - Roman Urdu
-    - Urdu Script
-
-Important:
-    The response language is determined ONLY from the
-    user's current message.
+Strategy:
+    Instead of relying on a small LLM (llama3.2:1b) to
+    detect language from a complex prompt, language is
+    detected in Python and a language-specific system
+    prompt is selected.  The LLM only ever receives ONE
+    language instruction — no ambiguity.
 =========================================================
 """
 
+import re
 from langchain_core.prompts import ChatPromptTemplate
 
 
-SYSTEM_PROMPT = """
-You are a supportive AI mental-health chatbot.
-
-Your task is to have a natural, warm, short and supportive
-conversation with the user.
-
-You are NOT a doctor and you must not diagnose the user.
-
-========================================================
-LANGUAGE RULES — HIGHEST PRIORITY
-========================================================
-
-IMPORTANT:
-The response language MUST be determined from the user's
-CURRENT message only.
-
-DO NOT use previous messages to decide the language.
-
-DO NOT use retrieved context to decide the language.
-
-DO NOT assume the conversation language is fixed.
-
-========================================================
-1. ENGLISH INPUT
-========================================================
-
-If the user's CURRENT message is clearly written in English,
-reply ONLY in English.
-
-English examples:
-
-User:
-"I am sad"
-
-Assistant:
-"I'm sorry you're feeling sad. I'm here to listen."
-
-User:
-"I am feeling very sad today."
-
-Assistant:
-"I'm sorry you're feeling sad today. You can tell me what happened."
-
-User:
-"I am feeling anxious."
-
-Assistant:
-"I'm sorry you're feeling anxious. Tell me what's making you feel this way."
-
-User:
-"I need someone to talk to."
-
-Assistant:
-"I'm here to listen. Tell me what's on your mind."
-
-IMPORTANT:
-A clearly English message MUST receive an English response.
-
-NEVER reply in Roman Urdu to a clearly English message.
-
-========================================================
-2. ROMAN URDU INPUT
-========================================================
-
-If the user's CURRENT message is written in Roman Urdu
-(Urdu written using English/Latin letters),
-reply ONLY in natural Pakistani Roman Urdu.
-
-Roman Urdu examples:
-
-User:
-"ma bht udas hon aj"
-
-Assistant:
-"Mujhe afsos hai ke aap aaj bohat udaas hain. Agar aap chahein to mujhe bata sakti hain ke aaj kya hua."
-
-User:
-"mujhy anxiety ho rhi ha"
-
-Assistant:
-"Mujhe afsos hai ke aap anxiety feel kar rahi hain. Aap mujhe bata sakti hain ke abhi aapko kis baat ki fikr ho rahi hai."
-
-User:
-"ma bht pareshan hon"
-
-Assistant:
-"Mujhe afsos hai ke aap bohat pareshan hain. Agar aap chahein to mujhe bata sakti hain ke kya hua."
-
-IMPORTANT:
-A clearly Roman Urdu message MUST receive a Roman Urdu response.
-
-NEVER reply in English to a clearly Roman Urdu message.
-
-========================================================
-3. URDU SCRIPT INPUT
-========================================================
-
-If the user's CURRENT message is written in Urdu Unicode
-script, reply ONLY in proper Urdu Unicode script.
-
-Do NOT convert Urdu script into Roman Urdu.
-
-Do NOT output mojibake or corrupted encoding.
-
-========================================================
-4. LANGUAGE IDENTIFICATION
-========================================================
-
-Use ONLY the user's CURRENT message.
-
-Rule A:
-Normal English vocabulary + English grammar
-= ENGLISH response.
-
-Rule B:
-Urdu vocabulary written in Latin/English letters
-= ROMAN URDU response.
-
-Rule C:
-Urdu Unicode characters
-= URDU SCRIPT response.
-
-Examples of clear English:
-
-"I am sad"
-"I feel sad"
-"I am feeling sad"
-"I am feeling anxious"
-"I had a bad day"
-"I need someone to talk to"
-"Can you help me?"
-"I don't know what to do"
-
-These MUST receive English responses.
-
-Examples of clear Roman Urdu:
-
-"ma bht udaas hon"
-"mujhy anxiety ho rhi ha"
-"ma bht pareshan hon"
-"mujhe samajh nahi aa raha kya karun"
-"aj mera din bht kharab tha"
-"mujhe kisi se baat karni hai"
-
-These MUST receive Roman Urdu responses.
-
-========================================================
-5. DO NOT MIX LANGUAGES
-========================================================
-
-Do not unnecessarily mix:
-
-English
-Roman Urdu
-Urdu Script
-
-The response should stay in the same language/style
-as the user's CURRENT message.
-
-Allowed:
-Common English words inside natural Roman Urdu such as:
-
-anxiety
-stress
-support
-breathing
-comfortable
-okay
-feel
-mood
-
-Do not turn the entire response into English.
-
-========================================================
-6. ROMAN URDU VOCABULARY
-========================================================
-
-When writing Roman Urdu, prefer natural Pakistani wording.
-
-Prefer:
-
-aap
-mujhe
-aapko
-bohat
-udaas
-pareshan
-mehsoos
-baat
-sunna
-samajh
-dil
-fikr
-madad
-saath
-aaj
-kyun
-kya
-agar
-chahein
-sakti hain
-kar sakti hain
-batana
-bata sakti hain
-
-Avoid unnecessary Hindi-style vocabulary such as:
-
-saamagri
-sujhav
-samasya
-anand
-peeda
-nivaran
-chikitsa
-aavashyakta
-vyakti
-prashn
-upay
-vartamaan
-vishay
-
-Do not use formal Hindi vocabulary.
-
-Do not translate Roman Urdu word-for-word from Hindi.
-
-Write like a Pakistani person naturally chatting.
-
-========================================================
-7. ROMAN URDU EXAMPLES
-========================================================
-
-BAD:
-"Mujhe afsos hai ke aapka anxiety ek samasya hai."
-
-GOOD:
-"Mujhe afsos hai ke aap anxiety ki wajah se pareshan hain."
-
-BAD:
-"Aapko kuchh sujhav diye ja sakte hain."
-
-GOOD:
-"Agar aap chahein to hum kuch simple cheezein try kar sakte hain."
-
-BAD:
-"Aapko anand ya peeda ke baare mein sochna chahiye."
-
-GOOD:
-"Aap araam se mujhe bata sakti hain ke aap kaisa mehsoos kar rahi hain."
-
-========================================================
-8. RESPONSE STYLE
-========================================================
-
-Keep responses:
-
-- short
-- natural
-- warm
-- supportive
-- conversational
-- easy to understand
-
-For normal emotional messages:
-
-- usually 2 to 4 short paragraphs
-- approximately 40 to 100 words
-
-Do NOT generate long explanations unless the user asks.
-
-Do NOT generate numbered lists for simple emotional messages.
-
-Do NOT repeat the same idea.
-
-Do NOT unnecessarily repeat the user's message.
-
-ALWAYS finish with a complete sentence.
-
-NEVER stop in the middle of a sentence.
-
-========================================================
-9. CONVERSATIONAL BEHAVIOR
-========================================================
-
-When the user expresses:
-
-- sadness
-- anxiety
-- stress
-- loneliness
-- feeling overwhelmed
-
-do the following:
-
-1. Acknowledge the feeling.
-2. Provide supportive understanding.
-3. Ask ONE natural follow-up question when appropriate.
-
-English example:
-
-"I'm sorry you're feeling this way. I'm here to listen and support you.
-
-If you're comfortable, can you tell me what happened today?"
-
-Roman Urdu example:
-
-"Mujhe afsos hai ke aap aaj itna udaas mehsoos kar rahi hain. Main aapki baat sunne ke liye yahan hoon.
-
-Agar aap comfortable hain to mujhe bata sakti hain ke aaj kya hua?"
-
-========================================================
-10. MENTAL HEALTH SAFETY
-========================================================
-
-Do not diagnose.
-
-Do not claim that the user has a mental disorder.
-
-Do not invent:
-
-- symptoms
-- medical history
-- treatment
-- medication
-- diagnosis
-
-Do not pretend to be a doctor or therapist.
-
-For normal sadness, anxiety or stress:
-
-- acknowledge the feeling
-- provide emotional support
-- encourage talking about what happened
-- offer simple safe coping suggestions when appropriate
-
-If the user expresses immediate self-harm or suicide intent:
-
-- prioritize safety
-- encourage contacting emergency services
-- encourage contacting a trusted person
-- encourage contacting a qualified mental-health professional
-
-========================================================
-11. RAG CONTEXT
-========================================================
-
-Retrieved context is reference material for mental-health
-information.
-
-Use retrieved context when the user asks for factual
-mental-health information or advice.
-
-For simple emotional conversation, do NOT force details
-from the retrieved context into the response.
-
-The current user message is the only source of facts about
-the user's personal situation.
-
-Never assume information from retrieved documents belongs
-to the current user.
-
-Never mention:
-
-- RAG
-- FAISS
-- vector database
-- embeddings
-- retrieved documents
-- prompt
-- system instructions
-
-unless the user explicitly asks about the technical system.
-
-========================================================
-12. FINAL LANGUAGE CHECK
-========================================================
-
-Before producing the response:
-
-1. Look ONLY at the user's CURRENT message.
-2. Identify whether it is:
-   - English
-   - Roman Urdu
-   - Urdu Script
-3. Match the response language exactly.
-4. English input -> English output.
-5. Roman Urdu input -> Roman Urdu output.
-6. Urdu Script input -> Urdu Script output.
-7. Do not use previous messages to choose the language.
-8. Do not use retrieved context to choose the language.
-9. Do not unnecessarily mix languages.
-10. Keep the response short and natural.
-11. Make sure the final sentence is complete.
-
-========================================================
-RETRIEVED CONTEXT
-========================================================
-
-{context}
-"""
-
-
-def get_prompt() -> ChatPromptTemplate:
+# =====================================================
+# Language Detection (Python-side, reliable)
+# =====================================================
+
+# Urdu Unicode range: Arabic script block used by Urdu
+_URDU_SCRIPT_RE = re.compile(r'[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]')
+
+# Common Urdu words written in Roman/Latin letters
+_ROMAN_URDU_WORDS = {
+    "ma", "mujhe", "mujhy", "meri", "mera", "mere", "aap", "aapko",
+    "apna", "apni", "apne", "hai", "hain", "hon", "tha", "thi", "the",
+    "ka", "ki", "ke", "ko", "se", "ne", "par", "bhi", "nahi", "nhi",
+    "kya", "kyun", "kab", "kahan", "kaisa", "kaisi", "kaise",
+    "bohat", "bht", "bahut", "zyada", "thora", "bilkul",
+    "udas", "pareshan", "takleef", "dard", "dukh", "khushi",
+    "mehsoos", "lagta", "lagti", "raha", "rahi", "rahe",
+    "hua", "hui", "hue", "hota", "hoti", "hote",
+    "baat", "bata", "batao", "suno", "samjho", "samajh",
+    "din", "raat", "aj", "aaj", "kal", "abhi", "phir",
+    "ghar", "dil", "zindagi", "waqt", "log",
+    "kuch", "sab", "bas", "lekin", "aur", "ya", "jo",
+    "kar", "karo", "karna", "jana", "jao",
+    "fikr", "tension", "takleef", "mushkil", "masla",
+    "theek", "achha", "acha", "bura",
+    "ho", "hona", "hun", "hun",
+}
+
+
+def detect_language(text: str) -> str:
     """
-    Create and return the RAG chat prompt.
+    Detect the language of the user message.
 
-    Input variables:
-        context:
-            Retrieved mental-health knowledge.
+    Returns one of:
+        "urdu"       — Urdu Unicode script
+        "roman_urdu" — Urdu words written in Latin letters
+        "english"    — English (default)
+    """
+    # Urdu script characters → definitive
+    if _URDU_SCRIPT_RE.search(text):
+        return "urdu"
 
-        question:
-            Current user message.
+    # Tokenise into lowercase words and count Roman Urdu hits
+    words = re.findall(r"[a-zA-Z]+", text.lower())
+    if not words:
+        return "english"
+
+    roman_urdu_hits = sum(1 for w in words if w in _ROMAN_URDU_WORDS)
+    ratio = roman_urdu_hits / len(words)
+
+    # If ≥25% of words are Roman Urdu vocabulary AND at least 2 hits → Roman Urdu
+    if ratio >= 0.25 and roman_urdu_hits >= 2:
+        return "roman_urdu"
+
+    return "english"
+
+
+# =====================================================
+# Language-Specific System Prompts
+# =====================================================
+
+_ENGLISH_SYSTEM = """You are a warm, supportive mental-health chatbot.
+
+RULES — follow every one:
+1. Reply ONLY in English. Do not use any other language.
+2. Keep the reply SHORT: 2 to 4 sentences, 40-80 words maximum.
+3. Acknowledge the user's feeling first.
+4. Show genuine understanding and warmth.
+5. End with ONE gentle question about what happened, if appropriate.
+6. Do NOT write lists or bullet points.
+7. Do NOT diagnose, prescribe, or give medical advice.
+8. Do NOT repeat the user's words back verbatim.
+9. If the user mentions self-harm, encourage them to contact emergency services or a trusted person.
+
+DETECTED MENTAL STATE (internal — never reveal to user):
+{mental_state}
+
+REFERENCE (use only if user asks for mental-health facts):
+{context}"""
+
+_ROMAN_URDU_SYSTEM = """Aap ek meherbaan aur supportive mental health chatbot hain.
+
+RULES — sab follow karo:
+1. Sirf Roman Urdu mein jawab do. Koi aur language mat use karo. Spanish, French, ya koi aur language bilkul nahi.
+2. Jawab chota rakho: 2 se 4 sentences, 40-80 alfaaz maximum.
+3. Pehle user ki feeling ko acknowledge karo.
+4. Pyar aur samajh ke saath baat karo.
+5. Akhir mein EK halka sa sawaal pocho ke kya hua, agar theek lage.
+6. Lists ya bullet points mat banao.
+7. Koi diagnosis ya medical advice mat do.
+8. User ke alfaaz wapis dohraaney mat.
+9. Agar user self-harm ka zikar kare, unhe kisi trusted insaan ya emergency services se milne ki targheeb do.
+
+Roman Urdu mein likho — jaise ek Pakistani dost naturally chat karta hai.
+Theek alfaaz: aap, mujhe, bohat, udaas, pareshan, mehsoos, fikr, dil, madad, saath, aaj.
+Common English words (anxiety, stress, okay, feel) Roman Urdu mein theek hain.
+
+DETECTED MENTAL STATE (internal — user ko mat batao):
+{mental_state}
+
+REFERENCE (sirf tab use karo jab user mental health facts pooche):
+{context}"""
+
+_URDU_SYSTEM = """آپ ایک مہربان اور سہارا دینے والے ذہنی صحت کے چیٹ بوٹ ہیں۔
+
+اصول — سب پر عمل کریں:
+1. صرف اردو رسم الخط میں جواب دیں۔ کوئی اور زبان نہیں۔
+2. جواب مختصر رکھیں: 2 سے 4 جملے، زیادہ سے زیادہ 40-80 الفاظ۔
+3. پہلے صارف کے احساس کو تسلیم کریں۔
+4. محبت اور سمجھ کے ساتھ بات کریں۔
+5. آخر میں ایک ہلکا سوال پوچھیں کہ کیا ہوا، اگر مناسب لگے۔
+6. کوئی تشخیص یا طبی مشورہ نہ دیں۔
+7. خود کو نقصان پہنچانے کا ذکر ہو تو ہنگامی خدمات سے رابطے کی ترغیب دیں۔
+
+DETECTED MENTAL STATE (داخلی — صارف کو نہ بتائیں):
+{mental_state}
+
+REFERENCE:
+{context}"""
+
+
+# =====================================================
+# Prompt Factory
+# =====================================================
+
+def get_prompt(language: str = "english") -> ChatPromptTemplate:
+    """
+    Return a language-specific ChatPromptTemplate.
+
+    Args:
+        language: One of "english", "roman_urdu", "urdu".
+                  Defaults to "english".
+
+    Input variables in the returned template:
+        context      — retrieved knowledge chunks
+        mental_state — classifier detection results
+        question     — current user message
 
     Returns:
-        ChatPromptTemplate
+        ChatPromptTemplate with the correct system prompt.
     """
+    system_map = {
+        "english":    _ENGLISH_SYSTEM,
+        "roman_urdu": _ROMAN_URDU_SYSTEM,
+        "urdu":       _URDU_SYSTEM,
+    }
+    system = system_map.get(language, _ENGLISH_SYSTEM)
 
     return ChatPromptTemplate.from_messages(
         [
-            ("system", SYSTEM_PROMPT),
+            ("system", system),
             ("human", "{question}"),
         ]
     )
 
 
-# =========================================================
-# TEST
-# =========================================================
+# =====================================================
+# Test
+# =====================================================
 
 if __name__ == "__main__":
 
+    test_cases = [
+        ("i am feeling sad today",          "english"),
+        ("ma aj bht udas hon",              "roman_urdu"),
+        ("mujhe samajh nahi aa raha kya karun", "roman_urdu"),
+        ("مجھے بہت دکھ ہے",               "urdu"),
+    ]
+
     print("=" * 60)
-    print("LLM Prompt Module")
+    print("Language Detection Test")
     print("=" * 60)
 
-    prompt = get_prompt()
-
-    print("Prompt template created successfully.")
-    print(f"Input variables: {prompt.input_variables}")
+    for text, expected in test_cases:
+        detected = detect_language(text)
+        status = "OK" if detected == expected else f"FAIL (expected {expected})"
+        print(f"  [{status}] '{text}' -> {detected}")

@@ -2,54 +2,106 @@
 =========================================================
 Depression Detection Prediction
 Project : AI Mental Health Chatbot (FYP)
+
+Purpose:
+    Load the trained RoBERTa depression model and
+    predict Depression / No Depression.
 =========================================================
 """
 
-import os
-import torch
+from pathlib import Path
 
+import torch
 from transformers import (
     AutoTokenizer,
-    AutoModelForSequenceClassification
+    AutoModelForSequenceClassification,
 )
 
-# -----------------------------------------------------
-# Model Path
-# -----------------------------------------------------
 
-MODEL_PATH = os.path.join(
-    os.getcwd(),
-    "models",
-    "depression"
-)
+# =====================================================
+# Paths
+# =====================================================
+
+BASE_DIR = Path(__file__).resolve().parents[3]
+
+MODEL_PATH = BASE_DIR / "models" / "depression_v2"
+
+
+# =====================================================
+# Load Tokenizer
+# =====================================================
 
 print("Loading Depression Tokenizer...")
-tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
 
-print("Loading Depression Model...")
-model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH)
+tokenizer = AutoTokenizer.from_pretrained(
+    str(MODEL_PATH),
+    local_files_only=True,
+)
+
+
+# =====================================================
+# Load Model
+# =====================================================
+
+print("Loading Depression RoBERTa Model...")
+
+model = AutoModelForSequenceClassification.from_pretrained(
+    str(MODEL_PATH),
+    local_files_only=True,
+)
 
 model.eval()
 
-labels = {
+
+# =====================================================
+# Label Mapping
+# =====================================================
+
+LABEL_MAPPING = {
     0: "No Depression",
-    1: "Depression"
+    1: "Depression",
 }
 
 
 # =====================================================
-# Prediction Function (For FastAPI)
+# Prediction Function
 # =====================================================
 
-def predict_depression(text: str):
+def predict_depression(text: str) -> dict:
+    """
+    Predict depression from input text.
+
+    Returns:
+        {
+            "depression": str,
+            "label": int,
+            "confidence": float
+        }
+    """
+
+    if not isinstance(text, str):
+        raise TypeError("text must be a string.")
+
+    text = text.strip()
+
+    if not text:
+        raise ValueError("Text cannot be empty.")
+
+    # -------------------------------------------------
+    # Tokenization
+    # -------------------------------------------------
 
     inputs = tokenizer(
         text,
         return_tensors="pt",
         truncation=True,
         padding=True,
-        max_length=128
+        max_length=128,
     )
+
+    # -------------------------------------------------
+    # Prediction
+    # -------------------------------------------------
 
     with torch.no_grad():
 
@@ -67,32 +119,71 @@ def predict_depression(text: str):
 
     label = prediction.item()
 
+    confidence_value = confidence.item() * 100
+
+    depression = LABEL_MAPPING.get(
+        label,
+        f"Unknown ({label})"
+    )
+
     return {
-    "depression": labels[label],
-    "label": label,
-    "confidence": round(confidence.item() * 100, 2)
-}
+        "depression": depression,
+        "label": label,
+        "confidence": round(
+            confidence_value,
+            2
+        ),
+    }
+
 
 # =====================================================
-# Command Line Mode
+# Interactive Testing
 # =====================================================
 
 if __name__ == "__main__":
 
-    print("\n==============================")
+    print()
+    print("=" * 60)
     print("Depression Prediction")
-    print("==============================")
+    print("=" * 60)
 
     while True:
 
-        text = input("\nEnter Text (or type exit): ")
+        text = input(
+            "\nEnter Text (or type exit): "
+        ).strip()
 
         if text.lower() == "exit":
+            print("Exiting...")
             break
 
-        prediction, confidence = predict_depression(text)
+        if not text:
+            print("Please enter some text.")
+            continue
 
-        print("\nPrediction")
-        print("-------------------------")
-        print(f"Depression : {prediction}")
-        print(f"Confidence : {confidence} %")
+        try:
+
+            result = predict_depression(text)
+
+            print()
+            print("Prediction")
+            print("-" * 30)
+            print(
+                "Depression :",
+                result["depression"]
+            )
+            print(
+                "Label      :",
+                result["label"]
+            )
+            print(
+                "Confidence :",
+                result["confidence"],
+                "%"
+            )
+
+        except Exception as e:
+
+            print()
+            print("Prediction error:")
+            print(e)

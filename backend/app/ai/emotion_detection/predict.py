@@ -3,11 +3,9 @@
 Emotion Prediction
 Project : AI Mental Health Chatbot (FYP)
 
-Purpose
-1. Load trained DistilRoBERTa model
-2. Load tokenizer
-3. Predict emotion
-4. Return emotion name
+Purpose:
+    Load the trained RoBERTa emotion model and predict
+    the emotion of the user's current text.
 =========================================================
 """
 
@@ -15,102 +13,182 @@ import json
 from pathlib import Path
 
 import torch
-
 from transformers import (
     AutoTokenizer,
     AutoModelForSequenceClassification,
 )
 
-# -----------------------------------------------------
+
+# =====================================================
 # Paths
-# -----------------------------------------------------
+# =====================================================
 
 BASE_DIR = Path(__file__).resolve().parents[3]
 
-MODEL_PATH = BASE_DIR / "models" / "emotion"
+MODEL_PATH = BASE_DIR / "models" / "emotion_dair_ai_roberta"
 
-# -----------------------------------------------------
+LABEL_MAPPING_PATH = MODEL_PATH / "label_mapping.json"
+
+
+# =====================================================
 # Load Tokenizer
-# -----------------------------------------------------
+# =====================================================
 
 print("Loading Emotion Tokenizer...")
 
-tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
+tokenizer = AutoTokenizer.from_pretrained(
+    str(MODEL_PATH),
+    local_files_only=True,
+)
 
-# -----------------------------------------------------
+
+# =====================================================
 # Load Model
-# -----------------------------------------------------
+# =====================================================
 
-print("Loading Emotion Model...")
+print("Loading Emotion RoBERTa Model...")
 
-model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH)
+model = AutoModelForSequenceClassification.from_pretrained(
+    str(MODEL_PATH),
+    local_files_only=True,
+)
 
 model.eval()
 
-# -----------------------------------------------------
+
+# =====================================================
 # Load Label Mapping
-# -----------------------------------------------------
+# =====================================================
 
-label_file = MODEL_PATH / "label_mapping.json"
+print("Loading Emotion Label Mapping...")
 
-with open(label_file, "r") as f:
+with open(
+    LABEL_MAPPING_PATH,
+    "r",
+    encoding="utf-8"
+) as f:
     label_mapping = json.load(f)
 
-# -----------------------------------------------------
-# Prediction Function
-# -----------------------------------------------------
 
-def predict_emotion(text):
+# JSON keys are strings, so convert them to integers
+label_mapping = {
+    int(key): value
+    for key, value in label_mapping.items()
+}
+
+
+# =====================================================
+# Prediction Function
+# =====================================================
+
+def predict_emotion(text: str) -> dict:
+    """
+    Predict emotion from input text.
+
+    Returns:
+        {
+            "emotion": str,
+            "label": int,
+            "confidence": float
+        }
+    """
+
+    if not isinstance(text, str):
+        raise TypeError("text must be a string.")
+
+    text = text.strip()
+
+    if not text:
+        raise ValueError("Text cannot be empty.")
+
+    # -------------------------------------------------
+    # Tokenization
+    # -------------------------------------------------
 
     inputs = tokenizer(
         text,
         return_tensors="pt",
         truncation=True,
         padding=True,
-        max_length=96
+        max_length=96,
     )
+
+    # -------------------------------------------------
+    # Prediction
+    # -------------------------------------------------
 
     with torch.no_grad():
 
         outputs = model(**inputs)
 
-        prediction = torch.argmax(
+        probabilities = torch.softmax(
             outputs.logits,
             dim=1
-        ).item()
+        )
 
-        confidence = torch.softmax(
-            outputs.logits,
+        confidence, prediction = torch.max(
+            probabilities,
             dim=1
-        )[0][prediction].item()
+        )
 
-    emotion = label_mapping[str(prediction)]
+    label = prediction.item()
+
+    confidence_value = confidence.item() * 100
+
+    emotion = label_mapping.get(
+        label,
+        f"Unknown ({label})"
+    )
 
     return {
-    "emotion": emotion,
-    "label": prediction,
-    "confidence": round(confidence * 100, 2)
-}
-# -----------------------------------------------------
+        "emotion": emotion,
+        "label": label,
+        "confidence": round(confidence_value, 2),
+    }
+
+
+# =====================================================
 # Interactive Testing
-# -----------------------------------------------------
+# =====================================================
 
 if __name__ == "__main__":
 
-    print("\n==============================")
+    print()
+    print("=" * 60)
     print("Emotion Prediction")
-    print("==============================")
+    print("=" * 60)
 
     while True:
 
-        text = input("\nEnter Text (or type exit): ")
+        text = input(
+            "\nEnter Text (or type exit): "
+        ).strip()
 
         if text.lower() == "exit":
+            print("Exiting...")
             break
 
-        emotion, confidence = predict_emotion(text)
+        if not text:
+            print("Please enter some text.")
+            continue
 
-        print("\nPrediction")
-        print("---------------------")
-        print(f"Emotion   : {emotion}")
-        print(f"Confidence: {confidence} %")
+        try:
+
+            result = predict_emotion(text)
+
+            print()
+            print("Prediction")
+            print("-" * 30)
+            print("Emotion    :", result["emotion"])
+            print("Label      :", result["label"])
+            print(
+                "Confidence :",
+                result["confidence"],
+                "%"
+            )
+
+        except Exception as e:
+
+            print()
+            print("Prediction error:")
+            print(e)

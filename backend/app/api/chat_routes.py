@@ -35,13 +35,21 @@ def predict(request: PredictionRequest):
 
     )
 @router.post(
-"/chat",
-response_model=ChatResponse
+    "/chat",
+    response_model=ChatResponse,
 )
 def chat(request: ChatRequest):
-
-    response = generate_chat_response(request.message)
+    result = generate_chat_response(request.message)
 
     return ChatResponse(
-        response=response
+        response=result["response"],
+
+        emotion=result["emotion"],
+        emotion_confidence=result["emotion_confidence"],
+
+        stress=result["stress"],
+        stress_confidence=result["stress_confidence"],
+
+        depression=result["depression"],
+        depression_confidence=result["depression_confidence"],
     )
