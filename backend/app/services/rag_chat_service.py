@@ -1,4 +1,10 @@
 # backend/app/services/rag_chat_service.py
+# MODIFIED: Added multi-turn conversation memory support.
+#   - Added MAX_HISTORY_TURNS, MAX_HISTORY_TOKENS, MAX_MESSAGE_CHARS config
+#   - Added format_history() helper
+#   - Updated generate_chat_response() to accept optional history parameter
+#   - History is injected as a prefix in the question slot (no prompt.py changes)
+#   - All existing RAG, detector, safety, and language logic is unchanged
 
 """
 RAG Chat Service - Mental Health Chatbot FYP
@@ -14,12 +20,13 @@ Flow for every /chat request:
         -> retrieve relevant chunks from FAISS vector store
         -> build mental_state string from classifier results
         -> build context string from retrieved chunks
-        -> format prompt  (context + mental_state + question)
+        -> format history prefix (last N turns, token-budgeted)
+        -> format prompt  (context + mental_state + history + question)
         -> LLM generates response
         -> return response text + raw detection results
 """
 
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from langchain_core.documents import Document
@@ -40,6 +47,11 @@ from app.ai.rag.vector_store import load_vector_store
 
 TOP_K = 4          # Number of RAG chunks to retrieve
 LOW_CONF = 60.0    # Confidence threshold below which a label is "unreliable"
+
+# --- Multi-turn memory configuration (change these to tune behaviour) ---
+MAX_HISTORY_TURNS  = 3     # Maximum previous turns to inject (1 turn = 1 user + 1 assistant)
+MAX_HISTORY_TOKENS = 1500  # Approximate token budget for history (1 token ≈ 4 chars)
+MAX_MESSAGE_CHARS  = 500   # Truncate any single message longer than this
 
 # =====================================================
 # Context Builder
@@ -97,6 +109,83 @@ def build_mental_state(
         f"  Depression : {_fmt(depression_result['depression'], depression_result['confidence'])}",
     ]
     return "\n".join(lines)
+
+
+# =====================================================
+# History Formatter
+# =====================================================
+
+def format_history(history: Optional[list]) -> str:
+    """
+    Format conversation history into a plain-text prefix for the prompt.
+
+    Rules applied (in order):
+        1. None / empty → return ""
+        2. Keep only the last MAX_HISTORY_TURNS turns
+        3. Truncate each message to MAX_MESSAGE_CHARS characters
+        4. Stop adding turns (oldest-first) once MAX_HISTORY_TOKENS budget exceeded
+        5. Skip any malformed entries (missing role/content) silently
+
+    A 'turn' is one user message + one assistant reply (2 list entries).
+    The history list is assumed to be chronological (oldest first).
+
+    Args:
+        history: List of dicts or ChatMessage objects with .role and .content
+
+    Returns:
+        Formatted string like:
+            "Previous conversation:\nUser: ...\nAssistant: ...\n\n"
+        or "" if nothing valid to inject.
+    """
+    if not history:
+        return ""
+
+    # Normalise: accept both Pydantic models and plain dicts
+    turns = []
+    for entry in history:
+        try:
+            role    = entry.role    if hasattr(entry, "role")    else entry["role"]
+            content = entry.content if hasattr(entry, "content") else entry["content"]
+            if role not in ("user", "assistant") or not isinstance(content, str):
+                continue
+            turns.append((role, content.strip()))
+        except (KeyError, AttributeError, TypeError):
+            continue  # skip malformed entries
+
+    if not turns:
+        return ""
+
+    # Keep only the last MAX_HISTORY_TURNS*2 entries (each turn = user + assistant)
+    max_entries = MAX_HISTORY_TURNS * 2
+    turns = turns[-max_entries:]
+
+    # Build lines within token budget (1 token ≈ 4 chars)
+    token_budget = MAX_HISTORY_TOKENS * 4  # work in chars for simplicity
+    used_chars   = 0
+    selected     = []
+
+    for role, content in turns:
+        # Truncate long individual messages
+        if len(content) > MAX_MESSAGE_CHARS:
+            content = content[:MAX_MESSAGE_CHARS] + "…"
+
+        label = "User" if role == "user" else "Assistant"
+        line  = f"{label}: {content}"
+
+        if used_chars + len(line) > token_budget:
+            break  # budget exhausted — stop (oldest turns dropped first)
+
+        selected.append(line)
+        used_chars += len(line)
+
+    if not selected:
+        return ""
+
+    injected_turns  = len(selected) // 2 + len(selected) % 2  # rough turn count
+    injected_tokens = used_chars // 4
+    print(f"  [History] Injected ~{injected_turns} turns (~{injected_tokens} tokens) into prompt.")
+
+    return "Previous conversation:\n" + "\n".join(selected) + "\n\n"
 
 
 # =====================================================
@@ -175,7 +264,7 @@ retriever, llm = initialize_rag_chat()
 # Main Chat Function
 # =====================================================
 
-def generate_chat_response(question: str) -> dict:
+def generate_chat_response(question: str, history: Optional[list] = None) -> dict:
     """
     Generate a response using detectors + RAG + LLM.
 
@@ -184,12 +273,16 @@ def generate_chat_response(question: str) -> dict:
         2. Retrieve relevant chunks from FAISS
         3. Build mental_state string from classifier outputs
         4. Build context string from retrieved chunks
-        5. Format prompt  (context + mental_state + question)
-        6. Generate LLM response
-        7. Return response text together with raw detection scores
+        5. Format history prefix (last MAX_HISTORY_TURNS turns, token-budgeted)
+        6. Format prompt  (context + mental_state + history + question)
+        7. Generate LLM response
+        8. Return response text together with raw detection scores
 
     Args:
-        question: User's message.
+        question: User's current message.
+        history:  Optional list of previous turns as ChatMessage objects or
+                  plain dicts with 'role' and 'content' keys.
+                  None or empty → stateless behaviour (same as before).
 
     Returns:
         dict with keys:
@@ -252,12 +345,17 @@ def generate_chat_response(question: str) -> dict:
 
     # --------------------------------------------------
     # Step 5: Select language-specific prompt and format
+    # History is injected as a prefix in the question slot so
+    # the LLM sees recent context without changing prompt.py.
     # --------------------------------------------------
+    history_prefix   = format_history(history)
+    question_with_history = history_prefix + question
+
     prompt = get_prompt(language)
     messages = prompt.format_messages(
         context=context,
         mental_state=mental_state,
-        question=question,
+        question=question_with_history,
     )
 
     # --------------------------------------------------

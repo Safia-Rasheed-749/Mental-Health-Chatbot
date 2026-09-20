@@ -22,7 +22,7 @@ def show_calm_colors_game():
         st.markdown("""
         <style>
         footer, .stAppDeployButton { display: none !important; }
-        .block-container { padding-top: 0rem !important; margin-top: 0rem !important; }
+        .block-container { padding-top: 1.5rem !important; margin-top: 0rem !important; }
         </style>
         """, unsafe_allow_html=True)
 

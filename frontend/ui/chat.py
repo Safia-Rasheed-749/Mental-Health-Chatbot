@@ -65,12 +65,57 @@ def speak_and_auto_play(text):
         os.unlink(audio_path)
     except:
         pass
-def generate_response_from_backend(message: str) -> str:
+
+# ── Multi-turn conversation memory helpers ──────────────────────────────────
+# build_history_for_api() converts st.session_state["chat_history"] (list of
+# tuples) into the API format (list of dicts).  It excludes the last entry
+# because that is the current user message, which is sent in the "message" field.
+
+def build_history_for_api(max_turns: int = 3) -> list:
+    """
+    Build history list for the backend API from st.session_state["chat_history"].
+
+    - Excludes the last entry (current user message already appended to history)
+    - Keeps only the last max_turns turns (1 turn = 1 user + 1 assistant = 2 entries)
+    - Converts (role, content) tuples to {"role": str, "content": str} dicts
+    - Skips malformed entries gracefully
+
+    Returns:
+        List of {"role": str, "content": str} dicts, or [] if nothing to send.
+    """
+    history_list = []
+    if "chat_history" not in st.session_state:
+        return history_list
+
+    all_messages = st.session_state["chat_history"]
+
+    # Need at least 2 entries: 1 previous + 1 current (which we exclude)
+    if len(all_messages) <= 1:
+        return history_list
+
+    previous_messages = all_messages[:-1]          # exclude current message
+
+    max_messages   = max_turns * 2                 # each turn = user + assistant
+    recent_messages = previous_messages[-max_messages:]
+
+    for entry in recent_messages:
+        try:
+            role, content = entry
+            history_list.append({"role": role, "content": str(content)})
+        except (ValueError, TypeError):
+            continue  # skip malformed entries
+
+    return history_list
+
+
+def generate_response_from_backend(message: str, history: list = None) -> str:
     url = "http://127.0.0.1:8000/chat"
+
+    payload = {"message": message, "history": history if history else []}
 
     response = requests.post(
         url,
-        json={"message": message},
+        json=payload,
         timeout=120
     )
 
@@ -480,7 +525,9 @@ def show_chat(user_id):
         pending_text = pending["text"]
 
         # response = generate_response(pending_text, st.session_state["chat_history"][-5:])
-        response = generate_response_from_backend(pending_text)
+        # Build history from previous turns (excludes current message) and send to API
+        history_for_api = build_history_for_api(max_turns=3)
+        response = generate_response_from_backend(pending_text, history=history_for_api)
         st.session_state["_ai_typing"] = {"type": pending_type, "response": response}
         st.rerun()
 

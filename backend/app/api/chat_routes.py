@@ -1,11 +1,14 @@
+# backend/app/api/chat_routes.py
+# MODIFIED: Updated /chat endpoint to pass request.history to
+# generate_chat_response() for multi-turn conversation memory.
+
 from fastapi import APIRouter
 
 from app.database.schemas import (
     PredictionRequest,
     PredictionResponse,
     ChatRequest,
-    ChatResponse
-
+    ChatResponse,
 )
 
 # from app.services.chat_service import analyze_text
@@ -34,12 +37,18 @@ def predict(request: PredictionRequest):
         depression_confidence=result["depression_confidence"]
 
     )
+
+
 @router.post(
     "/chat",
     response_model=ChatResponse,
 )
 def chat(request: ChatRequest):
-    result = generate_chat_response(request.message)
+    # Pass history (None-safe — format_history handles None/empty gracefully)
+    result = generate_chat_response(
+        question=request.message,
+        history=request.history or [],
+    )
 
     return ChatResponse(
         response=result["response"],
