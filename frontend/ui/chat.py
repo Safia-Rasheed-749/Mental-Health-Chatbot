@@ -108,7 +108,7 @@ def build_history_for_api(max_turns: int = 3) -> list:
     return history_list
 
 
-def generate_response_from_backend(message: str, history: list = None) -> str:
+def generate_response_from_backend(message: str, history: list = None) -> dict:
     url = "http://127.0.0.1:8000/chat"
 
     payload = {"message": message, "history": history if history else []}
@@ -123,7 +123,7 @@ def generate_response_from_backend(message: str, history: list = None) -> str:
 
     data = response.json()
 
-    return data["response"]
+    return data  # Return full dict (includes crisis, severity, response, etc.)
 # ---------------- CHAT ----------------
 def show_chat(user_id):
     apply_clean_layout(hide_header_completely=False)
@@ -486,7 +486,7 @@ def show_chat(user_id):
         </div>
         """, unsafe_allow_html=True)
     else:
-        for role, msg in st.session_state["chat_history"]:
+        for idx, (role, msg) in enumerate(st.session_state["chat_history"]):
             if role == "user":
                 st.markdown(f"""
                 <div class="chat-row" style="justify-content:flex-end;">
@@ -494,6 +494,27 @@ def show_chat(user_id):
                 </div>
                 """, unsafe_allow_html=True)
             else:
+                # ── PERSISTENT CRISIS BANNER ──
+                crisis_meta = st.session_state.get("_crisis_metadata", {}).get(idx)
+                if crisis_meta and crisis_meta.get("crisis"):
+                    _sev = crisis_meta.get("severity")
+                    _severity_styles = {
+                        "HIGH":   {"bg": "#dc2626", "border": "#991b1b", "label": "🚨 URGENT — Please reach out for help now"},
+                        "MEDIUM": {"bg": "#ea580c", "border": "#9a3412", "label": "⚠️ We're concerned — Please talk to someone"},
+                        "LOW":    {"bg": "#ca8a04", "border": "#854d0e", "label": "💛 Please take care — Support is available"},
+                    }
+                    _style = _severity_styles.get(_sev, _severity_styles["HIGH"])
+                    st.markdown(
+                        f'<div style="background:{_style["bg"]};color:#ffffff;'
+                        f'padding:10px 16px;border-radius:10px;margin-bottom:21px;'
+                        f'font-weight:600;font-size:13px;border-left:4px solid {_style["border"]};'
+                        f'box-shadow:0 4px 12px rgba(220,38,38,0.25);'
+                        f'display:flex;align-items:center;gap:8px;">'
+                        f'<span style="font-size:14px;">{_style["label"]}</span>'
+                        f'<span style="margin-left:auto;font-size:10px;background:rgba(255,255,255,0.25);'
+                        f'padding:3px 8px;border-radius:10px;font-weight:500;">SUPPORT</span></div>',
+                        unsafe_allow_html=True,
+                    )
                 st.markdown(f"""
                 <div class="chat-row" style="justify-content:flex-start;">
                     <div class="ai-bubble-wrap">
@@ -527,8 +548,13 @@ def show_chat(user_id):
         # response = generate_response(pending_text, st.session_state["chat_history"][-5:])
         # Build history from previous turns (excludes current message) and send to API
         history_for_api = build_history_for_api(max_turns=3)
-        response = generate_response_from_backend(pending_text, history=history_for_api)
-        st.session_state["_ai_typing"] = {"type": pending_type, "response": response}
+        response_data = generate_response_from_backend(pending_text, history=history_for_api)
+        st.session_state["_ai_typing"] = {
+            "type":     pending_type,
+            "response": response_data["response"],
+            "crisis":   response_data.get("crisis", False),
+            "severity": response_data.get("severity"),
+        }
         st.rerun()
 
     # ══════════════════════════════════════════════════════
@@ -539,8 +565,36 @@ def show_chat(user_id):
         data         = st.session_state.pop("_ai_typing")
         pending_type = data["type"]
         response     = data["response"]
+        data_crisis  = data.get("crisis", False)
+        data_severity = data.get("severity")
         safe         = _html.escape(response)
-        slot         = st.empty()
+
+        # ── CRISIS BANNER — rendered BEFORE slot so it always sits above the message ──
+        if data_crisis:
+            _severity_colors = {"HIGH": "#dc2626", "MEDIUM": "#ea580c", "LOW": "#ca8a04"}
+            _severity_borders = {"HIGH": "#991b1b", "MEDIUM": "#9a3412", "LOW": "#854d0e"}
+            _severity_labels  = {
+                "HIGH":   "🚨 URGENT — Please reach out for help now",
+                "MEDIUM": "⚠️ We're concerned — Please talk to someone",
+                "LOW":    "💛 Please take care — Support is available",
+            }
+            banner_color  = _severity_colors.get(data_severity, "#dc2626")
+            banner_border = _severity_borders.get(data_severity, "#991b1b")
+            banner_label  = _severity_labels.get(data_severity, _severity_labels["HIGH"])
+            st.markdown(
+                f'<div style="background:{banner_color};color:#ffffff;'
+                f'padding:10px 16px;border-radius:10px;margin-bottom:21px;'
+                f'font-weight:600;font-size:13px;border-left:4px solid {banner_border};'
+                f'box-shadow:0 4px 12px rgba(220,38,38,0.25);'
+                f'display:flex;align-items:center;gap:8px;">'
+                f'<span style="font-size:14px;">{banner_label}</span>'
+                f'<span style="margin-left:auto;font-size:10px;background:rgba(255,255,255,0.25);'
+                f'padding:3px 8px;border-radius:10px;font-weight:500;">SUPPORT</span></div>',
+                unsafe_allow_html=True,
+            )
+
+        # slot declared AFTER banner so typewriter text renders below the banner
+        slot = st.empty()
 
         for i in range(1, len(safe) + 1):
             slot.markdown(
@@ -566,8 +620,18 @@ def show_chat(user_id):
             unsafe_allow_html=True,
         )
 
+        message_index = len(st.session_state["chat_history"])
         st.session_state["chat_history"].append(("assistant", response))
         add_message(user_id, "assistant", response, cid)
+
+        # Persist crisis metadata keyed by message index so the history loop
+        # can re-render the banner after st.rerun() clears the typewriter slot.
+        if "_crisis_metadata" not in st.session_state:
+            st.session_state["_crisis_metadata"] = {}
+        st.session_state["_crisis_metadata"][message_index] = {
+            "crisis":   data_crisis,
+            "severity": data_severity,
+        }
 
         if pending_type == "voice":
             speak_and_auto_play(response)
@@ -616,6 +680,7 @@ def show_chat(user_id):
             cid = create_conversation(user_id)
             st.session_state["conversation_id"] = cid
             st.session_state["last_loaded_chat"] = cid
+            st.session_state["_crisis_metadata"] = {}  # reset on new conversation
 
         # ===== TEXT MESSAGE =====
         if user_input["type"] == "text":

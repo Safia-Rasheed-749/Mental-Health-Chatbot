@@ -41,6 +41,10 @@ from app.ai.rag.embeddings import get_embedding_model
 from app.ai.rag.retriever import get_retriever
 from app.ai.rag.vector_store import load_vector_store
 
+# Crisis guardrail (Part 2 integration)
+from app.services.crisis_detector import detect_crisis, log_crisis_event
+from app.services.crisis_resources import get_crisis_response
+
 # =====================================================
 # Configuration
 # =====================================================
@@ -296,6 +300,41 @@ def generate_chat_response(question: str, history: Optional[list] = None) -> dic
     """
     print(f"Generating response for: {question[:60]}...")
 
+    # ============================================
+    # CRISIS GUARDRAIL — MUST BE FIRST CHECK
+    # Bypasses all RAG/LLM calls if crisis detected
+    # ============================================
+    crisis_result = detect_crisis(question)
+    if crisis_result["is_crisis"]:
+        log_crisis_event(
+            severity=crisis_result["severity"],
+            matched_phrases=crisis_result["matched_phrases"],
+            language=crisis_result["language"],
+        )
+        crisis_response = get_crisis_response(
+            severity=crisis_result["severity"],
+            language=crisis_result["language"],
+        )
+        print(
+            f"🚨 CRISIS DETECTED — Severity: {crisis_result['severity']} | "
+            f"Language: {crisis_result['language']} | "
+            f"Bypassing LLM, returning helpline template"
+        )
+        return {
+            "response":              crisis_response,
+            "crisis":                True,
+            "severity":              crisis_result["severity"],
+            "emotion":               None,
+            "emotion_confidence":    0.0,
+            "stress":                None,
+            "stress_confidence":     0.0,
+            "depression":            None,
+            "depression_confidence": 0.0,
+        }
+    # ============================================
+    # NORMAL FLOW (existing code continues below)
+    # ============================================
+
     # --------------------------------------------------
     # Step 1: Detect language (Python-side — reliable)
     # --------------------------------------------------
@@ -329,6 +368,8 @@ def generate_chat_response(question: str, history: Optional[list] = None) -> dic
         }
         return {
             "response":              fallback.get(language, fallback["english"]),
+            "crisis":                False,
+            "severity":              None,
             "emotion":               emotion_result["emotion"],
             "emotion_confidence":    emotion_result["confidence"],
             "stress":                stress_result["stress"],
@@ -375,6 +416,8 @@ def generate_chat_response(question: str, history: Optional[list] = None) -> dic
     # --------------------------------------------------
     return {
         "response":              response_text,
+        "crisis":                False,
+        "severity":              None,
         "emotion":               emotion_result["emotion"],
         "emotion_confidence":    emotion_result["confidence"],
         "stress":                stress_result["stress"],

@@ -1,6 +1,7 @@
 # backend/app/api/chat_routes.py
 # MODIFIED: Updated /chat endpoint to pass request.history to
 # generate_chat_response() for multi-turn conversation memory.
+# MODIFIED (Part 2): Added crisis/severity fields to /chat response.
 
 from fastapi import APIRouter
 
@@ -39,10 +40,7 @@ def predict(request: PredictionRequest):
     )
 
 
-@router.post(
-    "/chat",
-    response_model=ChatResponse,
-)
+@router.post("/chat")
 def chat(request: ChatRequest):
     # Pass history (None-safe — format_history handles None/empty gracefully)
     result = generate_chat_response(
@@ -50,15 +48,29 @@ def chat(request: ChatRequest):
         history=request.history or [],
     )
 
-    return ChatResponse(
-        response=result["response"],
+    if result.get("crisis"):
+        # Crisis path: LLM was bypassed; no emotion/stress/depression scores
+        return {
+            "response":              result["response"],
+            "crisis":                True,
+            "severity":              result["severity"],
+            "emotion":               None,
+            "emotion_confidence":    0.0,
+            "stress":                None,
+            "stress_confidence":     0.0,
+            "depression":            None,
+            "depression_confidence": 0.0,
+        }
 
-        emotion=result["emotion"],
-        emotion_confidence=result["emotion_confidence"],
-
-        stress=result["stress"],
-        stress_confidence=result["stress_confidence"],
-
-        depression=result["depression"],
-        depression_confidence=result["depression_confidence"],
-    )
+    # Normal path: full enriched result
+    return {
+        "response":              result["response"],
+        "crisis":                False,
+        "severity":              None,
+        "emotion":               result["emotion"],
+        "emotion_confidence":    result["emotion_confidence"],
+        "stress":                result["stress"],
+        "stress_confidence":     result["stress_confidence"],
+        "depression":            result["depression"],
+        "depression_confidence": result["depression_confidence"],
+    }
