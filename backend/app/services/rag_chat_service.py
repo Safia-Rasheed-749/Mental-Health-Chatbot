@@ -44,6 +44,7 @@ from app.ai.rag.vector_store import load_vector_store
 # Crisis guardrail (Part 2 integration)
 from app.services.crisis_detector import detect_crisis, log_crisis_event
 from app.services.crisis_resources import get_crisis_response
+from app.services.privacy import redact_sensitive_data
 
 # =====================================================
 # Configuration
@@ -334,6 +335,10 @@ def generate_chat_response(question: str, history: Optional[list] = None) -> dic
     # ============================================
     # NORMAL FLOW (existing code continues below)
     # ============================================
+
+    # Crisis detection intentionally used the original message above. All
+    # normal model and retrieval work uses the privacy-redacted version.
+    question = redact_sensitive_data(question)
 
     # --------------------------------------------------
     # Step 1: Detect language (Python-side — reliable)

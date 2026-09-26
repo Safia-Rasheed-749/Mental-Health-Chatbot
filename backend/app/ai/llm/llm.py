@@ -10,6 +10,8 @@ configured ChatOllama instance.
 =========================================================
 """
 
+import os
+
 from langchain_ollama import ChatOllama
 
 
@@ -17,10 +19,10 @@ from langchain_ollama import ChatOllama
 # Defaults
 # -------------------------------------------------------
 
-DEFAULT_MODEL_NAME  = "llama3.2:3b"
+DEFAULT_MODEL_NAME  = os.getenv("OLLAMA_MODEL", "llama3.2:1b")
 DEFAULT_TEMPERATURE = 0.2   # lower = more consistent wording
-DEFAULT_NUM_PREDICT = 300   # raised — responses are now 4-6 sentences (60-120 words)
-DEFAULT_NUM_CTX     = 1800  # fits few-shot prompt + RAG context + response
+DEFAULT_NUM_PREDICT = 160   # bounded for responsive local CPU inference
+DEFAULT_NUM_CTX     = 1200  # sufficient for the compact prompt and history
 
 
 # =======================================================

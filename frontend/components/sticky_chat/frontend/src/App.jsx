@@ -11,7 +11,7 @@ function App() {
   const chunksRef = useRef([]);
 
   useEffect(() => {
-    Streamlit.setFrameHeight(80);
+    Streamlit.setFrameHeight(82);
   }, []);
 
   // SEND TEXT
@@ -97,7 +97,8 @@ function App() {
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyPress={handleKeyPress}
-        placeholder="Share what's on your mind..."
+        placeholder="Share what is on your mind..."
+        aria-label="Message MindCare AI"
       />
       
       <button
@@ -105,7 +106,11 @@ function App() {
         onClick={isRecording ? stopRecording : startRecording}
         title={isRecording ? "Stop Recording" : "Start Recording"}
       >
-        {isRecording ? "⏹️" : "🎤"}
+        {isRecording ? (
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="8" height="8" rx="1.5" /></svg>
+        ) : (
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14.5a3.5 3.5 0 0 0 3.5-3.5V7a3.5 3.5 0 0 0-7 0v4a3.5 3.5 0 0 0 3.5 3.5Z" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6" /></svg>
+        )}
       </button>
       
       <button
@@ -113,7 +118,7 @@ function App() {
         onClick={sendText}
         title="Send Message"
       >
-        ➤
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 3-7.4 18-3.8-7.8L2 9.4 21 3Z" /><path d="M10 13 21 3" /></svg>
       </button>
     </div>
   );

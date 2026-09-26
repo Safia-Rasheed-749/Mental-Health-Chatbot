@@ -36,7 +36,7 @@ def render_navbar():
     #9B45E4 50%,   /* Vibrant Purple */
     #BD39D1 75%,   /* Magenta shade */
     #D33A86 100%   /* Deep Pink */
-); !important;
+            ) !important;
             
             border-bottom: 1px solid rgba(167, 139, 250, 0.3) !important;
             box-shadow: 0 4px 12px rgba(167, 139, 250, 0.25) !important;
@@ -113,6 +113,28 @@ def render_navbar():
             
             /* 🎨 BUTTON GAP - CHANGE HERE */
             gap: 12px !important;
+        }
+
+        @media (max-width: 900px) {
+            div[data-testid="stHorizontalBlock"]:has(.navbar-container) {
+                padding: 10px 16px !important;
+            }
+            .navbar-tagline { display: none !important; }
+            .navbar-logo-text { font-size: 18px !important; }
+            div[data-testid="stHorizontalBlock"]:has(.navbar-container) .stButton > button {
+                min-width: 0 !important;
+                padding: 8px 9px !important;
+                font-size: 12px !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            div[data-testid="stHorizontalBlock"]:has(.navbar-container) {
+                overflow-x: auto !important;
+            }
+            div[data-testid="stHorizontalBlock"]:has(.navbar-container) > div:last-child {
+                gap: 4px !important;
+            }
         }
         
         

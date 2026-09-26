@@ -44,3 +44,34 @@ class ChatResponse(BaseModel):
 
     depression: str
     depression_confidence: float
+
+
+class RegisterRequest(BaseModel):
+    username: str
+    email: str
+    password: str
+
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+class ResetRequest(BaseModel):
+    email: str
+    code: str
+    new_password: str
+
+
+class MoodCreate(BaseModel):
+    mood: str
+
+
+class JournalCreate(BaseModel):
+    entry: str
+
+
+class ActivityCreate(BaseModel):
+    action_type: str
+    page_name: str
+    details: str = ""

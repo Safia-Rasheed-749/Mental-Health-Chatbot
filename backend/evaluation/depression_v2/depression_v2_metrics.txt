@@ -10,7 +10,7 @@ Task: Binary Classification (Depression vs No Depression)
 Number of Classes: 2
 Classes: 0 = No Depression, 1 = Depression
 Device: cpu
-Evaluation Time: 579.49 seconds
+Evaluation Time: 255.55 seconds
 
 DATASET INFORMATION
 ----------------------------------------
@@ -73,33 +73,33 @@ SAMPLE PREDICTIONS
 ----------------------------------------
 Correct Predictions:
   Text: work today...
-  Actual: nan | Predicted: nan (Confidence: 100.00%)
+  Actual: No Depression | Predicted: No Depression (Confidence: 100.00%)
 
   Text: i m so damn tired today actually i need to take a nap when i m at home but there...
-  Actual: nan | Predicted: nan (Confidence: 100.00%)
+  Actual: No Depression | Predicted: No Depression (Confidence: 100.00%)
 
   Text: i m   about to spend most of my life try to meet s end got out of high school an...
-  Actual: nan | Predicted: nan (Confidence: 100.00%)
+  Actual: Depression | Predicted: Depression (Confidence: 100.00%)
 
   Text: fuck toxic positivity you have every right to feel angry pissed depressed frustr...
-  Actual: nan | Predicted: nan (Confidence: 100.00%)
+  Actual: Depression | Predicted: Depression (Confidence: 100.00%)
 
   Text: so i m have had depression since i wa snd i suffered from anxiety since   my anx...
-  Actual: nan | Predicted: nan (Confidence: 100.00%)
+  Actual: Depression | Predicted: Depression (Confidence: 100.00%)
 
 Wrong Predictions:
   Text: it s all rainy and cloudy and stuff today for me but even if it wasn t i d still...
-  Actual: nan | Predicted: nan (Confidence: 100.00%)
+  Actual: Depression | Predicted: No Depression (Confidence: 100.00%)
 
   Text: my last post goodbye...
-  Actual: nan | Predicted: nan (Confidence: 99.98%)
+  Actual: Depression | Predicted: No Depression (Confidence: 99.98%)
 
   Text: the last season of the hill what will one do with oneself when it end...
-  Actual: nan | Predicted: nan (Confidence: 62.63%)
+  Actual: No Depression | Predicted: Depression (Confidence: 62.63%)
 
   Text: let s not leave anyone alone...
-  Actual: nan | Predicted: nan (Confidence: 99.55%)
+  Actual: Depression | Predicted: No Depression (Confidence: 99.55%)
 
   Text: i think to much on the past i cant change it i deserved so much more then wat i ...
-  Actual: nan | Predicted: nan (Confidence: 99.99%)
+  Actual: No Depression | Predicted: Depression (Confidence: 99.99%)
 

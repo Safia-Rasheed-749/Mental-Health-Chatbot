@@ -1,6 +1,7 @@
 import streamlit as st
 import re
-from db import add_user, check_login, get_user_by_email, create_reset_token, reset_password_with_code
+from db import add_user, check_login, get_user_by_email, create_reset_token_for_email, reset_password_with_code
+from api_client import BackendUnavailableError
 from ui.email_utils import send_reset_email
 
 def show_auth_page():
@@ -186,7 +187,7 @@ def show_auth_page():
     }
     
     input {
-        color: #FF0000 !important;  /* CHANGE THIS: Input text color */
+        color: #0f172a !important;  /* Accessible input text color */
         font-size: 0.95rem !important;
         font-weight: 500 !important;
         border: none !important;
@@ -387,19 +388,28 @@ def show_auth_page():
 
             # Main Full-width Login Button
             if st.button("Sign In", key="signin_btn", type="primary", use_container_width=True):
-                user = check_login(email, password)
-                if user:
-                    st.session_state.user = user
-                    is_admin = len(user) > 3 and user[3]
-                    if is_admin:
-                        st.session_state.current_page = "Admin Panel"
-                        st.session_state.page = "admin_panel"
-                    else:
-                        st.session_state.current_page = "Dashboard"
-                        st.session_state.page = "dashboard"
-                    st.rerun()
+                try:
+                    user = check_login(email, password)
+                except BackendUnavailableError as exc:
+                    st.error(str(exc))
+                    st.info(
+                        "From the project folder, run: "
+                        "python -m uvicorn app.main:app --app-dir backend "
+                        "--host 127.0.0.1 --port 8000"
+                    )
                 else:
-                    st.error("Invalid email or password.")
+                    if user:
+                        st.session_state.user = user
+                        is_admin = len(user) > 3 and user[3]
+                        if is_admin:
+                            st.session_state.current_page = "Admin Panel"
+                            st.session_state.page = "admin_panel"
+                        else:
+                            st.session_state.current_page = "Dashboard"
+                            st.session_state.page = "dashboard"
+                        st.rerun()
+                    else:
+                        st.error("Invalid email or password.")
 
             # Divider
             st.markdown("""
@@ -595,7 +605,7 @@ def show_auth_page():
                     if reset_email_input:
                         user = get_user_by_email(reset_email_input)
                         if user:
-                            token_data = create_reset_token(user['id'])
+                            token_data = create_reset_token_for_email(reset_email_input)
                             success, message = send_reset_email(reset_email_input, token_data['reset_code'], user['username'])
                             if success:
                                 st.success("✅ Code sent to your email.")

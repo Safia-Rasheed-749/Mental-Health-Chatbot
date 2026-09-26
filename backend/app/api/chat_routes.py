@@ -12,8 +12,7 @@ from app.database.schemas import (
     ChatResponse,
 )
 
-# from app.services.chat_service import analyze_text
-from app.services.rag_chat_service import generate_chat_response
+from app.services.privacy import redact_sensitive_data
 
 router = APIRouter()
 
@@ -42,6 +41,12 @@ def predict(request: PredictionRequest):
 
 @router.post("/chat")
 def chat(request: ChatRequest):
+    # Load the AI/RAG stack only when chat is requested.  Those modules load
+    # large local models during import; importing them at API startup prevents
+    # unrelated endpoints such as authentication from starting when model
+    # assets are not installed yet.
+    from app.services.rag_chat_service import generate_chat_response
+
     # Pass history (None-safe — format_history handles None/empty gracefully)
     result = generate_chat_response(
         question=request.message,

@@ -1,29 +1,24 @@
 import streamlit as st
 from db import get_conversations, get_messages_by_conversation, rename_conversation, delete_conversation
 
+
+def _sync_sidebar_navigation(menu_map):
+    selected_label = st.session_state.get("nav")
+    selected_page = menu_map.get(selected_label)
+    if selected_page:
+        st.session_state["current_page"] = selected_page
+        st.session_state["_nav_synced_page"] = selected_page
+        st.query_params["page"] = selected_page
+
+
 def short_title(text, max_len=18):
-    """Convert first user message into a short generic session title."""
-    text_lower = text.lower().strip()
-    mood_keywords = {
-        "sad": "Sadness", "depress": "Depression", "stress": "Stress",
-        "anxious": "Anxiety", "anxiety": "Anxiety", "panic": "Panic",
-        "happy": "Happiness", "angry": "Anger", "fear": "Fear",
-        "lonely": "Loneliness", "tired": "Fatigue", "overthink": "Overthinking",
-        "motivation": "Motivation", "relationship": "Relationship",
-        "study": "Studies", "exam": "Exams", "sleep": "Sleep Issues",
-        "work": "Work Stress", "family": "Family Issues"
-    }
-    for keyword, title in mood_keywords.items():
-        if keyword in text_lower:
-            return title
-    words = text.strip().split()
-    if len(words) >= 2:
-        fallback = " ".join(words[:2])
-    elif len(words) == 1:
-        fallback = words[0]
-    else:
-        fallback = "New Chat"
-    return fallback if len(fallback) <= max_len else fallback[:max_len] + "..."
+    """Create a useful, non-repeating title from the first user message."""
+    words = " ".join(str(text or "").strip().split()).split()
+    if not words:
+        return "New conversation"
+    title = " ".join(words[:4]).strip(" .,!?;:")
+    title = title[:1].upper() + title[1:]
+    return title if len(title) <= max_len else title[: max_len - 1].rstrip() + "…"
 
 
 def show_sidebar(user_id=None, current_page="Dashboard"):
@@ -65,8 +60,8 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 2px 0 10px 0;
-        margin-bottom: 4px;
+        padding: 0 0 5px 0;
+        margin: 0 0 4px;
     }
     .sidebar-avatar {
            width: 40px;
@@ -134,26 +129,50 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         opacity: 1 !important;
     }
      
-    /* ── NAVIGATION RADIO ── */
-    section[data-testid="stSidebar"] div[role="radiogroup"] {
-        gap: 1px !important;
+    /* ── EVEN, CHAT-STYLE RADIO NAVIGATION ── */
+    section[data-testid="stSidebar"] [data-testid="stRadio"] > div[role="radiogroup"] {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 7px !important;
     }
-    section[data-testid="stSidebar"] div[role="radiogroup"] label {
-        padding: 5px 8px !important;
-        border-radius: 8px !important;
-        transition: background 0.15s !important;
-        cursor: pointer !important;
-    }
-    section[data-testid="stSidebar"] div[role="radiogroup"] label:hover {
-        background: rgba(99,102,241,0.1) !important;
-    }
-    
-    /* text color in sidebar changes*/
-    section[data-testid="stSidebar"] div[role="radiogroup"] label p {
-        color: black !important;
-        font-size: 16.5px !important;
-        font-weight: 500 !important;
+    section[data-testid="stSidebar"] [data-testid="stRadio"] label {
+        box-sizing: border-box !important;
+        display: flex !important;
+        align-items: center !important;
+        width: 100% !important;
+        min-height: 42px !important;
         margin: 0 !important;
+        padding: 8px 10px !important;
+        border: 1px solid transparent !important;
+        border-radius: 10px !important;
+        background: transparent !important;
+        cursor: pointer !important;
+        transition: background .16s ease, border-color .16s ease !important;
+    }
+    section[data-testid="stSidebar"] [data-testid="stRadio"] label:hover {
+        background: #e0f2fe !important;
+        border-color: #bae6fd !important;
+    }
+    section[data-testid="stSidebar"] [data-testid="stRadio"] label p,
+    section[data-testid="stSidebar"] [data-testid="stRadio"] label span {
+        color: #334155 !important;
+        -webkit-text-fill-color: #334155 !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        line-height: 1.35 !important;
+        margin: 0 !important;
+    }
+    section[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked) {
+        background: #e0f2fe !important;
+        border-color: #7dd3fc !important;
+    }
+    section[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked) p,
+    section[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked) span {
+        color: #0369a1 !important;
+        -webkit-text-fill-color: #0369a1 !important;
+    }
+    section[data-testid="stSidebar"] [data-testid="stRadio"] input[type="radio"] {
+        accent-color: #0284c7 !important;
     }
 
     /* ── ALL SIDEBAR BUTTONS ── */
@@ -214,7 +233,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         border-radius: 10px !important;
         text-align: center !important;
         margin-top: 20px !important;
-        margin-right: 14px ! important;
+        margin-right: 14px !important;
         box-shadow: 0 3px 12px rgba(239,68,68,0.25) !important;
         transition: all 0.2s ease !important;
     }
@@ -290,10 +309,36 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
       color: #4f46e5 !important;
       font-weight: 700 !important;
 }
-    }
     .session-active .session-title-btn .stButton button {
         color: #4f46e5 !important;
         font-weight: 500 !important;
+    }
+    section[data-testid="stSidebar"] div[class*="st-key-sess_"] button {
+        width: 100% !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+        border-radius: 9px !important;
+        padding: 7px 9px !important;
+        color: #475569 !important;
+        text-align: left !important;
+        transition: background .16s ease, color .16s ease !important;
+    }
+    section[data-testid="stSidebar"] div[class*="st-key-sess_"] button p {
+        display: block !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        color: inherit !important;
+    }
+    section[data-testid="stSidebar"] div[class*="st-key-sess_"] button:hover {
+        background: rgba(255,255,255,.78) !important;
+        color: #4338a8 !important;
+    }
+    section[data-testid="stSidebar"] div[class*="st-key-sess_"] button[kind="primary"] {
+        background: #e8e5ff !important;
+        border: 1px solid #d6d0ff !important;
+        color: #4f46a5 !important;
+        font-weight: 700 !important;
     }
     .session-menu-btn .stButton button {
         color: rgba(99,102,241,0.5) !important;
@@ -313,14 +358,16 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
     # ── PAGE MAP ──
     menu_map = {
-        "🏠 Dashboard":      "Dashboard",
-        "💬 Chat":           "Chat",
-        "😊 Mood Analytics": "Mood Analytics",
-        "📓 Journal":        "Journal",
-        "🎮 Games":          "Games",
+        "⌂  Dashboard":      "Dashboard",
+        "◌  Chat":           "Chat",
+        "◉  Mood Analytics": "Mood Analytics",
+        "▤  Journal":        "Journal",
+        "◇  Games":          "Games",
+        "✦  Exercises":      "Exercises",
+        "◷  History":        "History",
     }
     reverse_map = {v: k for k, v in menu_map.items()}
-    current_label = reverse_map.get(current_page, "🏠 Dashboard")
+    current_label = reverse_map.get(current_page, "⌂  Dashboard")
 
     with st.sidebar:
 
@@ -336,16 +383,24 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         """, unsafe_allow_html=True)
 
         st.markdown("---")
-        st.markdown('<div class="sb-section-label">Navigation</div>', unsafe_allow_html=True)
-
-        menu = list(menu_map.keys())
-        choice = st.radio("", menu, index=menu.index(current_label), key="nav")
+        page_labels = list(menu_map.keys())
+        if st.session_state.get("_nav_synced_page") != current_page:
+            st.session_state["nav"] = current_label
+            st.session_state["_nav_synced_page"] = current_page
+        choice = st.radio(
+            "",
+            page_labels,
+            index=page_labels.index(current_label),
+            key="nav",
+            label_visibility="collapsed",
+            on_change=_sync_sidebar_navigation,
+            args=(menu_map,),
+        )
         new_page = menu_map[choice]
 
-        if st.session_state.get("current_page") != new_page:
+        if new_page != current_page:
             st.session_state["current_page"] = new_page
-            
-            # Reset game state when navigating TO Games from sidebar
+            st.query_params["page"] = new_page
             if new_page == "Games":
                 st.session_state["game_screen"] = "home"
                 st.session_state["game_active"] = False
@@ -356,12 +411,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
                 st.session_state["is_playing_seq"] = False
                 st.session_state["waiting"] = False
                 st.session_state["game_message"] = ""
-                st.session_state["_games_nav_trigger"] = None
-            
-            # Clear game nav trigger when leaving Games
-            if new_page != "Games":
-                st.session_state["_games_nav_trigger"] = None
-            
+            st.session_state["_games_nav_trigger"] = None
             for k in list(st.session_state.keys()):
                 if k.startswith("rename_") or k.startswith("menu_open_"):
                     del st.session_state[k]
@@ -422,7 +472,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
             <style>
             /* New Chat Button - Simple, left-aligned, narrower */
             section[data-testid="stSidebar"] button[key="new_chat_btn"] {
-                background: Blue !important;
+                background: rgba(99,102,241,0.10) !important;
                 border: 1px solid rgba(99,102,241,0.3) !important;
                 border-radius: 8px !important;
                 color: #4f46e5 !important;
@@ -516,7 +566,12 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
                         col_title, col_menu = st.columns([5, 1])
                         with col_title:
                             st.markdown('<div class="session-title-btn">', unsafe_allow_html=True)
-                            if st.button(f"💬 {display_title}", key=f"sess_{convo_id}"):
+                            if st.button(
+                                f"◦  {display_title}",
+                                key=f"sess_{convo_id}",
+                                type="primary" if is_active else "secondary",
+                                use_container_width=True,
+                            ):
                                 st.session_state["conversation_id"] = convo_id
                                 st.session_state["chat_history"] = msgs
                                 st.session_state["last_loaded_chat"] = convo_id

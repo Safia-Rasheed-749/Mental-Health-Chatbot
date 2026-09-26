@@ -3,6 +3,19 @@ import streamlit.components.v1 as components
 from datetime import datetime, timedelta
 from db import get_messages_by_user, get_moods_by_user, get_journals_by_user
 
+
+def _as_datetime(value):
+    """Normalize PostgreSQL datetime objects and REST ISO strings."""
+    if isinstance(value, datetime):
+        return value
+    if isinstance(value, str):
+        try:
+            return datetime.fromisoformat(value.replace("Z", "+00:00")).replace(tzinfo=None)
+        except ValueError:
+            return None
+    return None
+
+
 def show_dashboard():
     # Ensure top of dashboard is visible after sign-in (scroll containers differ from public pages)
     components.html(
@@ -161,7 +174,10 @@ def show_dashboard():
     all_messages = get_messages_by_user(user_id)
     today_dt     = datetime.now()
     yesterday    = today_dt - timedelta(days=1)
-    chats_today  = sum(1 for m in all_messages if len(m) > 2 and m[2] and m[2] > yesterday)
+    chats_today  = sum(
+        1 for m in all_messages
+        if len(m) > 2 and _as_datetime(m[2]) and _as_datetime(m[2]) > yesterday
+    )
     total_chats  = len([m for m in all_messages if m[0] == "user"])
 
     moods = get_moods_by_user(user_id)

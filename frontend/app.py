@@ -156,7 +156,7 @@ from ui.auth import show_auth_page
 from ui.sidebar import show_sidebar
 from ui.demo_chat import show_demo_chat
 from ui_pages.about import show_about_page
-from ui import dashboard, chat, mood, journal
+from ui import dashboard, chat, mood, journal, history
 from ui_pages.admin import show_admin_panel
 from ui.games import show_aesthetic_game_selector
 
@@ -292,6 +292,12 @@ elif current == "Mood Analytics":
 
 elif current == "Journal":
     journal.show_journal(user_id)
+
+elif current == "Exercises":
+    show_exercises_page()
+
+elif current == "History":
+    history.show_history(user_id)
 
 elif current == "Games":
     st.session_state["games_from_sidebar"] = True
