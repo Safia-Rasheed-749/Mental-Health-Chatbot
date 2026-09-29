@@ -358,13 +358,13 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
     # ── PAGE MAP ──
     menu_map = {
-        "⌂  Dashboard":      "Dashboard",
-        "◌  Chat":           "Chat",
-        "◉  Mood Analytics": "Mood Analytics",
-        "▤  Journal":        "Journal",
-        "◇  Games":          "Games",
-        "✦  Exercises":      "Exercises",
-        "◷  History":        "History",
+        "  Dashboard":      "Dashboard",
+        "  Chat":           "Chat",
+        "  Mood Analytics": "Mood Analytics",
+        "  Journal":        "Journal",
+        "  Games":          "Games",
+        "  Exercises":      "Exercises",
+        "  History":        "History",
     }
     reverse_map = {v: k for k, v in menu_map.items()}
     current_label = reverse_map.get(current_page, "⌂  Dashboard")
