@@ -2,6 +2,49 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
+
+def render_global_footer():
+    st.markdown("""
+        <style>
+        .main .block-container {
+            padding-bottom: 0rem !important;
+            margin-bottom: 0rem !important;
+        }
+        .universal-footer-container {
+            width: 100vw !important;
+            position: relative !important;
+            left: 50% !important;
+            right: 50% !important;
+            margin-left: -50vw !important;
+            margin-right: -50vw !important;
+            margin-bottom: -6rem !important;
+            margin-top: 50px !important;
+            background-color: #1E293B !important;
+            color: #F8FAFC !important;
+            padding: 40px 0px 20px 0px !important;
+            border-radius: 0px !important;
+            box-sizing: border-box !important;
+        }
+        .footer-content-inner {
+            max-width: 1200px; margin: 0 auto; padding: 0 30px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;
+        }
+        .footer-sec-head { color: #FFFFFF !important; font-size: 1.05rem !important; font-weight: 700 !important; margin-bottom: 12px !important; }
+        .footer-sec-text { color: #94A3B8 !important; font-size: 0.88rem !important; line-height: 1.7 !important; margin: 4px 0 !important; }
+        .footer-copyright { max-width: 1200px; margin: 30px auto 0; padding: 18px 30px 0; border-top: 1px solid #334155; text-align: center; color: #64748B; font-size: 0.82rem; }
+        </style>
+        <div class="universal-footer-container">
+          <div class="footer-content-inner">
+            <div><div class="footer-sec-head">About AI Assistant</div><div class="footer-sec-text">AI-powered emotional support</div><div class="footer-sec-text">24/7 mental wellness companion</div><div class="footer-sec-text">Evidence-based techniques</div><div class="footer-sec-text">Anonymous &amp; secure</div></div>
+            <div><div class="footer-sec-head">Resources</div><div class="footer-sec-text">Mental Wellness Guide</div><div class="footer-sec-text">Coping Strategies</div><div class="footer-sec-text">Research &amp; Articles</div></div>
+            <div><div class="footer-sec-head">Support</div><div class="footer-sec-text">Privacy Policy</div><div class="footer-sec-text">About</div></div>
+            <div><div class="footer-sec-head">Contact</div><div class="footer-sec-text">AI Assistant for Mental Health</div><div class="footer-sec-text">Email: support@aiassistant.com</div></div>
+          </div>
+          <div class="footer-copyright">© 2026 MindCareAI — Your well-being matters</div>
+        </div>
+    """, unsafe_allow_html=True)
+
+
 def show_landing_page():
     # ================= PROFESSIONAL CSS WITH ANIMATIONS & GRADIENTS =================
     st.markdown("""
@@ -1125,39 +1168,8 @@ render();
     with imp_col4:
         st.markdown('<div class="impact-card-custom"><div class="stat-number-custom">Real-time</div><div class="stat-label-custom">Detection</div></div>', unsafe_allow_html=True)
     
-    # ================= FULL FOOTER =================
-    st.markdown("""
-    <div class="footer-container">
-        <div class="footer-grid">
-            <div class="footer-col">
-                <div class="footer-title">About AI Assistant</div>
-                <div class="footer-text">AI-powered emotional support</div>
-                <div class="footer-text">24/7 mental wellness companion</div>
-                <div class="footer-text">Evidence-based techniques</div>
-                <div class="footer-text">Anonymous & secure</div>
-            </div>
-            <div class="footer-col">
-                <div class="footer-title">Resources</div>
-                <div class="footer-text">Mental Wellness Guide</div>
-                <div class="footer-text">Coping Strategies</div>
-                <div class="footer-text">Research & Articles</div>
-            </div>
-            <div class="footer-col">
-                <div class="footer-title">Support</div>
-                <div class="footer-text">Privacy Policy</div>
-                <div class="footer-text">About</div>
-            </div>
-            <div class="footer-col">
-                <div class="footer-title">Contact</div>
-                <div class="footer-text">AI Assistant for Mental Health</div>
-                <div class="footer-text">Email: support@aiassistant.com</div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            © 2026 MindCareAI — Your well-being matters
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # ================= FULL-WIDTH SHARED FOOTER =================
+    render_global_footer()
 
 if __name__ == "__main__":
     if 'page' not in st.session_state:

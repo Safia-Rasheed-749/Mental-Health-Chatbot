@@ -19,11 +19,34 @@ st.markdown("""
         padding: 0 !important;
     }
 
-    /* Header: fully transparent, stays in normal flow so collapsedControl stays positioned correctly */
+    /* Keep Streamlit's native header controls above page content when enabled. */
     header[data-testid="stHeader"] {
-        background: transparent !important;
-        box-shadow: none !important;
-        border-bottom: none !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        z-index: 999999 !important;
+        background: linear-gradient(90deg, #6366F1 0%, #A855F7 100%) !important;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    /* The visible app navbar is a custom Streamlit row, not the native header.
+       Match it globally and reserve space beneath it on every navbar page. */
+    div[data-testid="stHorizontalBlock"]:has(.navbar-container) {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        z-index: 999999 !important;
+        background: linear-gradient(90deg, #6366F1 0%, #A855F7 100%) !important;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .main:has(.navbar-container) .block-container {
+        padding-top: 5rem !important;
+        z-index: 1 !important;
     }
 
     /* Sidebar collapse/expand arrow — always fully visible */
@@ -38,52 +61,56 @@ st.markdown("""
     #MainMenu { visibility: hidden !important; }
     footer { visibility: hidden !important; }
 
-    /* Block container: no top padding since header is out of flow */
-    .main .block-container {
-        padding-top: 0 !important;
-    }
-
     button[kind="header"] {
         display: flex !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# ================= SCROLL FIX (parent frame + debounce — Streamlit runs in iframe) =================
+# ================= NAVIGATION SCROLL RESET (parent document) =================
 components.html(
     """
     <script>
-        (function () {
-            var t = null;
-            function scrollToTop() {
-                try {
-                    var p = window.parent && window.parent !== window ? window.parent : window;
-                    var d = p.document;
-                    p.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-                    if (d.documentElement) d.documentElement.scrollTop = 0;
-                    if (d.body) d.body.scrollTop = 0;
-                    var view = d.querySelector('[data-testid="stAppViewContainer"]');
-                    if (view) view.scrollTop = 0;
-                    var main = d.querySelector('section.main');
-                    if (main) main.scrollTop = 0;
-                    var inner = d.querySelector('.main .block-container');
-                    if (inner && inner.parentElement) inner.parentElement.scrollTop = 0;
-                } catch (e) {
-                    try { window.scrollTo({ top: 0, left: 0, behavior: 'auto' }); } catch (e2) {}
+        (function installNavigationScrollReset() {
+            try {
+                var parentWindow = window.parent && window.parent !== window ? window.parent : window;
+                var doc = parentWindow.document;
+                if (parentWindow.__mindcareNavigationScrollReset) return;
+                parentWindow.__mindcareNavigationScrollReset = true;
+
+                function scrollToTop() {
+                    parentWindow.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                    if (doc.documentElement) doc.documentElement.scrollTop = 0;
+                    if (doc.body) doc.body.scrollTop = 0;
+                    [
+                        doc.querySelector('[data-testid="stAppViewContainer"]'),
+                        doc.querySelector('section.main'),
+                        doc.querySelector('.main'),
+                        doc.querySelector('.main .block-container')?.parentElement
+                    ].forEach(function (container) {
+                        if (container) container.scrollTop = 0;
+                    });
                 }
+
+                var navLabels = ['home', 'about', 'exercises', 'games', 'get started'];
+                doc.addEventListener('click', function (event) {
+                    var button = event.target && event.target.closest
+                        ? event.target.closest('button') : null;
+                    if (!button) return;
+                    var label = (button.innerText || button.getAttribute('aria-label') || '')
+                        .replace(/\s+/g, ' ').trim().toLowerCase();
+                    var inNavbar = !!button.closest('div[data-testid="stHorizontalBlock"]:has(.navbar-container)');
+                    if (!inNavbar && navLabels.indexOf(label) === -1) return;
+
+                    scrollToTop();
+                    parentWindow.setTimeout(scrollToTop, 80);
+                    parentWindow.setTimeout(scrollToTop, 240);
+                }, true);
+
+                parentWindow.addEventListener('popstate', scrollToTop);
+            } catch (error) {
+                try { window.scrollTo({ top: 0, left: 0, behavior: 'auto' }); } catch (ignored) {}
             }
-            function debounced() {
-                if (t) clearTimeout(t);
-                t = setTimeout(scrollToTop, 80);
-            }
-            scrollToTop();
-            if (window.parent && window.parent !== window) {
-                try {
-                    var obs = new MutationObserver(debounced);
-                    obs.observe(window.parent.document.body, { childList: true, subtree: true });
-                } catch (e) {}
-            }
-            window.addEventListener('popstate', scrollToTop);
         })();
     </script>
     """,

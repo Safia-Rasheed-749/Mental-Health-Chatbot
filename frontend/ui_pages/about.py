@@ -1,779 +1,187 @@
-# about.py
 import streamlit as st
 from layout_utils import apply_clean_layout
 
+
+def render_global_footer():
+    st.markdown("""
+        <style>
+        .main .block-container {
+            padding-bottom: 0rem !important;
+            margin-bottom: 0rem !important;
+        }
+        .universal-footer-container {
+            width: 100vw !important;
+            position: relative !important;
+            left: 50% !important;
+            right: 50% !important;
+            margin-left: -50vw !important;
+            margin-right: -50vw !important;
+            margin-bottom: -6rem !important;
+            margin-top: 50px !important;
+            background-color: #1E293B !important;
+            color: #F8FAFC !important;
+            padding: 40px 0px 20px 0px !important;
+            border-radius: 0px !important;
+            box-sizing: border-box !important;
+        }
+        .footer-content-inner {
+            max-width: 1200px; margin: 0 auto; padding: 0 30px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;
+        }
+        .footer-sec-head { color: #FFFFFF !important; font-size: 1.05rem !important; font-weight: 700 !important; margin-bottom: 12px !important; }
+        .footer-sec-text { color: #94A3B8 !important; font-size: 0.88rem !important; line-height: 1.7 !important; margin: 4px 0 !important; }
+        .footer-copyright { max-width: 1200px; margin: 30px auto 0; padding: 18px 30px 0; border-top: 1px solid #334155; text-align: center; color: #64748B; font-size: 0.82rem; }
+        </style>
+        <div class="universal-footer-container">
+          <div class="footer-content-inner">
+            <div><div class="footer-sec-head">About AI Assistant</div><div class="footer-sec-text">AI-powered emotional support</div><div class="footer-sec-text">24/7 mental wellness companion</div><div class="footer-sec-text">Evidence-based techniques</div><div class="footer-sec-text">Anonymous &amp; secure</div></div>
+            <div><div class="footer-sec-head">Resources</div><div class="footer-sec-text">Mental Wellness Guide</div><div class="footer-sec-text">Coping Strategies</div><div class="footer-sec-text">Research &amp; Articles</div></div>
+            <div><div class="footer-sec-head">Support</div><div class="footer-sec-text">Privacy Policy</div><div class="footer-sec-text">About</div></div>
+            <div><div class="footer-sec-head">Contact</div><div class="footer-sec-text">AI Assistant for Mental Health</div><div class="footer-sec-text">Email: support@aiassistant.com</div></div>
+          </div>
+          <div class="footer-copyright">© 2026 MindCareAI — Your well-being matters</div>
+        </div>
+    """, unsafe_allow_html=True)
+
+
 def show_about_page():
-    # Apply global layout – removes header/footer, sets zero top padding
     apply_clean_layout(hide_header_completely=True)
-    
-    # --- Top spacer to push content away from navbar buttons ---
-    st.markdown('<div style="height: 40px;"></div>', unsafe_allow_html=True)
-    
-    # ===== Professional CSS =====
-    st.markdown("""
-    <style>
-        header, footer, .stDeployButton {
-            display: none !important;
-        }
 
-        .block-container {
-            padding-top: 1rem !important;
-            padding-bottom: 0 !important;
-            max-width: 1200px !important;
-        }
-        /* page background color*/
-        .stApp {
-            background: #f6f7fb !important;
-            margin-bottom: 0 !important;
-            padding-bottom: 0 !important;
-        }
-        
-        /* Force no bottom space */
-        html, body {
-            margin: 0 !important;
-            padding: 0 !important;
-            height: 100% !important;
-        }
-        
-        .main, section.main {
-            padding-bottom: 0 !important;
-            margin-bottom: 0 !important;
-        }
-        
-        /* Main content background — matches MindCare design tokens */
-        .main {
-            background: #f6f7fb;
-        }
-        
-        /* Professional animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        /*background color hero section*/
-        /* Hero Section - Professional - adjusted for navbar */
-        .hero-section {
-            background: linear-gradient(135deg, #1a3c5e 0%, #2c5f8a 50%, #1a3c5e 100%);
-            border-radius: 16px;
-            padding: 40px 40px;
-            margin-bottom: 48px;
-            margin-top: 60px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
-        
-        .hero-content h1 {
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 16px;
-            letter-spacing: -0.02em;
-        }
-        
-        .hero-content p {
-            font-size: 1.1rem;
-            color: #e0e7ff;
-            line-height: 1.6;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        /* all headings outside cards colors*/
-        /* Section Headings - Centered - NO LINE */
-        .section-title {
-            font-size: 1.75rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin: 48px 0 24px 0;
-            text-align: center;
-            letter-spacing: -0.01em;
-        }
-        
-        /* Mission Cards with colors */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin: 32px 0;
-        }
-        
-        .mission-card {
-            border-radius: 12px;
-            padding: 28px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-        /*cards background color */
-        .mission-card-1 {
-            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-            border: 1px solid #93c5fd;
-        }
-        
-        .mission-card-2 {
-            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
-            border: 1px solid #a5b4fc;
-        }
-        
-        .mission-card-3 {
-            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-            border: 1px solid #7dd3fc;
-        }
-        
-        .mission-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-        }
-        
-        .mission-icon {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            display: inline-block;
-        }
-        /*cards title*/
-        .mission-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #0f172a;
-        }
-        
-        .mission-text {
-            color: #334155;
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
-        
-        /* Architecture Cards with colors */
-        .arch-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin: 32px 0;
-        }
-        
-        .arch-item {
-            border-radius: 12px;
-            padding: 24px 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-        
-        .arch-item-1 {
-            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-            border: 1px solid #93c5fd;
-        }
-        
-        .arch-item-2 {
-            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
-            border: 1px solid #a5b4fc;
-        }
-        
-        .arch-item-3 {
-            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-            border: 1px solid #7dd3fc;
-        }
-        
-        .arch-item-4 {
-            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-            border: 1px solid #86efac;
-        }
-        
-        .arch-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-        }
-        
-        .arch-icon {
-            font-size: 2rem;
-            margin-bottom: 12px;
-            display: inline-block;
-        }
-        
-        .arch-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 4px;
-        }
-        
-        .arch-desc {
-            color: #475569;
-            font-size: 0.85rem;
-        }
-        /*background color*/
-        /* Flow Card */
-        .flow-card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 32px;
-            margin: 32px 0;
-            border: 1px solid #cbd5e1;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-        /*inside card heading color*/
-        .flow-card h3 {
-            color: #1e293b;
-            margin-bottom: 24px;
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-        
-        .flow-steps {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-        
-        .flow-step {
-            text-align: center;
-            flex: 1;
-            min-width: 100px;
-        }
-        
-        .flow-icon {
-            font-size: 2rem;
-            margin-bottom: 8px;
-        }
-        /*inside card text color*/
-        .flow-label {
-            font-size: 0.85rem;
-            color: #475569;
-            font-weight: 500;
-        }
-        
-        .flow-arrow {
-            font-size: 1.5rem;
-            color: #94a3b8;
-        }
-        
-        /* SDG Cards - No underline on text */
-        .sdg-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin: 32px 0;
-        }
-        
-        .sdg-card {
-            border-radius: 12px;
-            padding: 24px;
-            transition: all 0.3s ease;
-            text-decoration: none !important;
-            display: block;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-        
-        .sdg-card-1 {
-            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-            border: 1px solid #6ee7b7;
-        }
-        
-        .sdg-card-2 {
-            background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
-            border: 1px solid #fb923c;
-        }
-        
-        .sdg-card-3 {
-            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
-            border: 1px solid #f9a8d4;
-        }
-        
-        .sdg-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-        }
-        /* inside card heading color*/
-        .sdg-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #065f46;
-            margin-bottom: 12px;
-            display: inline-block;
-        }
-        /*inside card subhaeding color*/
-        .sdg-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #0f172a;
-        }
-        /* card text color */
-        .sdg-desc {
-            color: #334155;
-            line-height: 1.5;
-            font-size: 0.9rem;
-            margin-bottom: 16px;
-        }
-        
-        .sdg-link {
-            color: #2563eb;
-            text-decoration: none !important;
-            font-size: 0.85rem;
-            font-weight: 500;
-            display: inline-block;
-        }
-        
-        .sdg-link:hover {
-            text-decoration: none !important;
-            color: #1d4ed8;
-        }
-        
-        .sdg-card a, .sdg-card a:hover {
-            text-decoration: none !important;
-        }
-        
-        /* Stats Cards with colors */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 32px 0;
-        }
-        
-        .stat-card {
-            border-radius: 12px;
-            padding: 28px 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-        
-        .stat-card-1 {
-            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-            border: 1px solid #93c5fd;
-        }
-        
-        .stat-card-2 {
-            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
-            border: 1px solid #a5b4fc;
-        }
-        
-        .stat-card-3 {
-            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-            border: 1px solid #7dd3fc;
-        }
-        
-        .stat-card-4 {
-            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-            border: 1px solid #86efac;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-        }
-        /* inside card heading color*/
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #1e40af;
-            margin-bottom: 8px;
-        }
-        
-        .stat-label {
-            color: #334155;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        
-        /* Team Cards with colors */
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 24px;
-            margin: 32px 0;
-        }
-        
-        .team-card {
-            border-radius: 12px;
-            padding: 28px 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-        
-        .team-card-1 {
-            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-            border: 1px solid #93c5fd;
-        }
-        
-        .team-card-2 {
-            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
-            border: 1px solid #a5b4fc;
-        }
-        
-        .team-card-3 {
-            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-            border: 1px solid #7dd3fc;
-        }
-        
-        .team-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-        }
-        
-        .team-avatar {
-            font-size: 3rem;
-            margin-bottom: 16px;
-            display: inline-block;
-        }
-        
-        .team-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: #0f172a;
-        }
-        
-        .team-id {
-            color: #475569;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-        }
-        
-        .team-role {
-            background: #2c5f8a;
-            display: inline-block;
-            padding: 4px 16px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: white;
-        }
-        
-        /* Supervisor Card - Centered */
-        .supervisor-card {
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            border-radius: 12px;
-            padding: 24px 32px;
-            margin: 40px auto;
-            border: 1px solid #cbd5e1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
-            flex-wrap: wrap;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            max-width: 700px;
-            text-align: center;
-        }
-        
-        .supervisor-icon {
-            font-size: 2.5rem;
-            background: #2c5f8a;
-            border-radius: 50%;
-            width: 64px;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-        
-        .supervisor-info {
-            flex: 1;
-            text-align: left;
-        }
-        
-        .supervisor-name {
-            font-size: 1.15rem;
-            font-weight: 600;
-            color: #0f172a;
-            margin-bottom: 4px;
-        }
-        
-        .supervisor-dept {
-            color: #475569;
-            font-size: 0.9rem;
-            margin-top: 2px;
-        }
-        
-        /* References Card */
-        .references-card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 28px;
-            margin: 32px 0;
-            border: 1px solid #cbd5e1;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-        
-        .references-card ul {
-            margin: 0;
-            padding-left: 20px;
-        }
-        
-        .references-card li {
-            color: #334155;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-        
-        .references-card li a {
-            color: #2563eb;
-            text-decoration: none;
-        }
-        
-        .references-card li a:hover {
-            text-decoration: underline;
-        }
-        /* background and text color*/
-        /* Footer */
-        .footer-container {
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 48px 40px 24px 40px;
-            margin-top: 60px;
-            margin-bottom: 0 !important;
-            margin-left: -2rem !important;
-            margin-right: -2rem !important;
-            width: calc(100% + 4rem) !important;
-        }
-        
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 32px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .footer-title {
-            font-weight: 600;
-            margin-bottom: 16px;
-            font-size: 0.9rem;
-            color: #94a3b8;
-            letter-spacing: 0.5px;
-        }
-        
-        .footer-text {
-            font-size: 0.85rem;
-            color: #cbd5e1;
-            margin-bottom: 8px;
-            cursor: default;
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            margin-top: 48px;
-            padding-top: 24px;
-            padding-bottom: 24px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.75rem;
-            color: #64748b;
-            margin-bottom: 0 !important;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 40px 24px;
-            }
-            .hero-content h1 {
-                font-size: 1.75rem;
-            }
-            .section-title {
-                font-size: 1.5rem;
-            }
-            .flow-steps {
-                flex-direction: column;
-            }
-            .flow-arrow {
-                transform: rotate(90deg);
-            }
-            .supervisor-card {
-                flex-direction: column;
-                text-align: center;
-                max-width: 90%;
-            }
-            .supervisor-info {
-                text-align: center;
-            }
-            .footer-container {
-                margin-left: -1rem !important;
-                margin-right: -1rem !important;
-                width: calc(100% + 2rem) !important;
-                padding: 48px 20px 24px 20px;
-            }
-        }
-    </style>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        """
+        <style>
+          header,footer,.stDeployButton{display:none!important}
+          .main .block-container{max-width:1200px!important;padding:5rem 2rem 0!important;overflow:visible!important}
+          .stApp,.main{background:linear-gradient(180deg,#F8FAFC 0%,#F4F3FF 100%)!important}
+          .about-hero{padding:clamp(32px,6vw,58px) 28px;border-radius:26px;text-align:center;color:#fff;
+            background:linear-gradient(135deg,#1E1B4B 0%,#312E81 52%,#6366F1 100%);
+            box-shadow:0 18px 48px rgba(49,46,129,.2);margin:0 0 42px}
+          .about-hero h1{font-size:clamp(2rem,4vw,2.8rem);font-weight:750;letter-spacing:-.035em;color:#fff!important;margin:0 0 14px}
+          .about-hero p{font-size:1.08rem;line-height:1.7;color:#E0E7FF;max-width:800px;margin:0 auto}
+          .section-title{text-align:center;color:#1E1B4B;font-size:1.8rem;font-weight:750;letter-spacing:-.025em;margin:42px 0 22px}
+          .mission-grid,.arch-grid,.sdg-grid,.team-grid{display:grid;gap:18px;margin:0 0 28px}
+          .mission-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+          .arch-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+          .sdg-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+          .team-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+          .about-card,.team-card,.flow-card,.references-card{background:rgba(255,255,255,.86);backdrop-filter:blur(12px);
+            border:1px solid #E2E8F0;border-radius:20px;box-shadow:0 8px 26px rgba(15,23,42,.055);}
+          .about-card{height:100%;box-sizing:border-box;padding:26px 24px;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+          .about-card:hover,.team-card:hover{transform:translateY(-3px);border-color:#C7D2FE;box-shadow:0 14px 32px rgba(99,102,241,.12)}
+          .mission-card{min-height:210px}
+          .icon-box{display:grid;place-items:center;width:50px;height:50px;border-radius:16px;background:#EEF2FF;color:#6366F1;font-size:25px;margin-bottom:16px}
+          .card-title{font-size:1.18rem;font-weight:700;color:#1E1B4B;margin-bottom:9px}
+          .card-desc{font-size:.94rem;color:#4B5563;line-height:1.6}
+          .arch-card{text-align:center;padding:22px 16px}
+          .arch-card .icon-box{margin:0 auto 12px}
+          .flow-card{padding:25px;margin:10px 0 34px;text-align:center}
+          .flow-card h3{font-size:1.2rem;color:#1E1B4B;margin:0 0 18px}
+          .flow-steps{display:flex;justify-content:center;align-items:center;gap:18px;flex-wrap:wrap;color:#475569;font-size:.92rem}
+          .flow-step{padding:12px 16px;border-radius:14px;background:#F8FAFC;border:1px solid #E2E8F0}
+          .flow-arrow{color:#6366F1;font-weight:800}
+          .sdg-card{height:100%;box-sizing:border-box;padding:24px;border-radius:20px;border:1px solid;display:block;text-decoration:none!important;transition:transform .2s ease,box-shadow .2s ease}
+          .sdg-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(15,23,42,.1)}
+          .sdg-card-3{background:linear-gradient(135deg,#ECFDF5,#D1FAE5);border-color:#A7F3D0}
+          .sdg-card-9{background:linear-gradient(135deg,#FFF7ED,#FFEDD5);border-color:#FED7AA}
+          .sdg-card-10{background:linear-gradient(135deg,#FDF2F8,#FCE7F3);border-color:#FBCFE8}
+          .sdg-card h3{font-size:1.35rem;margin:0 0 7px}
+          .sdg-card h4{font-size:1rem;margin:0 0 10px}
+          .sdg-card p{font-size:.92rem;line-height:1.55;margin:0}
+          .sdg-link{display:block;margin-top:14px;font-size:.85rem;font-weight:650}
+          .team-card{text-align:center;padding:28px 18px;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+          .team-avatar{font-size:2.7rem;margin-bottom:10px}
+          .team-name{font-size:1.12rem;font-weight:700;color:#1E1B4B;margin-bottom:4px}
+          .team-id{font-size:.87rem;color:#6B7280;margin-bottom:12px}
+          .team-role{display:inline-block;background:#EEF2FF;color:#4F46E5;padding:5px 14px;border-radius:999px;font-size:.82rem;font-weight:650}
+          .supervisor-card{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;max-width:760px;margin:28px auto;padding:22px;border-radius:20px;background:#fff;border:1px solid #E2E8F0;box-shadow:0 6px 20px rgba(15,23,42,.05);text-align:center}
+          .supervisor-icon{display:grid;place-items:center;width:58px;height:58px;border-radius:18px;background:#EEF2FF;font-size:28px}
+          .supervisor-name{font-weight:700;color:#1E1B4B;font-size:1.08rem}
+          .supervisor-dept{color:#64748B;font-size:.9rem;line-height:1.5;margin-top:3px}
+          .references-card{padding:25px 28px;margin:0 0 30px}
+          .references-card ul{padding-left:22px;margin:0}
+          .references-card li{color:#475569;margin:0 0 10px;font-size:.91rem;line-height:1.5}
+          .references-card li:last-child{margin-bottom:0}
+          .references-card a{color:#4F46E5;text-decoration:none}
+          .references-card a:hover{text-decoration:underline}
+          .site-footer{position:relative;width:100vw;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;background:#0F172A;color:#F8FAFC;padding:50px 0 25px;border-radius:0;box-sizing:border-box;margin-top:28px;margin-bottom:-5rem}
+          .site-footer-grid{max-width:1160px;margin:auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+          .site-footer-title{font-size:.85rem;font-weight:700;color:#A5B4FC;margin-bottom:12px;letter-spacing:.04em}
+          .site-footer-text{font-size:.83rem;color:#CBD5E1;margin:0 0 7px;line-height:1.4}
+          .site-footer-bottom{text-align:center;border-top:1px solid rgba(255,255,255,.12);margin-top:26px;padding:18px 0 0;font-size:.75rem;color:#94A3B8}
+          .stats-footer{margin:20px 0 0;padding:35px 20px;background:#fff;border:1px solid #E2E8F0;border-radius:20px;box-shadow:0 4px 20px rgba(0,0,0,.04);color:#1E1B4B;box-sizing:border-box}
+          .stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+          .stat-item{text-align:center;padding:8px}
+          .stat-number{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:850;line-height:1.15;margin-bottom:7px;color:#4338CA}
+          .stat-label{font-size:.79rem;color:#6B7280;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+          @media(max-width:760px){.main .block-container{padding:5rem 1rem 0!important}.mission-grid,.sdg-grid{grid-template-columns:1fr}.arch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.team-grid{grid-template-columns:1fr}.stats-inner{grid-template-columns:repeat(2,minmax(0,1fr))}.site-footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-title{font-size:1.5rem}}
+          @media(max-width:440px){.stats-inner,.site-footer-grid{grid-template-columns:1fr}.flow-steps{gap:8px}.flow-arrow{transform:rotate(90deg)}}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    # Hero section
     st.markdown("""
-    <div class="hero-section">
-        <div class="hero-content">
-            <h1>AI Assistant for Mental Health</h1>
-            <p>An intelligent, compassionate companion designed to provide empathetic and personalized mental health support using cutting-edge artificial intelligence.</p>
-        </div>
+    <section class="about-hero">
+      <h1>AI Assistant for Mental Health</h1>
+      <p>An intelligent, compassionate companion designed to provide empathetic and personalized mental health support using cutting-edge artificial intelligence.</p>
+    </section>
+    <h2 class="section-title">🎯 Our Mission</h2>
+    <div class="mission-grid">
+      <article class="about-card mission-card"><div class="icon-box">🎯</div><div class="card-title">Accessible Support</div><div class="card-desc">24/7 AI-powered emotional support available to everyone, anywhere, breaking barriers and eliminating social stigma.</div></article>
+      <article class="about-card mission-card"><div class="icon-box">🔒</div><div class="card-title">Privacy First</div><div class="card-desc">Enterprise-grade encryption and secure data storage ensuring your conversations remain completely private and confidential.</div></article>
+      <article class="about-card mission-card"><div class="icon-box">🤖</div><div class="card-title">Advanced AI</div><div class="card-desc">Powered by state-of-the-art Transformer models, RAG architecture, and Whisper for natural voice interaction.</div></article>
     </div>
-    """, unsafe_allow_html=True)
-
-    # Mission Section
-    st.markdown('<div class="section-title">🎯 Our Mission</div>', unsafe_allow_html=True)
-    st.markdown("""
-    <div class="cards-grid">
-        <div class="mission-card mission-card-1">
-            <div class="mission-icon">🎯</div>
-            <div class="mission-title">Accessible Support</div>
-            <div class="mission-text">24/7 AI-powered emotional support available to everyone, anywhere, breaking barriers and eliminating social stigma.</div>
-        </div>
-        <div class="mission-card mission-card-2">
-            <div class="mission-icon">🔒</div>
-            <div class="mission-title">Privacy First</div>
-            <div class="mission-text">Enterprise-grade encryption and secure data storage ensuring your conversations remain completely private and confidential.</div>
-        </div>
-        <div class="mission-card mission-card-3">
-            <div class="mission-icon">🤖</div>
-            <div class="mission-title">Advanced AI</div>
-            <div class="mission-text">Powered by state-of-the-art Transformer models, RAG architecture, and Whisper for natural voice interaction.</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # System Architecture
-    st.markdown('<div class="section-title">🏗️ System Architecture</div>', unsafe_allow_html=True)
-    st.markdown("""
+    <h2 class="section-title">🏗️ System Architecture</h2>
     <div class="arch-grid">
-        <div class="arch-item arch-item-1"><div class="arch-icon">🖥️</div><div class="arch-title">Frontend</div><div class="arch-desc">Streamlit + Gradio</div></div>
-        <div class="arch-item arch-item-2"><div class="arch-icon">⚙️</div><div class="arch-title">Backend</div><div class="arch-desc">FastAPI + PostgreSQL</div></div>
-        <div class="arch-item arch-item-3"><div class="arch-icon">🧠</div><div class="arch-title">AI/ML</div><div class="arch-desc">LLMs + RAG + XGBoost</div></div>
-        <div class="arch-item arch-item-4"><div class="arch-icon">🎤</div><div class="arch-title">Voice</div><div class="arch-desc">Whisper + gTTS</div></div>
+      <article class="about-card arch-card"><div class="icon-box">🖥️</div><div class="card-title">Frontend</div><div class="card-desc"><b>Streamlit + Gradio</b></div></article>
+      <article class="about-card arch-card"><div class="icon-box">⚙️</div><div class="card-title">Backend</div><div class="card-desc"><b>FastAPI + PostgreSQL</b></div></article>
+      <article class="about-card arch-card"><div class="icon-box">🧠</div><div class="card-title">AI / ML</div><div class="card-desc"><b>LLMs + RAG + XGBoost</b></div></article>
+      <article class="about-card arch-card"><div class="icon-box">🎤</div><div class="card-title">Voice</div><div class="card-desc"><b>Whisper + gTTS</b></div></article>
     </div>
-    """, unsafe_allow_html=True)
-
-    # Architecture Flow
-    st.markdown("""
-    <div class="flow-card">
-        <h3>🔄 End-to-End Data Flow</h3>
-        <div class="flow-steps">
-            <div class="flow-step"><div class="flow-icon">📱</div><div class="flow-label">User Interface</div></div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step"><div class="flow-icon">⚡</div><div class="flow-label">FastAPI Backend</div></div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step"><div class="flow-icon">🧠</div><div class="flow-label">AI Processing</div></div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step"><div class="flow-icon">🗄️</div><div class="flow-label">Database</div></div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # SDG Goals
-    st.markdown('<div class="section-title">🌍 UN Sustainable Development Goals</div>', unsafe_allow_html=True)
-    st.markdown("""
+    <section class="flow-card"><h3>🔄 End-to-End Data Flow</h3><div class="flow-steps">
+      <div class="flow-step">📱 <b>User Interface</b></div><span class="flow-arrow">➔</span>
+      <div class="flow-step">⚡ <b>FastAPI Backend</b></div><span class="flow-arrow">➔</span>
+      <div class="flow-step">🧠 <b>AI Processing</b></div><span class="flow-arrow">➔</span>
+      <div class="flow-step">🗄️ <b>Database</b></div>
+    </div></section>
+    <h2 class="section-title">🌏 UN Sustainable Development Goals</h2>
     <div class="sdg-grid">
-        <a href="https://sdgs.un.org/goals/goal3" target="_blank" class="sdg-card sdg-card-1">
-            <div class="sdg-number">SDG 3</div>
-            <div class="sdg-title">Good Health & Well-being</div>
-            <div class="sdg-desc">Promoting mental well-being and accessible healthcare for all through AI-powered support.</div>
-            <div class="sdg-link">🔗 Learn more about SDG 3 →</div>
-        </a>
-        <a href="https://sdgs.un.org/goals/goal9" target="_blank" class="sdg-card sdg-card-2">
-            <div class="sdg-number">SDG 9</div>
-            <div class="sdg-title">Industry, Innovation & Infrastructure</div>
-            <div class="sdg-desc">Leveraging cutting-edge AI technology for social welfare and mental health innovation.</div>
-            <div class="sdg-link">🔗 Learn more about SDG 9 →</div>
-        </a>
-        <a href="https://sdgs.un.org/goals/goal10" target="_blank" class="sdg-card sdg-card-3">
-            <div class="sdg-number">SDG 10</div>
-            <div class="sdg-title">Reduced Inequalities</div>
-            <div class="sdg-desc">Making mental healthcare accessible to underserved communities worldwide.</div>
-            <div class="sdg-link">🔗 Learn more about SDG 10 →</div>
-        </a>
+      <a href="https://sdgs.un.org/goals/goal3" target="_blank" class="sdg-card sdg-card-3"><h3 style="color:#065F46">SDG 3</h3><h4 style="color:#047857">Good Health &amp; Well-being</h4><p style="color:#064E3B">Promoting mental well-being and accessible healthcare for all through AI-powered support.</p><span class="sdg-link" style="color:#047857">👁️ Learn more about SDG 3 →</span></a>
+      <a href="https://sdgs.un.org/goals/goal9" target="_blank" class="sdg-card sdg-card-9"><h3 style="color:#9A3412">SDG 9</h3><h4 style="color:#C2410C">Industry, Innovation &amp; Infrastructure</h4><p style="color:#7C2D12">Leveraging cutting-edge AI technology for social welfare and mental health innovation.</p><span class="sdg-link" style="color:#C2410C">👁️ Learn more about SDG 9 →</span></a>
+      <a href="https://sdgs.un.org/goals/goal10" target="_blank" class="sdg-card sdg-card-10"><h3 style="color:#9D174D">SDG 10</h3><h4 style="color:#BE185D">Reduced Inequalities</h4><p style="color:#831843">Making mental healthcare accessible to underserved communities worldwide.</p><span class="sdg-link" style="color:#BE185D">👁️ Learn more about SDG 10 →</span></a>
     </div>
+    <div class="supervisor-card"><div class="supervisor-icon">👨‍🏫</div><div><div class="supervisor-name">Mr. Faisal Hussain</div><div class="supervisor-dept">Project Supervisor | Department of Computer Science</div><div class="supervisor-dept">National University of Modern Languages (NUML), Multan Campus</div></div></div>
+    <h2 class="section-title">📚 References &amp; Resources</h2>
+    <div class="references-card"><ul>
+      <li>📖 <a href="https://www.who.int/health-topics/mental-health" target="_blank">World Health Organization (WHO) - Mental Health Guidelines 2024</a></li>
+      <li>📖 <a href="https://www.apa.org/topics/mental-health" target="_blank">American Psychological Association (APA) - Digital Health Standards</a></li>
+      <li>📖 <a href="https://www.mayoclinic.org/healthy-lifestyle" target="_blank">Mayo Clinic - Verified Mental Health Resources</a></li>
+      <li>📖 <a href="https://www.nimh.nih.gov/" target="_blank">National Institute of Mental Health (NIMH) - Research Publications</a></li>
+      <li>📖 <a href="https://www.mentalhealth.gov/" target="_blank">MentalHealth.gov - Evidence-Based Practices</a></li>
+      <li>📖 <a href="https://arxiv.org/abs/2304.12210" target="_blank">Recent Advances in Mental Health AI - arXiv Research Paper</a></li>
+    </ul></div>
     """, unsafe_allow_html=True)
 
-    # Impact Statistics
-    st.markdown('<div class="section-title">📊 Impact Statistics</div>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">👥 Development Team</h2><div class="team-grid">'
+                '<article class="team-card"><div class="team-avatar">👩‍💻</div><div class="team-name">Safia Rasheed</div><div class="team-id">BSCS-MC-215</div><span class="team-role">Developer</span></article>'
+                '<article class="team-card"><div class="team-avatar">👩‍💻</div><div class="team-name">Maria Akram</div><div class="team-id">BSCS-MC-207</div><span class="team-role">Developer</span></article>'
+                '<article class="team-card"><div class="team-avatar">👩‍💻</div><div class="team-name">Shamsa Akram</div><div class="team-id">BSCS-MC-208</div><span class="team-role">Developer</span></article></div>',
+                unsafe_allow_html=True)
+
     st.markdown("""
-    <div class="stats-grid">
-        <div class="stat-card stat-card-1"><div class="stat-number">24/7</div><div class="stat-label">Availability</div></div>
-        <div class="stat-card stat-card-2"><div class="stat-number">100%</div><div class="stat-label">Anonymous</div></div>
-        <div class="stat-card stat-card-3"><div class="stat-number">50+</div><div class="stat-label">Clinical Sources</div></div>
-        <div class="stat-card stat-card-4"><div class="stat-number">Real-time</div><div class="stat-label">Crisis Detection</div></div>
-    </div>
+    <section class="stats-footer">
+      <h2 style="color:#1E1B4B;font-weight:700;margin:0 0 25px;font-size:1.8rem;text-align:center">📊 Impact Statistics</h2>
+      <div class="stats-inner">
+        <div class="stat-item"><div class="stat-number">24/7</div><div class="stat-label">Availability</div></div>
+        <div class="stat-item"><div class="stat-number">100%</div><div class="stat-label">Anonymous</div></div>
+        <div class="stat-item"><div class="stat-number">50+</div><div class="stat-label">Clinical Sources</div></div>
+        <div class="stat-item"><div class="stat-number">Real-time</div><div class="stat-label">Crisis Detection</div></div>
+      </div>
+    </section>
     """, unsafe_allow_html=True)
 
-    # Development Team
-    st.markdown('<div class="section-title">👥 Development Team</div>', unsafe_allow_html=True)
-    st.markdown("""
-    <div class="team-grid">
-        <div class="team-card team-card-1"><div class="team-avatar">👩‍💻</div><div class="team-name">Safia Rasheed</div><div class="team-id">BSCS-MC-215</div><div class="team-role">Developer</div></div>
-        <div class="team-card team-card-2"><div class="team-avatar">👩‍💻</div><div class="team-name">Maria Akram</div><div class="team-id">BSCS-MC-207</div><div class="team-role">Developer</div></div>
-        <div class="team-card team-card-3"><div class="team-avatar">👩‍💻</div><div class="team-name">Shamsa Akram</div><div class="team-id">BSCS-MC-208</div><div class="team-role">Developer</div></div>
-    </div>
-    """, unsafe_allow_html=True)
+    render_global_footer()
 
-    # Supervisor - Centered
-    st.markdown("""
-    <div style="display: flex; justify-content: center;">
-        <div class="supervisor-card">
-            <div class="supervisor-icon">👨‍🏫</div>
-            <div class="supervisor-info">
-                <div class="supervisor-name">Mr. Faisal Hussain</div>
-                <div class="supervisor-dept">Project Supervisor | Department of Computer Science</div>
-                <div class="supervisor-dept">National University of Modern Languages (NUML), Multan Campus</div>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # References
-    st.markdown('<div class="section-title">📚 References & Resources</div>', unsafe_allow_html=True)
-    st.markdown("""
-    <div class="references-card">
-        <ul>
-            <li>📖 <a href="https://www.who.int/health-topics/mental-health" target="_blank">World Health Organization (WHO) - Mental Health Guidelines 2024</a></li>
-            <li>📖 <a href="https://www.apa.org/topics/mental-health" target="_blank">American Psychological Association (APA) - Digital Health Standards</a></li>
-            <li>📖 <a href="https://www.mayoclinic.org/healthy-lifestyle" target="_blank">Mayo Clinic - Verified Mental Health Resources</a></li>
-            <li>📖 <a href="https://www.nimh.nih.gov/" target="_blank">National Institute of Mental Health (NIMH) - Research Publications</a></li>
-            <li>📖 <a href="https://www.mentalhealth.gov/" target="_blank">MentalHealth.gov - Evidence-Based Practices</a></li>
-            <li>📖 <a href="https://arxiv.org/abs/2304.12210" target="_blank">Recent Advances in Mental Health AI - arXiv Research Paper</a></li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # Footer
-    st.markdown("""
-    <div class="footer-container">
-        <div class="footer-grid">
-            <div class="footer-col">
-                <div class="footer-title">About</div>
-                <div class="footer-text">AI-powered emotional support</div>
-                <div class="footer-text">24/7 mental wellness companion</div>
-                <div class="footer-text">Evidence-based techniques</div>
-                <div class="footer-text">Anonymous & secure</div>
-            </div>
-            <div class="footer-col">
-                <div class="footer-title">Resources</div>
-                <div class="footer-text">Mental Wellness Guide</div>
-                <div class="footer-text">Coping Strategies</div>
-            </div>
-            <div class="footer-col">
-                <div class="footer-title">Legal</div>
-                <div class="footer-text">About</div>
-                <div class="footer-text">Privacy Policy</div>
-            </div>
-            <div class="footer-col">
-                <div class="footer-title">Contact</div>
-                <div class="footer-text">AI Assistant for Mental Health</div>
-                <div class="footer-text">support@aiassistant.com</div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            © 2026 AI Assistant for Mental Health — Your well-being matters 
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     show_about_page()

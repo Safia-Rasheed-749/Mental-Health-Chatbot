@@ -29,17 +29,10 @@ def render_navbar():
             width: 100% !important;
             z-index: 999999 !important;
             
-            /* 🎨 NAVBAR BACKGROUND - Soft purple (best theme match) */
-            background: linear-gradient(90deg, 
-    #3D43B4 0%,    /* Darker Blue */
-    #7130C3 25%,   /* Deep Purple */
-    #9B45E4 50%,   /* Vibrant Purple */
-    #BD39D1 75%,   /* Magenta shade */
-    #D33A86 100%   /* Deep Pink */
-            ) !important;
+            background: linear-gradient(90deg, #6366F1 0%, #A855F7 100%) !important;
             
             border-bottom: 1px solid rgba(167, 139, 250, 0.3) !important;
-            box-shadow: 0 4px 12px rgba(167, 139, 250, 0.25) !important;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1) !important;
             padding: 12px 40px !important;
             margin: 0 !important;
             display: flex !important;
