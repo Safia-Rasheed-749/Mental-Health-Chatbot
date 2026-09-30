@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Thread-safe PostgreSQL connection pool and transaction helper."""
 
 from contextlib import contextmanager

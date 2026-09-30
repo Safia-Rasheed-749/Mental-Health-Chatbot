@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Backward-compatible application repository backed by FastAPI.
 
 The UI can retain its existing function names while all persistence crosses

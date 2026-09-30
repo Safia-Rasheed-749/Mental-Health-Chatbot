@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pandas as pd
 
 df = pd.read_csv("datasets/stress/raw/dreaddit-train.csv")

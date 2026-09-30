@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Extract training history from checkpoint logs and plot curves
 """

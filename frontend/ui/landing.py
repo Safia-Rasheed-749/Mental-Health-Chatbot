@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # landing.py — public marketing page (design tokens via app.py)
 import streamlit as st
 import streamlit.components.v1 as components

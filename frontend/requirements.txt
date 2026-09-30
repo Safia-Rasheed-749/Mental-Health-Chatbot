@@ -59,6 +59,7 @@ openai==0.28.0
 packaging==26.0
 pandas==2.3.3
 pillow==12.1.1
+plotly==6.5.0
 pipwin==0.5.2
 propcache==0.4.1
 protobuf==6.33.5

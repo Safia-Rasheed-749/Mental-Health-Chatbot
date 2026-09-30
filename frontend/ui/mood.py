@@ -1,8 +1,24 @@
+# -*- coding: utf-8 -*-
 import streamlit as st
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 from db import add_mood, get_moods, log_user_activity
 from datetime import datetime, timedelta, date
 from db import get_all_user_messages
+
+MOOD_COLORS = {
+    "Happy": "#4FD1C5", "Neutral": "#63B3ED", "Sad": "#7F9CF5",
+    "Anxious": "#F6AD55", "Angry": "#FC8181",
+}
+
+
+def _chart_layout(fig, height=330):
+    fig.update_layout(
+        height=height, margin=dict(l=12, r=12, t=24, b=12),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(family="Inter, Segoe UI, sans-serif", color="#475569", size=12),
+        hoverlabel=dict(bgcolor="white", bordercolor="#E2E8F0", font_size=12),
+    )
+    return fig
 
 def show_mood_analytics(user_id):
 
@@ -11,7 +27,7 @@ def show_mood_analytics(user_id):
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-    /* ── HIDE CLUTTER ── */
+    /* ΓöÇΓöÇ HIDE CLUTTER ΓöÇΓöÇ */
     .stDeployButton { display: none !important; }
     .stAppDeployButton { display: none !important; }
     #MainMenu       { visibility: hidden !important; }
@@ -22,23 +38,23 @@ def show_mood_analytics(user_id):
         visibility: visible !important;
     }
 
-    /* ── PAGE BACKGROUND (SAME AS CHAT) ── */
+    /* ΓöÇΓöÇ PAGE BACKGROUND (SAME AS CHAT) ΓöÇΓöÇ */
     html, body, .stApp {
         font-family: 'Inter', 'Segoe UI', sans-serif !important;
         background: linear-gradient(135deg, #F8FAFC 0%, #EEF4FF 45%, #F5F3FF 100%) !important;
         height: 100%;
     }
 
-    /* ── Sidebar styling is handled exclusively in sidebar.py ── */
+    /* ΓöÇΓöÇ Sidebar styling is handled exclusively in sidebar.py ΓöÇΓöÇ */
 
-    /* ── BLOCK CONTAINER ── */
+    /* ΓöÇΓöÇ BLOCK CONTAINER ΓöÇΓöÇ */
     .block-container {
         padding-top: 0rem !important;
         padding-bottom: 100px !important;
         max-width: 100% !important;
     }
 
-    /* ── HEADER BANNER (SAME AS CHAT) ── */
+    /* ΓöÇΓöÇ HEADER BANNER (SAME AS CHAT) ΓöÇΓöÇ */
     .page-header {
         background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
         padding: 18px 28px 16px;
@@ -83,7 +99,7 @@ def show_mood_analytics(user_id):
         font-weight: 400;
     }
 
-    
+
     .mood-section-card:hover {
         box-shadow: 0 8px 28px rgba(99,102,241,0.15);
         transform: translateY(-2px);
@@ -93,17 +109,17 @@ def show_mood_analytics(user_id):
     .element-container:has(> .stMarkdown:empty) {
         display: none !important;
     }
-    
+
     /* Remove extra spacing from empty elements */
     .stMarkdown:empty {
         display: none !important;
     }
-    
+
     /* Hide empty columns */
     div[data-testid="column"]:empty {
         display: none !important;
     }
-    
+
     /* Remove white background from empty containers */
     .stVerticalBlock:empty {
         display: none !important;
@@ -147,14 +163,14 @@ def show_mood_analytics(user_id):
         gap: 10px;
     }
 
-    /* ── MOOD RADIO BUTTONS ── */
+    /* ΓöÇΓöÇ MOOD RADIO BUTTONS ΓöÇΓöÇ */
     .main div[role="radiogroup"] {
         justify-content: center !important;
         gap: 12px !important;
         margin: 16px 0 !important;
         flex-wrap: wrap !important;
     }
-    
+
     div[data-testid="stRadio"] input[id*="mood_radio"] + div {
      background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.95)) !important;
     padding: 12px 24px !important;
@@ -279,7 +295,7 @@ li[aria-selected="true"] {
     # li {
     #     color: white !important;
     # }
-    /* ── INSIGHT CARD ── */
+    /* ΓöÇΓöÇ INSIGHT CARD ΓöÇΓöÇ */
     .insight-card {
         background: linear-gradient(135deg, rgba(139,92,246,0.10), rgba(99,102,241,0.10));
         padding: 20px 24px;
@@ -295,7 +311,7 @@ li[aria-selected="true"] {
         font-weight: 700;
     }
 
-    /* ── STATS CARDS ── */
+    /* ΓöÇΓöÇ STATS CARDS ΓöÇΓöÇ */
     .stats-wrapper {
         display: flex;
         gap: 16px;
@@ -320,36 +336,36 @@ li[aria-selected="true"] {
         box-shadow: 0 8px 24px rgba(99,102,241,0.18);
     }
         /* 1st stat card's bottom border */
-    .stat-card:nth-child(1) { 
+    .stat-card:nth-child(1) {
         border-bottom: 3px solid #10b981;
     }
         /* 2nd card's bottom border */
-    .stat-card:nth-child(2) { 
+    .stat-card:nth-child(2) {
         border-bottom: 3px solid #6366f1;
     }
          /* 3rd card's bottom border */
-    .stat-card:nth-child(3) { 
+    .stat-card:nth-child(3) {
         border-bottom: 3px solid #ec4899;
     }
     /* Value of Total Entries etc */
-    .stat-value { 
-        font-size: 32px; 
-        font-weight: 800; 
+    .stat-value {
+        font-size: 32px;
+        font-weight: 800;
         color: #1e293b;
         margin-bottom: 8px;
     }
 
-    .stat-label { 
-        font-size: 13px; 
+    .stat-label {
+        font-size: 13px;
         color: #64748b;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
-    
 
-    /* ── INFO/SUCCESS MESSAGES ── */
+
+    /* ΓöÇΓöÇ INFO/SUCCESS MESSAGES ΓöÇΓöÇ */
     .stInfo {
         background: linear-gradient(135deg, rgba(99,102,241,0.10), rgba(139,92,246,0.10)) !important;
         border-radius: 12px !important;
@@ -368,7 +384,7 @@ li[aria-selected="true"] {
         font-weight: 500 !important;
     }
 
-    /* ── DIVIDER ── */
+    /* ΓöÇΓöÇ DIVIDER ΓöÇΓöÇ */
     hr {
         margin: 24px 0 !important;
         border: none !important;
@@ -376,7 +392,7 @@ li[aria-selected="true"] {
         background: linear-gradient(90deg, transparent, rgba(99,102,241,0.30), transparent) !important;
     }
 
-    /* ── SCROLLBAR ── */
+    /* ΓöÇΓöÇ SCROLLBAR ΓöÇΓöÇ */
     ::-webkit-scrollbar       { width: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.30); border-radius: 4px; }
@@ -384,7 +400,7 @@ li[aria-selected="true"] {
     </style>
     """, unsafe_allow_html=True)
 
-    # ── HEADER BANNER ──
+    # Header banner
     st.markdown("""
     <div class="page-header">
         <div class="page-header-avatar">📊</div>
@@ -396,31 +412,31 @@ li[aria-selected="true"] {
     """, unsafe_allow_html=True)
 
     # ================= QUICK MOOD LOG =================
-     
+
     st.markdown('<div class="section-title">😊 Quick Mood Log</div>', unsafe_allow_html=True)
     st.markdown('<div class="mood-radio-wrapper">', unsafe_allow_html=True)
 
     mood = st.radio(
         "",
-        ["😄 Happy", "😐 Neutral", "😔 Sad", "😰 Anxious", "😡 Angry"],
+        ["😊 Happy", "😐 Neutral", "😔 Sad", "😰 Anxious", "😡 Angry"],
         horizontal=True,
         key="mood_radio"
     )
     st.markdown('</div>', unsafe_allow_html=True)
     # Centralized Log Button (no empty columns)
-    
-    
+
+
     if st.button(" Log My Mood", key="log_mood_btn"):
 
         mood_text = mood.split(" ", 1)[1]
         add_mood(user_id, mood_text)
         log_user_activity(
-            user_id, 
-            "Log Mood", 
-            "Mood Tracker", 
+            user_id,
+            "Log Mood",
+            "Mood Tracker",
             f"Mood: {mood_text}"
         )
-        st.toast(f"🎉 Mood '{mood_text}' logged successfully!", icon="✅")
+        st.toast(f"Mood '{mood_text}' logged successfully!", icon="✅")
 
 
     st.markdown('</div>', unsafe_allow_html=True)  # Close mood-section-card
@@ -431,7 +447,7 @@ li[aria-selected="true"] {
     if moods:
         # ================= FILTER SECTION (ONLY SHOW IF MOODS EXIST) =================
         st.markdown('<div class="mood-section-card">', unsafe_allow_html=True)
-        st.markdown('<div class="section-title">📅 Mood Trend Timeline</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">📈 Mood Trend Timeline</div>', unsafe_allow_html=True)
 
         range_option = st.selectbox(
             "Select Time Range",
@@ -463,8 +479,8 @@ li[aria-selected="true"] {
         # Insight Card
         st.markdown(f"""
         <div class='insight-card'>
-            <b>🌿 Emotional Insight</b><br><br>
-            Based on your {total} mood entries, your emotional pattern shows a tendency toward <b>{most_common}</b> moods. 
+            <b>💡 Emotional Insight</b><br><br>
+            Based on your {total} mood entries, your emotional pattern shows a tendency toward <b>{most_common}</b> moods.
             You've experienced <b>{variety}</b> different emotional states during this period.
         </div>
         """, unsafe_allow_html=True)
@@ -487,207 +503,111 @@ li[aria-selected="true"] {
         </div>
         """, unsafe_allow_html=True)
 
-        # ================= MOOD TREND GRAPH =================
-        if len(filtered) > 1:
-# /* h3, can be changed to h1 by #, h2 by ##, so on */
-            st.markdown("### 📊 Mood Trend Analysis")
+        st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
+        # ================= MOOD TREND + DISTRIBUTION =================
+        trend_col, distribution_col = st.columns(2, gap="large")
+        with trend_col:
+            st.markdown("### 📈 Mood Trend Timeline")
+            st.caption(f"Your logged moods across {range_option.lower()}.")
+            if len(filtered) > 1:
+                y_map = {"Angry": 1, "Anxious": 2, "Sad": 3, "Neutral": 4, "Happy": 5}
+                day_labels = [f"Day {i}" for i in range(1, len(filtered) + 1)]
+                fig = go.Figure(go.Scatter(x=day_labels, y=[y_map[m] for m in filtered], mode="lines+markers", line=dict(color="#7F9CF5", width=3, shape="spline", smoothing=0.8), marker=dict(size=8, color=[MOOD_COLORS[m] for m in filtered], line=dict(color="white", width=2)), fill="tozeroy", fillcolor="rgba(127,156,245,0.12)", text=filtered, hovertemplate="%{x}: %{text}<extra></extra>"))
+                fig.update_xaxes(title=None, type="category", tickangle=0, showgrid=False, zeroline=False, showline=False)
+                fig.update_yaxes(title=None, tickmode="array", tickvals=[1,2,3,4,5], ticktext=["Angry","Anxious","Sad","Neutral","Happy"], range=[0.5,5.5], showgrid=True, gridcolor="rgba(148,163,184,0.16)", zeroline=False)
+                st.plotly_chart(_chart_layout(fig), use_container_width=True, config={"displayModeBar": False})
+            else:
+                st.info("Log another mood to see your trend over time.")
+        with distribution_col:
+            st.markdown("### 🎨 Mood Distribution")
+            st.caption(f"Emotional balance for {range_option.lower()}.")
+            pie_labels = [m for m in mood_list if mood_counts.get(m, 0) > 0]
+            fig = go.Figure(go.Pie(labels=pie_labels, values=[mood_counts[m] for m in pie_labels], hole=0.62, sort=False, marker_colors=[MOOD_COLORS[m] for m in pie_labels], textinfo="label+percent", textposition="outside", hovertemplate="%{label}: %{value} logs (%{percent})<extra></extra>"))
+            fig.update_layout(annotations=[dict(text=f"{total}<br><span style='font-size:12px'>Logs</span>", x=0.5, y=0.5, showarrow=False, font=dict(size=22, color="#1E293B"))], showlegend=False)
+            st.plotly_chart(_chart_layout(fig), use_container_width=True, config={"displayModeBar": False})
 
-            y_map = {"Happy": 5, "Neutral": 3, "Sad": 2, "Anxious": 1, "Angry": 0}
-            x = list(range(len(filtered)))
-            y = [y_map[m] for m in filtered]
+        # ================= CHAT-BASED TREND =================
+        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)  # Spacing
+        all_msgs = get_all_user_messages(user_id) or []
+        cutoff_map = {
+            "Last 7 Days": datetime.now() - timedelta(days=7),
+            "Last 30 Days": datetime.now() - timedelta(days=30),
+            "Last 3 Months": datetime.now() - timedelta(days=90),
+            "All Time": None,
+        }
+        cutoff = cutoff_map.get(range_option)
 
-            # Create styled figure
-            fig, ax = plt.subplots(figsize=(7, 3))
-            ax.plot(x, y, marker='o', linewidth=2.5, markersize=8, 
-                   color='#3b82f6', markerfacecolor='#2563eb', 
-                   markeredgecolor='white', markeredgewidth=2)
-            
-            # In above code, color for graph ploting line parts, markerfacecolor for dots , markeredgecolor for around dots
-            # Add gradient fill under the line
-            ax.fill_between(x, y, alpha=0.2, color='#3b82f6')
+        stress_keywords = [
+            "stress", "stressed", "anxious", "anxiety", "panic", "overwhelmed", "depress",
+            "depressed", "sad", "cry", "lonely", "tired", "can't", "cant", "hopeless",
+            "worthless", "pressure", "worried", "worry", "fear"
+        ]
 
-            ax.set_yticks([0, 1, 2, 3, 5])
-            ax.set_yticklabels(["Angry", "Anxious", "Sad", "Neutral", "Happy"])
-            ax.set_xticks(x)
-            ax.set_xticklabels([f"Day {i+1}" for i in x], rotation=45, ha='right')
+        daily_count = {}
+        daily_stress = {}
 
-            ax.set_title(f"Mood Trend – {range_option}", fontsize=10, fontweight='bold', pad=16)
-            ax.set_xlabel("Timeline", fontsize=9)
-            ax.set_ylabel("Mood Level", fontsize=9)
-            ax.grid(alpha=0.15, linestyle='--')
-            # full graph color
-            ax.set_facecolor('#f8fafc')
-            # graph outer color
-            fig.patch.set_facecolor('white')
+        for role, content, ts, conv_id in all_msgs:
+            if not ts:
+                continue
+            if isinstance(ts, datetime):
+                dt = ts
+            else:
+                try:
+                    dt = datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
+                except Exception:
+                    continue
+            if cutoff and dt < cutoff:
+                continue
 
-            st.pyplot(fig)
-            st.markdown("</div>", unsafe_allow_html=True)
+            d = dt.date()
+            daily_count[d] = daily_count.get(d, 0) + 1
 
-            # ================= MOOD DISTRIBUTION PIE CHART =================
-            st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)  # Spacing
-            st.markdown("<div class='chart-wrapper'>", unsafe_allow_html=True)
-            
+            text = (content or "").lower()
+            score = sum(text.count(k) for k in stress_keywords)
+            daily_stress[d] = daily_stress.get(d, 0) + score
+
+        if daily_count:
+            days_sorted = sorted(daily_count.keys())
+            x2 = list(range(len(days_sorted)))
+            counts = [daily_count[d] for d in days_sorted]
+            stress = [daily_stress.get(d, 0) for d in days_sorted]
+
+            st.markdown("<div class='chart-wrapper' style='margin-top: 30px; margin -bottom: 25px;'>", unsafe_allow_html=True)
+
             # Centered heading with larger size
             st.markdown("""
-            <div style='text-align: center; margin-bottom: 20px;'>
-                <h2 style='font-size: 26px; font-weight: 700; color: #1e293b; margin-bottom: 25px; margin-top: 25px;'>
-                    🎨 Mood Distribution
+            <div style='text-align: center; margin-bottom: 25px; margin-bottom: 25px;'>
+                <h2 style='font-size: 24px; font-weight: 700; color: #1e293b; margin-bottom: 12px;'>
+                    💬 Chat Activity Insights
                 </h2>
-                <p style='color: #475569; font-size: 19px; line-height: 1.7; max-width: 700px; margin: 0 auto; margin-bottom: 20px;'>
-                    This chart visualizes the percentage breakdown of your emotional states during the selected period. 
-                    Understanding your mood distribution helps identify patterns and emotional balance in your daily life.
+                <p style='color: #475569; font-size: 18px; line-height: 1.7; max-width: 700px; margin: 0 auto; margin-bottom: 25px;'>
+                    This analysis correlates your daily chat activity with stress-related keywords detected in your messages.
+                    The <span style='color: #10b981; font-weight: 600;'>green line</span> shows message volume, while the
+                    <span style='color: #ef4444; font-weight: 600;'>red line</span> indicates stress indicators, helping you identify
+                    patterns between communication frequency and emotional distress.
                 </p>
             </div>
             """, unsafe_allow_html=True)
 
-            # Create pie chart with much smaller size , for color change, change in both place down
-            fig2, ax2 = plt.subplots(figsize=(10, 3.5))
-            colors = ['#10b981', '#3b82f6', '#ef4444', '#f59e0b', '#ec4899']
-            mood_colors = {
-                "Happy": '#22C55E',
-                "Neutral": '#64748B', 
-                "Sad": '#60A5FA',
-                "Anxious": '#F59E0B',
-                "Angry": '#EF4444'
-            }
-            
-            pie_data = []
-            pie_labels = []
-            pie_colors = []
-            for mood in mood_list:
-                if mood in mood_counts and mood_counts[mood] > 0:
-                    pie_data.append(mood_counts[mood])
-                    pie_labels.append(mood)
-                    pie_colors.append(mood_colors.get(mood, '#3b82f6'))
-            
-            if pie_data:
-                wedges, texts, autotexts = ax2.pie(
-                    pie_data, 
-                    labels=pie_labels, 
-                    colors=pie_colors,
-                    autopct='%1.1f%%',
-                    startangle=90,
-                    radius=1.00,
-                    textprops={'fontsize': 4, 'weight': 'bold'}
-                )
-                
-                for autotext in autotexts:
-                    autotext.set_color('white')
-                    autotext.set_fontsize(4)
-                    autotext.set_weight('bold')
-                
-                ax2.set_title(f"Emotional Balance – {range_option}", fontsize=6, pad=9)
-                
-                # pie chart circle outer color
-                fig2.patch.set_facecolor('white')
-                
-            col1, col2, col3 = st.columns([1.4,5,0.6])
-
-            with col2:
-                st.pyplot(fig2, use_container_width=False)
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=days_sorted, y=counts, mode="lines+markers", name="Messages per day", line=dict(color=MOOD_COLORS["Happy"], width=3, shape="spline"), fill="tozeroy", fillcolor="rgba(79,209,197,0.12)"))
+            fig.add_trace(go.Scatter(x=days_sorted, y=stress, mode="lines+markers", name="Stress indicators", line=dict(color=MOOD_COLORS["Angry"], width=2, shape="spline")))
+            fig.update_xaxes(title=None, tickangle=0, showgrid=False, zeroline=False, showline=False)
+            fig.update_yaxes(title="Messages / indicators", showgrid=True, gridcolor="rgba(148,163,184,0.16)", zeroline=False)
+            fig.update_layout(title="Chat Activity & Stress Indicators", legend=dict(orientation="h", yanchor="bottom", y=1.15, xanchor="right", x=1), margin=dict(l=12, r=12, t=72, b=12))
+            st.plotly_chart(_chart_layout(fig, height=360), use_container_width=True, config={"displayModeBar": False})
             st.markdown("</div>", unsafe_allow_html=True)
-
-            # ================= CHAT-BASED TREND =================
-            st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)  # Spacing
-            all_msgs = get_all_user_messages(user_id) or []
-            cutoff_map = {
-                "Last 7 Days": datetime.now() - timedelta(days=7),
-                "Last 30 Days": datetime.now() - timedelta(days=30),
-                "Last 3 Months": datetime.now() - timedelta(days=90),
-                "All Time": None,
-            }
-            cutoff = cutoff_map.get(range_option)
-
-            stress_keywords = [
-                "stress", "stressed", "anxious", "anxiety", "panic", "overwhelmed", "depress",
-                "depressed", "sad", "cry", "lonely", "tired", "can't", "cant", "hopeless",
-                "worthless", "pressure", "worried", "worry", "fear"
-            ]
-
-            daily_count = {}
-            daily_stress = {}
-
-            for role, content, ts, conv_id in all_msgs:
-                if not ts:
-                    continue
-                if isinstance(ts, datetime):
-                    dt = ts
-                else:
-                    try:
-                        dt = datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
-                    except Exception:
-                        continue
-                if cutoff and dt < cutoff:
-                    continue
-
-                d = dt.date()
-                daily_count[d] = daily_count.get(d, 0) + 1
-
-                text = (content or "").lower()
-                score = sum(text.count(k) for k in stress_keywords)
-                daily_stress[d] = daily_stress.get(d, 0) + score
-
-            if daily_count:
-                days_sorted = sorted(daily_count.keys())
-                x2 = list(range(len(days_sorted)))
-                counts = [daily_count[d] for d in days_sorted]
-                stress = [daily_stress.get(d, 0) for d in days_sorted]
-
-                st.markdown("<div class='chart-wrapper' style='margin-top: 30px; margin -bottom: 25px;'>", unsafe_allow_html=True)
-                
-                # Centered heading with larger size
-                st.markdown("""
-                <div style='text-align: center; margin-bottom: 25px; margin-bottom: 25px;'>
-                    <h2 style='font-size: 24px; font-weight: 700; color: #1e293b; margin-bottom: 12px;'>
-                        💬 Chat Activity Insights
-                    </h2>
-                    <p style='color: #475569; font-size: 18px; line-height: 1.7; max-width: 700px; margin: 0 auto; margin-bottom: 25px;'>
-                        This analysis correlates your daily chat activity with stress-related keywords detected in your messages. 
-                        The <span style='color: #10b981; font-weight: 600;'>green line</span> shows message volume, while the 
-                        <span style='color: #ef4444; font-weight: 600;'>red line</span> indicates stress indicators, helping you identify 
-                        patterns between communication frequency and emotional distress.
-                    </p>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                fig2, ax2 = plt.subplots(figsize=(9, 4))
-                ax2.plot(x2, counts, marker='o', linewidth=2.5, markersize=7, 
-                        label="Messages per day", color='#10b981')
-                
-                    # also the graph line color changes
-                ax2.plot(x2, stress, marker='s', linewidth=2.5, markersize=7, 
-                        label="Stress indicators", color='#ef4444')
-                # extra
-                ax2.fill_between(x2, counts, alpha=0.1, color='#10b981')
-                ax2.fill_between(x2, stress, alpha=0.1, color='#ef4444')
-                
-                ax2.set_title("Chat Activity & Stress Level Correlation", fontsize=14, fontweight='bold', pad=20)
-                ax2.set_xlabel("Date", fontsize=11)
-                ax2.set_ylabel("Count / Score", fontsize=11)
-                ax2.set_xticks(x2)
-                ax2.set_xticklabels([d.strftime("%b %d") for d in days_sorted], rotation=45, ha="right",    # color="#ef4444"   # May 3, 4 etc<- label color
-)                 
-                # ax2.tick_params(axis='y', colors='#ef4444') For changing label of y-axis                       
-                ax2.grid(alpha=0.15, linestyle='--')
-                ax2.legend(loc='upper left', framealpha=0.9)
-                ax2.set_facecolor('#f8fafc') #graph's face color
-                fig2.patch.set_facecolor('white') #graph's back coloe
-
-                st.pyplot(fig2)
-                st.markdown("</div>", unsafe_allow_html=True)
-            else:
-                st.markdown("""
-                <div style='text-align: center; padding: 40px 20px;'>
-                    <p style='font-size: 16px; color: #64748b; font-weight: 500;'>
-                        📭 No chat history found for the selected time range.
-                    </p>
-                    <p style='font-size: 17px; color: #94a3b8; margin-top: 17px; margiun-bottom; 25px;'>
-                        Start chatting with the AI to see your activity insights here.
-                    </p>
-                </div>
-                """, unsafe_allow_html=True)
-
         else:
-            st.info("📊 Need more mood entries to show trend analysis. Keep logging your mood daily!")
+            st.markdown("""
+            <div style='text-align: center; padding: 40px 20px;'>
+                <p style='font-size: 16px; color: #64748b; font-weight: 500;'>
+                    📭 No chat history found for the selected time range.
+                </p>
+                <p style='font-size: 17px; color: #94a3b8; margin-top: 17px; margiun-bottom; 25px;'>
+                    Start chatting with the AI to see your activity insights here.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+
     else:
         st.info("🌸 Start logging your moods to see beautiful analytics and insights about your emotional wellness journey!")

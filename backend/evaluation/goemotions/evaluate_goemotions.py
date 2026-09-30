@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 ================================================================
 RoBERTa GoEmotions Model – Final Evaluation

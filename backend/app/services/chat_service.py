@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from app.ai.emotion_detection.predict import predict_emotion
 from app.ai.stress_detection.predict import predict_stress
 from app.ai.depression_detection.predict import predict_depression

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Enhanced AI engine for mental health chatbot.
 - Emotion detection using transformer model (fallback to rule-based)

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """FastAPI connectivity smoke test.
 
 The frontend intentionally has no PostgreSQL credentials or driver anymore.

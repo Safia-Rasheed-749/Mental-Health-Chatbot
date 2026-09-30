@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 =========================================================
 Train Stress Detection Model (RoBERTa-base)

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import streamlit as st
 from layout_utils import apply_clean_layout
 
@@ -51,7 +52,7 @@ def show_about_page():
         """
         <style>
           header,footer,.stDeployButton{display:none!important}
-          .main .block-container{max-width:1200px!important;padding:5rem 2rem 0!important;overflow:visible!important}
+          .main .block-container{max-width:1200px!important;padding:1rem 2rem 0!important;overflow:visible!important}
           .stApp,.main{background:linear-gradient(180deg,#F8FAFC 0%,#F4F3FF 100%)!important}
           .about-hero{padding:clamp(32px,6vw,58px) 28px;border-radius:26px;text-align:center;color:#fff;
             background:linear-gradient(135deg,#1E1B4B 0%,#312E81 52%,#6366F1 100%);
@@ -113,7 +114,7 @@ def show_about_page():
           .stat-item{text-align:center;padding:8px}
           .stat-number{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:850;line-height:1.15;margin-bottom:7px;color:#4338CA}
           .stat-label{font-size:.79rem;color:#6B7280;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
-          @media(max-width:760px){.main .block-container{padding:5rem 1rem 0!important}.mission-grid,.sdg-grid{grid-template-columns:1fr}.arch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.team-grid{grid-template-columns:1fr}.stats-inner{grid-template-columns:repeat(2,minmax(0,1fr))}.site-footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-title{font-size:1.5rem}}
+          @media(max-width:760px){.main .block-container{padding:1rem 1rem 0!important}.mission-grid,.sdg-grid{grid-template-columns:1fr}.arch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.team-grid{grid-template-columns:1fr}.stats-inner{grid-template-columns:repeat(2,minmax(0,1fr))}.site-footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-title{font-size:1.5rem}}
           @media(max-width:440px){.stats-inner,.site-footer-grid{grid-template-columns:1fr}.flow-steps{gap:8px}.flow-arrow{transform:rotate(90deg)}}
         </style>
         """,

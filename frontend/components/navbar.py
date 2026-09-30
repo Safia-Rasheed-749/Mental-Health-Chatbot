@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # components/navbar.py — Professional flat sticky navbar (PURE CSS + STREAMLIT BUTTONS)
 import streamlit as st
 
@@ -12,9 +13,8 @@ def render_navbar():
             display: none !important;
         }
         
-        /* Main content padding - adjusted for navbar height */
+        /* Public navbar is fixed; a real Streamlit spacer is rendered below. */
         .main .block-container {
-            padding-top: 100px !important;
             padding-left: 2rem !important;
             padding-right: 2rem !important;
             max-width: 100% !important;
@@ -274,3 +274,11 @@ def render_navbar():
             if st.button("Get Started", key="nav_auth", type="primary"):
                 st.session_state.page = "auth"
                 st.rerun()
+
+    # position: fixed removes the navbar from normal document flow. This
+    # explicit Streamlit element reserves its height before page content,
+    # independent of page-level container CSS or :has() selector behavior.
+    st.markdown(
+        '<div aria-hidden="true" style="height:96px;min-height:96px;width:100%"></div>',
+        unsafe_allow_html=True,
+    )

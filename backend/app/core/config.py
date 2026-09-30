@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Central configuration for the FastAPI application."""
 
 from __future__ import annotations

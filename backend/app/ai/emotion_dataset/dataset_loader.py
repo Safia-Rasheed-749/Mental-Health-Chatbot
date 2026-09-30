@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datasets import load_dataset
 import pandas as pd
 import os

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pandas as pd
 
 train = pd.read_csv("datasets/emotion_dataset/processed/train_processed.csv")

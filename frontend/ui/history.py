@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import streamlit as st
 from datetime import datetime, date, timedelta
 from db import get_all_user_messages, get_messages_by_conversation

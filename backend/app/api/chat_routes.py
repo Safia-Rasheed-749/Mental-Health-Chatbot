@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # backend/app/api/chat_routes.py
 # MODIFIED: Updated /chat endpoint to pass request.history to
 # generate_chat_response() for multi-turn conversation memory.

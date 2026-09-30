@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Download Mental-Health_Text-Classification_Dataset from Hugging Face
 Alternative: Manual download or create synthetic test set

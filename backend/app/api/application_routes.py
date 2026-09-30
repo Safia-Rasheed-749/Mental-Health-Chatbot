@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Protected application/data routes used by the Streamlit client."""
 
 from fastapi import APIRouter, Depends, HTTPException

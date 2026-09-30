@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # app.py
 import streamlit as st
 import streamlit.components.v1 as components  # ADDED for scroll fix
@@ -14,6 +15,13 @@ st.set_page_config(
 # ================= GLOBAL CSS =================
 st.markdown("""
 <style>
+    /* Global spacing standards */
+    .block-container { padding-top: 2rem; padding-bottom: 3rem; }
+    div[data-testid="stForm"] { gap: 1.5rem; }
+    .stTabs [data-baseweb="tab-list"] { gap: 12px; margin-bottom: 20px; }
+    .stExpander { margin-bottom: 24px; border-radius: 10px; }
+    div[data-testid="stTextInput"], div[data-testid="stSelectbox"], div[data-testid="stTextArea"] { margin-bottom: 12px; }
+
     body {
         margin: 0 !important;
         padding: 0 !important;
@@ -42,11 +50,6 @@ st.markdown("""
         z-index: 999999 !important;
         background: linear-gradient(90deg, #6366F1 0%, #A855F7 100%) !important;
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    .main:has(.navbar-container) .block-container {
-        padding-top: 5rem !important;
-        z-index: 1 !important;
     }
 
     /* Sidebar collapse/expand arrow — always fully visible */
@@ -183,15 +186,19 @@ from ui.auth import show_auth_page
 from ui.sidebar import show_sidebar
 from ui.demo_chat import show_demo_chat
 from ui_pages.about import show_about_page
-from ui import dashboard, chat, mood, journal, history
+from ui import dashboard, chat, mood, journal
 from ui_pages.admin import show_admin_panel
 from ui.games import show_aesthetic_game_selector
 
 # ================= PUBLIC PAGES =================
 public_pages_list = ["landing", "games", "exercises", "auth", "about"]
+public_navbar_active = (
+    st.session_state.get("user") is None
+    and st.session_state.get("page") in public_pages_list
+)
 
 # ================= CLEAN LAYOUT FOR PUBLIC =================
-if st.session_state.get("page") in public_pages_list:
+if public_navbar_active:
     apply_clean_layout(hide_header_completely=True)
     apply_professional_design_system()
     render_navbar()
@@ -255,6 +262,40 @@ if st.session_state.user is None:
 
 # ================= LOGGED IN AREA =================
 apply_clean_layout(hide_header_completely=False)
+
+# Authentication/public pages retain the branded header above. Once signed in,
+# remove only its blue-purple fill and shadow; keep Streamlit's header controls.
+st.markdown("""
+<style>
+    header[data-testid="stHeader"] {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(.navbar-container) {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    .mindcare-disclaimer-footer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        padding: 7px 16px;
+        text-align: center;
+        color: #64748b;
+        background: rgba(248, 250, 252, 0.94);
+        border-top: 1px solid rgba(148, 163, 184, 0.18);
+        font: 12px/1.4 'Segoe UI', sans-serif;
+        pointer-events: none;
+    }
+    section.main .block-container { padding-bottom: 3.5rem !important; }
+</style>
+""", unsafe_allow_html=True)
+st.markdown(
+    '<div class="mindcare-disclaimer-footer">MindCareAI is an AI support tool, not a substitute for professional clinical advice or medical treatment.</div>',
+    unsafe_allow_html=True,
+)
 
 # Keep sidebar collapse/expand icon always visible for logged-in users
 st.markdown("""
@@ -324,7 +365,10 @@ elif current == "Exercises":
     show_exercises_page()
 
 elif current == "History":
-    history.show_history(user_id)
+    # Legacy URLs/session state redirect to Chat; history lives in its sidebar recents.
+    st.session_state["current_page"] = "Chat"
+    st.query_params["page"] = "Chat"
+    st.rerun()
 
 elif current == "Games":
     st.session_state["games_from_sidebar"] = True

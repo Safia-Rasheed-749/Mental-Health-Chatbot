@@ -1,7 +1,37 @@
+# -*- coding: utf-8 -*-
 import streamlit as st
 from db import add_journal, get_journals, log_user_activity
-from datetime import datetime
+from datetime import date, datetime, time
 from layout_utils import apply_clean_layout
+import html
+import json
+
+
+def _serialize_entry(title, mood, entry_date, entry_time, content):
+    payload = {
+        "title": title.strip() or "Untitled reflection",
+        "mood": mood,
+        "created_at": datetime.combine(entry_date, entry_time).isoformat(timespec="minutes"),
+        "content": content.strip(),
+    }
+    return "JOURNAL_V1:" + json.dumps(payload, ensure_ascii=False)
+
+
+def _parse_entry(value):
+    if value.startswith("JOURNAL_V1:"):
+        try:
+            return json.loads(value[len("JOURNAL_V1:"):])
+        except (json.JSONDecodeError, TypeError):
+            pass
+    title, created_at, content = "Journal reflection", "Date not available", value
+    if value.startswith("[") and "]" in value:
+        raw_date, content = value[1:].split("]", 1)
+        try:
+            created_at = datetime.fromisoformat(raw_date).strftime("%b %d, %Y · %I:%M %p")
+        except ValueError:
+            created_at = raw_date
+        content = content.strip()
+    return {"title": title, "mood": "Not tagged", "created_at": created_at, "content": content}
 
 def show_journal(user_id):
     apply_clean_layout(hide_header_completely=False)
@@ -293,66 +323,74 @@ def show_journal(user_id):
     """, unsafe_allow_html=True)
 
     # ── INFO CARD ──
-    st.markdown("""
-    <div class='info-card'>
-        <h4>💭 The Power of Journaling</h4>
-        <p>
-        Journaling helps you slow down your thoughts and understand your emotions more clearly.
-        This process—known as <b>catharsis</b>—helps release emotional tension, reduce stress,
-        and bring clarity to your mind.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+    journals = get_journals(user_id) or []
+    write_tab, history_tab = st.tabs(["✍️ Write Entry", "📖 Past Entries"])
 
-    # ── JOURNAL INPUT CARD ──
-    
-    st.markdown("<div class='section-title'>🧠 What's on your mind today?</div>", unsafe_allow_html=True)
-    
-    entry = st.text_area("", placeholder="Start writing your thoughts here...", height=200, label_visibility="collapsed")
+    with write_tab:
+        with st.expander("💡 Why Journaling Helps"):
+            st.markdown("Journaling helps you slow down, understand your emotions, and release stress. A few honest lines can bring clarity to your day.")
 
-    st.markdown('<div style="display: flex; justify-content: center; margin: 20px 0;">', unsafe_allow_html=True)
-    save_clicked = st.button("💾 Save Entry", key="save_journal")
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
+        st.markdown("<div class='section-title'>💭 What's on your mind today?</div>", unsafe_allow_html=True)
+        title_col, mood_col = st.columns([2, 1], gap="medium")
+        with title_col:
+            title = st.text_input("Entry title", placeholder="Give this reflection a title", key="journal_title")
+        with mood_col:
+            mood = st.selectbox("Associated mood", ["No tag", "Happy", "Neutral", "Sad", "Anxious", "Angry"], key="journal_mood")
+        date_col, time_col = st.columns([2, 1], gap="medium")
+        with date_col:
+            entry_date = st.date_input("Date", value=date.today(), key="journal_date")
+        with time_col:
+            entry_time = st.time_input("Time", value=datetime.now().replace(second=0, microsecond=0).time(), key="journal_time")
 
-    st.markdown("</div>", unsafe_allow_html=True)
+        entry = st.text_area("Your reflection", placeholder="Start writing your thoughts here...", height=220, key="journal_content")
+        st.caption(f"{len(entry)} characters · {len(entry.split())} words")
+        action_spacer, action_button = st.columns([3, 1])
+        with action_button:
+            save_clicked = st.button("💾 Save Entry", key="save_journal", use_container_width=True)
 
-    # ── SAVE LOGIC ──
-    if 'last_journal' not in st.session_state:
-        st.session_state['last_journal'] = None
+        if save_clicked:
+            if entry.strip():
+                full_entry = _serialize_entry(title, mood, entry_date, entry_time, entry)
+                add_journal(user_id, full_entry)
+                try:
+                    log_user_activity(user_id, "Write Journal", "Journal", f"Entry length: {len(entry)} characters")
+                except Exception:
+                    pass
+                st.success("Journal entry saved successfully.")
+                st.session_state["journal_content"] = ""
+                st.session_state["journal_title"] = ""
+                st.rerun()
+            else:
+                st.warning("Write a few words before saving your entry.")
 
-    if save_clicked:
-        if entry.strip():
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            full_entry = f"[{timestamp}] {entry.strip()}"
-            add_journal(user_id, full_entry)
-            try:
-                log_user_activity(
-                    user_id,
-                    "Write Journal",
-                    "Journal",
-                    f"Entry length: {len(entry)} characters"
-                )
-            except Exception:
-                pass
-            st.success("✅ Journal entry saved successfully!")
-            st.session_state['last_journal'] = full_entry
+    with history_tab:
+        if journals:
+            st.markdown(f"<div class='entries-title'>📜 Your reflections <span style='font-size:13px;color:#64748b;font-weight:500'>· {len(journals)} entries</span></div>", unsafe_allow_html=True)
+            for raw_entry in reversed(journals):
+                item = _parse_entry(str(raw_entry))
+                safe_title = html.escape(str(item.get("title", "Untitled reflection")))
+                safe_date = html.escape(str(item.get("created_at", "Date not available")))
+                safe_mood = html.escape(str(item.get("mood", "Not tagged")))
+                content = html.escape(str(item.get("content", "")))
+                preview = content if len(content) <= 600 else content[:600].rstrip() + "…"
+                mood_icons = {"Happy": "😊", "Neutral": "😐", "Sad": "😔", "Anxious": "😰", "Angry": "😡", "No tag": "🌿", "Not tagged": "🌿"}
+                icon = mood_icons.get(str(item.get("mood", "")), "🌿")
+                st.markdown(f"""
+                <article class="journal-entry">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+                        <div><div style="font-size:17px;font-weight:700;color:#1e293b">{safe_title}</div>
+                        <div style="font-size:12px;color:#64748b;margin-top:5px">{safe_date}</div></div>
+                        <span style="background:#eef4ff;border-radius:20px;padding:5px 11px;font-size:12px;color:#475569">{icon} {safe_mood}</span>
+                    </div>
+                    <div style="white-space:pre-wrap;margin-top:14px">{preview}</div>
+                </article>
+                """, unsafe_allow_html=True)
         else:
-            st.warning("⚠️ Cannot save empty entry.")
-
-    journals = get_journals(user_id)
-
-    if st.session_state.get('last_journal'):
-        if journals and st.session_state['last_journal'] not in journals:
-            journals.append(st.session_state['last_journal'])
-        elif not journals:
-            journals = [st.session_state['last_journal']]
-
-    # ── RECENT ENTRIES ──
-    if journals:
-        st.markdown("<div class='entries-section'>", unsafe_allow_html=True)
-        st.markdown("<div class='entries-title'>📜 Recent Entries</div>", unsafe_allow_html=True)
-        for j in reversed(journals[-5:]):
-            st.markdown(f"<div class='journal-entry'>{j}</div>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
-    else:
-        st.info("📝 You have no journal entries yet. Start writing above!")
+            st.markdown("""
+            <div style="text-align:center;padding:42px 20px;background:rgba(255,255,255,.8);border:1px solid rgba(148,163,184,.2);border-radius:18px;margin-top:12px">
+                <div style="font-size:42px">📖</div>
+                <div style="font-size:17px;font-weight:700;color:#1e293b;margin-top:10px">A little space for your thoughts</div>
+                <div style="font-size:14px;color:#64748b;margin-top:6px">No journal entries recorded yet. Select “Write Entry” to begin.</div>
+            </div>
+            """, unsafe_allow_html=True)

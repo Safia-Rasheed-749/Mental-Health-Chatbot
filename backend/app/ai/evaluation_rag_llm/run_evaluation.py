@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Run the curated RAG evaluation set and export an examiner-ready dataset.
 
 This runner deliberately does not invent automated clinical scores. It records

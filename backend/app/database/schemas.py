@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # MODIFIED: Added ChatMessage schema and updated ChatRequest with optional
 # history field for multi-turn conversation memory support.
 # Backward compatible — history defaults to empty list.

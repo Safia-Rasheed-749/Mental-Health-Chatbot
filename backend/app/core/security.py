@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Password hashing and signed bearer-token helpers."""
 
 from __future__ import annotations

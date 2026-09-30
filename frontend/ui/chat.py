@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import requests
 # ========== FORCE FFMPEG PATH ==========
 import os
@@ -303,8 +304,8 @@ def show_chat(user_id):
         display: flex;
         align-items: center;
         gap: 9px;
-        width: 100%;
-        margin: 0 0 12px;
+        width: min(100%, 1080px);
+        margin: 0 auto 12px;
         padding: 10px 14px;
         border: 1px solid #ddd6fe;
         border-radius: 10px;
@@ -330,10 +331,10 @@ def show_chat(user_id):
     .chat-status-row {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: center;
         gap: 6px;
         min-height: 24px;
-        margin: 0 2px 6px;
+        margin: 8px 0 0;
         color: #64748b;
         font-size: 12px;
         font-weight: 600;
@@ -490,6 +491,8 @@ def show_chat(user_id):
     /* ── EMPTY STATE ── */
     .empty-state {
         text-align: center;
+        max-width: 860px;
+        margin: 0 auto;
         padding: 38px 20px 28px;
         color: #64748b;
     }
@@ -520,12 +523,25 @@ def show_chat(user_id):
         line-height: 1.6;
     }
     .quick-start-label {
-        margin: 20px 0 9px;
+        margin: 20px auto 12px;
+        text-align: center;
+        max-width: 860px;
         color: #64748b;
         font-size: 11px;
         font-weight: 700;
         letter-spacing: .08em;
         text-transform: uppercase;
+    }
+    div[data-testid="stVerticalBlock"]:has(> .st-key-quick_start) {
+        width: min(100%, 860px) !important;
+        margin: 0 auto !important;
+    }
+    .st-key-quick_start [data-testid="stHorizontalBlock"] {
+        justify-content: center !important;
+        gap: 14px !important;
+    }
+    .st-key-quick_start [data-testid="column"] {
+        min-width: 0 !important;
     }
     .st-key-quick_start button {
         min-height: 56px !important;
@@ -593,7 +609,7 @@ def show_chat(user_id):
         background: rgba(246,247,251,0.82) !important;
         backdrop-filter: blur(14px) !important;
         border-top: none !important;
-        padding: 6px 12px 8px !important;
+        padding: 6px max(12px, calc((100vw - 1080px) / 2)) 8px !important;
         margin: 0 !important;
         width: 100% !important;
         transition: left 0.3s ease, width 0.3s ease !important;
@@ -631,13 +647,6 @@ def show_chat(user_id):
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="chat-status-row">
-        <span class="status-dot"></span>
-        <span>MindCare AI is available</span>
-    </div>
-    """, unsafe_allow_html=True)
-
     # Auto-play audio using JavaScript (hidden)
     if "auto_play_audio" in st.session_state:
         audio_base64 = st.session_state["auto_play_audio"]
@@ -669,6 +678,7 @@ def show_chat(user_id):
                 <span class="empty-state-icon">🧠</span>
                 <h3>Hello, I'm here for you</h3>
                 <p>Share what is on your mind in this private, judgment-free space.</p>
+                <div class="chat-status-row"><span class="status-dot"></span><span>MindCare AI is available</span></div>
             </div>
             """, unsafe_allow_html=True)
             quick_input = None
@@ -676,9 +686,9 @@ def show_chat(user_id):
                 st.markdown('<div class="quick-start-label">You can start with</div>', unsafe_allow_html=True)
                 quick_cols = st.columns(3)
                 quick_prompts = [
-                    ("◌  I feel anxious", {"type": "text", "data": "I feel anxious"}),
-                    ("〰  Try a breathing exercise", {"type": "navigate", "page": "Exercises"}),
-                    ("◉  Help me track my mood", {"type": "navigate", "page": "Mood Analytics"}),
+                    ("🌿  I feel anxious", {"type": "text", "data": "I feel anxious"}),
+                    ("〰️  Try a breathing exercise", {"type": "navigate", "page": "Exercises"}),
+                    ("✨  Help me track my mood", {"type": "navigate", "page": "Mood Analytics"}),
                 ]
                 for column, (label, action) in zip(quick_cols, quick_prompts):
                     with column:

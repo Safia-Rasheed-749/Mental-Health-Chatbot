@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Small REST client used by Streamlit instead of direct PostgreSQL access."""
 
 from __future__ import annotations

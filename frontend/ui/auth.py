@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import streamlit as st
 import re
 from db import add_user, check_login, get_user_by_email, create_reset_token_for_email, reset_password_with_code
@@ -37,15 +38,17 @@ def show_auth_page():
     ========================================= */
     
     /* Hide Streamlit default headers & footers */
-    header, footer, .stDeployButton { display: none !important; }
-    #MainMenu { visibility: hidden; }
+    body:has(.auth-page-marker) header,
+    body:has(.auth-page-marker) footer,
+    body:has(.auth-page-marker) .stDeployButton { display: none !important; }
+    body:has(.auth-page-marker) #MainMenu { visibility: hidden; }
     
     /* ═══════════════════════════════════════════════════════════════
        FIX NAVBAR BUTTON ALIGNMENT - FORCE ALL BUTTONS TO SAME HEIGHT
        ═══════════════════════════════════════════════════════════════ */
     
     /* Target navbar container - ensure it's at the top */
-    div[data-testid="stHorizontalBlock"]:has(.navbar-container) {
+    body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) {
         position: fixed !important;
         top: 0 !important;
         left: 0 !important;
@@ -54,7 +57,7 @@ def show_auth_page():
     }
     
     /* Force all navbar buttons to same vertical alignment */
-    div[data-testid="stHorizontalBlock"]:has(.navbar-container) button {
+    body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) button {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
         vertical-align: middle !important;
@@ -62,14 +65,14 @@ def show_auth_page():
     }
     
     /* Force button containers to same height */
-    div[data-testid="stHorizontalBlock"]:has(.navbar-container) div[data-testid="column"] {
+    body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) div[data-testid="column"] {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
     }
     
     /* Ensure primary button (Get Started) has same alignment */
-    div[data-testid="stHorizontalBlock"]:has(.navbar-container) button[kind="primary"] {
+    body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) button[kind="primary"] {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
         padding-top: 10px !important;
@@ -79,31 +82,28 @@ def show_auth_page():
     }
 
     /* Clean White Background */
-    .stApp { 
+    body:has(.auth-page-marker) .stApp {
         background: #ffffff;  /* CHANGE THIS: Overall app background color */
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         min-height: 100vh;
     }
-    .main .block-container { 
-        padding-top: 140px !important; 
-        padding-bottom: 2rem !important;
+    body:has(.auth-page-marker) .main .block-container {
+        padding-top: 0 !important;
+        padding-bottom: 1rem !important;
         max-width: 1000px;
-        overflow-y: hidden !important;
+        overflow-y: visible !important;
     }
-                /* Removed top spacing */
-    .block-container {
-        padding-top: 2.4rem !important}
     
     /* Disable auto-scroll */
-    section[data-testid="stAppViewContainer"] {
+    body:has(.auth-page-marker) section[data-testid="stAppViewContainer"] {
         overflow-y: auto !important;
     }
 
     
-    [data-testid="column"]:nth-child(2) {
+    body:has(.auth-page-marker) [data-testid="column"]:nth-child(2) {
         background: #ffffff !important;  /* CHANGE THIS: Card background color */
         border-radius: 20px !important;
-        padding: 2.5rem 3rem 3rem 3rem !important;
+        padding: 1.25rem 2rem 1.25rem !important;
         box-shadow: 
             0 10px 40px rgba(0, 0, 0, 0.08),
             0 0 0 1px rgba(0, 0, 0, 0.05) inset !important;
@@ -125,8 +125,8 @@ def show_auth_page():
     /* Header text alignment */
     .auth-header { 
         text-align: center; 
-        margin-bottom: 1.5rem;
-        margin-top: 1rem;
+        margin-bottom: 0.75rem;
+        margin-top: 0;
     }
     /*welcome back background color*/
     .auth-header h1 { 
@@ -151,12 +151,12 @@ def show_auth_page():
 
     
     /* input fields name color change - INCREASED FONT SIZE - ULTRA AGGRESSIVE */
-    .stTextInput label,
-    div[data-testid="stTextInput"] label,
-    div[data-testid="stTextInput"] > label,
-    label[data-testid="stWidgetLabel"],
-    .stTextInput > label,
-    [data-testid="column"] label {
+    body:has(.auth-page-marker) .stTextInput label,
+    body:has(.auth-page-marker) div[data-testid="stTextInput"] label,
+    body:has(.auth-page-marker) div[data-testid="stTextInput"] > label,
+    body:has(.auth-page-marker) label[data-testid="stWidgetLabel"],
+    body:has(.auth-page-marker) .stTextInput > label,
+    body:has(.auth-page-marker) [data-testid="column"] label {
         display: none !important;  /* HIDE ALL STREAMLIT LABELS - we use custom HTML labels */
         visibility: hidden !important;
         height: 0 !important;
@@ -165,13 +165,13 @@ def show_auth_page():
     }
     
     /* Remove Streamlit's default input wrapper border */
-    div[data-testid="stTextInput"] > div {
+    body:has(.auth-page-marker) div[data-testid="stTextInput"] > div {
         border: none !important;
         padding: 0 !important;
         background: transparent !important;
     }
     
-    div[data-testid="stTextInputRootElement"] {
+    body:has(.auth-page-marker) div[data-testid="stTextInputRootElement"] {
         border-radius: 10px !important;
         border: 1px solid #e2e8f0 !important;  /* NOT CHANGE THIS: Input border color */
         padding: 10px 14px !important;
@@ -179,14 +179,14 @@ def show_auth_page():
         transition: all 0.3s ease !important;
     }
     
-    div[data-testid="stTextInputRootElement"]:focus-within {
+    body:has(.auth-page-marker) div[data-testid="stTextInputRootElement"]:focus-within {
         border-color: #667eea !important;  
         background-color: #FFFFFF !important; 
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
         transform: translateY(-1px);
     }
     
-    input {
+    body:has(.auth-page-marker) input {
         color: #0f172a !important;  /* Accessible input text color */
         font-size: 0.95rem !important;
         font-weight: 500 !important;
@@ -194,14 +194,14 @@ def show_auth_page():
         background: transparent !important;
     }
     /* by default values in palceholder color change.*/
-    input::placeholder {
+    body:has(.auth-page-marker) input::placeholder {
         color: #94a3b8 !important;  /* CHANGE THIS: Placeholder text color */
         font-weight: 400 !important;
     }
 
     
     /* Primary Button with Gradient */
-    button[kind="primary"] {
+    body:has(.auth-page-marker) button[kind="primary"] {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; /* CHANGE THIS: Button gradient colors */
         color: #FFFFFF !important;  
         width: 100% !important;
@@ -209,24 +209,24 @@ def show_auth_page():
         font-weight: 600 !important;
         font-size: 1rem !important;
         padding: 0.75rem 1.5rem !important;
-        margin-top: 1rem !important;
+        margin-top: 0.5rem !important;
         border: none !important;
         transition: all 0.3s ease !important;
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3) !important;  /* CHANGE THIS: Button shadow color (match gradient start) */
         letter-spacing: 0.3px;
     }
     
-    button[kind="primary"]:hover { 
+    body:has(.auth-page-marker) button[kind="primary"]:hover {
         transform: translateY(-2px) !important;
         box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;  /* CHANGE THIS: Hover shadow color */
     }
     
-    button[kind="primary"]:active {
+    body:has(.auth-page-marker) button[kind="primary"]:active {
         transform: translateY(0) !important;
     }
      /* forget password ,dont have an account text color*/
     /* Tertiary Link Button - LARGER FONT */
-    button[kind="tertiary"] {
+    body:has(.auth-page-marker) button[kind="tertiary"] {
         background-color: transparent !important;
         color: #5b21b6 !important;
         width: 100% !important;
@@ -235,17 +235,17 @@ def show_auth_page():
         font-weight: 600 !important;
         font-size: 18px !important;
         padding: 0.5rem !important;
-        margin-top: 0.75rem !important;
+        margin-top: 0.25rem !important;
         transition: all 0.2s ease !important;
     }
     
-    button[kind="tertiary"] p,
-    button[kind="tertiary"] span {
+    body:has(.auth-page-marker) button[kind="tertiary"] p,
+    body:has(.auth-page-marker) button[kind="tertiary"] span {
         font-size: 18px !important;
         font-weight: 600 !important;
     }
     /* forget password ,dont have an account background hover color*/
-    button[kind="tertiary"]:hover { 
+    body:has(.auth-page-marker) button[kind="tertiary"]:hover {
         color: #7c3aed !important;
         background-color: rgba(91, 33, 182, 0.08) !important;
         border-radius: 8px !important;
@@ -253,7 +253,7 @@ def show_auth_page():
     }
      /* cancel button color */ 
     /* Secondary Button (Cancel button) - Red/Gray gradient */
-    button[kind="secondary"] {
+    body:has(.auth-page-marker) button[kind="secondary"] {
         background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%)  !important;
         color: #ffffff !important;
         width: 100% !important;
@@ -268,12 +268,12 @@ def show_auth_page():
         letter-spacing: 0.3px;
     }
     
-    button[kind="secondary"]:hover {
+    body:has(.auth-page-marker) button[kind="secondary"]:hover {
         transform: translateY(-2px) !important;
         box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4) !important;
     }
     
-    button[kind="secondary"]:active {
+    body:has(.auth-page-marker) button[kind="secondary"]:active {
         transform: translateY(0) !important;
     }
 
@@ -284,7 +284,7 @@ def show_auth_page():
         margin-bottom: 8px;
     }
     
-    .forgot-password-link button {
+    body:has(.auth-page-marker) .forgot-password-link button {
         font-size: 18px !important;
         color: #5b21b6 !important;
         font-weight: 600 !important;
@@ -293,13 +293,13 @@ def show_auth_page():
         float: right;
     }
     
-    .forgot-password-link button p,
-    .forgot-password-link button span {
+    body:has(.auth-page-marker) .forgot-password-link button p,
+    body:has(.auth-page-marker) .forgot-password-link button span {
         font-size: 18px !important;
         font-weight: 600 !important;
     }
     
-    .forgot-password-link button:hover {
+    body:has(.auth-page-marker) .forgot-password-link button:hover {
         color: #7c3aed !important;
         text-decoration: underline !important;
     }
@@ -308,7 +308,7 @@ def show_auth_page():
     .divider-container {
         display: flex;
         align-items: center;
-        margin: 1.5rem 0;
+        margin: 0.65rem 0;
     }
     
     .divider-line {
@@ -326,7 +326,7 @@ def show_auth_page():
 
     /* Success/Error Messages */
     /* WARNING: Streamlit's alert classes might be renamed in future versions */
-    .stAlert {
+    body:has(.auth-page-marker) .stAlert {
         border-radius: 10px !important;
         border: none !important;
         padding: 1rem !important;
@@ -334,14 +334,31 @@ def show_auth_page():
     }
     
     /* Loading State */
-    .stSpinner > div {
+    body:has(.auth-page-marker) .stSpinner > div {
         border-top-color: #667eea !important;  /* CHANGE THIS: Spinner color */
+    }
+
+    /* Login-only form rhythm. The Streamlit container key gives this a real
+       DOM boundary, unlike opening/closing HTML across separate widgets. */
+    .st-key-login_form_container div[data-baseweb="input"] {
+        margin-top: 6px !important;
+        margin-bottom: 10px !important;
+        border-radius: 8px !important;
+    }
+    .st-key-login_form_container .st-key-go_forgot {
+        margin-top: -4px !important;
+        margin-bottom: 12px !important;
+        text-align: right !important;
+    }
+    .st-key-login_form_container .st-key-signin_btn {
+        margin-top: 8px !important;
+        margin-bottom: 12px !important;
     }
 
     /* Responsive Design */
     @media (max-width: 768px) {
-        [data-testid="column"]:nth-child(2) {
-            padding: 2rem 1.5rem !important;
+        body:has(.auth-page-marker) [data-testid="column"]:nth-child(2) {
+            padding: 1rem 1.25rem !important;
         }
         
         .auth-header h1 {
@@ -357,75 +374,77 @@ def show_auth_page():
     # NOTE: The card styling targets [data-testid="column"]:nth-child(2)
     # If you change this layout (e.g., different column ratios or more columns),
     # you'll need to update the CSS selector to match the correct column.
-    _, center_col, _ = st.columns([1, 1.2, 1])  # This creates the 3 columns
+    _, center_col, _ = st.columns([1, 1.5, 1])  # Center the auth card
     
     with center_col:
+        st.markdown('<div class="auth-page-marker" aria-hidden="true"></div>', unsafe_allow_html=True)
         
         # ==================== VIEW 1: LOGIN ====================
         if st.session_state.auth_mode == 'login':
-            st.markdown("""
-                <div class="auth-header">
-                    <h1>Welcome Back</h1>
-                    <p>Enter your details to sign in to your account.</p>
-                </div>
-            """, unsafe_allow_html=True)
+            with st.container(key="login_form_container"):
+                st.markdown("""
+                    <div class="auth-header">
+                        <h1>Welcome Back</h1>
+                        <p>Enter your details to sign in to your account.</p>
+                    </div>
+                """, unsafe_allow_html=True)
             
             
-            # Email Label  login - 18px, semi-bold, dark color
-            st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 16px;">Email</p>', unsafe_allow_html=True)
-            email = st.text_input("Email", key="login_email", placeholder="name@example.com", label_visibility="collapsed")
+                # Email Label  login - 18px, semi-bold, dark color
+                st.markdown('<p style="font-size: 16px; font-weight: 600; color: #1e293b; margin-bottom: 6px; margin-top: 8px;">Email</p>', unsafe_allow_html=True)
+                email = st.text_input("Email", key="login_email", placeholder="name@example.com", label_visibility="collapsed")
             
-            # Password Label - 18px, semi-bold, dark color, extra top margin
-            st.markdown('<p style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; margin-top: 20px;">Password</p>', unsafe_allow_html=True)
-            password = st.text_input("Password", type="password", key="login_password", placeholder="••••••••", label_visibility="collapsed")
+                # Password Label - 18px, semi-bold, dark color, extra top margin
+                st.markdown('<p style="font-size: 16px; font-weight: 600; color: #1e293b; margin-bottom: 6px; margin-top: 8px;">Password</p>', unsafe_allow_html=True)
+                password = st.text_input("Password", type="password", key="login_password", placeholder="••••••••", label_visibility="collapsed")
 
-            # Forgot Password small link just under password
-            st.markdown("<div class='forgot-password-link'>", unsafe_allow_html=True)
-            if st.button("Forgot password?", key="go_forgot", type="tertiary"):
-                st.session_state.auth_mode = 'forgot_password'
-                st.rerun()
-            st.markdown("</div>", unsafe_allow_html=True)
+                # Forgot Password small link just under password
+                st.markdown("<div class='forgot-password-link'>", unsafe_allow_html=True)
+                if st.button("Forgot password?", key="go_forgot", type="tertiary"):
+                    st.session_state.auth_mode = 'forgot_password'
+                    st.rerun()
+                st.markdown("</div>", unsafe_allow_html=True)
 
-            # Main Full-width Login Button
-            if st.button("Sign In", key="signin_btn", type="primary", use_container_width=True):
-                try:
-                    user = check_login(email, password)
-                except BackendUnavailableError as exc:
-                    st.error(str(exc))
-                    st.info(
-                        "From the project folder, run: "
-                        "python -m uvicorn app.main:app --app-dir backend "
-                        "--host 127.0.0.1 --port 8000"
-                    )
-                else:
-                    if user:
-                        st.session_state.user = user
-                        is_admin = len(user) > 3 and user[3]
-                        if is_admin:
-                            st.session_state.current_page = "Admin Panel"
-                            st.session_state.page = "admin_panel"
-                        else:
-                            st.session_state.current_page = "Dashboard"
-                            st.session_state.page = "dashboard"
-                        st.rerun()
+                # Main Full-width Login Button
+                if st.button("Sign In", key="signin_btn", type="primary", use_container_width=True):
+                    try:
+                        user = check_login(email, password)
+                    except BackendUnavailableError as exc:
+                        st.error(str(exc))
+                        st.info(
+                            "From the project folder, run: "
+                            "python -m uvicorn app.main:app --app-dir backend "
+                            "--host 127.0.0.1 --port 8000"
+                        )
                     else:
-                        st.error("Invalid email or password.")
+                        if user:
+                            st.session_state.user = user
+                            is_admin = len(user) > 3 and user[3]
+                            if is_admin:
+                                st.session_state.current_page = "Admin Panel"
+                                st.session_state.page = "admin_panel"
+                            else:
+                                st.session_state.current_page = "Dashboard"
+                                st.session_state.page = "dashboard"
+                            st.rerun()
+                        else:
+                            st.error("Invalid email or password.")
 
-            # Divider
-            st.markdown("""
-                <div class="divider-container">
-                    <div class="divider-line"></div>
-                    <div class="divider-text">or</div>
-                    <div class="divider-line"></div>
-                </div>
-            """, unsafe_allow_html=True)
+                # Divider
+                st.markdown("""
+                    <div class="divider-container">
+                        <div class="divider-line"></div>
+                        <div class="divider-text">or</div>
+                        <div class="divider-line"></div>
+                    </div>
+                """, unsafe_allow_html=True)
 
-            # Switch to Sign Up text
-            if st.button("Don't have an account? Sign up", key="go_signup", type="tertiary", use_container_width=True):
-                st.session_state.auth_mode = 'signup'
-                st.rerun()
+                # Switch to Sign Up text
+                if st.button("Don't have an account? Sign up", key="go_signup", type="tertiary", use_container_width=True):
+                    st.session_state.auth_mode = 'signup'
+                    st.rerun()
 
-        # ==================== VIEW 2: SIGN UP ====================
+            # ==================== VIEW 2: SIGN UP ====================
         elif st.session_state.auth_mode == 'signup':
             st.markdown("""
                 <div class="auth-header">

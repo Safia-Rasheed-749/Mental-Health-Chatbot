@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import streamlit as st
 import streamlit.components.v1 as components
 from datetime import datetime, timedelta
@@ -90,9 +91,9 @@ def show_dashboard():
     .stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
     .stat-card-pro { background:rgba(255,255,255,0.92); border-radius:16px; padding:20px 18px; border:1px solid rgba(148,163,184,0.12); box-shadow:0 4px 18px rgba(15,23,42,0.06); position:relative; overflow:hidden; }
     .sc-top-bar    { height:4px; border-radius:16px 16px 0 0; position:absolute; top:0; left:0; right:0; }
-    .sc-blue   .sc-top-bar { background:linear-gradient(90deg,#5B8DEF,#7C9DF5); }
-    .sc-teal   .sc-top-bar { background:linear-gradient(90deg,#22C55E,#4ade80); }
-    .sc-purple .sc-top-bar { background:linear-gradient(90deg,#a78bfa,#c4b5fd); }
+    .sc-blue   .sc-top-bar,
+    .sc-teal   .sc-top-bar,
+    .sc-purple .sc-top-bar { background:linear-gradient(90deg,#8b7bea,#a78bfa); }
     .sc-icon-wrap  { width:42px; height:42px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:19px; margin:8px 0 12px; }
     .sc-blue   .sc-icon-wrap { background:#EEF4FF; }
     .sc-teal   .sc-icon-wrap { background:#f0fdf4; }
@@ -170,6 +171,7 @@ def show_dashboard():
     # ── DATA ──
     user_id  = st.session_state.user[0]
     username = st.session_state.user[1] if len(st.session_state.user) > 1 else "Friend"
+    username = " ".join(part.capitalize() for part in str(username).split()) or "Friend"
 
     all_messages = get_messages_by_user(user_id)
     today_dt     = datetime.now()
@@ -224,16 +226,16 @@ def show_dashboard():
     st.markdown(f"""
     <div class="stat-grid">
         <div class="stat-card-pro sc-blue">
-            <div class="sc-top-bar"></div><div class="sc-icon-wrap">💬</div>
-            <div class="sc-val">{chats_today}</div><div class="sc-lbl">Chats Today</div>
+            <div class="sc-top-bar"></div><div class="sc-icon-wrap">🌱</div>
+            <div class="sc-val-sm">A small check-in</div><div class="sc-lbl">Quick Log Mood in Mood Analytics</div>
         </div>
         <div class="stat-card-pro sc-teal">
-            <div class="sc-top-bar"></div><div class="sc-icon-wrap">🎭</div>
+            <div class="sc-top-bar"></div>
             <div class="sc-val-sm">{last_mood_disp}</div><div class="sc-lbl">Last Mood Logged</div>
         </div>
         <div class="stat-card-pro sc-purple">
-            <div class="sc-top-bar"></div><div class="sc-icon-wrap">📓</div>
-            <div class="sc-val">{journal_count}</div><div class="sc-lbl">Journal Entries</div>
+            <div class="sc-top-bar"></div><div class="sc-icon-wrap">✍️</div>
+            <div class="sc-val-sm">What felt important today?</div><div class="sc-lbl">Daily Reflection Prompt · Open Journal</div>
         </div>
     </div>
     """, unsafe_allow_html=True)

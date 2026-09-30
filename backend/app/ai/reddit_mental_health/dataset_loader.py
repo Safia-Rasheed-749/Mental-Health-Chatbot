@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 =========================================================
 Reddit Mental Health Dataset Loader

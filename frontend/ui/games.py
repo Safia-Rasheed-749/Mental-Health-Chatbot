@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import streamlit as st
 import time
 import random
@@ -15,7 +16,7 @@ def show_calm_colors_game():
         .main { margin-left: 0rem !important; }
         header[data-testid="stHeader"]   { display: none !important; }
         footer, .stAppDeployButton       { display: none !important; }
-        .main .block-container { padding-top: 100px !important; }
+        .main .block-container { padding-top: 0 !important; }
         </style>
         """, unsafe_allow_html=True)
     else:
@@ -624,7 +625,7 @@ def show_calm_colors_game():
 
     # ── SCREEN: GAME (unchanged, but ensures .game-msg, .score-bar etc. are used) ──
     def show_game():
-        top_padding = "4rem" if from_sidebar else "110px"
+        top_padding = "4rem" if from_sidebar else "0"
         st.markdown(f"""
         <style>
         @keyframes softShift {{

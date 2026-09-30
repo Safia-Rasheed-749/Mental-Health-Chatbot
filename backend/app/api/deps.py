@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Authentication dependencies shared by protected API routes."""
 
 from fastapi import Depends, HTTPException, status

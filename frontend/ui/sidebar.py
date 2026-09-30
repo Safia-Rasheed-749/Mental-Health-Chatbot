@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import streamlit as st
 from db import get_conversations, get_messages_by_conversation, rename_conversation, delete_conversation
 
@@ -129,7 +130,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         opacity: 1 !important;
     }
      
-    /* ── EVEN, CHAT-STYLE RADIO NAVIGATION ── */
+    /* ── TEXT-ONLY SIDEBAR NAVIGATION ── */
     section[data-testid="stSidebar"] [data-testid="stRadio"] > div[role="radiogroup"] {
         display: flex !important;
         flex-direction: column !important;
@@ -148,6 +149,13 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         background: transparent !important;
         cursor: pointer !important;
         transition: background .16s ease, border-color .16s ease !important;
+    }
+    /* Keep Streamlit's accessible radio control, but remove the visible dot. */
+    section[data-testid="stSidebar"] [data-testid="stRadio"] label > div:first-child {
+        display: none !important;
+    }
+    section[data-testid="stSidebar"] [data-testid="stRadio"] label > div:last-child {
+        margin-left: 0 !important;
     }
     section[data-testid="stSidebar"] [data-testid="stRadio"] label:hover {
         background: #e0f2fe !important;
@@ -358,16 +366,15 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
     # ── PAGE MAP ──
     menu_map = {
-        "  Dashboard":      "Dashboard",
-        "  Chat":           "Chat",
-        "  Mood Analytics": "Mood Analytics",
-        "  Journal":        "Journal",
-        "  Games":          "Games",
-        "  Exercises":      "Exercises",
-        "  History":        "History",
+        "Dashboard":      "Dashboard",
+        "Chat":           "Chat",
+        "Mood Analytics": "Mood Analytics",
+        "Journal":        "Journal",
+        "Games":          "Games",
+        "Exercises":      "Exercises",
     }
     reverse_map = {v: k for k, v in menu_map.items()}
-    current_label = reverse_map.get(current_page, "⌂  Dashboard")
+    current_label = reverse_map.get(current_page, "Dashboard")
 
     with st.sidebar:
 
@@ -592,7 +599,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
         st.markdown("---")
         st.markdown('<div class="logout-btn">', unsafe_allow_html=True)
-        if st.button("🚪 Logout", key="logout_btn", type="primary"):
+        if st.button("Logout", key="logout_btn", type="primary"):
             st.session_state.clear()
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)

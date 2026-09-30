@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Generate a privacy-conscious wellness summary PDF for a user."""
 
 from __future__ import annotations

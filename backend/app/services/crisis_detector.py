@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 crisis_detector.py
 ==================

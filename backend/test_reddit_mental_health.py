@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datasets import load_dataset
 
 print("Loading Reddit Mental Health Dataset...")

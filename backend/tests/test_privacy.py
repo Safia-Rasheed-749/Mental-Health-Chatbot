@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from app.services.privacy import redact_sensitive_data
 
 

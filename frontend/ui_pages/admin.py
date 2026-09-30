@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import streamlit as st
 import pandas as pd
 from db import get_all_users, get_messages_by_user, get_moods_by_user, get_journals_by_user,get_last_activity_with_details, get_user_activity_log

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 label_map = {
     0: "sadness",
     1: "joy",

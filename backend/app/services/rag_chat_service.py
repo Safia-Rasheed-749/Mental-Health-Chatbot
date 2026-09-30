@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # backend/app/services/rag_chat_service.py
 # MODIFIED: Added multi-turn conversation memory support.
 #   - Added MAX_HISTORY_TURNS, MAX_HISTORY_TOKENS, MAX_MESSAGE_CHARS config

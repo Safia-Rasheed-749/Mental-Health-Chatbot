@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Privacy-preserving redaction for text sent to models or stored in chat."""
 
 from __future__ import annotations

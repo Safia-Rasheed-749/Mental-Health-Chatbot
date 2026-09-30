@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # layout_utils.py
 import streamlit as st
 

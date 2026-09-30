@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 =========================================================
 Main FastAPI Application
@@ -43,6 +44,27 @@ def home():
 
     return {
         "message": "AI Mental Health Chatbot Backend Running Successfully!"
+    }
+
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
+
+
+@app.get("/v1/models")
+def list_models():
+    """Dummy endpoint to satisfy automated client health/model probes."""
+    return {
+        "object": "list",
+        "data": [
+            {
+                "id": "mindcare-ai-rag",
+                "object": "model",
+                "created": 1700000000,
+                "owned_by": "mindcare"
+            }
+        ]
     }
 
 # -------------------------------------------------------

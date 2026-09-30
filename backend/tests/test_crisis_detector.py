@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from app.services.crisis_detector import detect_crisis
 
 

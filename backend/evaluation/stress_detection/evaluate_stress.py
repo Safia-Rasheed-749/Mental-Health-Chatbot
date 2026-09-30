@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 ================================================================
 RoBERTa Stress Detection Model – Final Evaluation

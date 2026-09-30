@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Quick test of saved best model
 """
