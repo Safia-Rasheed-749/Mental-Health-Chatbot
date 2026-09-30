@@ -78,3 +78,4 @@ Thumbs.db
 # Large dataset files
 backend/datasets/reddit_mental_health/raw/train.csv
 backend/datasets/reddit_mental_health/processed/train_processed.csv
+Chapter_6_Results_Testing_Analysis_Validation.md
