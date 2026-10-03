@@ -1,0 +1,9 @@
+{
+  "selection_rule": "Highest validation Macro-F1",
+  "selected_model_key": "distilbert_base",
+  "selected_base_model": "distilbert-base-uncased",
+  "validation_macro_f1": 0.9135997555741429,
+  "test_accuracy_descriptive_only": 0.926,
+  "test_macro_f1_descriptive_only": 0.8820374556396935,
+  "note": "The test-set values are descriptive only and were not used to select or tune the production model."
+}

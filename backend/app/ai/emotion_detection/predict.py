@@ -5,7 +5,7 @@ Emotion Prediction
 Project : AI Mental Health Chatbot (FYP)
 
 Purpose:
-    Load the trained RoBERTa emotion model and predict
+    Load the selected fine-tuned DistilBERT emotion model and predict
     the emotion of the user's current text.
 =========================================================
 """
@@ -26,7 +26,7 @@ from transformers import (
 
 BASE_DIR = Path(__file__).resolve().parents[3]
 
-MODEL_PATH = BASE_DIR / "models" / "emotion_dair_ai_roberta"
+MODEL_PATH = BASE_DIR / "models" / "emotion_dair_ai_production_model"
 
 LABEL_MAPPING_PATH = MODEL_PATH / "label_mapping.json"
 
@@ -47,7 +47,7 @@ tokenizer = AutoTokenizer.from_pretrained(
 # Load Model
 # =====================================================
 
-print("Loading Emotion RoBERTa Model...")
+print("Loading selected DistilBERT emotion model...")
 
 model = AutoModelForSequenceClassification.from_pretrained(
     str(MODEL_PATH),
@@ -111,7 +111,7 @@ def predict_emotion(text: str) -> dict:
         return_tensors="pt",
         truncation=True,
         padding=True,
-        max_length=96,
+        max_length=128,
     )
 
     # -------------------------------------------------

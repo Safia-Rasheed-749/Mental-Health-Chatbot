@@ -1,0 +1,31 @@
+{
+  "model_key": "deberta_v3_base",
+  "base_model": "microsoft/deberta-v3-base",
+  "parameters": 184423682,
+  "parameters_M": 184.423682,
+  "training_time_min": 7.428397393226623,
+  "train_metrics": {
+    "train_runtime": 416.1813,
+    "train_samples_per_second": 38.601,
+    "train_steps_per_second": 2.415,
+    "total_flos": 980266594145952.0,
+    "train_loss": 0.1007904930494318,
+    "epoch": 3.0
+  },
+  "validation_metrics": {
+    "eval_loss": 0.06460581719875336,
+    "eval_accuracy": 0.980819529206626,
+    "eval_macro_precision": 0.9808910318812363,
+    "eval_macro_recall": 0.9807564809070228,
+    "eval_macro_f1": 0.9808118137299632,
+    "eval_weighted_precision": 0.9808407151842883,
+    "eval_weighted_recall": 0.980819529206626,
+    "eval_weighted_f1": 0.9808181873845978,
+    "eval_runtime": 3.8358,
+    "eval_samples_per_second": 299.027,
+    "eval_steps_per_second": 9.385,
+    "epoch": 3.0
+  },
+  "best_checkpoint": "/content/drive/MyDrive/MindCare_Depression_3_Model_Comparison/checkpoints/deberta_v3_base/checkpoint-335",
+  "best_validation_macro_f1": 0.9808118137299632
+}

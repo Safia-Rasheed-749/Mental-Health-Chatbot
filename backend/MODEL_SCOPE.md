@@ -8,17 +8,11 @@ These models are used by the live FastAPI `/chat` and `/predict` routes:
 - Stress RoBERTa classifier
 - Depression RoBERTa classifier
 
-## Experimental comparison model
+## Emotion model selection
 
-GoEmotions is a research/evaluation model only. It is not imported by the
-frontend, `/chat`, or the production mental-state response. Its notebook and
-metrics must be presented as an experimental 28-label multi-label comparison.
-
-## Excluded model
-
-MELD is not part of the MindCare production scope. No runtime MELD predictor
-is required unless a future research phase explicitly adds conversational
-emotion benchmarking.
+DAIR-AI RoBERTa is the retained emotion classifier. The MELD and GoEmotions
+experiments and their associated assets have been removed from this project at
+the user's request.
 
 ## Terminology
 

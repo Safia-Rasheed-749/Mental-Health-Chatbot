@@ -1,0 +1,7 @@
+{
+  "descriptive_metric": "test_accuracy",
+  "leader_model_key": "deberta_v3_base",
+  "leader_base_model": "microsoft/deberta-v3-base",
+  "test_accuracy": 0.9355,
+  "warning": "This is a descriptive held-out test result. It was NOT used to select the production model."
+}
