@@ -1,36 +1,52 @@
-# -*- coding: utf-8 -*-
 import streamlit as st
-import os
 import requests
 
+# =====================================================
+# Backend API Call
+# =====================================================
 
-def generate_demo_response(message: str, history: list) -> str:
-    """Use the same FastAPI /chat endpoint as the full Chat page."""
-    url = os.getenv("API_URL", "http://127.0.0.1:8000").rstrip("/") + "/chat"
+BACKEND_URL = "http://127.0.0.1:8000/chat"
+
+# Fallback responses shown only when the backend is
+# unreachable — so the demo never shows a blank error.
+_FALLBACK_RESPONSES = [
+    "I'm here for you. It's okay to not feel okay sometimes. Your feelings are valid.",
+    "Tell me more about what's on your mind. You're not alone in this.",
+    "You don't have to face this alone. Whatever you're going through, I'm here to listen.",
+    "Be gentle with yourself today. You deserve compassion and care.",
+]
+
+def get_demo_response(message: str) -> str:
+    """
+    Call the real backend /chat endpoint.
+    Returns the AI-generated response text.
+    Falls back to a static message only if the backend
+    is completely unreachable or returns an error.
+    """
     try:
         response = requests.post(
-            url,
-            json={"message": message, "history": history},
-            timeout=180,
+            BACKEND_URL,
+            json={"message": message},
+            timeout=300,
         )
         response.raise_for_status()
-        result = response.json()
-        answer = result.get("response")
-        if not isinstance(answer, str) or not answer.strip():
-            return "I couldn't generate a response just now. Please try again."
-        return answer
-    except requests.Timeout:
-        return "The assistant is taking longer than expected. Please try again in a moment."
-    except requests.ConnectionError:
-        return "The chat backend is unavailable. Please try again shortly."
-    except requests.HTTPError as exc:
-        try:
-            detail = exc.response.json().get("detail", "Chat request failed")
-        except (ValueError, AttributeError):
-            detail = "Chat request failed"
-        return f"The assistant could not complete this request: {detail}"
-    except (ValueError, requests.RequestException):
-        return "The assistant returned an invalid response. Please try again."
+        data = response.json()
+        return data.get("response", "I'm here to listen. Can you tell me more?")
+
+    except requests.exceptions.ConnectionError:
+        # Backend not running
+        return (
+            "I'm here for you. "
+            "(Note: AI service is starting up — please try again in a moment.)"
+        )
+    except requests.exceptions.Timeout:
+        return (
+            "I'm taking a little longer than usual to respond. "
+            "Please send your message again."
+        )
+    except Exception:
+        import random
+        return random.choice(_FALLBACK_RESPONSES)
 
 def show_demo_chat():
 
@@ -46,7 +62,7 @@ def show_demo_chat():
     if "trial_ended" not in st.session_state:
         st.session_state.trial_ended = False
 
-    # ===== DEMO PAGE PRESENTATION =====
+    # ===== CSS (ORIGINAL PAGE STYLE + NEW CHAT BUBBLES) =====
     st.markdown("""
     <style>
         header, footer, .stDeployButton {
@@ -54,16 +70,15 @@ def show_demo_chat():
         }
 
         .block-container {
-            padding: 0.15rem 2rem 7rem !important;
-            max-width: 1040px !important;
+            padding-top: 1rem !important;
         }
-        div[data-testid="stAppViewBlockContainer"] { padding-top: .15rem !important; }
+         /*page background color change */
         .stApp {
-            background: radial-gradient(ellipse at 12% 0%, rgba(196,181,253,.24), transparent 38%),
-                        linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%) !important;
-            color: #1E293B;
+            background-color: #f6f7fb !important;
         }
 
+        /* ===== CHAT BUBBLE STYLES - SYNCED WITH CHAT.PY ===== */
+        /* Last synced: 2026-05-09 - Bubbles match chat.py exactly */
         .chat-row {
             display: flex;
             margin-bottom: 24px;
@@ -74,6 +89,7 @@ def show_demo_chat():
             to   { opacity: 1; transform: translateY(0); }
         }
 
+        /* ── USER BUBBLE - Purple Gradient (matches chat.py) ── */
         .user-message {
             display: flex;
             justify-content: flex-end;
@@ -91,6 +107,7 @@ def show_demo_chat():
             box-shadow: 0 4px 14px rgba(99,102,241,0.30);
         }
 
+        /* ── AI BUBBLE - White with Avatar (matches chat.py) ── */
         .assistant-message {
             display: flex;
             justify-content: flex-start;
@@ -128,130 +145,78 @@ def show_demo_chat():
             box-shadow: 0 2px 12px rgba(0,0,0,0.07);
             border-left: 3px solid #8b5cf6;
         }
+         /* banner color and text color changes */
+        /* ===== ORIGINAL TRIAL BOX STYLING ===== */
+        .trial-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 22px 18px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .trial-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
         .trial-counter {
-            display: inline-block;
-            font-size: 13px;
-            margin: 2px auto 16px;
-            padding: 7px 14px;
-            border: 1px solid rgba(99,102,241,.15);
-            border-radius: 999px;
-            background: rgba(99,102,241,.09);
-            color: #5B4ACB;
+            font-size: 18px;
+            margin-top: 10px;
+            color: #FFE66D;
             font-weight: 600;
         }
-        .starter-heading { margin: 0 0 12px; color: #64748B; font-size: 13px; font-weight: 600; text-align:center; }
-        .st-key-demo_starter_prompts [data-testid="stHorizontalBlock"] { gap: 10px; }
-        .st-key-demo_starter_prompts button {
-            background: rgba(255,255,255,.85) !important;
-            color: #4A5568 !important;
-            border: 1px solid rgba(99,102,241,.12) !important;
-            border-radius: 14px !important;
-            font-size: 14px !important;
-            font-weight: 600 !important;
-            box-shadow: 0 3px 12px rgba(99,102,241,.04) !important;
-            min-height: 54px;
-            white-space: normal !important;
+        /*pop up color change*/
+        .trial-complete-container {
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+             color: Black ! important;
+             margin: 20px 0;
+             padding: 20px;
+             margin-bottom: 20px;
+            
         }
-        .st-key-demo_starter_prompts button:hover {
-            background: #fff !important;
-            border-color: #6366F1 !important;
-            box-shadow: 0 8px 20px rgba(99,102,241,.12) !important;
-            transform: translateY(-2px) !important;
-        }
-        [data-testid="stDialog"]::backdrop { background: rgba(30,41,59,.28); backdrop-filter: blur(8px); }
-        [data-testid="stDialog"] > div { border: 1px solid rgba(99,102,241,.16); border-radius: 22px; }
-        [data-testid="stDialog"] [data-testid="stMarkdownContainer"] p { color: #475569; line-height: 1.6; }
-        [data-testid="stDialog"] .stButton > button { width: 100%; min-height: 44px; }
-       .stButton > button {
-            background: linear-gradient(135deg, #6366F1, #8B5CF6) !important;
-            color: #fff !important;
-            border: 1px solid rgba(99,102,241,.18) !important;
-            border-radius: 999px !important;
+        /*back to home button color changes*/
+        .stButton > button {
+           background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+           color: white !important;
+            border-radius: 10px !important;
             font-weight: 700 !important;
-            box-shadow: 0 5px 14px rgba(99,102,241,.18) !important;
-            transition: transform .2s ease, box-shadow .2s ease, filter .2s ease !important;
-        }
-        .stButton > button:hover {
-            filter: brightness(1.04) !important;
-            transform: translateY(-2px) !important;
-            box-shadow: 0 10px 22px rgba(99,102,241,.25) !important;
-        }
-        /* Compact top-left back arrow. */
-        .st-key-demo_back_arrow .stButton > button {
-            background: rgba(255,255,255,.78) !important;
-            color: #4F46E5 !important;
-            border-color: rgba(99,102,241,.2) !important;
-            border-radius: 50% !important;
-            width: 38px;
-            height: 38px;
-            padding: 0 !important;
-            font-size: 20px !important;
-        }
-        div[data-testid="stChatInput"] {
-            width: 100% !important;
-            max-width: 100% !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            background: transparent !important;
-            padding: 0 0 10px !important;
-            margin: 0 auto 12px !important;
-            min-height: auto !important;
-        }
-        div[data-testid="stChatInput"] > div {
-            width: 100% !important;
-            background: #FFFFFF !important;
-            border: 1px solid #E2E8F0 !important;
-            border-radius: 28px !important;
-            box-shadow: 0 4px 12px rgba(99,102,241,.08) !important;
-            max-width: 1000px !important;
-            margin: 0 auto !important;
-        }
-        div[data-testid="stBottom"],
-        div[data-testid="stBottomBlockContainer"],
-        div[data-testid="stBottom"] > div {
-            background: transparent !important;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-            margin-bottom: 0 !important;
-            min-height: auto !important;
-            box-shadow: none !important;
-        }
-        .main .block-container {
-            max-width: 1100px !important;
-            padding-left: 2rem !important;
-            padding-right: 2rem !important;
-            padding-bottom: 80px !important;
-        }
-        div[data-testid="stChatInput"] textarea {
-            background: transparent !important;
-            color: #1E293B !important;
-        }
-        div[data-testid="stChatInput"] textarea::placeholder { color: #94A3B8 !important; }
-        div[data-testid="stChatInput"] button {
-            background: #6366F1 !important;
-            color: #fff !important;
-            border-radius: 50% !important;
-        }
-        div[data-testid="stChatInput"] button:hover { background: #4F46E5 !important; }
-        /* Streamlit versions with speech input expose a microphone button here. */
-        div[data-testid="stChatInput"] button[aria-label*="voice" i],
-        div[data-testid="stChatInput"] button[aria-label*="microphone" i],
-        div[data-testid="stChatInput"] button[title*="voice" i],
-        div[data-testid="stChatInput"] button[title*="microphone" i],
-        div[data-testid="stChatInput"] button[aria-label*="audio" i],
-        div[data-testid="stChatInput"] button[title*="audio" i] {
-            display: none !important;
-        }
-        @media (max-width: 640px) {
-            .main .block-container { padding: 0.1rem 1rem 80px !important; }
-            .user-bubble { max-width: 88%; }
-        }
+}
+    /*create free account button color changes*/
+      .stButton > button {
+        background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
+        color: #f3f4f5 !important;
+        border: none !important;
+        border-radius: 14px !important;
+        font-weight: 800 !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.18) !important;
+        font-family: 'Segoe UI', sans-serif !important;
+        transition: all 0.2s ease !important;
+}      .stButton > button:hover {
+           filter: brightness(1.05) !important;
+           transform: translateY(-2px) !important;
+           box-shadow: 0 12px 28px rgba(37, 99, 235, 0.4) !important;
+}
+  /* input bar styling colors*/
+  div[data-testid="stChatInput"] {
+    background-color:#ffffff !important;
+    border-radius: 14px !important;
+}
+
+div[data-testid="stChatInput"] textarea {
+    background-color: #ffffff!important;
+    color:  #000000 !important;
+}
     </style>
     """, unsafe_allow_html=True)
-    # ===== TOP-LEFT BACK ARROW =====
-    with st.container(key="demo_back_arrow"):
-        if st.button("←", key="top_left_back_arrow", help="Back to Home"):
-            st.session_state.page = "home"
+    # ===== BACK BUTTON =====
+    col1, col2 = st.columns([6,1])
+    with col2:
+        if st.button("Back to Home"):
+            st.session_state.page = "home"   # make sure your main app uses this key
             st.rerun()
 
     # ===== LOGIC =====
@@ -259,42 +224,34 @@ def show_demo_chat():
     if remaining <= 0:
         st.session_state.trial_ended = True
 
+    # ===== TRIAL BOX =====
     if not st.session_state.trial_ended:
-        st.markdown(
-            f'<div class="trial-counter">✨ {remaining} Free messages left ✨</div>',
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""
+        <div class="trial-box">
+            <div class="trial-title">🤖 Try MindCare AI</div>
+            <div class="trial-counter">✨ {remaining} Free messages left ✨</div>
+        </div>
+        """, unsafe_allow_html=True)
+
     else:
-        @st.dialog("You've Used All 5 Free Messages! 🎉")
-        def show_trial_modal():
-            st.write("Unlock unlimited chats, personalized mood tracking, and digital journaling by creating a free account.")
-            if st.button("Sign Up for Unlimited Access", key="demo_signup", type="primary", use_container_width=True):
-                st.session_state.page = "auth"
-                st.session_state.auth_mode = "signup"
-                st.rerun()
-            if st.button("Already have an account? Log In", key="demo_login", use_container_width=True):
-                st.session_state.page = "auth"
-                st.session_state.auth_mode = "login"
-                st.rerun()
-        show_trial_modal()
+        st.markdown("""
+        <div class="trial-complete-container">
+            <h3>✨ Trial Complete!</h3>
+            <p>Create an account for unlimited access</p>
+        </div>
+        """, unsafe_allow_html=True)
 
-    # ===== QUICK STARTER PROMPTS =====
-    if not st.session_state.trial_ended and st.session_state.demo_msg_count == 0:
-        with st.container(key="demo_starter_prompts"):
-            st.markdown('<p class="starter-heading">Not sure where to start? Try one of these</p>', unsafe_allow_html=True)
-            prompts = [
-                "I am feeling anxious.",
-                "Give me some tips to overcome anxiety.",
-                "I am feeling lonely today.",
-            ]
-            prompt_cols = st.columns(3)
-            selected_prompt = None
-            for prompt_index, (prompt_col, prompt) in enumerate(zip(prompt_cols, prompts)):
-                with prompt_col:
-                    if st.button(prompt, key=f"demo_starter_{prompt_index}", use_container_width=True):
-                        selected_prompt = prompt
+        # ===== CENTERED BUTTON =====
+        col1, col2, col3 = st.columns([1,1,1])
 
-    # ===== CHAT DISPLAY =====
+        with col2:
+            if st.button("🚀 Create Free Account", use_container_width=True):
+                st.session_state.page = "auth"
+                st.rerun()
+
+        st.markdown("---")
+
+    # ===== CHAT DISPLAY (NEW BUBBLE STYLE) =====
     for msg in st.session_state.demo_messages:
         if msg["role"] == "user":
             st.markdown(f"""
@@ -314,21 +271,21 @@ def show_demo_chat():
 
     # ===== INPUT =====
     if not st.session_state.trial_ended:
-        user_input = selected_prompt if 'selected_prompt' in locals() and selected_prompt else st.chat_input("Share what's on your mind...", key="demo_chat_input")
+        user_input = st.chat_input("How can I help you?")
 
         if user_input:
+            # Add user message immediately
             st.session_state.demo_messages.append(
                 {"role": "user", "content": user_input}
             )
             st.session_state.demo_msg_count += 1
 
-            history = [
-                {"role": msg["role"], "content": msg["content"]}
-                for msg in st.session_state.demo_messages[:-1]
-                if msg.get("role") in ("user", "assistant")
-            ][-6:]
+            # Call real backend with loading spinner
+            with st.spinner("MindCare AI is thinking..."):
+                ai_response = get_demo_response(user_input)
+
             st.session_state.demo_messages.append(
-                {"role": "assistant", "content": generate_demo_response(user_input, history)}
+                {"role": "assistant", "content": ai_response}
             )
 
             st.rerun()

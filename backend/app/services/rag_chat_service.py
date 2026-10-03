@@ -38,9 +38,12 @@ from app.ai.depression_detection.predict import predict_depression
 
 from app.ai.llm.llm import get_llm
 from app.ai.llm.prompt import get_prompt, detect_language
+from app.ai.llm.validator import validate_response, build_correction_prompt
+from app.ai.llm.roman_urdu_style import MAX_REGENERATE_ATTEMPTS
 from app.ai.rag.embeddings import get_embedding_model
 from app.ai.rag.retriever import get_retriever
 from app.ai.rag.vector_store import load_vector_store
+from .crisis_utils import assess_crisis
 
 # Crisis guardrail (Part 2 integration)
 from app.services.crisis_detector import detect_crisis, log_crisis_event
@@ -261,6 +264,67 @@ def initialize_rag_chat():
     return retriever, llm
 
 
+# =====================================================
+# LLM Call + Validation + Regenerate
+# =====================================================
+
+def _invoke_and_validate(
+    messages: list,
+    question: str,
+    language: str,
+) -> tuple[str, bool]:
+    """
+    Invoke the LLM, validate the response, and regenerate
+    once if validation fails.
+
+    Args:
+        messages:  Formatted LangChain message list.
+        question:  Original user message (for correction prompt).
+        language:  Detected language ("english"/"roman_urdu"/"urdu").
+
+    Returns:
+        (response_text, was_regenerated)
+            response_text   — final response string
+            was_regenerated — True if a regeneration was needed
+    """
+    # ── First attempt ──────────────────────────────
+    raw = llm.invoke(messages)
+    response_text = raw.content if hasattr(raw, "content") else str(raw)
+
+    result = validate_response(response_text, language)
+
+    if result["valid"]:
+        print(f"  Validation PASSED (language={language})")
+        return response_text, False
+
+    # ── First attempt failed → log and regenerate ──
+    print(f"  Validation FAILED (language={language}): {result['reasons']}")
+
+    for attempt in range(1, MAX_REGENERATE_ATTEMPTS + 1):
+        print(f"  Regeneration attempt {attempt}/{MAX_REGENERATE_ATTEMPTS}...")
+
+        correction = build_correction_prompt(question, response_text, result)
+
+        # Send correction as a plain human message so the LLM rewrites
+        from langchain_core.messages import HumanMessage
+        regen_messages = messages + [HumanMessage(content=correction)]
+
+        raw2 = llm.invoke(regen_messages)
+        response_text = raw2.content if hasattr(raw2, "content") else str(raw2)
+
+        result2 = validate_response(response_text, language)
+        if result2["valid"]:
+            print(f"  Regeneration PASSED on attempt {attempt}")
+            return response_text, True
+
+        print(f"  Regeneration attempt {attempt} still failed: {result2['reasons']}")
+        result = result2   # use latest failure for next correction
+
+    # All attempts exhausted — return best available response
+    print("  All regeneration attempts exhausted. Returning last response.")
+    return response_text, True
+
+
 # Initialize once when the module is first imported.
 # All subsequent requests reuse the same warm instances.
 retriever, llm = initialize_rag_chat()
@@ -348,6 +412,33 @@ def generate_chat_response(question: str, history: Optional[list] = None) -> dic
     print(f"  Detected language: {language}")
 
     # --------------------------------------------------
+    # Step 1.5: Immediate Crisis Guardrail Check
+    # --------------------------------------------------
+    crisis_eval = assess_crisis(question, language)
+    if crisis_eval["is_crisis"]:
+        # Use level if provided, otherwise default to "high"
+        level = crisis_eval.get("level", "high")
+        print(f"  [CRISIS DETECTED]: level={level} — activating safety protocol.")
+        try:
+            emotion_result, stress_result, depression_result = run_detectors(question)
+        except Exception:
+            emotion_result = {"emotion": "fear", "confidence": 99.0}
+            stress_result = {"stress": "Stress", "confidence": 99.0}
+            depression_result = {"depression": "Depression", "confidence": 99.0}
+
+        return {
+            "response": crisis_eval["response"],
+            "emotion": emotion_result["emotion"],
+            "emotion_confidence": emotion_result["confidence"],
+            "stress": "Stress",
+            "stress_confidence": 99.0,
+            "depression": "Depression",
+            "depression_confidence": 99.0,
+            "crisis": True,
+            "crisis_level": level,
+        }
+
+    # --------------------------------------------------
     # Step 2: Run all three classifiers
     # --------------------------------------------------
     emotion_result, stress_result, depression_result = run_detectors(question)
@@ -382,6 +473,8 @@ def generate_chat_response(question: str, history: Optional[list] = None) -> dic
             "stress_confidence":     stress_result["confidence"],
             "depression":            depression_result["depression"],
             "depression_confidence": depression_result["confidence"],
+            "crisis":                False,
+            "crisis_level":          "none",
         }
 
     # --------------------------------------------------
@@ -406,14 +499,12 @@ def generate_chat_response(question: str, history: Optional[list] = None) -> dic
     )
 
     # --------------------------------------------------
-    # Step 6: Generate LLM response
+    # Step 6: Generate LLM response + validate/regenerate
     # --------------------------------------------------
-    raw_response  = llm.invoke(messages)
-    response_text = (
-        raw_response.content
-        if hasattr(raw_response, "content")
-        else str(raw_response)
-    )
+    response_text, regenerated = _invoke_and_validate(messages, question, language)
+
+    if regenerated:
+        print("  Note: response was regenerated due to quality check.")
 
     print("Response generated successfully.")
 
@@ -430,6 +521,8 @@ def generate_chat_response(question: str, history: Optional[list] = None) -> dic
         "stress_confidence":     stress_result["confidence"],
         "depression":            depression_result["depression"],
         "depression_confidence": depression_result["confidence"],
+        "crisis":                False,
+        "crisis_level":          "none",
     }
 
 
@@ -477,14 +570,15 @@ def generate_response_with_context(question: str) -> dict:
     )
 
     return {
-        "question":         question,
-        "response":         response_text,
-        "context":          context,
-        "mental_state":     mental_state,
-        "retrieved_chunks": documents,
-        "emotion_result":   emotion_result,
-        "stress_result":    stress_result,
+        "question":          question,
+        "response":          response_text,
+        "context":           context,
+        "mental_state":      mental_state,
+        "retrieved_chunks":  documents,
+        "emotion_result":    emotion_result,
+        "stress_result":     stress_result,
         "depression_result": depression_result,
+        "language":          language,
     }
 
 

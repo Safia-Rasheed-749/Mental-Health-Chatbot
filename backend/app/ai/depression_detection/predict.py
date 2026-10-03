@@ -25,7 +25,7 @@ from transformers import (
 
 BASE_DIR = Path(__file__).resolve().parents[3]
 
-MODEL_PATH = BASE_DIR / "models" / "depression_v2"
+MODEL_PATH = BASE_DIR / "models" / "depression_production_model"
 
 
 # =====================================================

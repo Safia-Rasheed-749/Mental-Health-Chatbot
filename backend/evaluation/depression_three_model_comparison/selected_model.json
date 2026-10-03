@@ -1,0 +1,7 @@
+{
+  "selection_rule": "highest validation Macro-F1",
+  "selected_model_key": "roberta_base",
+  "selected_base_model": "roberta-base",
+  "validation_macro_f1": 0.9825609681931521,
+  "test_set_used_for_selection": false
+}
