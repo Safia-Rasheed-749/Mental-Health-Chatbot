@@ -1,0 +1,10 @@
+{
+  "seed": 42,
+  "validation_fraction_of_original_train": 0.1,
+  "original_train_rows": 2823,
+  "train_rows": 2540,
+  "validation_rows": 283,
+  "held_out_test_rows": 715,
+  "source_train_csv": "/content/drive/MyDrive/MindCare_AI_Stress_3_Model_Comparison/dataset/clean_train.csv",
+  "source_test_csv": "/content/drive/MyDrive/MindCare_AI_Stress_3_Model_Comparison/dataset/clean_test.csv"
+}

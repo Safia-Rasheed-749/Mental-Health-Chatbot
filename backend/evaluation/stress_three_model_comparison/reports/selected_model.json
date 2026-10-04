@@ -1,0 +1,7 @@
+{
+  "selection_rule": "highest validation Macro-F1",
+  "selected_model_key": "deberta_v3_base",
+  "selected_base_model": "microsoft/deberta-v3-base",
+  "validation_macro_f1": 0.8436621132985135,
+  "test_set_used_for_selection": false
+}

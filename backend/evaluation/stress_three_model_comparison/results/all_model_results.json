@@ -1,0 +1,242 @@
+[
+  {
+    "model_key": "roberta_base",
+    "model_name": "roberta-base",
+    "validation_metrics": {
+      "validation_loss": 0.9509837031364441,
+      "validation_accuracy": 0.823321554770318,
+      "validation_macro_precision": 0.8258578556155178,
+      "validation_macro_recall": 0.8205699689472102,
+      "validation_macro_f1": 0.8216985887096775,
+      "validation_weighted_precision": 0.824882355290441,
+      "validation_weighted_recall": 0.823321554770318,
+      "validation_weighted_f1": 0.8226002365211444
+    },
+    "test_metrics": {
+      "test_loss": 0.9483049511909485,
+      "test_accuracy": 0.8195804195804196,
+      "test_macro_precision": 0.8218894155319183,
+      "test_macro_recall": 0.8180874727822423,
+      "test_macro_f1": 0.8186210598972314,
+      "test_weighted_precision": 0.821233774706184,
+      "test_weighted_recall": 0.8195804195804196,
+      "test_weighted_f1": 0.8190453920647954
+    },
+    "training_seconds": 319.38660979270935,
+    "best_checkpoint": "/content/drive/MyDrive/MindCare_AI_Stress_3_Model_Comparison/checkpoints/roberta_base/checkpoint-1905",
+    "best_validation_macro_f1": 0.8216985887096775,
+    "classification_report": {
+      "label_0": {
+        "precision": 0.8422712933753943,
+        "recall": 0.7716763005780347,
+        "f1-score": 0.8054298642533937,
+        "support": 346.0
+      },
+      "label_1": {
+        "precision": 0.8015075376884422,
+        "recall": 0.8644986449864499,
+        "f1-score": 0.8318122555410691,
+        "support": 369.0
+      },
+      "accuracy": 0.8195804195804196,
+      "macro avg": {
+        "precision": 0.8218894155319183,
+        "recall": 0.8180874727822423,
+        "f1-score": 0.8186210598972314,
+        "support": 715.0
+      },
+      "weighted avg": {
+        "precision": 0.821233774706184,
+        "recall": 0.8195804195804196,
+        "f1-score": 0.8190453920647954,
+        "support": 715.0
+      }
+    },
+    "confusion_matrix_labels_order": [
+      0,
+      1
+    ],
+    "confusion_matrix": [
+      [
+        267,
+        79
+      ],
+      [
+        50,
+        319
+      ]
+    ],
+    "train_samples": 2540,
+    "validation_samples": 283,
+    "test_samples": 715,
+    "seed": 42,
+    "max_length": 128,
+    "epochs_configured": 3,
+    "learning_rate": 2e-05,
+    "batch_size": 4,
+    "fp16": false,
+    "bf16": false,
+    "optimizer": "adamw_torch",
+    "max_grad_norm": 1.0
+  },
+  {
+    "model_key": "distilbert_base_uncased",
+    "model_name": "distilbert-base-uncased",
+    "validation_metrics": {
+      "validation_loss": 0.8070599436759949,
+      "validation_accuracy": 0.8056537102473498,
+      "validation_macro_precision": 0.8051629072681704,
+      "validation_macro_recall": 0.8049183612140639,
+      "validation_macro_f1": 0.8050305011711949,
+      "validation_weighted_precision": 0.8055959687203875,
+      "validation_weighted_recall": 0.8056537102473498,
+      "validation_weighted_f1": 0.8056147596800902
+    },
+    "test_metrics": {
+      "test_loss": 0.9892801642417908,
+      "test_accuracy": 0.772027972027972,
+      "test_macro_precision": 0.7732340243844584,
+      "test_macro_recall": 0.770665914751633,
+      "test_macro_f1": 0.7709958913072952,
+      "test_weighted_precision": 0.7728540352858395,
+      "test_weighted_recall": 0.772027972027972,
+      "test_weighted_f1": 0.7714904299859529
+    },
+    "training_seconds": 200.55252194404602,
+    "best_checkpoint": "/content/drive/MyDrive/MindCare_AI_Stress_3_Model_Comparison/checkpoints/distilbert_base_uncased/checkpoint-1905",
+    "best_validation_macro_f1": 0.8050305011711949,
+    "classification_report": {
+      "label_0": {
+        "precision": 0.7850467289719626,
+        "recall": 0.7283236994219653,
+        "f1-score": 0.7556221889055472,
+        "support": 346.0
+      },
+      "label_1": {
+        "precision": 0.7614213197969543,
+        "recall": 0.8130081300813008,
+        "f1-score": 0.7863695937090432,
+        "support": 369.0
+      },
+      "accuracy": 0.772027972027972,
+      "macro avg": {
+        "precision": 0.7732340243844584,
+        "recall": 0.770665914751633,
+        "f1-score": 0.7709958913072952,
+        "support": 715.0
+      },
+      "weighted avg": {
+        "precision": 0.7728540352858395,
+        "recall": 0.772027972027972,
+        "f1-score": 0.7714904299859529,
+        "support": 715.0
+      }
+    },
+    "confusion_matrix_labels_order": [
+      0,
+      1
+    ],
+    "confusion_matrix": [
+      [
+        252,
+        94
+      ],
+      [
+        69,
+        300
+      ]
+    ],
+    "train_samples": 2540,
+    "validation_samples": 283,
+    "test_samples": 715,
+    "seed": 42,
+    "max_length": 128,
+    "epochs_configured": 3,
+    "learning_rate": 2e-05,
+    "batch_size": 4,
+    "fp16": false,
+    "bf16": false,
+    "optimizer": "adamw_torch",
+    "max_grad_norm": 1.0
+  },
+  {
+    "model_key": "deberta_v3_base",
+    "model_name": "microsoft/deberta-v3-base",
+    "validation_metrics": {
+      "validation_loss": 0.6403856873512268,
+      "validation_accuracy": 0.8445229681978799,
+      "validation_macro_precision": 0.8451360887096775,
+      "validation_macro_recall": 0.8429580286487028,
+      "validation_macro_f1": 0.8436621132985135,
+      "validation_weighted_precision": 0.8447954662031232,
+      "validation_weighted_recall": 0.8445229681978799,
+      "validation_weighted_f1": 0.8442770096552037
+    },
+    "test_metrics": {
+      "test_loss": 0.7097291946411133,
+      "test_accuracy": 0.8195804195804196,
+      "test_macro_precision": 0.8222222222222222,
+      "test_macro_recall": 0.8179973996271754,
+      "test_macro_f1": 0.8185454123377709,
+      "test_weighted_precision": 0.8215073815073815,
+      "test_weighted_recall": 0.8195804195804196,
+      "test_weighted_f1": 0.8189862487559361
+    },
+    "training_seconds": 472.98706316947937,
+    "best_checkpoint": "/content/drive/MyDrive/MindCare_AI_Stress_3_Model_Comparison/checkpoints/deberta_v3_base/checkpoint-1270",
+    "best_validation_macro_f1": 0.8436621132985135,
+    "classification_report": {
+      "label_0": {
+        "precision": 0.8444444444444444,
+        "recall": 0.7687861271676301,
+        "f1-score": 0.8048411497730711,
+        "support": 346.0
+      },
+      "label_1": {
+        "precision": 0.8,
+        "recall": 0.8672086720867209,
+        "f1-score": 0.8322496749024707,
+        "support": 369.0
+      },
+      "accuracy": 0.8195804195804196,
+      "macro avg": {
+        "precision": 0.8222222222222222,
+        "recall": 0.8179973996271754,
+        "f1-score": 0.8185454123377709,
+        "support": 715.0
+      },
+      "weighted avg": {
+        "precision": 0.8215073815073815,
+        "recall": 0.8195804195804196,
+        "f1-score": 0.8189862487559361,
+        "support": 715.0
+      }
+    },
+    "confusion_matrix_labels_order": [
+      0,
+      1
+    ],
+    "confusion_matrix": [
+      [
+        266,
+        80
+      ],
+      [
+        49,
+        320
+      ]
+    ],
+    "train_samples": 2540,
+    "validation_samples": 283,
+    "test_samples": 715,
+    "seed": 42,
+    "max_length": 128,
+    "epochs_configured": 3,
+    "learning_rate": 2e-05,
+    "batch_size": 4,
+    "fp16": false,
+    "bf16": false,
+    "optimizer": "adamw_torch",
+    "max_grad_norm": 1.0
+  }
+]

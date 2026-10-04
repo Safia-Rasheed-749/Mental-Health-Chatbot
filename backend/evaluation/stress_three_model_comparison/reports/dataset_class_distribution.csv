@@ -1,0 +1,7 @@
+split,label,label_name,count
+train,0,Not Stressed,1204
+train,1,Stressed,1336
+validation,0,Not Stressed,134
+validation,1,Stressed,149
+test,0,Not Stressed,346
+test,1,Stressed,369

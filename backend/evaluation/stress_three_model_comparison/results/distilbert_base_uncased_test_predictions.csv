@@ -1,0 +1,716 @@
+row_id,true_label,true_class,predicted_label,predicted_class,confidence,correct
+0,0,Not Stressed,0,Not Stressed,0.9970378875732422,True
+1,0,Not Stressed,0,Not Stressed,0.995137631893158,True
+2,1,Stressed,0,Not Stressed,0.993908166885376,False
+3,1,Stressed,1,Stressed,0.9979522228240967,True
+4,0,Not Stressed,1,Stressed,0.9924330711364746,False
+5,0,Not Stressed,0,Not Stressed,0.9966542720794678,True
+6,0,Not Stressed,0,Not Stressed,0.996810257434845,True
+7,1,Stressed,1,Stressed,0.9939610958099365,True
+8,1,Stressed,1,Stressed,0.9980731010437012,True
+9,0,Not Stressed,0,Not Stressed,0.9974641799926758,True
+10,1,Stressed,1,Stressed,0.9930875897407532,True
+11,1,Stressed,1,Stressed,0.99016934633255,True
+12,1,Stressed,1,Stressed,0.9918757677078247,True
+13,1,Stressed,1,Stressed,0.997979462146759,True
+14,1,Stressed,0,Not Stressed,0.7792232632637024,False
+15,0,Not Stressed,0,Not Stressed,0.9941442608833313,True
+16,1,Stressed,1,Stressed,0.9957942962646484,True
+17,1,Stressed,0,Not Stressed,0.8870860934257507,False
+18,0,Not Stressed,1,Stressed,0.992241382598877,False
+19,0,Not Stressed,0,Not Stressed,0.9809668064117432,True
+20,0,Not Stressed,0,Not Stressed,0.9965555667877197,True
+21,0,Not Stressed,0,Not Stressed,0.9969576597213745,True
+22,0,Not Stressed,0,Not Stressed,0.9963143467903137,True
+23,1,Stressed,1,Stressed,0.9970347881317139,True
+24,1,Stressed,1,Stressed,0.9954724907875061,True
+25,0,Not Stressed,0,Not Stressed,0.9974139928817749,True
+26,0,Not Stressed,0,Not Stressed,0.9950049519538879,True
+27,0,Not Stressed,0,Not Stressed,0.9973670840263367,True
+28,0,Not Stressed,0,Not Stressed,0.9971029162406921,True
+29,0,Not Stressed,0,Not Stressed,0.9834519624710083,True
+30,1,Stressed,1,Stressed,0.9980676770210266,True
+31,0,Not Stressed,0,Not Stressed,0.9972183704376221,True
+32,1,Stressed,1,Stressed,0.9976634979248047,True
+33,1,Stressed,1,Stressed,0.6705206036567688,True
+34,0,Not Stressed,0,Not Stressed,0.9970617890357971,True
+35,0,Not Stressed,0,Not Stressed,0.9968891739845276,True
+36,0,Not Stressed,0,Not Stressed,0.9929621815681458,True
+37,1,Stressed,1,Stressed,0.9976240992546082,True
+38,1,Stressed,1,Stressed,0.8307336568832397,True
+39,0,Not Stressed,0,Not Stressed,0.9979902505874634,True
+40,0,Not Stressed,1,Stressed,0.8609033823013306,False
+41,1,Stressed,1,Stressed,0.9978978633880615,True
+42,1,Stressed,1,Stressed,0.997643768787384,True
+43,1,Stressed,1,Stressed,0.997945249080658,True
+44,1,Stressed,1,Stressed,0.9977578520774841,True
+45,0,Not Stressed,1,Stressed,0.9697256684303284,False
+46,1,Stressed,1,Stressed,0.9977120161056519,True
+47,0,Not Stressed,1,Stressed,0.997459352016449,False
+48,0,Not Stressed,1,Stressed,0.8000612854957581,False
+49,1,Stressed,1,Stressed,0.9967161417007446,True
+50,0,Not Stressed,1,Stressed,0.997291624546051,False
+51,1,Stressed,1,Stressed,0.9977999329566956,True
+52,0,Not Stressed,1,Stressed,0.9937096834182739,False
+53,1,Stressed,1,Stressed,0.8730221390724182,True
+54,1,Stressed,1,Stressed,0.9695165157318115,True
+55,1,Stressed,1,Stressed,0.9980860948562622,True
+56,0,Not Stressed,1,Stressed,0.9956992864608765,False
+57,0,Not Stressed,0,Not Stressed,0.9978047013282776,True
+58,1,Stressed,1,Stressed,0.9977479577064514,True
+59,0,Not Stressed,0,Not Stressed,0.9940695762634277,True
+60,0,Not Stressed,1,Stressed,0.9780201315879822,False
+61,0,Not Stressed,1,Stressed,0.9959803819656372,False
+62,1,Stressed,1,Stressed,0.9968990087509155,True
+63,0,Not Stressed,0,Not Stressed,0.9955571293830872,True
+64,1,Stressed,1,Stressed,0.9979366064071655,True
+65,0,Not Stressed,0,Not Stressed,0.9966387748718262,True
+66,1,Stressed,0,Not Stressed,0.9921092391014099,False
+67,0,Not Stressed,0,Not Stressed,0.9978979825973511,True
+68,0,Not Stressed,0,Not Stressed,0.997791051864624,True
+69,1,Stressed,1,Stressed,0.9933783411979675,True
+70,1,Stressed,1,Stressed,0.99649578332901,True
+71,1,Stressed,1,Stressed,0.92559814453125,True
+72,1,Stressed,1,Stressed,0.997171938419342,True
+73,1,Stressed,1,Stressed,0.9976885318756104,True
+74,0,Not Stressed,0,Not Stressed,0.9962051510810852,True
+75,0,Not Stressed,0,Not Stressed,0.9225904941558838,True
+76,0,Not Stressed,0,Not Stressed,0.9941895008087158,True
+77,0,Not Stressed,0,Not Stressed,0.6491428017616272,True
+78,1,Stressed,1,Stressed,0.9978811144828796,True
+79,0,Not Stressed,0,Not Stressed,0.995261013507843,True
+80,1,Stressed,1,Stressed,0.9979442954063416,True
+81,0,Not Stressed,0,Not Stressed,0.9706974029541016,True
+82,1,Stressed,1,Stressed,0.9980789422988892,True
+83,0,Not Stressed,1,Stressed,0.9952160120010376,False
+84,1,Stressed,1,Stressed,0.9977831244468689,True
+85,0,Not Stressed,1,Stressed,0.9971561431884766,False
+86,0,Not Stressed,0,Not Stressed,0.9846659898757935,True
+87,1,Stressed,1,Stressed,0.9980180263519287,True
+88,1,Stressed,1,Stressed,0.9867919683456421,True
+89,0,Not Stressed,0,Not Stressed,0.992837131023407,True
+90,1,Stressed,1,Stressed,0.9840917587280273,True
+91,0,Not Stressed,1,Stressed,0.9968118071556091,False
+92,1,Stressed,1,Stressed,0.9972497820854187,True
+93,1,Stressed,1,Stressed,0.9978244304656982,True
+94,1,Stressed,1,Stressed,0.9935256242752075,True
+95,0,Not Stressed,0,Not Stressed,0.9957203269004822,True
+96,0,Not Stressed,1,Stressed,0.6278717517852783,False
+97,1,Stressed,1,Stressed,0.9963752627372742,True
+98,1,Stressed,1,Stressed,0.9981022477149963,True
+99,0,Not Stressed,0,Not Stressed,0.9923500418663025,True
+100,1,Stressed,0,Not Stressed,0.6910743713378906,False
+101,0,Not Stressed,0,Not Stressed,0.522357702255249,True
+102,1,Stressed,1,Stressed,0.9969226717948914,True
+103,0,Not Stressed,0,Not Stressed,0.9899464249610901,True
+104,0,Not Stressed,0,Not Stressed,0.9964815378189087,True
+105,1,Stressed,0,Not Stressed,0.9936574101448059,False
+106,1,Stressed,1,Stressed,0.9964472651481628,True
+107,1,Stressed,1,Stressed,0.7760141491889954,True
+108,1,Stressed,0,Not Stressed,0.9837155938148499,False
+109,0,Not Stressed,0,Not Stressed,0.9976441264152527,True
+110,1,Stressed,1,Stressed,0.9975122213363647,True
+111,0,Not Stressed,0,Not Stressed,0.9966229200363159,True
+112,0,Not Stressed,0,Not Stressed,0.9175902009010315,True
+113,1,Stressed,1,Stressed,0.9975097179412842,True
+114,1,Stressed,1,Stressed,0.9981672763824463,True
+115,0,Not Stressed,0,Not Stressed,0.9972625970840454,True
+116,0,Not Stressed,0,Not Stressed,0.9973627924919128,True
+117,0,Not Stressed,0,Not Stressed,0.9977282881736755,True
+118,1,Stressed,1,Stressed,0.9976213574409485,True
+119,1,Stressed,1,Stressed,0.9976490139961243,True
+120,0,Not Stressed,0,Not Stressed,0.990871012210846,True
+121,1,Stressed,1,Stressed,0.997657299041748,True
+122,1,Stressed,1,Stressed,0.9942670464515686,True
+123,0,Not Stressed,0,Not Stressed,0.996478259563446,True
+124,0,Not Stressed,1,Stressed,0.8728293776512146,False
+125,0,Not Stressed,0,Not Stressed,0.9969428181648254,True
+126,1,Stressed,1,Stressed,0.9968605041503906,True
+127,0,Not Stressed,1,Stressed,0.9940301179885864,False
+128,1,Stressed,1,Stressed,0.9966513514518738,True
+129,0,Not Stressed,0,Not Stressed,0.9951626062393188,True
+130,1,Stressed,1,Stressed,0.9962490200996399,True
+131,1,Stressed,1,Stressed,0.9954290390014648,True
+132,1,Stressed,1,Stressed,0.9563136100769043,True
+133,1,Stressed,1,Stressed,0.9975606203079224,True
+134,1,Stressed,1,Stressed,0.9981461763381958,True
+135,1,Stressed,1,Stressed,0.9980986714363098,True
+136,1,Stressed,1,Stressed,0.9979047775268555,True
+137,1,Stressed,1,Stressed,0.9981125593185425,True
+138,0,Not Stressed,0,Not Stressed,0.997495710849762,True
+139,1,Stressed,0,Not Stressed,0.9959385395050049,False
+140,0,Not Stressed,0,Not Stressed,0.9968872666358948,True
+141,1,Stressed,1,Stressed,0.9322670698165894,True
+142,1,Stressed,1,Stressed,0.9970564842224121,True
+143,1,Stressed,1,Stressed,0.9979335069656372,True
+144,0,Not Stressed,0,Not Stressed,0.9975624084472656,True
+145,0,Not Stressed,0,Not Stressed,0.997914731502533,True
+146,0,Not Stressed,0,Not Stressed,0.9605739712715149,True
+147,1,Stressed,1,Stressed,0.9979223608970642,True
+148,0,Not Stressed,0,Not Stressed,0.9950403571128845,True
+149,1,Stressed,1,Stressed,0.9960424900054932,True
+150,0,Not Stressed,0,Not Stressed,0.9913187623023987,True
+151,1,Stressed,0,Not Stressed,0.9937779903411865,False
+152,1,Stressed,1,Stressed,0.9972260594367981,True
+153,0,Not Stressed,0,Not Stressed,0.9972018003463745,True
+154,1,Stressed,1,Stressed,0.9981440305709839,True
+155,1,Stressed,1,Stressed,0.9969543218612671,True
+156,1,Stressed,1,Stressed,0.9975078105926514,True
+157,0,Not Stressed,0,Not Stressed,0.9977723956108093,True
+158,0,Not Stressed,1,Stressed,0.8973979949951172,False
+159,1,Stressed,0,Not Stressed,0.806160569190979,False
+160,1,Stressed,1,Stressed,0.9937206506729126,True
+161,1,Stressed,1,Stressed,0.9975069165229797,True
+162,0,Not Stressed,0,Not Stressed,0.9969310760498047,True
+163,1,Stressed,1,Stressed,0.9833806753158569,True
+164,1,Stressed,1,Stressed,0.9905579090118408,True
+165,0,Not Stressed,0,Not Stressed,0.7073963284492493,True
+166,0,Not Stressed,1,Stressed,0.99554044008255,False
+167,0,Not Stressed,0,Not Stressed,0.9940791130065918,True
+168,1,Stressed,0,Not Stressed,0.9963188171386719,False
+169,0,Not Stressed,0,Not Stressed,0.9974278807640076,True
+170,0,Not Stressed,1,Stressed,0.9964564442634583,False
+171,0,Not Stressed,0,Not Stressed,0.9890977144241333,True
+172,0,Not Stressed,1,Stressed,0.9964396357536316,False
+173,1,Stressed,0,Not Stressed,0.9971266388893127,False
+174,1,Stressed,0,Not Stressed,0.9976198077201843,False
+175,1,Stressed,0,Not Stressed,0.9962917566299438,False
+176,0,Not Stressed,0,Not Stressed,0.9971666932106018,True
+177,1,Stressed,1,Stressed,0.9980117082595825,True
+178,0,Not Stressed,0,Not Stressed,0.9944238066673279,True
+179,1,Stressed,1,Stressed,0.9977715015411377,True
+180,1,Stressed,0,Not Stressed,0.9167138338088989,False
+181,1,Stressed,0,Not Stressed,0.9974191188812256,False
+182,1,Stressed,1,Stressed,0.9980669617652893,True
+183,1,Stressed,0,Not Stressed,0.9901881814002991,False
+184,0,Not Stressed,0,Not Stressed,0.9964686632156372,True
+185,0,Not Stressed,0,Not Stressed,0.996209979057312,True
+186,1,Stressed,1,Stressed,0.9973397850990295,True
+187,0,Not Stressed,1,Stressed,0.5304331183433533,False
+188,1,Stressed,1,Stressed,0.9976196885108948,True
+189,0,Not Stressed,1,Stressed,0.9972476363182068,False
+190,1,Stressed,1,Stressed,0.9979327917098999,True
+191,1,Stressed,0,Not Stressed,0.9965100884437561,False
+192,1,Stressed,1,Stressed,0.9980947375297546,True
+193,1,Stressed,1,Stressed,0.9941306710243225,True
+194,0,Not Stressed,0,Not Stressed,0.995682954788208,True
+195,1,Stressed,0,Not Stressed,0.9956249594688416,False
+196,1,Stressed,1,Stressed,0.9978516101837158,True
+197,0,Not Stressed,1,Stressed,0.9529114365577698,False
+198,0,Not Stressed,0,Not Stressed,0.9959537982940674,True
+199,0,Not Stressed,1,Stressed,0.991091251373291,False
+200,1,Stressed,1,Stressed,0.9974308609962463,True
+201,1,Stressed,1,Stressed,0.9980664849281311,True
+202,1,Stressed,1,Stressed,0.9980407357215881,True
+203,0,Not Stressed,0,Not Stressed,0.9971241354942322,True
+204,0,Not Stressed,0,Not Stressed,0.9963365793228149,True
+205,0,Not Stressed,1,Stressed,0.9965086579322815,False
+206,1,Stressed,1,Stressed,0.9778738617897034,True
+207,1,Stressed,0,Not Stressed,0.9680437445640564,False
+208,0,Not Stressed,0,Not Stressed,0.9973776340484619,True
+209,1,Stressed,1,Stressed,0.9974209070205688,True
+210,1,Stressed,1,Stressed,0.997503936290741,True
+211,1,Stressed,0,Not Stressed,0.600003719329834,False
+212,0,Not Stressed,0,Not Stressed,0.9954713582992554,True
+213,1,Stressed,1,Stressed,0.9956005811691284,True
+214,1,Stressed,1,Stressed,0.9979439377784729,True
+215,1,Stressed,1,Stressed,0.9981250166893005,True
+216,0,Not Stressed,1,Stressed,0.997689962387085,False
+217,0,Not Stressed,0,Not Stressed,0.9416887760162354,True
+218,1,Stressed,1,Stressed,0.997231662273407,True
+219,0,Not Stressed,0,Not Stressed,0.994840681552887,True
+220,1,Stressed,1,Stressed,0.9976074695587158,True
+221,1,Stressed,1,Stressed,0.9981563687324524,True
+222,1,Stressed,1,Stressed,0.9876351952552795,True
+223,1,Stressed,1,Stressed,0.998156726360321,True
+224,0,Not Stressed,0,Not Stressed,0.9958779811859131,True
+225,1,Stressed,0,Not Stressed,0.9742352962493896,False
+226,0,Not Stressed,1,Stressed,0.997763991355896,False
+227,0,Not Stressed,0,Not Stressed,0.9824575781822205,True
+228,1,Stressed,1,Stressed,0.9980223178863525,True
+229,1,Stressed,1,Stressed,0.9978426694869995,True
+230,0,Not Stressed,0,Not Stressed,0.9976933598518372,True
+231,1,Stressed,1,Stressed,0.9980840682983398,True
+232,0,Not Stressed,0,Not Stressed,0.9978006482124329,True
+233,0,Not Stressed,0,Not Stressed,0.9980089068412781,True
+234,1,Stressed,1,Stressed,0.9972202777862549,True
+235,1,Stressed,1,Stressed,0.9974722266197205,True
+236,1,Stressed,1,Stressed,0.9938647150993347,True
+237,0,Not Stressed,0,Not Stressed,0.9966927766799927,True
+238,1,Stressed,1,Stressed,0.9907252192497253,True
+239,1,Stressed,0,Not Stressed,0.9965229034423828,False
+240,0,Not Stressed,0,Not Stressed,0.9977818131446838,True
+241,0,Not Stressed,1,Stressed,0.9945947527885437,False
+242,0,Not Stressed,1,Stressed,0.6072683334350586,False
+243,0,Not Stressed,0,Not Stressed,0.9977266192436218,True
+244,0,Not Stressed,0,Not Stressed,0.9979621171951294,True
+245,1,Stressed,1,Stressed,0.9981309771537781,True
+246,0,Not Stressed,1,Stressed,0.9965735673904419,False
+247,0,Not Stressed,0,Not Stressed,0.9692864418029785,True
+248,0,Not Stressed,0,Not Stressed,0.9970481991767883,True
+249,1,Stressed,1,Stressed,0.6147488951683044,True
+250,0,Not Stressed,0,Not Stressed,0.9948798418045044,True
+251,0,Not Stressed,0,Not Stressed,0.9971565008163452,True
+252,1,Stressed,1,Stressed,0.9930058717727661,True
+253,1,Stressed,1,Stressed,0.986729085445404,True
+254,0,Not Stressed,1,Stressed,0.9801984429359436,False
+255,0,Not Stressed,0,Not Stressed,0.9972928166389465,True
+256,0,Not Stressed,1,Stressed,0.98870450258255,False
+257,1,Stressed,0,Not Stressed,0.9944907426834106,False
+258,1,Stressed,0,Not Stressed,0.9935421943664551,False
+259,0,Not Stressed,0,Not Stressed,0.9968621730804443,True
+260,0,Not Stressed,0,Not Stressed,0.9967864751815796,True
+261,0,Not Stressed,0,Not Stressed,0.9830112457275391,True
+262,1,Stressed,1,Stressed,0.861920177936554,True
+263,1,Stressed,1,Stressed,0.998166024684906,True
+264,0,Not Stressed,0,Not Stressed,0.9933852553367615,True
+265,1,Stressed,1,Stressed,0.9979022741317749,True
+266,0,Not Stressed,0,Not Stressed,0.9957668781280518,True
+267,1,Stressed,1,Stressed,0.8492064476013184,True
+268,1,Stressed,1,Stressed,0.9981216788291931,True
+269,0,Not Stressed,1,Stressed,0.9962448477745056,False
+270,1,Stressed,1,Stressed,0.9967091083526611,True
+271,1,Stressed,0,Not Stressed,0.9844619035720825,False
+272,1,Stressed,1,Stressed,0.9980060458183289,True
+273,1,Stressed,0,Not Stressed,0.992389976978302,False
+274,0,Not Stressed,0,Not Stressed,0.9975560903549194,True
+275,0,Not Stressed,0,Not Stressed,0.9975952506065369,True
+276,0,Not Stressed,0,Not Stressed,0.9682980179786682,True
+277,0,Not Stressed,0,Not Stressed,0.7966247200965881,True
+278,0,Not Stressed,0,Not Stressed,0.997714638710022,True
+279,0,Not Stressed,0,Not Stressed,0.9978766441345215,True
+280,1,Stressed,1,Stressed,0.997130811214447,True
+281,1,Stressed,1,Stressed,0.9980103373527527,True
+282,1,Stressed,1,Stressed,0.9196399450302124,True
+283,0,Not Stressed,0,Not Stressed,0.9849242568016052,True
+284,1,Stressed,1,Stressed,0.9978219270706177,True
+285,1,Stressed,1,Stressed,0.9896934628486633,True
+286,0,Not Stressed,0,Not Stressed,0.9963879585266113,True
+287,0,Not Stressed,1,Stressed,0.971563458442688,False
+288,0,Not Stressed,0,Not Stressed,0.9137138724327087,True
+289,0,Not Stressed,0,Not Stressed,0.9977818131446838,True
+290,0,Not Stressed,0,Not Stressed,0.9956979751586914,True
+291,1,Stressed,0,Not Stressed,0.997245192527771,False
+292,0,Not Stressed,1,Stressed,0.9971501231193542,False
+293,0,Not Stressed,1,Stressed,0.9979996085166931,False
+294,1,Stressed,1,Stressed,0.9971688389778137,True
+295,1,Stressed,1,Stressed,0.9978664517402649,True
+296,0,Not Stressed,0,Not Stressed,0.9969513416290283,True
+297,1,Stressed,1,Stressed,0.9976372718811035,True
+298,0,Not Stressed,0,Not Stressed,0.9972575306892395,True
+299,1,Stressed,1,Stressed,0.997575581073761,True
+300,0,Not Stressed,0,Not Stressed,0.9878706336021423,True
+301,0,Not Stressed,0,Not Stressed,0.9968834519386292,True
+302,0,Not Stressed,0,Not Stressed,0.9973737001419067,True
+303,0,Not Stressed,0,Not Stressed,0.9975965619087219,True
+304,0,Not Stressed,0,Not Stressed,0.9975048899650574,True
+305,0,Not Stressed,0,Not Stressed,0.997165858745575,True
+306,1,Stressed,1,Stressed,0.78664630651474,True
+307,1,Stressed,1,Stressed,0.995905876159668,True
+308,1,Stressed,0,Not Stressed,0.9374978542327881,False
+309,1,Stressed,1,Stressed,0.995927631855011,True
+310,1,Stressed,1,Stressed,0.9967812299728394,True
+311,0,Not Stressed,0,Not Stressed,0.9800093770027161,True
+312,1,Stressed,1,Stressed,0.9966586828231812,True
+313,1,Stressed,1,Stressed,0.9974507689476013,True
+314,0,Not Stressed,1,Stressed,0.9396650791168213,False
+315,1,Stressed,1,Stressed,0.9467961192131042,True
+316,1,Stressed,1,Stressed,0.9981786012649536,True
+317,0,Not Stressed,1,Stressed,0.9685600996017456,False
+318,0,Not Stressed,0,Not Stressed,0.9898512363433838,True
+319,1,Stressed,1,Stressed,0.9973433613777161,True
+320,1,Stressed,1,Stressed,0.9877753257751465,True
+321,1,Stressed,1,Stressed,0.9866080284118652,True
+322,1,Stressed,0,Not Stressed,0.9966475367546082,False
+323,1,Stressed,1,Stressed,0.9945375323295593,True
+324,1,Stressed,0,Not Stressed,0.9972913861274719,False
+325,1,Stressed,1,Stressed,0.9976893663406372,True
+326,1,Stressed,1,Stressed,0.9977474808692932,True
+327,1,Stressed,1,Stressed,0.9971707463264465,True
+328,0,Not Stressed,0,Not Stressed,0.9973022937774658,True
+329,0,Not Stressed,0,Not Stressed,0.9974305033683777,True
+330,0,Not Stressed,1,Stressed,0.9363082051277161,False
+331,1,Stressed,1,Stressed,0.9978951215744019,True
+332,1,Stressed,0,Not Stressed,0.9965358972549438,False
+333,0,Not Stressed,0,Not Stressed,0.9971519708633423,True
+334,1,Stressed,1,Stressed,0.9978498220443726,True
+335,1,Stressed,1,Stressed,0.9966853260993958,True
+336,0,Not Stressed,1,Stressed,0.9935883283615112,False
+337,1,Stressed,1,Stressed,0.9978224039077759,True
+338,0,Not Stressed,0,Not Stressed,0.9973369240760803,True
+339,1,Stressed,1,Stressed,0.9977312684059143,True
+340,1,Stressed,0,Not Stressed,0.9072837829589844,False
+341,0,Not Stressed,0,Not Stressed,0.9958068132400513,True
+342,0,Not Stressed,0,Not Stressed,0.9958080053329468,True
+343,0,Not Stressed,0,Not Stressed,0.9952508211135864,True
+344,1,Stressed,0,Not Stressed,0.9709075093269348,False
+345,0,Not Stressed,0,Not Stressed,0.9975927472114563,True
+346,0,Not Stressed,1,Stressed,0.7543155550956726,False
+347,0,Not Stressed,0,Not Stressed,0.9964069724082947,True
+348,1,Stressed,1,Stressed,0.9971315860748291,True
+349,0,Not Stressed,1,Stressed,0.9850044250488281,False
+350,0,Not Stressed,0,Not Stressed,0.9368190765380859,True
+351,0,Not Stressed,0,Not Stressed,0.9978458881378174,True
+352,0,Not Stressed,0,Not Stressed,0.9977237582206726,True
+353,1,Stressed,1,Stressed,0.9969525337219238,True
+354,0,Not Stressed,0,Not Stressed,0.9969133138656616,True
+355,0,Not Stressed,0,Not Stressed,0.9736243486404419,True
+356,0,Not Stressed,1,Stressed,0.9927672147750854,False
+357,0,Not Stressed,0,Not Stressed,0.9974989295005798,True
+358,1,Stressed,1,Stressed,0.997675359249115,True
+359,1,Stressed,0,Not Stressed,0.9961853623390198,False
+360,1,Stressed,1,Stressed,0.9977828860282898,True
+361,0,Not Stressed,0,Not Stressed,0.9960495829582214,True
+362,0,Not Stressed,0,Not Stressed,0.9959740042686462,True
+363,1,Stressed,1,Stressed,0.9977070093154907,True
+364,1,Stressed,1,Stressed,0.9408844709396362,True
+365,1,Stressed,0,Not Stressed,0.5123552083969116,False
+366,1,Stressed,1,Stressed,0.9980596899986267,True
+367,1,Stressed,1,Stressed,0.9980833530426025,True
+368,0,Not Stressed,0,Not Stressed,0.9963339567184448,True
+369,0,Not Stressed,1,Stressed,0.991428554058075,False
+370,1,Stressed,1,Stressed,0.9980048537254333,True
+371,1,Stressed,1,Stressed,0.997298538684845,True
+372,1,Stressed,1,Stressed,0.9913880228996277,True
+373,1,Stressed,0,Not Stressed,0.9113379716873169,False
+374,1,Stressed,1,Stressed,0.9905904531478882,True
+375,1,Stressed,1,Stressed,0.9977261424064636,True
+376,0,Not Stressed,0,Not Stressed,0.8844395875930786,True
+377,0,Not Stressed,0,Not Stressed,0.997692346572876,True
+378,1,Stressed,1,Stressed,0.9978991746902466,True
+379,1,Stressed,1,Stressed,0.9746654033660889,True
+380,0,Not Stressed,0,Not Stressed,0.996966540813446,True
+381,0,Not Stressed,0,Not Stressed,0.9968308806419373,True
+382,1,Stressed,1,Stressed,0.9978959560394287,True
+383,1,Stressed,1,Stressed,0.9975218176841736,True
+384,0,Not Stressed,0,Not Stressed,0.9978893399238586,True
+385,1,Stressed,1,Stressed,0.9956289529800415,True
+386,0,Not Stressed,0,Not Stressed,0.9969924688339233,True
+387,0,Not Stressed,0,Not Stressed,0.9976544976234436,True
+388,0,Not Stressed,0,Not Stressed,0.996841311454773,True
+389,1,Stressed,0,Not Stressed,0.9971454739570618,False
+390,1,Stressed,1,Stressed,0.9972060322761536,True
+391,0,Not Stressed,0,Not Stressed,0.9456200003623962,True
+392,0,Not Stressed,1,Stressed,0.9853706359863281,False
+393,0,Not Stressed,1,Stressed,0.9906629323959351,False
+394,1,Stressed,1,Stressed,0.9971323013305664,True
+395,1,Stressed,1,Stressed,0.9977760910987854,True
+396,0,Not Stressed,0,Not Stressed,0.99782395362854,True
+397,1,Stressed,0,Not Stressed,0.7508653402328491,False
+398,1,Stressed,1,Stressed,0.9974424839019775,True
+399,1,Stressed,1,Stressed,0.9976929426193237,True
+400,0,Not Stressed,0,Not Stressed,0.997984766960144,True
+401,0,Not Stressed,1,Stressed,0.9978026747703552,False
+402,1,Stressed,1,Stressed,0.9981649518013,True
+403,0,Not Stressed,0,Not Stressed,0.9972932934761047,True
+404,0,Not Stressed,0,Not Stressed,0.995323121547699,True
+405,0,Not Stressed,0,Not Stressed,0.9952192902565002,True
+406,0,Not Stressed,0,Not Stressed,0.9965687990188599,True
+407,0,Not Stressed,0,Not Stressed,0.7396429777145386,True
+408,0,Not Stressed,0,Not Stressed,0.9971213936805725,True
+409,0,Not Stressed,0,Not Stressed,0.9969114661216736,True
+410,1,Stressed,1,Stressed,0.9979574680328369,True
+411,1,Stressed,1,Stressed,0.9926611185073853,True
+412,0,Not Stressed,1,Stressed,0.9956771731376648,False
+413,0,Not Stressed,0,Not Stressed,0.9979076385498047,True
+414,1,Stressed,1,Stressed,0.998044490814209,True
+415,1,Stressed,1,Stressed,0.9963885545730591,True
+416,0,Not Stressed,0,Not Stressed,0.9958503246307373,True
+417,1,Stressed,1,Stressed,0.9965907335281372,True
+418,1,Stressed,1,Stressed,0.9058049321174622,True
+419,0,Not Stressed,0,Not Stressed,0.9947988986968994,True
+420,1,Stressed,0,Not Stressed,0.9936230778694153,False
+421,1,Stressed,0,Not Stressed,0.988275408744812,False
+422,1,Stressed,1,Stressed,0.8947518467903137,True
+423,1,Stressed,1,Stressed,0.989607036113739,True
+424,0,Not Stressed,1,Stressed,0.9677850604057312,False
+425,0,Not Stressed,1,Stressed,0.9977001547813416,False
+426,0,Not Stressed,0,Not Stressed,0.9094735980033875,True
+427,1,Stressed,1,Stressed,0.9975752234458923,True
+428,0,Not Stressed,1,Stressed,0.9933779835700989,False
+429,0,Not Stressed,1,Stressed,0.9196505546569824,False
+430,0,Not Stressed,0,Not Stressed,0.9975698590278625,True
+431,0,Not Stressed,0,Not Stressed,0.997116208076477,True
+432,1,Stressed,1,Stressed,0.9976800084114075,True
+433,0,Not Stressed,0,Not Stressed,0.9971711039543152,True
+434,1,Stressed,1,Stressed,0.9978051781654358,True
+435,1,Stressed,1,Stressed,0.9947590231895447,True
+436,1,Stressed,1,Stressed,0.7471484541893005,True
+437,1,Stressed,1,Stressed,0.9967317581176758,True
+438,1,Stressed,1,Stressed,0.9970705509185791,True
+439,0,Not Stressed,0,Not Stressed,0.9934273958206177,True
+440,0,Not Stressed,0,Not Stressed,0.9960591793060303,True
+441,1,Stressed,1,Stressed,0.9962128400802612,True
+442,0,Not Stressed,0,Not Stressed,0.9972980618476868,True
+443,1,Stressed,1,Stressed,0.9979217648506165,True
+444,1,Stressed,1,Stressed,0.998162567615509,True
+445,0,Not Stressed,0,Not Stressed,0.9970207810401917,True
+446,0,Not Stressed,0,Not Stressed,0.9977521300315857,True
+447,0,Not Stressed,0,Not Stressed,0.9963575005531311,True
+448,0,Not Stressed,0,Not Stressed,0.9939292669296265,True
+449,1,Stressed,1,Stressed,0.9979167580604553,True
+450,1,Stressed,1,Stressed,0.9971848130226135,True
+451,1,Stressed,0,Not Stressed,0.6850952506065369,False
+452,0,Not Stressed,0,Not Stressed,0.9801701903343201,True
+453,0,Not Stressed,0,Not Stressed,0.9972807168960571,True
+454,1,Stressed,1,Stressed,0.9974581599235535,True
+455,1,Stressed,0,Not Stressed,0.937646746635437,False
+456,0,Not Stressed,1,Stressed,0.9963510036468506,False
+457,0,Not Stressed,0,Not Stressed,0.9976069927215576,True
+458,0,Not Stressed,0,Not Stressed,0.9854954481124878,True
+459,0,Not Stressed,0,Not Stressed,0.9976918697357178,True
+460,0,Not Stressed,0,Not Stressed,0.9974417686462402,True
+461,1,Stressed,1,Stressed,0.9979084730148315,True
+462,0,Not Stressed,0,Not Stressed,0.9975426197052002,True
+463,1,Stressed,0,Not Stressed,0.9721094965934753,False
+464,0,Not Stressed,1,Stressed,0.9606044292449951,False
+465,1,Stressed,1,Stressed,0.9976844787597656,True
+466,1,Stressed,1,Stressed,0.9967470169067383,True
+467,1,Stressed,1,Stressed,0.9970207810401917,True
+468,1,Stressed,1,Stressed,0.9582976698875427,True
+469,1,Stressed,1,Stressed,0.9971488118171692,True
+470,0,Not Stressed,1,Stressed,0.7585029006004333,False
+471,0,Not Stressed,1,Stressed,0.9959235191345215,False
+472,0,Not Stressed,0,Not Stressed,0.996552586555481,True
+473,0,Not Stressed,0,Not Stressed,0.9976588487625122,True
+474,0,Not Stressed,0,Not Stressed,0.9944193959236145,True
+475,1,Stressed,0,Not Stressed,0.9856557846069336,False
+476,0,Not Stressed,0,Not Stressed,0.9932448267936707,True
+477,1,Stressed,0,Not Stressed,0.9949028491973877,False
+478,1,Stressed,1,Stressed,0.9981314539909363,True
+479,1,Stressed,1,Stressed,0.9981722831726074,True
+480,0,Not Stressed,1,Stressed,0.8894920349121094,False
+481,0,Not Stressed,0,Not Stressed,0.9804189801216125,True
+482,1,Stressed,1,Stressed,0.9937553405761719,True
+483,1,Stressed,1,Stressed,0.9978368878364563,True
+484,0,Not Stressed,1,Stressed,0.9567368030548096,False
+485,1,Stressed,1,Stressed,0.9980360865592957,True
+486,1,Stressed,1,Stressed,0.9969364404678345,True
+487,0,Not Stressed,1,Stressed,0.9883257150650024,False
+488,1,Stressed,1,Stressed,0.9976603984832764,True
+489,0,Not Stressed,1,Stressed,0.9896634221076965,False
+490,0,Not Stressed,0,Not Stressed,0.996810257434845,True
+491,1,Stressed,1,Stressed,0.9964596629142761,True
+492,0,Not Stressed,0,Not Stressed,0.9604202508926392,True
+493,1,Stressed,0,Not Stressed,0.9973903298377991,False
+494,0,Not Stressed,1,Stressed,0.9396435022354126,False
+495,1,Stressed,0,Not Stressed,0.9196702837944031,False
+496,1,Stressed,1,Stressed,0.9979567527770996,True
+497,1,Stressed,1,Stressed,0.9978041052818298,True
+498,1,Stressed,1,Stressed,0.9958524703979492,True
+499,1,Stressed,1,Stressed,0.9980286955833435,True
+500,0,Not Stressed,0,Not Stressed,0.997605562210083,True
+501,0,Not Stressed,0,Not Stressed,0.8655068874359131,True
+502,0,Not Stressed,0,Not Stressed,0.9973461627960205,True
+503,1,Stressed,1,Stressed,0.998119056224823,True
+504,0,Not Stressed,0,Not Stressed,0.9963571429252625,True
+505,0,Not Stressed,0,Not Stressed,0.9967043995857239,True
+506,1,Stressed,1,Stressed,0.9972223043441772,True
+507,1,Stressed,0,Not Stressed,0.997349739074707,False
+508,0,Not Stressed,0,Not Stressed,0.9923840165138245,True
+509,1,Stressed,1,Stressed,0.9932963252067566,True
+510,1,Stressed,0,Not Stressed,0.9948934316635132,False
+511,1,Stressed,1,Stressed,0.9208819270133972,True
+512,1,Stressed,1,Stressed,0.9968639612197876,True
+513,0,Not Stressed,0,Not Stressed,0.9961493015289307,True
+514,1,Stressed,1,Stressed,0.7878677845001221,True
+515,0,Not Stressed,1,Stressed,0.9958131909370422,False
+516,1,Stressed,1,Stressed,0.6559633016586304,True
+517,1,Stressed,1,Stressed,0.9978817105293274,True
+518,1,Stressed,1,Stressed,0.9981738328933716,True
+519,1,Stressed,0,Not Stressed,0.9971060156822205,False
+520,1,Stressed,1,Stressed,0.998100221157074,True
+521,1,Stressed,1,Stressed,0.9969667792320251,True
+522,1,Stressed,1,Stressed,0.9980083107948303,True
+523,0,Not Stressed,0,Not Stressed,0.9974501729011536,True
+524,1,Stressed,1,Stressed,0.9975074529647827,True
+525,0,Not Stressed,0,Not Stressed,0.9957736134529114,True
+526,0,Not Stressed,1,Stressed,0.9375393390655518,False
+527,1,Stressed,1,Stressed,0.9953623414039612,True
+528,0,Not Stressed,1,Stressed,0.9914537668228149,False
+529,1,Stressed,1,Stressed,0.997610330581665,True
+530,0,Not Stressed,0,Not Stressed,0.9966128468513489,True
+531,1,Stressed,0,Not Stressed,0.77097088098526,False
+532,1,Stressed,1,Stressed,0.9954246878623962,True
+533,1,Stressed,1,Stressed,0.989974319934845,True
+534,1,Stressed,1,Stressed,0.969794750213623,True
+535,0,Not Stressed,1,Stressed,0.9906803965568542,False
+536,0,Not Stressed,0,Not Stressed,0.5292092561721802,True
+537,1,Stressed,1,Stressed,0.997484564781189,True
+538,1,Stressed,0,Not Stressed,0.8981350064277649,False
+539,1,Stressed,1,Stressed,0.9975199103355408,True
+540,0,Not Stressed,0,Not Stressed,0.8848744630813599,True
+541,1,Stressed,1,Stressed,0.9976919889450073,True
+542,0,Not Stressed,1,Stressed,0.9978506565093994,False
+543,0,Not Stressed,1,Stressed,0.998101532459259,False
+544,1,Stressed,1,Stressed,0.9980202913284302,True
+545,0,Not Stressed,0,Not Stressed,0.9474309682846069,True
+546,0,Not Stressed,0,Not Stressed,0.9972910284996033,True
+547,0,Not Stressed,0,Not Stressed,0.9925655126571655,True
+548,0,Not Stressed,1,Stressed,0.996227502822876,False
+549,0,Not Stressed,1,Stressed,0.9970492720603943,False
+550,0,Not Stressed,0,Not Stressed,0.9978594183921814,True
+551,0,Not Stressed,0,Not Stressed,0.9968407154083252,True
+552,1,Stressed,1,Stressed,0.9930199980735779,True
+553,0,Not Stressed,0,Not Stressed,0.9964403510093689,True
+554,1,Stressed,0,Not Stressed,0.9897386431694031,False
+555,1,Stressed,1,Stressed,0.9980340600013733,True
+556,1,Stressed,1,Stressed,0.9974731802940369,True
+557,1,Stressed,1,Stressed,0.9978895783424377,True
+558,1,Stressed,1,Stressed,0.9690762758255005,True
+559,1,Stressed,0,Not Stressed,0.5000616908073425,False
+560,1,Stressed,1,Stressed,0.9965603947639465,True
+561,0,Not Stressed,0,Not Stressed,0.9312343001365662,True
+562,0,Not Stressed,0,Not Stressed,0.9973662495613098,True
+563,1,Stressed,0,Not Stressed,0.9950442314147949,False
+564,0,Not Stressed,0,Not Stressed,0.9961996674537659,True
+565,1,Stressed,1,Stressed,0.9953906536102295,True
+566,1,Stressed,0,Not Stressed,0.9962289929389954,False
+567,1,Stressed,1,Stressed,0.9868278503417969,True
+568,1,Stressed,1,Stressed,0.9980394244194031,True
+569,1,Stressed,1,Stressed,0.9911739230155945,True
+570,1,Stressed,1,Stressed,0.9980460405349731,True
+571,0,Not Stressed,0,Not Stressed,0.98710036277771,True
+572,0,Not Stressed,0,Not Stressed,0.9975484013557434,True
+573,1,Stressed,1,Stressed,0.9978552460670471,True
+574,0,Not Stressed,1,Stressed,0.9836390018463135,False
+575,0,Not Stressed,0,Not Stressed,0.9952083230018616,True
+576,0,Not Stressed,0,Not Stressed,0.9927878975868225,True
+577,0,Not Stressed,1,Stressed,0.9886470437049866,False
+578,0,Not Stressed,1,Stressed,0.5963724255561829,False
+579,1,Stressed,1,Stressed,0.997797966003418,True
+580,1,Stressed,1,Stressed,0.8564251661300659,True
+581,0,Not Stressed,0,Not Stressed,0.997291624546051,True
+582,0,Not Stressed,0,Not Stressed,0.9972196817398071,True
+583,0,Not Stressed,1,Stressed,0.9754440188407898,False
+584,0,Not Stressed,1,Stressed,0.9952787160873413,False
+585,0,Not Stressed,0,Not Stressed,0.9867404103279114,True
+586,0,Not Stressed,0,Not Stressed,0.9975167512893677,True
+587,0,Not Stressed,0,Not Stressed,0.997369647026062,True
+588,0,Not Stressed,0,Not Stressed,0.7918480038642883,True
+589,0,Not Stressed,0,Not Stressed,0.9972975850105286,True
+590,1,Stressed,1,Stressed,0.9977701902389526,True
+591,1,Stressed,1,Stressed,0.9971587657928467,True
+592,0,Not Stressed,1,Stressed,0.5976477265357971,False
+593,1,Stressed,1,Stressed,0.9980636239051819,True
+594,1,Stressed,0,Not Stressed,0.968666672706604,False
+595,1,Stressed,1,Stressed,0.998115062713623,True
+596,1,Stressed,1,Stressed,0.997190535068512,True
+597,0,Not Stressed,1,Stressed,0.9922385811805725,False
+598,0,Not Stressed,1,Stressed,0.9975013136863708,False
+599,1,Stressed,1,Stressed,0.9980231523513794,True
+600,0,Not Stressed,0,Not Stressed,0.9965780377388,True
+601,0,Not Stressed,0,Not Stressed,0.9971416592597961,True
+602,0,Not Stressed,0,Not Stressed,0.9968460202217102,True
+603,0,Not Stressed,0,Not Stressed,0.9950413107872009,True
+604,0,Not Stressed,1,Stressed,0.9962867498397827,False
+605,1,Stressed,0,Not Stressed,0.9901520609855652,False
+606,1,Stressed,1,Stressed,0.9980314373970032,True
+607,1,Stressed,0,Not Stressed,0.9927116632461548,False
+608,1,Stressed,1,Stressed,0.9981936812400818,True
+609,1,Stressed,1,Stressed,0.9949756860733032,True
+610,1,Stressed,1,Stressed,0.9942100048065186,True
+611,1,Stressed,1,Stressed,0.9977784752845764,True
+612,1,Stressed,1,Stressed,0.9980708956718445,True
+613,1,Stressed,1,Stressed,0.9665528535842896,True
+614,0,Not Stressed,0,Not Stressed,0.9979274272918701,True
+615,1,Stressed,0,Not Stressed,0.9972729086875916,False
+616,0,Not Stressed,1,Stressed,0.7147259712219238,False
+617,1,Stressed,1,Stressed,0.9980188608169556,True
+618,1,Stressed,1,Stressed,0.9973965883255005,True
+619,1,Stressed,1,Stressed,0.9979918003082275,True
+620,1,Stressed,0,Not Stressed,0.9914520978927612,False
+621,0,Not Stressed,0,Not Stressed,0.9903929829597473,True
+622,0,Not Stressed,1,Stressed,0.9974018335342407,False
+623,1,Stressed,1,Stressed,0.9949283599853516,True
+624,0,Not Stressed,0,Not Stressed,0.9969455599784851,True
+625,0,Not Stressed,0,Not Stressed,0.9976184964179993,True
+626,1,Stressed,0,Not Stressed,0.7473791837692261,False
+627,0,Not Stressed,0,Not Stressed,0.9972826242446899,True
+628,0,Not Stressed,0,Not Stressed,0.9965720176696777,True
+629,0,Not Stressed,0,Not Stressed,0.9971627593040466,True
+630,0,Not Stressed,0,Not Stressed,0.9958615899085999,True
+631,0,Not Stressed,1,Stressed,0.993253767490387,False
+632,0,Not Stressed,0,Not Stressed,0.9957322478294373,True
+633,0,Not Stressed,1,Stressed,0.9960669875144958,False
+634,0,Not Stressed,1,Stressed,0.9974817633628845,False
+635,0,Not Stressed,1,Stressed,0.9932118654251099,False
+636,0,Not Stressed,0,Not Stressed,0.9972794651985168,True
+637,0,Not Stressed,1,Stressed,0.9892165660858154,False
+638,0,Not Stressed,0,Not Stressed,0.9751289486885071,True
+639,1,Stressed,1,Stressed,0.9978682994842529,True
+640,1,Stressed,1,Stressed,0.997887909412384,True
+641,1,Stressed,1,Stressed,0.9978411197662354,True
+642,0,Not Stressed,0,Not Stressed,0.9975320100784302,True
+643,1,Stressed,1,Stressed,0.9980601668357849,True
+644,0,Not Stressed,0,Not Stressed,0.9561346173286438,True
+645,1,Stressed,1,Stressed,0.9974027276039124,True
+646,1,Stressed,0,Not Stressed,0.5895103216171265,False
+647,1,Stressed,1,Stressed,0.9972336888313293,True
+648,1,Stressed,1,Stressed,0.9981227517127991,True
+649,0,Not Stressed,0,Not Stressed,0.9949083924293518,True
+650,0,Not Stressed,0,Not Stressed,0.9813055396080017,True
+651,0,Not Stressed,1,Stressed,0.9939844012260437,False
+652,1,Stressed,1,Stressed,0.9969645142555237,True
+653,0,Not Stressed,0,Not Stressed,0.9971332550048828,True
+654,0,Not Stressed,1,Stressed,0.9965214729309082,False
+655,0,Not Stressed,0,Not Stressed,0.996791660785675,True
+656,0,Not Stressed,0,Not Stressed,0.9917343854904175,True
+657,1,Stressed,1,Stressed,0.9979369640350342,True
+658,0,Not Stressed,0,Not Stressed,0.9974657297134399,True
+659,0,Not Stressed,0,Not Stressed,0.9941164255142212,True
+660,1,Stressed,1,Stressed,0.9980927109718323,True
+661,1,Stressed,0,Not Stressed,0.9735610485076904,False
+662,0,Not Stressed,1,Stressed,0.9969859719276428,False
+663,1,Stressed,1,Stressed,0.9970203042030334,True
+664,0,Not Stressed,0,Not Stressed,0.9976577758789062,True
+665,1,Stressed,1,Stressed,0.9980145692825317,True
+666,1,Stressed,1,Stressed,0.9981215596199036,True
+667,1,Stressed,1,Stressed,0.99811851978302,True
+668,0,Not Stressed,0,Not Stressed,0.9971104860305786,True
+669,1,Stressed,1,Stressed,0.8366196751594543,True
+670,1,Stressed,1,Stressed,0.9981663823127747,True
+671,0,Not Stressed,1,Stressed,0.9957333207130432,False
+672,0,Not Stressed,1,Stressed,0.9770575761795044,False
+673,1,Stressed,1,Stressed,0.9977782368659973,True
+674,0,Not Stressed,0,Not Stressed,0.9971956014633179,True
+675,1,Stressed,1,Stressed,0.9971489310264587,True
+676,1,Stressed,1,Stressed,0.9140489101409912,True
+677,1,Stressed,1,Stressed,0.9979312419891357,True
+678,0,Not Stressed,0,Not Stressed,0.9965975880622864,True
+679,0,Not Stressed,0,Not Stressed,0.9960423707962036,True
+680,1,Stressed,0,Not Stressed,0.9675915241241455,False
+681,1,Stressed,1,Stressed,0.9978615641593933,True
+682,1,Stressed,1,Stressed,0.9970532655715942,True
+683,1,Stressed,1,Stressed,0.9979150891304016,True
+684,0,Not Stressed,1,Stressed,0.996370792388916,False
+685,0,Not Stressed,0,Not Stressed,0.9954723119735718,True
+686,1,Stressed,1,Stressed,0.9978662133216858,True
+687,0,Not Stressed,0,Not Stressed,0.9684135317802429,True
+688,1,Stressed,1,Stressed,0.9676873683929443,True
+689,1,Stressed,1,Stressed,0.9979859590530396,True
+690,1,Stressed,1,Stressed,0.9976009726524353,True
+691,1,Stressed,0,Not Stressed,0.92432701587677,False
+692,0,Not Stressed,0,Not Stressed,0.9970021843910217,True
+693,0,Not Stressed,0,Not Stressed,0.935947597026825,True
+694,0,Not Stressed,0,Not Stressed,0.9934508800506592,True
+695,1,Stressed,1,Stressed,0.9975101947784424,True
+696,1,Stressed,1,Stressed,0.9959314465522766,True
+697,0,Not Stressed,0,Not Stressed,0.9979045391082764,True
+698,1,Stressed,1,Stressed,0.9975885152816772,True
+699,1,Stressed,1,Stressed,0.9897148013114929,True
+700,1,Stressed,1,Stressed,0.9969745874404907,True
+701,0,Not Stressed,1,Stressed,0.9976521134376526,False
+702,0,Not Stressed,0,Not Stressed,0.9965187311172485,True
+703,0,Not Stressed,0,Not Stressed,0.9973793029785156,True
+704,0,Not Stressed,0,Not Stressed,0.9965730905532837,True
+705,0,Not Stressed,0,Not Stressed,0.9782493114471436,True
+706,1,Stressed,1,Stressed,0.992407500743866,True
+707,0,Not Stressed,1,Stressed,0.6144906282424927,False
+708,0,Not Stressed,0,Not Stressed,0.9798021912574768,True
+709,1,Stressed,0,Not Stressed,0.9933074116706848,False
+710,1,Stressed,1,Stressed,0.9981392621994019,True
+711,1,Stressed,0,Not Stressed,0.9910661578178406,False
+712,1,Stressed,1,Stressed,0.9952217936515808,True
+713,0,Not Stressed,0,Not Stressed,0.9975196719169617,True
+714,1,Stressed,1,Stressed,0.9965644478797913,True
