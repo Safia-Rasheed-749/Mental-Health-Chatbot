@@ -47,7 +47,7 @@ tokenizer = AutoTokenizer.from_pretrained(
 # Load Model
 # =====================================================
 
-print("Loading selected DistilBERT emotion model...")
+print("Loading selected RoBERTa emotion model...")
 
 model = AutoModelForSequenceClassification.from_pretrained(
     str(MODEL_PATH),

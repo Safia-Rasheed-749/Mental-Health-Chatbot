@@ -30,7 +30,7 @@ from transformers import (
 BASE_DIR = Path(__file__).resolve().parents[3]
 
 # Best checkpoint according to validation accuracy
-MODEL_PATH = BASE_DIR / "models" / "stress_roberta"
+MODEL_PATH = BASE_DIR / "models" / "stress_production_model"
 
 
 # =====================================================

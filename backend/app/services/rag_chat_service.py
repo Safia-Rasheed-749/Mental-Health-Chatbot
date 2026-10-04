@@ -35,6 +35,7 @@ from langchain_core.documents import Document
 from app.ai.emotion_detection.predict import predict_emotion
 from app.ai.stress_detection.predict import predict_stress
 from app.ai.depression_detection.predict import predict_depression
+from app.ai.reddit_mental_health.predict import predict_mental_health_topic
 
 from app.ai.llm.llm import get_llm
 from app.ai.llm.prompt import get_prompt, detect_language
@@ -90,6 +91,7 @@ def build_mental_state(
     emotion_result: dict,
     stress_result: dict,
     depression_result: dict,
+    mh_topic_result: dict = None,
 ) -> str:
     """
     Format classifier outputs into a structured string for the LLM prompt.
@@ -102,6 +104,7 @@ def build_mental_state(
         emotion_result:    Output of predict_emotion()
         stress_result:     Output of predict_stress()
         depression_result: Output of predict_depression()
+        mh_topic_result:   Output of predict_mental_health_topic() (optional)
 
     Returns:
         Multi-line string injected into the {mental_state} prompt slot.
@@ -117,6 +120,10 @@ def build_mental_state(
         f"  Stress     : {_fmt(stress_result['stress'],         stress_result['confidence'])}",
         f"  Depression : {_fmt(depression_result['depression'], depression_result['confidence'])}",
     ]
+    if mh_topic_result:
+        lines.append(
+            f"  MH Topic   : {_fmt(mh_topic_result['mental_health_topic'], mh_topic_result['confidence'])}"
+        )
     return "\n".join(lines)
 
 
@@ -201,9 +208,9 @@ def format_history(history: Optional[list]) -> str:
 # Run All Detectors
 # =====================================================
 
-def run_detectors(text: str) -> Tuple[dict, dict, dict]:
+def run_detectors(text: str) -> Tuple[dict, dict, dict, dict]:
     """
-    Run all three mental-health classifiers on the user's message.
+    Run all four mental-health classifiers on the user's message.
 
     The calls are sequential (all models are in-process PyTorch models;
     no async benefit here).  They are kept in one function to make it
@@ -213,12 +220,13 @@ def run_detectors(text: str) -> Tuple[dict, dict, dict]:
         text: Raw user message.
 
     Returns:
-        Tuple of (emotion_result, stress_result, depression_result).
+        Tuple of (emotion_result, stress_result, depression_result, mh_topic_result).
     """
     emotion_result    = predict_emotion(text)
     stress_result     = predict_stress(text)
     depression_result = predict_depression(text)
-    return emotion_result, stress_result, depression_result
+    mh_topic_result   = predict_mental_health_topic(text)
+    return emotion_result, stress_result, depression_result, mh_topic_result
 
 
 # =====================================================
@@ -441,7 +449,7 @@ def generate_chat_response(question: str, history: Optional[list] = None) -> dic
     # --------------------------------------------------
     # Step 2: Run all three classifiers
     # --------------------------------------------------
-    emotion_result, stress_result, depression_result = run_detectors(question)
+    emotion_result, stress_result, depression_result, mh_topic_result = run_detectors(question)
 
     print(
         f"  Detected — emotion: {emotion_result['emotion']} "
@@ -449,7 +457,9 @@ def generate_chat_response(question: str, history: Optional[list] = None) -> dic
         f"stress: {stress_result['stress']} "
         f"({stress_result['confidence']:.1f}%), "
         f"depression: {depression_result['depression']} "
-        f"({depression_result['confidence']:.1f}%)"
+        f"({depression_result['confidence']:.1f}%), "
+        f"mh_topic: {mh_topic_result['mental_health_topic']} "
+        f"({mh_topic_result['confidence']:.1f}%)"
     )
 
     # --------------------------------------------------
@@ -481,7 +491,7 @@ def generate_chat_response(question: str, history: Optional[list] = None) -> dic
     # Step 4: Build context and mental_state strings
     # --------------------------------------------------
     context      = build_context(documents)
-    mental_state = build_mental_state(emotion_result, stress_result, depression_result)
+    mental_state = build_mental_state(emotion_result, stress_result, depression_result, mh_topic_result)
 
     # --------------------------------------------------
     # Step 5: Select language-specific prompt and format
@@ -548,12 +558,12 @@ def generate_response_with_context(question: str) -> dict:
                    retrieved_chunks, emotion_result,
                    stress_result, depression_result
     """
-    emotion_result, stress_result, depression_result = run_detectors(question)
+    emotion_result, stress_result, depression_result, mh_topic_result = run_detectors(question)
 
     language     = detect_language(question)
     documents    = retriever.invoke(question)
     context      = build_context(documents)
-    mental_state = build_mental_state(emotion_result, stress_result, depression_result)
+    mental_state = build_mental_state(emotion_result, stress_result, depression_result, mh_topic_result)
 
     prompt   = get_prompt(language)
     messages = prompt.format_messages(
