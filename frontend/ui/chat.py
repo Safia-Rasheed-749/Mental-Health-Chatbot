@@ -246,7 +246,7 @@ def show_chat(user_id: str) -> None:
             f'<div class="chat-row" style="justify-content:flex-start;">'
             f'<div class="ai-bubble-wrap">'
             f'<div class="ai-avatar">🧠</div>'
-            f'<div class="assistant-bubble" style="white-space:pre-wrap;">{safe}</div>'
+            f'<div class="assistant-bubble">{safe_response}</div>'
             f'</div></div>',
             unsafe_allow_html=True,
         )
@@ -293,7 +293,8 @@ def show_chat(user_id: str) -> None:
     if "component_key_timestamp" not in st.session_state:
         st.session_state["component_key_timestamp"] = time.time()
     component_key = f"chat_input_{cid if cid else 'new'}_{st.session_state['component_key_timestamp']}"
-    user_input = sticky_chat_bar(key=component_key)
+    component_input = sticky_chat_bar(key=component_key)
+    user_input = quick_input or component_input
 
     # -------------------------------------------------------------------
     # Input handling (text or audio)

@@ -1,0 +1,17 @@
+DEPRESSION V2 - EVALUATION FROM NOTEBOOK
+======================================================================
+
+Accuracy: 0.9800 (98.00%)
+Precision: 0.9874
+Recall: 0.9716
+F1: 0.9794
+
+CLASSIFICATION REPORT
+               precision    recall  f1-score   support
+
+No Depression     0.9730    0.9880    0.9805       584
+   Depression     0.9874    0.9716    0.9794       564
+
+     accuracy                         0.9800      1148
+    macro avg     0.9802    0.9798    0.9800      1148
+ weighted avg     0.9801    0.9800    0.9800      1148

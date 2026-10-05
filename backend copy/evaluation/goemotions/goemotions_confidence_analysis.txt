@@ -1,0 +1,15 @@
+Confidence Analysis - GoEmotions Model
+============================================================
+
+Correct Predictions: 3247
+Wrong Predictions: 2180
+
+Confidence Scores:
+  Correct Mean: 0.7503
+  Correct Std: 0.1913
+  Correct Min: 0.1922
+  Correct Max: 0.9898
+  Wrong Mean: 0.5822
+  Wrong Std: 0.1914
+  Wrong Min: 0.1680
+  Wrong Max: 0.9896

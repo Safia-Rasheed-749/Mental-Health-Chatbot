@@ -15,7 +15,7 @@ The backend uses `psycopg2.pool.ThreadedConnectionPool` to reuse PostgreSQL conn
 ## Configuration
 
 These environment variables configure the database and pool:
-
+/
 | Variable | Default | Purpose |
 |---|---|---|
 | `DB_HOST` | `localhost` | PostgreSQL server host |

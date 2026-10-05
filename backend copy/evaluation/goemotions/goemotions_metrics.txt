@@ -1,0 +1,312 @@
+======================================================================
+GOEMOTIONS MODEL - FINAL TEST EVALUATION
+======================================================================
+
+MODEL INFORMATION
+----------------------------------------
+Base Model: roberta-base
+Fine-tuned Model: goemotions_roberta
+Task: Multi-class Emotion Classification
+Number of Classes: 28
+Device: cpu
+Evaluation Time: 511.82 seconds
+
+DATASET INFORMATION
+----------------------------------------
+Test Samples: 5427
+Class Distribution:
+  LABEL_0: 402
+  LABEL_1: 204
+  LABEL_2: 191
+  LABEL_3: 262
+  LABEL_4: 259
+  LABEL_5: 92
+  LABEL_6: 145
+  LABEL_7: 189
+  LABEL_8: 58
+  LABEL_9: 134
+  LABEL_10: 198
+  LABEL_11: 109
+  LABEL_12: 25
+  LABEL_13: 57
+  LABEL_14: 76
+  LABEL_15: 319
+  LABEL_16: 2
+  LABEL_17: 152
+  LABEL_18: 220
+  LABEL_19: 18
+  LABEL_20: 174
+  LABEL_21: 7
+  LABEL_22: 89
+  LABEL_23: 7
+  LABEL_24: 53
+  LABEL_25: 156
+  LABEL_26: 122
+  LABEL_27: 1707
+
+LABEL MAPPING
+----------------------------------------
+  0 -> LABEL_0
+  1 -> LABEL_1
+  2 -> LABEL_2
+  3 -> LABEL_3
+  4 -> LABEL_4
+  5 -> LABEL_5
+  6 -> LABEL_6
+  7 -> LABEL_7
+  8 -> LABEL_8
+  9 -> LABEL_9
+  10 -> LABEL_10
+  11 -> LABEL_11
+  12 -> LABEL_12
+  13 -> LABEL_13
+  14 -> LABEL_14
+  15 -> LABEL_15
+  16 -> LABEL_16
+  17 -> LABEL_17
+  18 -> LABEL_18
+  19 -> LABEL_19
+  20 -> LABEL_20
+  21 -> LABEL_21
+  22 -> LABEL_22
+  23 -> LABEL_23
+  24 -> LABEL_24
+  25 -> LABEL_25
+  26 -> LABEL_26
+  27 -> LABEL_27
+
+TEST METRICS
+----------------------------------------
+Accuracy: 0.5983 (59.83%)
+Weighted Precision: 0.5802 (58.02%)
+Weighted Recall: 0.5983 (59.83%)
+Weighted F1: 0.5733 (57.33%)
+Macro Precision: 0.5003
+Macro Recall: 0.4441
+Macro F1: 0.4527
+
+PER-CLASS PERFORMANCE (test set)
+----------------------------------------
+LABEL_0:
+  Precision: 0.6610
+  Recall: 0.6741
+  F1: 0.6675
+LABEL_1:
+  Precision: 0.6774
+  Recall: 0.8235
+  F1: 0.7434
+LABEL_2:
+  Precision: 0.5183
+  Recall: 0.4450
+  F1: 0.4789
+LABEL_3:
+  Precision: 0.4348
+  Recall: 0.1527
+  F1: 0.2260
+LABEL_4:
+  Precision: 0.5106
+  Recall: 0.2780
+  F1: 0.3600
+LABEL_5:
+  Precision: 0.3469
+  Recall: 0.3696
+  F1: 0.3579
+LABEL_6:
+  Precision: 0.5000
+  Recall: 0.3862
+  F1: 0.4358
+LABEL_7:
+  Precision: 0.4218
+  Recall: 0.4709
+  F1: 0.4450
+LABEL_8:
+  Precision: 0.5370
+  Recall: 0.5000
+  F1: 0.5179
+LABEL_9:
+  Precision: 0.4651
+  Recall: 0.1493
+  F1: 0.2260
+LABEL_10:
+  Precision: 0.4706
+  Recall: 0.2020
+  F1: 0.2827
+LABEL_11:
+  Precision: 0.5169
+  Recall: 0.4220
+  F1: 0.4646
+LABEL_12:
+  Precision: 0.6190
+  Recall: 0.5200
+  F1: 0.5652
+LABEL_13:
+  Precision: 0.4565
+  Recall: 0.3684
+  F1: 0.4078
+LABEL_14:
+  Precision: 0.5905
+  Recall: 0.8158
+  F1: 0.6851
+LABEL_15:
+  Precision: 0.8222
+  Recall: 0.9279
+  F1: 0.8719
+LABEL_16:
+  Precision: 0.0000
+  Recall: 0.0000
+  F1: 0.0000
+LABEL_17:
+  Precision: 0.5724
+  Recall: 0.5461
+  F1: 0.5589
+LABEL_18:
+  Precision: 0.7480
+  Recall: 0.8500
+  F1: 0.7957
+LABEL_19:
+  Precision: 0.8333
+  Recall: 0.2778
+  F1: 0.4167
+LABEL_20:
+  Precision: 0.6690
+  Recall: 0.5575
+  F1: 0.6082
+LABEL_21:
+  Precision: 0.0000
+  Recall: 0.0000
+  F1: 0.0000
+LABEL_22:
+  Precision: 0.4400
+  Recall: 0.1236
+  F1: 0.1930
+LABEL_23:
+  Precision: 0.0000
+  Recall: 0.0000
+  F1: 0.0000
+LABEL_24:
+  Precision: 0.5323
+  Recall: 0.6226
+  F1: 0.5739
+LABEL_25:
+  Precision: 0.5341
+  Recall: 0.6026
+  F1: 0.5663
+LABEL_26:
+  Precision: 0.5303
+  Recall: 0.5738
+  F1: 0.5512
+LABEL_27:
+  Precision: 0.6006
+  Recall: 0.7762
+  F1: 0.6772
+
+PREDICTION COUNTS
+----------------------------------------
+Correct Predictions: 3247
+Wrong Predictions: 2180
+Accuracy: 59.83%
+
+CONFUSION MATRIX (full)
+----------------------------------------
+Rows: Actual Labels, Columns: Predicted Labels
+          LABEL_0  LABEL_1  LABEL_2  LABEL_3  LABEL_4  LABEL_5  LABEL_6  LABEL_7  LABEL_8  LABEL_9  LABEL_10  LABEL_11  LABEL_12  LABEL_13  LABEL_14  LABEL_15  LABEL_16  LABEL_17  LABEL_18  LABEL_19  LABEL_20  LABEL_21  LABEL_22  LABEL_23  LABEL_24  LABEL_25  LABEL_26  LABEL_27
+LABEL_0       271        6        0        1        5        4        1        2        0        4         0         0         1         0         1        14         0        12        15         0         6         0         0         0         1         2        11        45
+LABEL_1         4      168        1        0        0        0        4        1        0        0         0         2         0         1         0         1         0         5         2         0         1         0         0         0         1         0         2        11
+LABEL_2         0        1       85       14        0        2        0        3        1        2         4         8         0         0         1         2         0         0         3         0         0         0         0         0         0         4         4        57
+LABEL_3         2        8       28       40        6        2        2       11        1        3         9         7         2         0         5         2         0         0         3         0         2         0         1         0         2         3         0       123
+LABEL_4        17        3        1        3       72        6        2        2        0        0         3         0         0         1         2         1         0         6         4         0         5         0         0         0         1         2         2       126
+LABEL_5         3        1        0        0        4       34        1        0        1        0         1         0         0         0         1         3         0         3         2         0         4         0         0         0         0         1         0        33
+LABEL_6         4        3        0        1        2        1       56       23        0        0         2         0         0         1         0         3         0         2         1         0         0         0         0         0         1         3         3        39
+LABEL_7         6        0        0        0        1        2        7       89        0        0         0         0         1         3         3         0         0         1         2         0         2         0         0         1         1         2         6        62
+LABEL_8         1        0        2        0        1        2        0        1       29        0         0         0         0         1         0         0         0         2         2         0         4         0         0         0         1         2         0        10
+LABEL_9         2        1        5        5        0        2        2        2        2       20         3         4         0         1         2         2         0         0         3         0         2         0         0         0         0        13         0        63
+LABEL_10        3        6        4        0        6        0        4        2        0        2        40         6         0         0         0         1         0         0         2         0         1         0         0         0         3         3         2       113
+LABEL_11        2        4        7        9        0        0        2        3        0        0         4        46         0         0         6         0         0         0         1         0         0         0         0         0         0         3         1        21
+LABEL_12        0        1        0        1        0        0        0        0        0        0         1         0        13         0         0         0         0         0         0         0         0         0         1         0         0         1         1         6
+LABEL_13        4        0        0        0        3        0        0        5        1        0         0         0         0        21         1         1         0         4         0         0         1         0         0         0         0         0         3        13
+LABEL_14        0        1        0        0        0        1        0        0        0        0         0         1         0         0        62         0         0         0         0         0         0         0         0         0         0         2         1         8
+LABEL_15        4        0        1        0        1        2        0        0        0        0         0         0         0         1         0       296         0         8         0         0         4         0         0         0         0         1         0         1
+LABEL_16        0        0        0        0        0        0        0        0        0        0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         1         0         1
+LABEL_17       11        8        0        0        0        1        1        0        0        0         0         0         0         5         2        13         0        83        13         0         2         0         0         0         0         0         2        11
+LABEL_18        4        2        4        0        3        1        0        0        0        0         2         0         0         2         0         3         0         3       187         0         2         0         0         0         0         0         0         7
+LABEL_19        0        0        0        0        0        0        1        1        0        1         0         0         0         0         7         1         0         0         0         5         0         0         0         0         0         2         0         0
+LABEL_20        8        3        0        0        4        9        1        0        7        0         0         0         0         2         1         6         0         3         0         0        97         0         1         0         1         0         4        27
+LABEL_21        3        0        0        0        0        0        0        0        0        0         0         0         1         0         1         0         0         0         0         0         0         0         0         0         0         0         0         2
+LABEL_22        1        4        0        0        4        2        0        2        0        0         1         3         1         1         0         0         0         1         1         0         0         0        11         0         1         1         6        49
+LABEL_23        1        0        0        0        2        0        0        0        0        0         0         0         0         0         0         1         0         1         0         0         0         0         0         0         0         1         0         1
+LABEL_24        0        0        0        0        0        0        0        0        0        0         0         0         0         0         0         1         0         0         0         0         1         0         0         0        33        16         0         2
+LABEL_25        2        0        2        1        0        3        2        0        1        4         1         1         0         0         1         1         0         0         0         1         1         0         0         0        12        94         5        24
+LABEL_26        8        2        2        1        0        0        3        3        0        0         1         0         0         1         1         0         0         0         0         0         0         0         2         0         0         2        70        26
+LABEL_27       49       26       22       16       27       24       23       61       11        7        13        11         2         5         8         8         0        11         9         0        10         0         9         0         4        17         9      1325
+
+CLASSIFICATION REPORT
+----------------------------------------
+              precision    recall  f1-score   support
+
+     LABEL_0     0.6610    0.6741    0.6675       402
+     LABEL_1     0.6774    0.8235    0.7434       204
+     LABEL_2     0.5183    0.4450    0.4789       191
+     LABEL_3     0.4348    0.1527    0.2260       262
+     LABEL_4     0.5106    0.2780    0.3600       259
+     LABEL_5     0.3469    0.3696    0.3579        92
+     LABEL_6     0.5000    0.3862    0.4358       145
+     LABEL_7     0.4218    0.4709    0.4450       189
+     LABEL_8     0.5370    0.5000    0.5179        58
+     LABEL_9     0.4651    0.1493    0.2260       134
+    LABEL_10     0.4706    0.2020    0.2827       198
+    LABEL_11     0.5169    0.4220    0.4646       109
+    LABEL_12     0.6190    0.5200    0.5652        25
+    LABEL_13     0.4565    0.3684    0.4078        57
+    LABEL_14     0.5905    0.8158    0.6851        76
+    LABEL_15     0.8222    0.9279    0.8719       319
+    LABEL_16     0.0000    0.0000    0.0000         2
+    LABEL_17     0.5724    0.5461    0.5589       152
+    LABEL_18     0.7480    0.8500    0.7957       220
+    LABEL_19     0.8333    0.2778    0.4167        18
+    LABEL_20     0.6690    0.5575    0.6082       174
+    LABEL_21     0.0000    0.0000    0.0000         7
+    LABEL_22     0.4400    0.1236    0.1930        89
+    LABEL_23     0.0000    0.0000    0.0000         7
+    LABEL_24     0.5323    0.6226    0.5739        53
+    LABEL_25     0.5341    0.6026    0.5663       156
+    LABEL_26     0.5303    0.5738    0.5512       122
+    LABEL_27     0.6006    0.7762    0.6772      1707
+
+    accuracy                         0.5983      5427
+   macro avg     0.5003    0.4441    0.4527      5427
+weighted avg     0.5802    0.5983    0.5733      5427
+
+SAMPLE PREDICTIONS
+----------------------------------------
+Correct Predictions:
+  Text: i’m really sorry about your situation although i love the names sapphira cirilla...
+  Actual: nan | Predicted: nan (Confidence: 51.91%)
+
+  Text: its wonderful because its awful at not with...
+  Actual: nan | Predicted: nan (Confidence: 40.19%)
+
+  Text: i didnt know that thank you for teaching me something today...
+  Actual: nan | Predicted: nan (Confidence: 98.88%)
+
+  Text: they got bored from haunting earth for thousands of years and ultimately moved o...
+  Actual: nan | Predicted: nan (Confidence: 85.73%)
+
+  Text: thank you for asking questions and recognizing that there may be things that you...
+  Actual: nan | Predicted: nan (Confidence: 98.55%)
+
+Wrong Predictions:
+  Text: kings fan here good luck to you guys will be an interesting game to watch...
+  Actual: nan | Predicted: nan (Confidence: 71.02%)
+
+  Text: i’m sorry to hear that friend it’s for the best most likely if she didn’t accept...
+  Actual: nan | Predicted: nan (Confidence: 46.59%)
+
+  Text: name has towed the line of the dark side he wouldnt cross it by doing something ...
+  Actual: nan | Predicted: nan (Confidence: 95.23%)
+
+  Text: i never wanted to punch osap harder after seeing that however not too hardly i c...
+  Actual: nan | Predicted: nan (Confidence: 44.18%)
+
+  Text: the thought of shooting anything at asylum seekers is appalling...
+  Actual: nan | Predicted: nan (Confidence: 50.14%)
+

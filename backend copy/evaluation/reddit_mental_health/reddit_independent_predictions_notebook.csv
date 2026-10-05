@@ -1,0 +1,126 @@
+﻿text,label,predicted_label,confidence,actual_class,predicted_class,correct
+Life feels meaningless. I don't s ee the point in anything anymore.,3,3,0.9648584723472595,depression,depression,True
+"Everything has to be perfectly  arranged. If it's not, I panic.",1,1,0.8918682932853699,OCD,OCD,True
+My thoughts are racing and I can't  control them. I'm stuck in a loop.,1,1,0.8177012801170349,OCD,OCD,True
+I keep having flashbacks of the tr auma. I can't escape the memories.,4,4,0.9971935153007507,ptsd,ptsd,True
+I can't focus on anything. My mind  is everywhere and I'm so restless.,0,3,0.462321400642395,ADHD,depression,False
+I avoid anything that reminds me o f what happened. I isolate myself.,4,4,0.9342281222343445,ptsd,ptsd,True
+I start tasks but never finish the m. I get distracted by everything.,0,0,0.8760890364646912,ADHD,ADHD,True
+I don't understand sarcasm or jo kes. I take everything literally.,2,2,0.9685288071632385,aspergers,aspergers,True
+I avoid anything that reminds me o f what happened. I isolate myself.,4,4,0.9342281222343445,ptsd,ptsd,True
+I've've been feeling hopeless and empty for weeks. Nothing brings me joy anymore.,3,3,0.9607599973678589,depression,depression,True
+I keep checking the door locks over and o ver. I know it's locked but I can't stop.,1,1,0.9971916079521179,OCD,OCD,True
+I find it hard to make eye co ntact. It feels uncomfortable.,2,2,0.967724084854126,aspergers,aspergers,True
+"Everything has to be perfectly arranged. I'vef it's not, I've panic.",1,1,0.9447782039642334,OCD,OCD,True
+I feel numb and disconnected from  everyone. I can't feel anything.,4,3,0.8357380628585815,ptsd,depression,False
+Life feels meaningless. I've don't see the point in anything anymore.,3,3,0.9628675580024719,depression,depression,True
+I keep having flashbacks of the tr auma. I can't escape the memories.,4,4,0.9971935153007507,ptsd,ptsd,True
+I've been crying for no reason and I don't want to talk to anyone.,3,3,0.9661515355110168,depression,depression,True
+I don't understand social cues. People  think I'm rude but I don't mean to be.,2,2,0.9717739224433899,aspergers,aspergers,True
+I've been crying for no reason an d I don't want to talk to anyone.,3,3,0.9711959362030029,depression,depression,True
+I've struggle with changes in routine. I'vet makes me very anxious.,2,2,0.8099245429039001,aspergers,aspergers,True
+I count everything I do. It's  exhausting but I can't stop.,1,3,0.38253432512283325,OCD,depression,False
+I keep having flashbacks of the tr auma. I can't escape the memories.,4,4,0.9971935153007507,ptsd,ptsd,True
+I've been feeling hopeless and empty for weeks. Nothing brings me joy anymore.,3,3,0.9558020234107971,depression,depression,True
+I keep checking the door locks over and o ver. I know it's locked but I can't stop.,1,1,0.9971916079521179,OCD,OCD,True
+I wash my hands until they bleed. I'm  terrified of germs and contamination.,1,1,0.9971120357513428,OCD,OCD,True
+I keep losing things and forg etting important appointments.,0,0,0.9816941618919373,ADHD,ADHD,True
+I've been crying for no reason an d I don't want to talk to anyone.,3,3,0.9711959362030029,depression,depression,True
+I've'm sleeping too much and still exhausted. Nothing helps.,3,3,0.5591431856155396,depression,depression,True
+I count everything I do. It's exhausting but I can't stop.,1,1,0.403244286775589,OCD,OCD,True
+I have intense interests that I can't st op thinking about. It's all I talk about.,2,2,0.8991328477859497,aspergers,aspergers,True
+Loud noises terrify me. I've panic and feel like I've'm back there.,4,4,0.9579107165336609,ptsd,ptsd,True
+I feel like I have too much ene rgy and it's hard to channel it.,0,2,0.2823834717273712,ADHD,aspergers,False
+I've'm always fidgeting and can't sit still. My thoughts jump around.,0,0,0.8903740048408508,ADHD,ADHD,True
+Life feels meaningless. I don't see the point in anything anymore.,3,3,0.959489643573761,depression,depression,True
+I struggle with changes in rou tine. It makes me very anxious.,2,2,0.5765764117240906,aspergers,aspergers,True
+I'm sleeping too much and st ill exhausted. Nothing helps.,3,3,0.5552534461021423,depression,depression,True
+"Everything has to be perfectly arranged. If it's not, I panic.",1,1,0.9073389172554016,OCD,OCD,True
+I can't sleep. Nightmares wa ke me up every single night.,4,4,0.9853380918502808,ptsd,ptsd,True
+Loud noises terrify me. I panic and feel like I'm back there.,4,4,0.9615649580955505,ptsd,ptsd,True
+I wash my hands until they bleed. I'm terrified of germs and contamination.,1,1,0.9974279999732971,OCD,OCD,True
+I've avoid anything that reminds me of what happened. I've isolate myself.,4,4,0.9933537244796753,ptsd,ptsd,True
+I start tasks but never finish them. I get distracted by everything.,0,0,0.8936076760292053,ADHD,ADHD,True
+I've can't get out of bed. Everything feels pointless and I've'm so tired all the time.,3,3,0.9626038074493408,depression,depression,True
+I wash my hands until they bleed. I'm  terrified of germs and contamination.,1,1,0.9971120357513428,OCD,OCD,True
+I'm always fidgeting and can't si t still. My thoughts jump around.,0,0,0.8589701652526855,ADHD,ADHD,True
+I keep checking the door locks over and over. I know it's locked but I can't stop.,1,1,0.99437415599823,OCD,OCD,True
+I've find it hard to make eye contact. I'vet feels uncomfortable.,2,2,0.7050621509552002,aspergers,aspergers,True
+I keep checking the door locks over and o ver. I know it's locked but I can't stop.,1,1,0.9971916079521179,OCD,OCD,True
+I keep losing things and forg etting important appointments.,0,0,0.9816941618919373,ADHD,ADHD,True
+I don't understand sarcasm or jo kes. I take everything literally.,2,2,0.9685289263725281,aspergers,aspergers,True
+I can't get out of bed. Everything feels pointless and I'm so tired all the time.,3,3,0.9689534902572632,depression,depression,True
+I keep losing things and forgetting important appointments.,0,0,0.9721880555152893,ADHD,ADHD,True
+I feel like I have too much energy and it's hard to channel it.,0,2,0.26754796504974365,ADHD,aspergers,False
+My thoughts are racing and I've can't control them. I've'm stuck in a loop.,1,1,0.7899191379547119,OCD,OCD,True
+I've count everything I've do. I'vet's exhausting but I've can't stop.,1,1,0.3513375222682953,OCD,OCD,True
+My thoughts are racing and I can't control them. I'm stuck in a loop.,1,1,0.8059831261634827,OCD,OCD,True
+Life feels meaningless. I don't s ee the point in anything anymore.,3,3,0.96485835313797,depression,depression,True
+I keep losing things and forg etting important appointments.,0,0,0.9816941618919373,ADHD,ADHD,True
+I've wash my hands until they bleed. I've'm terrified of germs and contamination.,1,1,0.9970434308052063,OCD,OCD,True
+I find it hard to make eye contact. It feels uncomfortable.,2,2,0.7927685379981995,aspergers,aspergers,True
+I can't get out of bed. Everything feels  pointless and I'm so tired all the time.,3,3,0.969745934009552,depression,depression,True
+I find it hard to make eye co ntact. It feels uncomfortable.,2,2,0.967724084854126,aspergers,aspergers,True
+"Everything has to be perfectly  arranged. If it's not, I panic.",1,1,0.8918682932853699,OCD,OCD,True
+I feel numb and disconnected from everyone. I can't feel anything.,4,3,0.8454825282096863,ptsd,depression,False
+I've keep losing things and forgetting important appointments.,0,0,0.97069251537323,ADHD,ADHD,True
+I don't understand social cues. People think I'm rude but I don't mean to be.,2,2,0.9722954034805298,aspergers,aspergers,True
+I have intense interests that I can't stop thinking about. It's all I talk about.,2,2,0.9192345142364502,aspergers,aspergers,True
+I can't get out of bed. Everything feels  pointless and I'm so tired all the time.,3,3,0.969745934009552,depression,depression,True
+I've been crying for no reason an d I don't want to talk to anyone.,3,3,0.9711959362030029,depression,depression,True
+I've have intense interests that I've can't stop thinking about. I'vet's all I've talk about.,2,2,0.9608955979347229,aspergers,aspergers,True
+I've been feeling hopeless and empty fo r weeks. Nothing brings me joy anymore.,3,3,0.9396810531616211,depression,depression,True
+Life feels meaningless. I don't s ee the point in anything anymore.,3,3,0.9648584723472595,depression,depression,True
+My thoughts are racing and I can't  control them. I'm stuck in a loop.,1,1,0.8177011609077454,OCD,OCD,True
+I feel like I have too much ene rgy and it's hard to channel it.,0,2,0.28238338232040405,ADHD,aspergers,False
+I feel numb and disconnected from  everyone. I can't feel anything.,4,3,0.8357378840446472,ptsd,depression,False
+I can't get out of bed. Everything feels  pointless and I'm so tired all the time.,3,3,0.969745934009552,depression,depression,True
+I can't sleep. Nightmares wake me up every single night.,4,4,0.9875569343566895,ptsd,ptsd,True
+I have intense interests that I can't st op thinking about. It's all I talk about.,2,2,0.899133026599884,aspergers,aspergers,True
+I struggle with changes in routine. It makes me very anxious.,2,2,0.8438620567321777,aspergers,aspergers,True
+I've can't focus on anything. My mind is everywhere and I've'm so restless.,0,3,0.543835461139679,ADHD,depression,False
+I can't focus on anything. My mind is everywhere and I'm so restless.,0,3,0.48873764276504517,ADHD,depression,False
+I can't sleep. Nightmares wa ke me up every single night.,4,4,0.9853380918502808,ptsd,ptsd,True
+I count everything I do. It's  exhausting but I can't stop.,1,3,0.38253432512283325,OCD,depression,False
+I've can't sleep. Nightmares wake me up every single night.,4,4,0.9833600521087646,ptsd,ptsd,True
+I'm always fidgeting and can't si t still. My thoughts jump around.,0,0,0.8589702248573303,ADHD,ADHD,True
+I don't understand sarcasm or jo kes. I take everything literally.,2,2,0.9685289263725281,aspergers,aspergers,True
+I've keep having flashbacks of the trauma. I've can't escape the memories.,4,4,0.9971343278884888,ptsd,ptsd,True
+I feel numb and disconnected from  everyone. I can't feel anything.,4,3,0.8357380628585815,ptsd,depression,False
+"Everything has to be perfectly  arranged. If it's not, I panic.",1,1,0.8918682932853699,OCD,OCD,True
+I start tasks but never finish the m. I get distracted by everything.,0,0,0.8760888576507568,ADHD,ADHD,True
+I avoid anything that reminds me of what happened. I isolate myself.,4,4,0.9931400418281555,ptsd,ptsd,True
+I count everything I do. It's  exhausting but I can't stop.,1,3,0.38253432512283325,OCD,depression,False
+Loud noises terrify me. I pani c and feel like I'm back there.,4,4,0.9671335816383362,ptsd,ptsd,True
+I don't understand sarcasm or jokes. I take everything literally.,2,2,0.9821635484695435,aspergers,aspergers,True
+I start tasks but never finish the m. I get distracted by everything.,0,0,0.8760888576507568,ADHD,ADHD,True
+I keep having flashbacks of the trauma. I can't escape the memories.,4,4,0.9971066117286682,ptsd,ptsd,True
+I wash my hands until they bleed. I'm  terrified of germs and contamination.,1,1,0.9971120357513428,OCD,OCD,True
+I find it hard to make eye co ntact. It feels uncomfortable.,2,2,0.9677242040634155,aspergers,aspergers,True
+I've start tasks but never finish them. I've get distracted by everything.,0,0,0.8472512364387512,ADHD,ADHD,True
+I'm always fidgeting and can't si t still. My thoughts jump around.,0,0,0.858970046043396,ADHD,ADHD,True
+I've don't understand social cues. People think I've'm rude but I've don't mean to be.,2,2,0.9591970443725586,aspergers,aspergers,True
+My thoughts are racing and I can't  control them. I'm stuck in a loop.,1,1,0.8177011609077454,OCD,OCD,True
+I've keep checking the door locks over and over. I've know it's locked but I've can't stop.,1,1,0.9945735335350037,OCD,OCD,True
+I struggle with changes in rou tine. It makes me very anxious.,2,2,0.5765765905380249,aspergers,aspergers,True
+I've been feeling hopeless and empty fo r weeks. Nothing brings me joy anymore.,3,3,0.9396810531616211,depression,depression,True
+I can't focus on anything. My mind  is everywhere and I'm so restless.,0,3,0.46232107281684875,ADHD,depression,False
+I'm sleeping too much and st ill exhausted. Nothing helps.,3,3,0.5552534461021423,depression,depression,True
+I've been feeling hopeless and empty fo r weeks. Nothing brings me joy anymore.,3,3,0.9396810531616211,depression,depression,True
+I'm sleeping too much and st ill exhausted. Nothing helps.,3,3,0.5552534461021423,depression,depression,True
+I don't understand social cues. People  think I'm rude but I don't mean to be.,2,2,0.9717740416526794,aspergers,aspergers,True
+I've feel numb and disconnected from everyone. I've can't feel anything.,4,3,0.8168315291404724,ptsd,depression,False
+Loud noises terrify me. I pani c and feel like I'm back there.,4,4,0.9671334624290466,ptsd,ptsd,True
+I struggle with changes in rou tine. It makes me very anxious.,2,2,0.5765770077705383,aspergers,aspergers,True
+I've feel like I've have too much energy and it's hard to channel it.,0,2,0.2943076491355896,ADHD,aspergers,False
+Loud noises terrify me. I pani c and feel like I'm back there.,4,4,0.9671335816383362,ptsd,ptsd,True
+I can't sleep. Nightmares wa ke me up every single night.,4,4,0.9853380918502808,ptsd,ptsd,True
+I've don't understand sarcasm or jokes. I've take everything literally.,2,2,0.9754399657249451,aspergers,aspergers,True
+I'm sleeping too much and still exhausted. Nothing helps.,3,3,0.4989069700241089,depression,depression,True
+I'm always fidgeting and can't sit still. My thoughts jump around.,0,0,0.8919093608856201,ADHD,ADHD,True
+I feel like I have too much ene rgy and it's hard to channel it.,0,2,0.2823830246925354,ADHD,aspergers,False
+I have intense interests that I can't st op thinking about. It's all I talk about.,2,2,0.8991330862045288,aspergers,aspergers,True
+I've've been crying for no reason and I've don't want to talk to anyone.,3,3,0.9724801778793335,depression,depression,True
+I avoid anything that reminds me o f what happened. I isolate myself.,4,4,0.9342278242111206,ptsd,ptsd,True
+I can't focus on anything. My mind  is everywhere and I'm so restless.,0,3,0.46232134103775024,ADHD,depression,False
+I don't understand social cues. People  think I'm rude but I don't mean to be.,2,2,0.9717739224433899,aspergers,aspergers,True
