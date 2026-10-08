@@ -417,10 +417,11 @@ li[aria-selected="true"] {
     st.markdown('<div class="mood-radio-wrapper">', unsafe_allow_html=True)
 
     mood = st.radio(
-        "",
+        "Select Mood",
         ["😊 Happy", "😐 Neutral", "😔 Sad", "😰 Anxious", "😡 Angry"],
         horizontal=True,
-        key="mood_radio"
+        key="mood_radio",
+        label_visibility="collapsed"
     )
     st.markdown('</div>', unsafe_allow_html=True)
     # Centralized Log Button (no empty columns)

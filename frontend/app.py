@@ -27,16 +27,30 @@ st.markdown("""
         padding: 0 !important;
     }
 
-    /* Keep Streamlit's native header controls above page content when enabled. */
+    /* Keep Streamlit's native header controls above page content when enabled.
+       z-index MUST stay below the sidebar (Streamlit theme: sidebar = header+1
+       = 999991). At 999999 the fixed header + its stToolbar band [0,16,764,28]
+       painted ABOVE the sidebar and swallowed every real click on the sidebar's
+       collapse arrow (stSidebarCollapseButton sits at [203,14,36,32]) — so the
+       sidebar could never be collapsed. 999990 keeps the header above normal
+       page content (z auto) but below the sidebar. */
     header[data-testid="stHeader"] {
         position: fixed !important;
         top: 0 !important;
         left: 0 !important;
         right: 0 !important;
         width: 100% !important;
-        z-index: 999999 !important;
+        z-index: 999990 !important;
         background: linear-gradient(90deg, #6366F1 0%, #A855F7 100%) !important;
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1) !important;
+        /* Belt & suspenders: the header must not swallow clicks meant for
+           content underneath it either; only its own controls stay interactive. */
+        pointer-events: none !important;
+    }
+    header[data-testid="stHeader"] button,
+    header[data-testid="stHeader"] a,
+    header[data-testid="stHeader"] [role="button"] {
+        pointer-events: auto !important;
     }
 
     /* The visible app navbar is a custom Streamlit row, not the native header.
@@ -52,12 +66,20 @@ st.markdown("""
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1) !important;
     }
 
-    /* Sidebar collapse/expand arrow — always fully visible */
-    [data-testid="collapsedControl"] {
+    /* Sidebar collapse/expand toggles — always fully visible (Streamlit 1.54+).
+       The old [data-testid="collapsedControl"] selector no longer exists. */
+    /* Collapse arrow: inside the sidebar header (sidebar expanded). */
+    [data-testid="stSidebarCollapseButton"] {
         display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
-        z-index: 99999 !important;
+    }
+    /* Expand arrow: inside the fixed header (sidebar collapsed). */
+    [data-testid="stExpandSidebarButton"] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 1000000 !important;
     }
 
     .stDeployButton { display: none !important; }
@@ -134,11 +156,13 @@ components.html(
                 var style = doc.createElement('style');
                 style.id = 'kiro-toggle-style';
                 style.textContent = `
-                    /* Light sidebar — default dark toggle arrow is naturally visible.
-                       Just ensure the collapsedControl area blends with the sidebar. */
-                    [data-testid="collapsedControl"] {
-                        background: linear-gradient(180deg, #EEF2FF, #E8EDFF) !important;
-                        border-radius: 0 6px 6px 0 !important;
+                    /* Keep the Streamlit 1.54+ sidebar toggles persistently
+                       visible and blended with the light sidebar theme. */
+                    [data-testid="stSidebarCollapseButton"],
+                    [data-testid="stExpandSidebarButton"] {
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                        display: flex !important;
                     }
                 `;
                 doc.head.appendChild(style);
@@ -297,14 +321,20 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Keep sidebar collapse/expand icon always visible for logged-in users
+# Keep sidebar collapse/expand toggles always visible for logged-in users
 st.markdown("""
 <style>
-[data-testid="collapsedControl"] {
+/* Streamlit 1.54+: the collapse arrow lives in the sidebar header,
+   the expand arrow lives in the fixed header when the sidebar is collapsed.
+   The legacy [data-testid="collapsedControl"] selector no longer exists. */
+[data-testid="stSidebarCollapseButton"],
+[data-testid="stExpandSidebarButton"] {
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
-    z-index: 9999 !important;
+}
+[data-testid="stExpandSidebarButton"] {
+    z-index: 1000000 !important;
 }
 </style>
 """, unsafe_allow_html=True)

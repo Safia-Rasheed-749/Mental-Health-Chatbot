@@ -12,7 +12,9 @@ def show_calm_colors_game():
         st.markdown("""
         <style>
         [data-testid="stSidebar"]        { display: none !important; }
-        [data-testid="collapsedControl"]  { display: none !important; }
+        [data-testid="collapsedControl"],
+        [data-testid="stSidebarCollapseButton"],
+        [data-testid="stExpandSidebarButton"] { display: none !important; }
         .main { margin-left: 0rem !important; }
         header[data-testid="stHeader"]   { display: none !important; }
         footer, .stAppDeployButton       { display: none !important; }

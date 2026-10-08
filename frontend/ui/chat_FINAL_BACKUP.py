@@ -242,28 +242,28 @@ def show_chat(user_id):
     }
     
     /* ═══════════════════════════════════════════════════════════════
-       SIDEBAR TOGGLE BUTTON STYLING (Streamlit 1.54+)
-       Purpose: Keep collapse/expand toggles persistently visible.
-       Collapse arrow: [data-testid="stSidebarCollapseButton"] (sidebar header)
-       Expand arrow:   [data-testid="stExpandSidebarButton"] (fixed header, collapsed)
-       Note: The legacy [data-testid="collapsedControl"] selector no
-             longer exists in Streamlit 1.54.
+       SIDEBAR TOGGLE BUTTON STYLING
+       Purpose: Make sidebar toggle button visible and styled
+       Location: Top-left corner when sidebar is collapsed
+       Color: Gradient blue-purple (#6366f1 to #8b5cf6)
+       Same gradient used in: auth.py buttons, dashboard.py cards
+       Controlled by: Streamlit's built-in sidebar component
     ═══════════════════════════════════════════════════════════════ */
-    [data-testid="stSidebarCollapseButton"],
-    [data-testid="stExpandSidebarButton"] {
-        display: flex !important;
+    [data-testid="collapsedControl"] {
+        display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;  /* Brand gradient */
+        color: white !important;
+        border-radius: 0 8px 8px 0 !important;  /* Rounded right side only */
+        padding: 8px !important;
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3) !important;  /* Subtle shadow */
         transition: all 0.2s ease !important;  /* Smooth animation */
     }
-
-    [data-testid="stExpandSidebarButton"] {
-        z-index: 1000000 !important;  /* Above the fixed header */
-    }
-
-    [data-testid="stSidebarCollapseButton"]:hover,
-    [data-testid="stExpandSidebarButton"]:hover {
-        transform: translateX(2px) !important;  /* Slide on hover */
+    
+    [data-testid="collapsedControl"]:hover {
+        transform: translateX(2px) !important;  /* Slide right on hover */
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4) !important;  /* Stronger shadow on hover */
     }
 
     /*page background color */

@@ -34,7 +34,7 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
     <style>
     /* sidebar background color change*/
     /* ── SIDEBAR CONTAINER ── */
-    section[data-testid="stSidebar"] {
+    section[data-testid="stSidebar"][aria-expanded="true"] {
         width: 260px !important;
         background: linear-gradient(180deg, #EEF2FF 0%, #E8EDFF 50%, #EDE9FF 100%) !important;
         border-right: 1px solid rgba(99,102,241,0.15) !important;
@@ -62,7 +62,27 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         align-items: center;
         gap: 10px;
         padding: 0 0 5px 0;
-        margin: 0 0 4px;
+        margin: 0 0 10px;
+    }
+
+    /* ── SPACING: gap between logo section and navigation links ── */
+    .sb-header-spacer {
+        height: 12px;
+    }
+    section[data-testid="stSidebar"] [data-testid="stRadio"] {
+        margin-top: 12px !important;
+    }
+
+    /* ── ROOT-CAUSE SPACING FIX ───────────────────────────────────────────
+       Streamlit 1.54's StyledStreamlitMarkdown sets
+       margin-bottom: -1rem (-16px) on EVERY [data-testid="stMarkdownContainer"]
+       to offset its default 1rem vertical block gap. This app forces that gap
+       to 0 (layout_utils.apply_clean_layout), so the -16px stays uncancelled
+       and pulls each following sidebar block UP by 16px — the logo/nav items
+       overlapped and every explicit margin below was swallowed.
+       Neutralize the negative margin inside the sidebar only. */
+    section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
+        margin-bottom: 0 !important;
     }
     .sidebar-avatar {
            width: 40px;
@@ -113,8 +133,8 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
     /* ── DIVIDER ── */
     hr {
-        margin-top: 6px !important;
-        margin-bottom: 6px !important;
+        margin-top: 8px !important;
+        margin-bottom: 8px !important;
         border-color: rgba(74,127,212,0.2) !important;
     }
     /*navigation label color change*/
@@ -130,13 +150,24 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         opacity: 1 !important;
     }
      
+    /* ── HIDE STWIDGETLABEL FOR RADIO IN SIDEBAR ── */
+    section[data-testid="stSidebar"] [data-testid="stRadio"] > label,
+    section[data-testid="stSidebar"] [data-testid="stWidgetLabel"],
+    section[data-testid="stSidebar"] label[data-testid="stWidgetLabel"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+     
     /* ── TEXT-ONLY SIDEBAR NAVIGATION ── */
     section[data-testid="stSidebar"] [data-testid="stRadio"] > div[role="radiogroup"] {
         display: flex !important;
         flex-direction: column !important;
         gap: 7px !important;
     }
-    section[data-testid="stSidebar"] [data-testid="stRadio"] label {
+    section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label {
         box-sizing: border-box !important;
         display: flex !important;
         align-items: center !important;
@@ -151,18 +182,18 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         transition: background .16s ease, border-color .16s ease !important;
     }
     /* Keep Streamlit's accessible radio control, but remove the visible dot. */
-    section[data-testid="stSidebar"] [data-testid="stRadio"] label > div:first-child {
+    section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label > div:first-child {
         display: none !important;
     }
-    section[data-testid="stSidebar"] [data-testid="stRadio"] label > div:last-child {
+    section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label > div:last-child {
         margin-left: 0 !important;
     }
-    section[data-testid="stSidebar"] [data-testid="stRadio"] label:hover {
+    section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label:hover {
         background: #e0f2fe !important;
         border-color: #bae6fd !important;
     }
-    section[data-testid="stSidebar"] [data-testid="stRadio"] label p,
-    section[data-testid="stSidebar"] [data-testid="stRadio"] label span {
+    section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label p,
+    section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label span {
         color: #334155 !important;
         -webkit-text-fill-color: #334155 !important;
         font-size: 14px !important;
@@ -170,12 +201,12 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         line-height: 1.35 !important;
         margin: 0 !important;
     }
-    section[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked) {
+    section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label:has(input:checked) {
         background: #e0f2fe !important;
         border-color: #7dd3fc !important;
     }
-    section[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked) p,
-    section[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked) span {
+    section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label:has(input:checked) p,
+    section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label:has(input:checked) span {
         color: #0369a1 !important;
         -webkit-text-fill-color: #0369a1 !important;
     }
@@ -225,11 +256,25 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
 
     /* ── DIVIDER (scoped so mood/journal hr rules don't override) ── */
     section[data-testid="stSidebar"] hr {
-        margin-top: 6px !important;
-        margin-bottom: 6px !important;
+        margin-top: 8px !important;
+        margin-bottom: 8px !important;
         border-color: rgba(99,102,241,0.2) !important;
         background: none !important;
         height: auto !important;
+    }
+
+    /* ── PERSISTENT SIDEBAR TOGGLE (Streamlit 1.54+) ── */
+    /* Streamlit only reveals the collapse arrow while the sidebar is hovered.
+       Force it visible so users can always collapse the sidebar. */
+    section[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"] {
+        visibility: visible !important;
+        opacity: 1 !important;
+        display: flex !important;
+    }
+    section[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"] button {
+        visibility: visible !important;
+        display: flex !important;
+        padding: 4px !important;
     }
     /*logout button color changes*/
     /* ── LOGOUT (primary) - Cool Red Color ── */
@@ -389,13 +434,16 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         </div>
         """, unsafe_allow_html=True)
 
+        # Spacer: vertical gap between the logo section and the navigation links
+        st.markdown('<div class="sb-header-spacer"></div>', unsafe_allow_html=True)
+
         st.markdown("---")
         page_labels = list(menu_map.keys())
         if st.session_state.get("_nav_synced_page") != current_page:
             st.session_state["nav"] = current_label
             st.session_state["_nav_synced_page"] = current_page
         choice = st.radio(
-            "",
+            "Navigation",
             page_labels,
             index=page_labels.index(current_label),
             key="nav",

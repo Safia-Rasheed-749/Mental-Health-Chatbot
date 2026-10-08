@@ -44,41 +44,69 @@ def show_auth_page():
     body:has(.auth-page-marker) #MainMenu { visibility: hidden; }
     
     /* ═══════════════════════════════════════════════════════════════
-       FIX NAVBAR BUTTON ALIGNMENT - FORCE ALL BUTTONS TO SAME HEIGHT
+       FIX NAVBAR BUTTON ALIGNMENT & SPACING SPECIFICALLY FOR AUTH PAGE
        ═══════════════════════════════════════════════════════════════ */
     
-    /* Target navbar container - ensure it's at the top */
     body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) {
         position: fixed !important;
         top: 0 !important;
         left: 0 !important;
         right: 0 !important;
+        width: 100% !important;
         z-index: 999999 !important;
+        padding: 12px 40px !important;
+        margin: 0 !important;
+        background: linear-gradient(90deg, #6366F1 0%, #A855F7 100%) !important;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1) !important;
     }
     
-    /* Force all navbar buttons to same vertical alignment */
-    body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) button {
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
+    body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) > div:last-child {
+        display: flex !important;
+        justify-content: flex-end !important;
+        align-items: center !important;
+        gap: 12px !important;
+    }
+
+    body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) button,
+    body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) button[kind="primary"],
+    body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) button[kind="secondary"] {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #ffffff !important;
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        padding: 10px 16px !important;
+        margin: 0 !important;
+        width: auto !important;
+        min-width: 100px !important;
+        height: 40px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        white-space: nowrap !important;
+        line-height: 1 !important;
         vertical-align: middle !important;
-        align-self: center !important;
+        border-radius: 8px !important;
+        transform: none !important;
     }
-    
-    /* Force button containers to same height */
+
+    body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) button:hover,
+    body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) button[kind="primary"]:hover,
+    body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) button[kind="secondary"]:hover {
+        color: #ffffff !important;
+        background: rgba(255, 255, 255, 0.2) !important;
+        border: none !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+
     body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) div[data-testid="column"] {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-    }
-    
-    /* Ensure primary button (Get Started) has same alignment */
-    body:has(.auth-page-marker) div[data-testid="stHorizontalBlock"]:has(.navbar-container) button[kind="primary"] {
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-        padding-top: 10px !important;
-        padding-bottom: 10px !important;
-        line-height: 1 !important;
-        vertical-align: middle !important;
+        padding: 0 !important;
+        min-width: auto !important;
     }
 
     /* Clean White Background */
@@ -200,8 +228,8 @@ def show_auth_page():
     }
 
     
-    /* Primary Button with Gradient */
-    body:has(.auth-page-marker) button[kind="primary"] {
+    /* Primary Button with Gradient (Form buttons only) */
+    body:has(.auth-page-marker) .main button[kind="primary"]:not(div[data-testid="stHorizontalBlock"]:has(.navbar-container) button) {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; /* CHANGE THIS: Button gradient colors */
         color: #FFFFFF !important;  
         width: 100% !important;
@@ -216,12 +244,12 @@ def show_auth_page():
         letter-spacing: 0.3px;
     }
     
-    body:has(.auth-page-marker) button[kind="primary"]:hover {
+    body:has(.auth-page-marker) .main button[kind="primary"]:not(div[data-testid="stHorizontalBlock"]:has(.navbar-container) button):hover {
         transform: translateY(-2px) !important;
         box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;  /* CHANGE THIS: Hover shadow color */
     }
     
-    body:has(.auth-page-marker) button[kind="primary"]:active {
+    body:has(.auth-page-marker) .main button[kind="primary"]:not(div[data-testid="stHorizontalBlock"]:has(.navbar-container) button):active {
         transform: translateY(0) !important;
     }
      /* forget password ,dont have an account text color*/
@@ -252,8 +280,8 @@ def show_auth_page():
         text-decoration: underline !important;
     }
      /* cancel button color */ 
-    /* Secondary Button (Cancel button) - Red/Gray gradient */
-    body:has(.auth-page-marker) button[kind="secondary"] {
+    /* Secondary Button (Cancel button) - Red/Gray gradient (Form buttons only) */
+    body:has(.auth-page-marker) .main button[kind="secondary"]:not(div[data-testid="stHorizontalBlock"]:has(.navbar-container) button) {
         background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%)  !important;
         color: #ffffff !important;
         width: 100% !important;
@@ -268,12 +296,12 @@ def show_auth_page():
         letter-spacing: 0.3px;
     }
     
-    body:has(.auth-page-marker) button[kind="secondary"]:hover {
+    body:has(.auth-page-marker) .main button[kind="secondary"]:not(div[data-testid="stHorizontalBlock"]:has(.navbar-container) button):hover {
         transform: translateY(-2px) !important;
         box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4) !important;
     }
     
-    body:has(.auth-page-marker) button[kind="secondary"]:active {
+    body:has(.auth-page-marker) .main button[kind="secondary"]:not(div[data-testid="stHorizontalBlock"]:has(.navbar-container) button):active {
         transform: translateY(0) !important;
     }
 
