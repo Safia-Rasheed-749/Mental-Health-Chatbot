@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import streamlit as st
 import pandas as pd
+import requests
 from db import get_all_users, get_messages_by_user, get_moods_by_user, get_journals_by_user,get_last_activity_with_details, get_user_activity_log
 from layout_utils import apply_clean_layout
 from datetime import datetime
@@ -23,7 +24,7 @@ def show_admin_panel():
 
         /* ── HEADER ── */
         .admin-header {
-            margin-top: -5rem;
+            margin-top: 1rem;
             background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
             border: 1px solid #4338ca;
             padding: 1.4rem 2rem;
@@ -214,7 +215,11 @@ def show_admin_panel():
 
     st.markdown('<div class="admin-header"><h1 style="margin: 0; font-size: 2rem; font-weight: 800;">🛡️ Admin Dashboard</h1><p style="margin: 0.5rem 0 0 0; opacity: 0.95;">Manage users and view platform data</p></div>', unsafe_allow_html=True)
 
-    users = get_all_users()
+    try:
+        users = get_all_users()
+    except (requests.RequestException, RuntimeError, KeyError, TypeError) as exc:
+        st.error(f"Could not load the admin dashboard data. Check that the backend and database are available, then refresh. Details: {exc}")
+        return
     if not users:
         st.warning("No users found.")
         return
@@ -232,10 +237,33 @@ def show_admin_panel():
             latest = max(latest, max(j[1] for j in journals)) if latest else max(j[1] for j in journals)
         return latest
 
+    def format_timestamp(value):
+        """Render API timestamps consistently whether returned as strings or datetimes."""
+        if not value:
+            return "Never"
+        try:
+            parsed = value if isinstance(value, datetime) else datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+            return parsed.strftime("%Y-%m-%d %H:%M") if parsed.year > 1970 else "Never"
+        except (TypeError, ValueError, OverflowError):
+            return str(value)
+
     total_users = len(users)
-    total_messages = sum(len(get_messages_by_user(u['id'])) for u in users)
-    total_moods = sum(len(get_moods_by_user(u['id'])) for u in users)
-    total_journals = sum(len(get_journals_by_user(u['id'])) for u in users)
+    # Fetch each user's records once, so the summary and detail tabs use the
+    # same complete dataset rather than repeatedly querying the API.
+    messages_by_user, moods_by_user, journals_by_user = {}, {}, {}
+    try:
+        for user in users:
+            user_id = user['id']
+            messages_by_user[user_id] = get_messages_by_user(user_id)
+            moods_by_user[user_id] = get_moods_by_user(user_id)
+            journals_by_user[user_id] = get_journals_by_user(user_id)
+    except (requests.RequestException, RuntimeError, KeyError, TypeError) as exc:
+        st.error(f"Could not fetch all user records. No partial totals are shown. Details: {exc}")
+        return
+
+    total_messages = sum(len(records) for records in messages_by_user.values())
+    total_moods = sum(len(records) for records in moods_by_user.values())
+    total_journals = sum(len(records) for records in journals_by_user.values())
 
     col1, col2, col3, col4 = st.columns(4)
     with col1:
@@ -292,7 +320,7 @@ def show_admin_panel():
         html_table = df.to_html(
             classes='professional-table', 
             index=False, 
-            escape=False,
+            escape=True,
             border=0
         )
         
@@ -319,8 +347,8 @@ def show_admin_panel():
                 'Username': u['username'],
                 'Email': u['email'],
                 'Admin': u.get('is_admin', False),
-                'Created': u.get('created_at'),
-                'Last Active': last_active.strftime("%Y-%m-%d %H:%M") if last_active and last_active.year > 1970 else "Never",
+                'Created': format_timestamp(u.get('created_at')),
+                'Last Active': format_timestamp(last_active),
                 'Last Action': last_action_details  # NEW COLUMN
             })
         users_df = pd.DataFrame(users_data)
@@ -329,7 +357,7 @@ def show_admin_panel():
     with tab2:
         selected_user = st.selectbox("Select user", users, format_func=lambda u: f"{u['username']} ({u['email']})")
         if selected_user:
-            messages = get_messages_by_user(selected_user['id'])
+            messages = messages_by_user.get(selected_user['id'], [])
             if messages:
                 df = pd.DataFrame(messages, columns=["Role", "Content", "Timestamp"])
                 render_styled_table(df, timestamp_cols=['Timestamp'])
@@ -339,7 +367,7 @@ def show_admin_panel():
     with tab3:
         selected_user2 = st.selectbox("Select user for moods", users, format_func=lambda u: f"{u['username']} ({u['email']})", key="mood")
         if selected_user2:
-            moods = get_moods_by_user(selected_user2['id'])
+            moods = moods_by_user.get(selected_user2['id'], [])
             if moods:
                 df = pd.DataFrame(moods, columns=["Mood", "Timestamp"])
                 render_styled_table(df, timestamp_cols=['Timestamp'])
@@ -349,7 +377,7 @@ def show_admin_panel():
     with tab4:
         selected_user3 = st.selectbox("Select user for journals", users, format_func=lambda u: f"{u['username']} ({u['email']})", key="journal")
         if selected_user3:
-            journals = get_journals_by_user(selected_user3['id'])
+            journals = journals_by_user.get(selected_user3['id'], [])
             if journals:
                 df = pd.DataFrame(journals, columns=["Entry", "Timestamp"])
                 render_styled_table(df, timestamp_cols=['Timestamp'])
@@ -377,7 +405,7 @@ def show_admin_panel():
                         'Action': action_type,
                         'Page': page_name,
                         'Details': details_display,
-                        'Timestamp': timestamp.strftime("%Y-%m-%d %H:%M:%S") if timestamp else "Unknown"
+                        'Timestamp': format_timestamp(timestamp) if timestamp else "Unknown"
                     })
                 activity_df = pd.DataFrame(activity_data)
                 render_styled_table(activity_df, timestamp_cols=['Timestamp'])

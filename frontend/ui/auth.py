@@ -13,6 +13,7 @@ def show_auth_page():
         if is_admin:
             st.session_state.page = "admin_panel"
             st.session_state.current_page = "Admin Panel"
+            st.query_params["page"] = "Admin Panel"
         else:
             st.session_state.page = "dashboard"
             st.session_state.current_page = "Dashboard"
@@ -451,6 +452,9 @@ def show_auth_page():
                             if is_admin:
                                 st.session_state.current_page = "Admin Panel"
                                 st.session_state.page = "admin_panel"
+                                # Replace a stale page query (for example Journal)
+                                # so the router cannot send the admin elsewhere.
+                                st.query_params["page"] = "Admin Panel"
                             else:
                                 st.session_state.current_page = "Dashboard"
                                 st.session_state.page = "dashboard"

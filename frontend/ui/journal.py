@@ -36,6 +36,12 @@ def _parse_entry(value):
 def show_journal(user_id):
     apply_clean_layout(hide_header_completely=False)
 
+    # Clear widget values at the beginning of the rerun, before Streamlit
+    # instantiates the keyed widgets below.
+    if st.session_state.pop("_clear_journal_form", False):
+        st.session_state["journal_content"] = ""
+        st.session_state["journal_title"] = ""
+
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -68,14 +74,14 @@ def show_journal(user_id):
     /* ── HEADER BANNER (SAME AS CHAT) ── */
     .page-header {
         background: linear-gradient(135deg, #5B8DEF 0%, #7C9DF5 100%);
-        padding: 18px 28px 16px;
+        padding: 22px 30px;
         display: flex;
         align-items: center;
         gap: 14px;
         box-shadow: 0 4px 24px rgba(91,141,239,0.28);
         border-radius: 20px;
-        margin-bottom: 30px;
-        margin-top: 20px;
+        margin-bottom: 1.75rem;
+        margin-top: 1.25rem;
     }
     .page-header-avatar {
         width: 46px;
@@ -120,6 +126,42 @@ def show_journal(user_id):
         box-shadow: 0 4px 18px rgba(15,23,42,0.06);
     }
 
+    /* Journal-only layout and form spacing */
+    .page-header + div { margin-top: 0.5rem; }
+    div[data-testid="stTabs"] { margin-top: 0; }
+    div[data-testid="stTabs"] > div[role="tablist"] { margin-bottom: 1.5rem; }
+    div[data-testid="stExpander"] { margin-bottom: 1.5rem; }
+    .section-title {
+        margin-top: 0.25rem;
+        margin-bottom: 1.25rem;
+        line-height: 1.5;
+    }
+    div[data-testid="stHorizontalBlock"] { gap: 1.5rem !important; }
+    div[data-testid="stTextInput"],
+    div[data-testid="stSelectbox"],
+    div[data-testid="stDateInput"],
+    div[data-testid="stTimeInput"],
+    div[data-testid="stTextArea"] { margin-bottom: 1.25rem; }
+    div[data-testid="stTextInput"] label,
+    div[data-testid="stSelectbox"] label,
+    div[data-testid="stDateInput"] label,
+    div[data-testid="stTimeInput"] label,
+    div[data-testid="stTextArea"] label {
+        line-height: 1.6 !important;
+        margin-bottom: 0.5rem !important;
+        font-weight: 600 !important;
+    }
+    div[data-testid="stTextInput"] input,
+    div[data-testid="stSelectbox"] [data-baseweb="select"] > div,
+    div[data-testid="stDateInput"] input,
+    div[data-testid="stTimeInput"] input {
+        min-height: 48px !important;
+        padding: 12px 16px !important;
+        border-radius: 12px !important;
+    }
+    div[data-testid="stTextArea"] textarea { padding: 12px 16px !important; }
+    div[data-testid="stForm"] { padding: 1.5rem 1.75rem 1.75rem; }
+
     .info-card h4 {
         font-weight: 700;
         margin-bottom: 10px;
@@ -159,7 +201,7 @@ def show_journal(user_id):
         font-size: 15px !important;
         line-height: 1.7 !important;
         color: #1e293b !important;
-        padding: 14px !important;
+        padding: 12px 16px !important;
         box-shadow: 0 2px 8px rgba(99,102,241,0.08) !important;
         transition: all 0.3s ease !important;
     }
@@ -358,8 +400,7 @@ def show_journal(user_id):
                 except Exception:
                     pass
                 st.success("Journal entry saved successfully.")
-                st.session_state["journal_content"] = ""
-                st.session_state["journal_title"] = ""
+                st.session_state["_clear_journal_form"] = True
                 st.rerun()
             else:
                 st.warning("Write a few words before saving your entry.")
