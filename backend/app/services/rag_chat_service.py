@@ -163,6 +163,29 @@ def format_history(history: Optional[list]) -> str:
     if not turns:
         return ""
 
+    crisis_markers = (
+        "0311-7786264", "0800-22444", "1166", "988", "1122", "741741",
+        "i hear how much pain", "please reach out to a trained professional",
+    )
+    filtered_turns = []
+    index = 0
+    while index < len(turns):
+        role, content = turns[index]
+        if role == "user" and index + 1 < len(turns) and turns[index + 1][0] == "assistant":
+            assistant_content = turns[index + 1][1].lower()
+            user_is_crisis = detect_crisis(content)["is_crisis"]
+            assistant_is_crisis = any(marker in assistant_content for marker in crisis_markers)
+            if not user_is_crisis and not assistant_is_crisis:
+                filtered_turns.extend(turns[index:index + 2])
+            index += 2
+            continue
+        filtered_turns.append(turns[index])
+        index += 1
+    turns = filtered_turns
+
+    if not turns:
+        return ""
+
     # Keep only the last MAX_HISTORY_TURNS*2 entries (each turn = user + assistant)
     max_entries = MAX_HISTORY_TURNS * 2
     turns = turns[-max_entries:]

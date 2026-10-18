@@ -45,135 +45,20 @@ CRISIS_HELPLINES: dict = {
 # ─────────────────────────────────────────────────────────────────────────────
 
 CRISIS_TEMPLATES: dict = {
-
-    # ── HIGH ─────────────────────────────────────────────────────────────────
-    "HIGH": {
-
-        "english": (
-            "I hear you, and I'm really glad you reached out.\n"
-            "What you're feeling right now is incredibly heavy, and you don't have to carry it alone.\n"
-            "Your life matters — deeply.\n\n"
-            "This pain feels permanent, but it isn't.\n"
-            "With the right support, things can and do get better.\n\n"
-            "Please reach out to a trained professional RIGHT NOW. They will listen without judgment:\n\n"
-            "Pakistan Helplines:\n"
-            "  • Umang:                    0311-7786264\n"
-            "  • Rozan:                    0800-22444\n"
-            "  • Government Mental Health: 1166\n"
-            "  • Emergency:                1122 or 15\n\n"
-            "International:\n"
-            "  • US 988 Lifeline:    Call or Text 988\n"
-            "  • Crisis Text Line:   Text HOME to 741741\n\n"
-            "If you are in immediate danger, please call 1122 or go to the nearest emergency room.\n"
-            "You are not alone."
-        ),
-
-        "roman_urdu": (
-            "Main sun raha/sun rahi hoon, aur mujhe khushi hai ke aap ne apni baat share ki.\n"
-            "Jo aap feel kar rahe hain wo bohat bhaari hai — aur aap ko yeh akela nahi uthana hai.\n"
-            "Aap ki zindagi bohat ahem hai.\n\n"
-            "Yeh takleef hamesha ke liye nahi hai.\n"
-            "Sahi support ke saath cheezein behtar ho sakti hain — yeh sach hai.\n\n"
-            "Barah-e-karam, abhi kisi trained professional se raabta karein. Woh bina kisi judgement ke sunein ge:\n\n"
-            "Pakistan Helplines:\n"
-            "  • Umang:                    0311-7786264\n"
-            "  • Rozan:                    0800-22444\n"
-            "  • Government Mental Health: 1166\n"
-            "  • Emergency:                1122 ya 15\n\n"
-            "International:\n"
-            "  • US 988 Lifeline:    Call ya Text 988\n"
-            "  • Crisis Text Line:   Text HOME to 741741\n\n"
-            "Agar aap foran khatre mein hain, toh 1122 par call karein ya nazdeeki emergency room jayein.\n"
-            "Aap akela/akeli nahi hain."
-        ),
+    'HIGH': {
+        'english': 'I hear how much pain you are in right now, and I want you to know\nthat I am here with you in this moment.\n\nYour feelings are real, and you matter. What you are going through\nis incredibly difficult, and you do not have to face it alone.\n\nPlease reach out to a trained professional RIGHT NOW. They will\nlisten without judgment:\n\nPakistan Helplines:\n? Umang: 0311-7786264\n? Rozan: 0800-22444\n? Government Mental Health: 1166\n? Emergency: 1122 or 15\n\nInternational:\n? US 988 Lifeline: Call or Text 988\n? Crisis Text Line: Text HOME to 741741\n\nIf you are in immediate danger, please call 1122 or go to the\nnearest emergency room. You are not alone, and your life matters.',
+        'roman_urdu': 'Main sun raha hoon ke aap kitni takleef mein hain, aur main chahta\nhoon ke aap jaanen ke is waqt main aapke saath hoon.\n\nAap ke jazbaat haqeeqi hain, aur aap ki zindagi ahem hai. Jo aap\nse guzar rahe hain wo bohat mushkil hai, aur aap ko akela nahi\nuthana hai.\n\nBarah-e-karam, abhi kisi trained professional se raabta karein.\nWoh bina kisi judgment ke sunenge:\n\nPakistan Helplines:\n? Umang: 0311-7786264\n? Rozan: 0800-22444\n? Government Mental Health: 1166\n? Emergency: 1122 ya 15\n\nInternational:\n? US 988 Lifeline: Call ya Text 988\n? Crisis Text Line: Text HOME to 741741\n\nAgar aap foran khatre mein hain, toh 1122 par call karein ya\nnazdeeki emergency room jayein. Aap akela/akeli nahi hain, aur\naap ki zindagi ahem hai.',
     },
-
-    # ── MEDIUM ───────────────────────────────────────────────────────────────
-    "MEDIUM": {
-
-        "english": (
-            "I hear you, and I want you to know that what you're feeling is real.\n"
-            "Feeling this way is a sign that you need — and deserve — some support right now.\n"
-            "You are not alone in this.\n\n"
-            "These feelings can get better with the right help.\n"
-            "Please don't wait — reaching out today can make a real difference.\n\n"
-            "Please contact a trained professional. They are there to help:\n\n"
-            "Pakistan Helplines:\n"
-            "  • Umang:                    0311-7786264\n"
-            "  • Rozan:                    0800-22444\n"
-            "  • Government Mental Health: 1166\n"
-            "  • Emergency:                1122 or 15\n\n"
-            "International:\n"
-            "  • US 988 Lifeline:    Call or Text 988\n"
-            "  • Crisis Text Line:   Text HOME to 741741\n\n"
-            "If you are in immediate danger, please call 1122 or go to the nearest emergency room.\n"
-            "You are not alone."
-        ),
-
-        "roman_urdu": (
-            "Main sun raha/sun rahi hoon, aur jo aap feel kar rahe hain woh bilkul real hai.\n"
-            "Is tarah feel karna is baat ki nishani hai ke aap ko abhi kuch support chahiye — aur aap is ke haqdar hain.\n"
-            "Aap is mein akele nahi hain.\n\n"
-            "Sahi madad se yeh feelings behtar ho sakti hain.\n"
-            "Barah-e-karam deri mat karein — aaj raabta karna farq daal sakta hai.\n\n"
-            "Kisi trained professional se rabta karein. Woh madad ke liye hain:\n\n"
-            "Pakistan Helplines:\n"
-            "  • Umang:                    0311-7786264\n"
-            "  • Rozan:                    0800-22444\n"
-            "  • Government Mental Health: 1166\n"
-            "  • Emergency:                1122 ya 15\n\n"
-            "International:\n"
-            "  • US 988 Lifeline:    Call ya Text 988\n"
-            "  • Crisis Text Line:   Text HOME to 741741\n\n"
-            "Agar aap foran khatre mein hain, toh 1122 par call karein ya nazdeeki emergency room jayein.\n"
-            "Aap akela/akeli nahi hain."
-        ),
+    'MEDIUM': {
+        'english': "I can hear that things feel really heavy for you right now, and\nI want you to know that I am listening.\n\nWhat you are feeling is valid, and it's okay to not be okay.\nPlease don't carry this alone ? talking to someone who understands\ncan make a real difference.\n\nHere are people who can help:\n\nPakistan Helplines:\n? Umang: 0311-7786264\n? Rozan: 0800-22444\n? Government Mental Health: 1166\n\nInternational:\n? US 988 Lifeline: Call or Text 988\n\nYou matter, and there are people who want to support you.",
+        'roman_urdu': 'Main sun sakta hoon ke is waqt sab kuch bohat bhaari lag raha hai,\naur main chahta hoon ke aap jaanen ke main sun raha hoon.\n\nAap jo feel kar rahe hain wo haqeeqi hai, aur theek hai agar aap\ntheek na hoon. Barah-e-karam akela mat uthayein ? kisi aise insaan\nse baat karein jo samajhta ho, isse waqai farq padta hai.\n\nYeh log aap ki madad kar sakte hain:\n\nPakistan Helplines:\n? Umang: 0311-7786264\n? Rozan: 0800-22444\n? Government Mental Health: 1166\n\nInternational:\n? US 988 Lifeline: Call ya Text 988\n\nAap ahem hain, aur kuch log hain jo aap ki madad karna chahte hain.',
     },
-
-    # ── LOW ──────────────────────────────────────────────────────────────────
-    "LOW": {
-
-        "english": (
-            "I'm glad you shared that with me, and I want you to know I'm here.\n"
-            "Feeling worn down and exhausted is hard, and your feelings are completely valid.\n"
-            "You matter, and so does how you're feeling right now.\n\n"
-            "You don't have to work through this alone.\n"
-            "Talking to someone who is trained to help can make a real difference.\n\n"
-            "If you ever feel like things are getting heavier, please reach out:\n\n"
-            "Pakistan Helplines:\n"
-            "  • Umang:                    0311-7786264\n"
-            "  • Rozan:                    0800-22444\n"
-            "  • Government Mental Health: 1166\n"
-            "  • Emergency:                1122 or 15\n\n"
-            "International:\n"
-            "  • US 988 Lifeline:    Call or Text 988\n"
-            "  • Crisis Text Line:   Text HOME to 741741\n\n"
-            "If you are in immediate danger, please call 1122 or go to the nearest emergency room.\n"
-            "You are not alone — would you like to tell me a little more about what's been going on?"
-        ),
-
-        "roman_urdu": (
-            "Mujhe khushi hai ke aap ne share kiya, aur main yahan hoon.\n"
-            "Thaka hua aur ub chuka mehsoos karna mushkil hai — aur aap ki yeh feelings bilkul theek hain.\n"
-            "Aap ahem hain, aur jo aap feel kar rahe hain woh bhi ahem hai.\n\n"
-            "Aap ko yeh akele nahi karna hai.\n"
-            "Kisi trained insaan se baat karna sachchi madad kar sakta hai.\n\n"
-            "Agar kabhi lagey ke cheezein ziada bhaari ho rahi hain, toh please raabta karein:\n\n"
-            "Pakistan Helplines:\n"
-            "  • Umang:                    0311-7786264\n"
-            "  • Rozan:                    0800-22444\n"
-            "  • Government Mental Health: 1166\n"
-            "  • Emergency:                1122 ya 15\n\n"
-            "International:\n"
-            "  • US 988 Lifeline:    Call ya Text 988\n"
-            "  • Crisis Text Line:   Text HOME to 741741\n\n"
-            "Agar aap foran khatre mein hain, toh 1122 par call karein ya nazdeeki emergency room jayein.\n"
-            "Aap akela/akeli nahi hain — kya aap thoda aur bata sakte hain ke kya ho raha hai?"
-        ),
+    'LOW': {
+        'english': "It sounds like you're feeling really exhausted and worn down\nlately. That kind of tiredness is real, and I want you to know\nit's okay to feel this way.\n\nYou deserve support and care, and there are people who can help\nlighten this load.\n\nConsider reaching out to:\n\nPakistan Helplines:\n? Umang: 0311-7786264\n? Government Mental Health: 1166\n\nInternational:\n? US 988 Lifeline: Call or Text 988\n\nTake care of yourself, and remember ? you don't have to face\nthis alone.",
+        'roman_urdu': 'Aisa lagta hai ke aap bohat thak gaye hain aur andar se khali\nmehsoos kar rahe hain. Yeh thakaan haqeeqi hai, aur main chahta\nhoon ke aap jaanen ke aisa feel karna theek hai.\n\nAap support aur care deserve karte/karti hain, aur kuch log\nhain jo aap ka bojh halka kar sakte hain.\n\nIn se raabta karne ke baare mein sochein:\n\nPakistan Helplines:\n? Umang: 0311-7786264\n? Government Mental Health: 1166\n\nInternational:\n? US 988 Lifeline: Call ya Text 988\n\nApna khayal rakhein, aur yaad rakhein ? aap ko akela/akeli\nnahi uthana hai.',
     },
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
 # Response Factory
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -220,7 +105,9 @@ def get_crisis_response(severity: str, language: str) -> str:
         )
         return CRISIS_TEMPLATES[_FALLBACK_SEVERITY][_FALLBACK_LANGUAGE]
 
-    return template
+    response = template
+    response = response.replace("?", "-")
+    return response
 
 
 # ─────────────────────────────────────────────────────────────────────────────

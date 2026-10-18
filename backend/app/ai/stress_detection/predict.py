@@ -42,6 +42,7 @@ print("Loading Stress Tokenizer...")
 tokenizer = AutoTokenizer.from_pretrained(
     str(MODEL_PATH),
     local_files_only=True,
+    extra_special_tokens={},
 )
 
 
