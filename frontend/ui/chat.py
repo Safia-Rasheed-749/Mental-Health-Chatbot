@@ -299,35 +299,6 @@ def show_chat(user_id):
         padding-bottom: 112px !important;
         max-width: 100% !important;
     }
-    /* ── SAFETY BANNER ── */
-    .chat-disclaimer {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        width: min(100%, 1080px);
-        margin: 0 auto 12px;
-        padding: 10px 14px;
-        border: 1px solid #ddd6fe;
-        border-radius: 10px;
-        background: linear-gradient(100deg, #f5f3ff 0%, #f8f7ff 100%);
-        color: #51466f;
-        font-size: 12px;
-        box-sizing: border-box;
-        line-height: 1.45;
-    }
-    .chat-disclaimer b { color: #5b3fa6; }
-    .chat-disclaimer-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: #e9e3ff;
-        color: #674db5;
-        font-size: 14px;
-        flex: 0 0 auto;
-    }
     .chat-status-row {
         display: flex;
         align-items: center;
@@ -398,7 +369,7 @@ def show_chat(user_id):
 
     /* ── CHAT MESSAGES AREA ── */
     .chat-area {
-        padding: 10px 24px 12px 24px;
+        padding: 2px 24px 12px 24px;
         scroll-behavior: smooth;
         scroll-margin-bottom: 12px;
     }
@@ -640,13 +611,6 @@ def show_chat(user_id):
 
     </style>
     """, unsafe_allow_html=True)
-    st.markdown("""
-    <div class="chat-disclaimer">
-        <span class="chat-disclaimer-icon">!</span>
-        <span><b>Wellness support, not medical care.</b> MindCare AI is not a doctor or crisis hotline. In an emergency, contact local emergency services or a qualified professional.</span>
-    </div>
-    """, unsafe_allow_html=True)
-
     # Auto-play audio using JavaScript (hidden)
     if "auto_play_audio" in st.session_state:
         audio_base64 = st.session_state["auto_play_audio"]
@@ -727,7 +691,7 @@ def show_chat(user_id):
                     st.markdown(f"""
                     <div class="chat-row" style="justify-content:flex-start;">
                         <div class="ai-bubble-wrap">
-                            <div class="ai-avatar">✦</div>
+                            <div class="ai-avatar">🧠</div>
                             <div class="assistant-bubble">{msg}</div>
                         </div>
                     </div>
