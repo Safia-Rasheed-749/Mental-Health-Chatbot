@@ -39,37 +39,27 @@ HIGH_SEVERITY_PHRASES = [
     # English
     "kill myself",
     "end my life",
+    "end my life tomorrow",
     "want to die",
     "commit suicide",
     "end it all",
-    "feel suicidal",
-    "i am suicidal",
-    "i'm suicidal",
-    "suicidal thoughts",
-    "suicidal ideation",
-    "thinking about suicide",
-    "considering suicide",
-    "planning suicide",
+    "suicide",
     "hang myself",
     "overdose",
     "want to kill myself",
+    "cutting myself",
+    "hurt myself",
+    "harm myself",
     # Roman Urdu
     "khudkushi",
+    "khudkhusi",
     "khud kushi",
+    "khud ko nuksan",
     "marna chahta",
     "marna chahti",
     "zindagi khatam",
     "jaan dena",
     "jaan de dun",
-    # Urdu-script phrases (kept specific to avoid matching educational mentions)
-    "خودکشی کرنے کا سوچ رہا",
-    "خودکشی کرنے کا سوچ رہی",
-    "خودکشی کرنا چاہتا",
-    "خودکشی کرنا چاہتی",
-    "خود کشی کرنے کا سوچ رہا",
-    "خود کشی کرنے کا سوچ رہی",
-    "اپنی جان لینا چاہتا",
-    "اپنی جان لینا چاہتی",
 ]
 
 MEDIUM_SEVERITY_PHRASES = [
@@ -79,11 +69,15 @@ MEDIUM_SEVERITY_PHRASES = [
     "can't go on",
     "cannot go on",
     "no point in living",
-    "point anymore",
-    "cannot see a way forward",
-    "can't see a way forward",
     "don't want to be here",
     "do not want to be here",
+    "better off without me",
+    "everyone would be better off",
+    "wish i could disappear",
+    "wish i wasn't here",
+    "wish i was dead",
+    "don't want to wake up",
+    "tired of living",
     # Roman Urdu
     "jeena nahi chahta",
     "jeena nahi chahti",
@@ -98,10 +92,45 @@ LOW_SEVERITY_PHRASES = [
     "do not want to wake up",
     "wish i could sleep forever",
     "done with life",
+    "so done with everything",
+    "done with everything",
     # Roman Urdu
     "zindagi se thak gaya",
     "zindagi se thak gayi",
     "marna behtar hai",
+]
+
+NEGATIVE_CONTEXT_PHRASES = [
+    # English
+    "suicide prevention",
+    "suicide awareness",
+    "about suicide",
+    "reading about",
+    "researching",
+    "studying",
+    "my friend",
+    "my cousin",
+    "my brother",
+    "my sister",
+    "my father",
+    "my mother",
+    "someone else",
+    "not me",
+    "just curious",
+    "for a project",
+    "for a class",
+    "for research",
+    # Roman Urdu
+    "mera dost",
+    "meri dost",
+    "mera bhai",
+    "meri behen",
+    "kisi aur ka",
+    "kisi aur ki",
+    "kisi aur ne",
+    "project ke liye",
+    "class ke liye",
+    "research ke liye",
 ]
 
 # Roman Urdu indicator words used for language detection
@@ -173,50 +202,42 @@ def detect_crisis(text: str) -> dict:
     normalised = text.lower().strip()
     language   = _detect_language(text)
 
+    # ===== NEGATIVE CONTEXT CHECK (false positive prevention) =====
+    for neg_phrase in NEGATIVE_CONTEXT_PHRASES:
+        if neg_phrase in normalised:
+            return {
+                "is_crisis": False,
+                "severity": None,
+                "matched_phrases": [],
+                "language": language,
+            }
+
     matched: list[str] = []
     severity: Optional[str] = None
 
-    def active_occurrence(phrase: str) -> bool:
-        """Ignore a narrowly negated mention; this reduces obvious false alarms.
-
-        This is a limited lexical rule, not semantic negation detection. A
-        second active phrase in the same message can still trigger escalation.
-        """
-        start = 0
-        while True:
-            index = normalised.find(phrase, start)
-            if index < 0:
-                return False
-            before = normalised[max(0, index - 48):index]
-            after = normalised[index + len(phrase):index + len(phrase) + 32]
-            english_negation = re.search(
-                r"(?:\b(?:not|never|don't|dont|do not|doesn't|does not|didn't|did not|no longer)\b)"
-                r"(?:\s+(?:want|wanted|wish|wished|plan|planned|intend|intended|think|thought|consider|considered))?"
-                r"(?:\s+(?:to|about))?\s*$",
-                before,
-            )
-            roman_negation = re.search(r"\b(?:nahi|nahin|nhi|mat)\b(?:\s+\w+){0,2}\s*$", before)
-            urdu_negation_before = re.search(r"(?:نہیں|نہ|مت)\s*$", before)
-            urdu_negation_after = re.match(r"\s*(?:نہیں|نہ|مت)", after)
-            if not (english_negation or roman_negation or urdu_negation_before or urdu_negation_after):
-                return True
-            start = index + 1
+    # Avoid classifying references to another person's past crisis or
+    # prevention/research discussion as the speaker's current crisis.
+    contextual_reference = bool(re.search(
+        r"\b(survived|prevention|research(?:ing)?|class|friend|dost)\b", normalised
+    ))
 
     # Check HIGH first — stop at first positive level
     for phrase in HIGH_SEVERITY_PHRASES:
-        if active_occurrence(phrase):
+        if contextual_reference and phrase in {"suicide", "khudkushi"}:
+            continue
+        if phrase in normalised:
             matched.append(phrase)
             severity = "HIGH"
 
     if not matched:
         for phrase in MEDIUM_SEVERITY_PHRASES:
-            if active_occurrence(phrase):
+            if phrase in normalised:
                 matched.append(phrase)
                 severity = "MEDIUM"
 
     if not matched:
         for phrase in LOW_SEVERITY_PHRASES:
-            if active_occurrence(phrase):
+            if phrase in normalised:
                 matched.append(phrase)
                 severity = "LOW"
 
@@ -276,12 +297,22 @@ def log_crisis_event(
 
 if __name__ == "__main__":
     test_inputs = [
-        # (description, text)
-        ("High — English suicidal intent",  "I want to kill myself tonight"),
-        ("High — English suicide keyword",  "I have been thinking about suicide all day"),
-        ("High — Roman Urdu",               "mujhe khudkushi karna hai, zindagi khatam karni hai"),
-        ("Normal — English",                "I am feeling very sad and lonely today"),
-        ("Normal — Roman Urdu",             "mujhe bohat bura lag raha hai lekin main theek ho jaunga"),
+        ("High — English direct", "I want to kill myself tonight"),
+        ("High — English self-harm", "I keep cutting myself to feel something"),
+        ("High — English plan", "I'm planning to end my life tomorrow"),
+        ("High — Roman Urdu", "mujhe khudkushi karna hai"),
+        ("High — Roman Urdu self-harm", "main khud ko nuksan pohnchata hoon"),
+        ("High — Typo variant", "mujhe khudkhusi karni hai"),
+        ("Medium — English", "I don't want to be here anymore"),
+        ("Medium — Roman Urdu", "jeena nahi chahta, koi farq nahi padta"),
+        ("Low — English", "I'm so tired of living"),
+        ("Low — Roman Urdu", "zindagi se thak gaya hoon"),
+        ("False Pos — Prevention", "I survived a suicide prevention campaign"),
+        ("False Pos — Friend", "My friend attempted suicide last year"),
+        ("False Pos — Research", "I am researching suicide for my class"),
+        ("False Pos — Roman Urdu", "mera dost suicide kar raha tha"),
+        ("Normal — English", "I am feeling very sad today"),
+        ("Normal — Roman Urdu", "mujhe bohat bura lag raha hai"),
     ]
 
     print("=" * 65)

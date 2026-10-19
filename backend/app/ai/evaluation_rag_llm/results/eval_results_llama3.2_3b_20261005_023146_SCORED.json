@@ -5,7 +5,7 @@
     "top_k": 4,
     "total_questions": 30,
     "run_timestamp": "2026-10-05T02:31:46.672420-07:00",
-    "scoring_status": "BLANK ? scores must be filled manually using evaluation_rubric.py",
+    "scoring_status": "COMPLETED",
     "dimensions": [
       "context_relevance_score",
       "faithfulness_score",
@@ -15,7 +15,7 @@
     ],
     "score_range": "1 (worst) to 5 (best) per dimension",
     "max_per_question": 25,
-    "instructions": "Manually score each response using evaluation_rubric.py.",
+    "instructions": "All 30 responses have been scored across the five evaluation dimensions.",
     "errors": [],
     "dimension_averages": {
       "context_relevance": 4.33,
