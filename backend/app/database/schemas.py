@@ -29,22 +29,24 @@ class ChatMessage(BaseModel):
 class ChatRequest(BaseModel):
     message: str
     history: Optional[List[ChatMessage]] = []  # previous turns; empty = stateless
+    response_language: str = "auto"
+    input_language: Optional[str] = None
+    input_mode: str = "text"
 
 
 class ChatResponse(BaseModel):
-    # LLM-generated reply
     response: str
-
-    # Emotion / stress / depression detection results
-    # (included so the frontend can display or act on them)
-    emotion: str
-    emotion_confidence: float
-
-    stress: str
-    stress_confidence: float
-
-    depression: str
-    depression_confidence: float
+    crisis: bool = False
+    severity: Optional[str] = None
+    language: Optional[str] = None
+    speech_text: Optional[str] = None
+    # Per-current-message model signals for the separate, caveated UI panel.
+    emotion: Optional[str] = None
+    emotion_confidence: Optional[float] = None
+    stress: Optional[str] = None
+    stress_confidence: Optional[float] = None
+    depression: Optional[str] = None
+    depression_confidence: Optional[float] = None
 
 
 class RegisterRequest(BaseModel):

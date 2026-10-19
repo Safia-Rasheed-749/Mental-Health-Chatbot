@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -109,6 +111,21 @@ body {
 .mic-btn.recording {
   background: linear-gradient(135deg, #ef4444, #f87171);
   animation: recordingPulse 1s ease-in-out infinite;
+}
+
+.sticky-bar input.urdu-input {
+  direction: rtl;
+  text-align: right;
+  unicode-bidi: plaintext;
+  font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', 'Jameel Noori Nastaleeq', serif;
+  line-height: 2;
+  min-height: 48px;
+}
+
+.sticky-bar input.urdu-input::placeholder {
+  direction: ltr;
+  text-align: left;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .sticky-bar svg {

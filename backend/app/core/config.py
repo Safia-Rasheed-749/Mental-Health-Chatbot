@@ -12,6 +12,10 @@ from dotenv import load_dotenv
 
 BACKEND_DIR = Path(__file__).resolve().parents[2]
 load_dotenv(BACKEND_DIR / ".env", override=False)
+# Stable only for this process. This keeps local development tokens verifiable
+# during a run; it is deliberately not a substitute for a configured deployment
+# secret and does not preserve tokens across restarts.
+_EPHEMERAL_DEV_JWT_SECRET = secrets.token_hex(32)
 
 
 def _bool(name: str, default: bool) -> bool:
@@ -39,8 +43,9 @@ class Settings:
     app_url: str = os.getenv("APP_URL", "http://localhost:8501")
 
     def jwt_key(self) -> str:
-        # Local FYP fallback avoids blocking development; production must set it.
-        return self.jwt_secret_key or os.getenv("DEV_JWT_SECRET", "") or secrets.token_hex(32)
+        # Resolve once per process for local development. Production must set
+        # JWT_SECRET_KEY so tokens remain verifiable across restarts/workers.
+        return self.jwt_secret_key or os.getenv("DEV_JWT_SECRET", "") or _EPHEMERAL_DEV_JWT_SECRET
 
 
 settings = Settings()

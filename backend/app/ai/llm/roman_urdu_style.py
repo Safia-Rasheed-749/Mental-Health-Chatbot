@@ -73,6 +73,12 @@ APPROVED_WORDS: list[str] = [
 # =====================================================
 
 FORBIDDEN_WORDS: list[str] = [
+    # Hindi-influenced phrases and spellings explicitly rejected by the UX brief
+    "bahut", "shantipurna", "sujhav", "pradaan", "samasya", "dhyan",
+    "samajhta hoon ki", "main samajh sakta hoon ki", "aapki samasya",
+    "sookhne dein", "koshish karein", "nahi rakh sakti", "jaise ki",
+    "vyayam", "prapt", "nirdharit", "lakshyaon", "yojana",
+    "mansik swasthya pradatar", "samaajik samarthan",
     # Formal Hindi problem / solution words
     "samasya",
     "sujhav",

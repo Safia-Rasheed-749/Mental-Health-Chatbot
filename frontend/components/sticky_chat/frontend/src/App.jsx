@@ -9,6 +9,7 @@ function App() {
   const [isRecording, setIsRecording] = useState(false);
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
+  const isUrduInput = /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/.test(text);
 
   useEffect(() => {
     Streamlit.setFrameHeight(82);
@@ -95,6 +96,8 @@ function App() {
       <input
         type="text"
         value={text}
+        dir={isUrduInput ? "rtl" : "ltr"}
+        className={isUrduInput ? "urdu-input" : "ltr-input"}
         onChange={(e) => setText(e.target.value)}
         onKeyPress={handleKeyPress}
         placeholder="Share what is on your mind..."

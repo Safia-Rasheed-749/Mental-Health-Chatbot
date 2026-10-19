@@ -51,25 +51,41 @@ if "voice_processed_key" not in st.session_state:
     st.session_state["voice_processed_key"] = None
 
 # ---------------- SPEAK WITH AUTO-PLAY ----------------
-def speak_and_auto_play(text):
-    """Convert text to speech and auto-play using HTML5 audio"""
-    tts = gTTS(text=text, lang="en")
+def synthesize_response_audio(text, language="english"):
+    """Create online TTS audio bytes in the response language."""
+    language = (language or "english").lower()
     audio_path = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3").name
-    tts.save(audio_path)
+    try:
+        import asyncio
+        import edge_tts
+        voice = "ur-PK-UzmaNeural" if language == "urdu" else "en-US-JennyNeural"
+        if os.getenv("MINDCARE_ENV", "production").lower() == "development":
+            print(f"[speech-dev] tts_input={text!r}; selected_voice={voice}")
+        asyncio.run(edge_tts.Communicate(text, voice).save(audio_path))
+    except Exception:
+        try:
+            gTTS(text=text, lang="ur" if language == "urdu" else "en").save(audio_path)
+        except Exception:
+            try:
+                os.unlink(audio_path)
+            except OSError:
+                pass
+            st.info("Audio could not be generated; the text response is still available.")
+            return None
     
     # Read audio file and convert to base64 for embedding
     with open(audio_path, "rb") as f:
         audio_bytes = f.read()
         audio_base64 = base64.b64encode(audio_bytes).decode()
     
-    # Store in session for auto-play
-    st.session_state["auto_play_audio"] = audio_base64
+    audio_bytes = base64.b64decode(audio_base64)
     
     # Cleanup
     try:
         os.unlink(audio_path)
     except:
         pass
+    return audio_bytes
 
 # ── Multi-turn conversation memory helpers ──────────────────────────────────
 # build_history_for_api() converts st.session_state["chat_history"] (list of
@@ -116,7 +132,30 @@ def build_history_for_api(max_turns: int = 3) -> list:
 def generate_response_from_backend(message: str, history: list = None) -> dict:
     url = os.getenv("API_URL", "http://127.0.0.1:8000").rstrip("/") + "/chat"
 
-    payload = {"message": message, "history": history if history else []}
+    payload = {
+        "message": message,
+        "history": history if history else [],
+        "response_language": st.session_state.get("response_language", "auto"),
+        "input_language": st.session_state.get("voice_language"),
+        "input_mode": st.session_state.get("active_input_mode", "text"),
+    }
+
+    # Keep timeout notices in the requested/input script rather than silently
+    # displaying an English fallback in an Urdu conversation.
+    language = payload["response_language"]
+    if language == "auto":
+        if any("\u0600" <= char <= "\u06ff" for char in message):
+            language = "urdu"
+        elif any(word in {"mujhe", "mujhy", "aap", "bohat", "hai", "hain", "nahi", "udas"}
+                 for word in message.lower().split()):
+            language = "roman_urdu"
+        else:
+            language = "english"
+    timeout_messages = {
+        "english": "The assistant is taking longer than expected. Please try again shortly.",
+        "roman_urdu": "Jawab dene mein thoda waqt lag raha hai. Barah-e-karam kuch dair baad dobara koshish karein.",
+        "urdu": "جواب آنے میں معمول سے زیادہ وقت لگ رہا ہے۔ براہِ کرم کچھ دیر بعد دوبارہ کوشش کریں۔",
+    }
 
     try:
         response = requests.post(url, json=payload, timeout=180)
@@ -125,18 +164,22 @@ def generate_response_from_backend(message: str, history: list = None) -> dict:
         return data  # Return full dict (includes crisis, severity, response, etc.)
     except requests.Timeout:
         return {
-            "response": (
-                "The local assistant is taking longer than expected to respond. "
-                "Please try again in a moment."
-            ),
+            "response": timeout_messages[language],
             "crisis": False,
             "severity": None,
+            "language": language,
+            "speech_text": "",
         }
     except requests.ConnectionError:
         return {
-            "response": "The chat backend is unavailable. Please start FastAPI and try again.",
+            "response": {
+                "roman_urdu": "Chat backend se rabta nahi ho raha. Barah-e-karam FastAPI chala kar dobara koshish karein.",
+                "urdu": "چیٹ سروس دستیاب نہیں۔ براہِ کرم FastAPI شروع کر کے دوبارہ کوشش کریں۔",
+            }.get(language, "The chat backend is unavailable. Please start FastAPI and try again."),
             "crisis": False,
             "severity": None,
+            "language": language,
+            "speech_text": "",
         }
     except requests.HTTPError as exc:
         try:
@@ -147,17 +190,19 @@ def generate_response_from_backend(message: str, history: list = None) -> dict:
             "response": f"The assistant could not complete this request: {detail}",
             "crisis": False,
             "severity": None,
+            "language": language,
         }
     except (ValueError, requests.exceptions.JSONDecodeError):
         return {
             "response": "The assistant returned an invalid response. Please try again.",
             "crisis": False,
             "severity": None,
+            "language": language,
         }
 
 
 def _insight_chips(data: dict) -> str:
-    """Render non-diagnostic model predictions returned by FastAPI."""
+    """Render the original compact classifier chips from the chat design."""
     if not data or not data.get("emotion"):
         return ""
     emotion = str(data.get("emotion", "Unknown")).title()
@@ -168,18 +213,17 @@ def _insight_chips(data: dict) -> str:
     depression_conf = float(data.get("depression_confidence", 0) or 0)
     return (
         '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:5px 0 12px 48px;">'
-        f'<span style="background:#eef2ff;color:#4338ca;padding:4px 9px;border-radius:12px;font-size:11px;">'
+        '<span style="background:#eef2ff;color:#4338ca;padding:4px 9px;border-radius:12px;font-size:11px;">'
         f'🧠 Emotion: {emotion} ({emotion_conf:.0f}%)</span>'
-        f'<span style="background:#fff7ed;color:#c2410c;padding:4px 9px;border-radius:12px;font-size:11px;">'
+        '<span style="background:#fff7ed;color:#c2410c;padding:4px 9px;border-radius:12px;font-size:11px;">'
         f'⚡ Stress: {stress} ({stress_conf:.0f}%)</span>'
-        f'<span style="background:#f0fdf4;color:#15803d;padding:4px 9px;border-radius:12px;font-size:11px;">'
+        '<span style="background:#f0fdf4;color:#15803d;padding:4px 9px;border-radius:12px;font-size:11px;">'
         f'🛡️ Depression signal: {depression} ({depression_conf:.0f}%)</span>'
         '</div>'
     )
 
 
 def _record_trajectory(data: dict) -> None:
-    """Store non-clinical per-turn model signals for a session chart."""
     if not data or not data.get("emotion"):
         return
     trajectory = st.session_state.setdefault("emotion_trajectory", [])
@@ -217,6 +261,8 @@ def _show_exercise_recommendation(data: dict, key_suffix: str = "live", containe
                 st.session_state["page"] = "exercises"
                 st.query_params["page"] = "Exercises"
                 st.rerun()
+
+
 # ---------------- CHAT ----------------
 def show_chat(user_id):
     apply_clean_layout(hide_header_completely=False)
@@ -611,20 +657,6 @@ def show_chat(user_id):
 
     </style>
     """, unsafe_allow_html=True)
-    # Auto-play audio using JavaScript (hidden)
-    if "auto_play_audio" in st.session_state:
-        audio_base64 = st.session_state["auto_play_audio"]
-        st.markdown(f"""
-        <audio autoplay style="display:none;">
-            <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mpeg">
-        </audio>
-        <script>
-            // Force autoplay
-            document.querySelector('audio').play();
-        </script>
-        """, unsafe_allow_html=True)
-        del st.session_state["auto_play_audio"]
-
     # ---------------- CONVERSATION ----------------
     # Don't create conversation until user sends first message
     cid = st.session_state.get("conversation_id")
@@ -662,13 +694,14 @@ def show_chat(user_id):
             quick_input = None
             for idx, (role, msg) in enumerate(st.session_state["chat_history"]):
                 if role == "user":
+                    import html as _html
                     st.markdown(f"""
                     <div class="chat-row" style="justify-content:flex-end;">
-                        <div class="user-bubble">{msg}</div>
+                        <div class="user-bubble">{_html.escape(msg)}</div>
                     </div>
                     """, unsafe_allow_html=True)
                 else:
-                    crisis_meta = st.session_state.get("_crisis_metadata", {}).get(idx)
+                    crisis_meta = st.session_state.get("_crisis_metadata", {}).get(f"{cid}:{idx}")
                     if crisis_meta and crisis_meta.get("crisis"):
                         _sev = crisis_meta.get("severity")
                         _severity_styles = {
@@ -688,18 +721,23 @@ def show_chat(user_id):
                             f'padding:3px 8px;border-radius:10px;font-weight:500;">SUPPORT</span></div>',
                             unsafe_allow_html=True,
                         )
+                    import html as _html
                     st.markdown(f"""
                     <div class="chat-row" style="justify-content:flex-start;">
                         <div class="ai-bubble-wrap">
                             <div class="ai-avatar">🧠</div>
-                            <div class="assistant-bubble">{msg}</div>
+                            <div class="assistant-bubble">{_html.escape(msg).replace(chr(10), '<br>')}</div>
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
                     insight = st.session_state.get("_insight_metadata", {}).get(idx)
-                    if insight and not (crisis_meta and crisis_meta.get("crisis")):
+                    if insight:
                         st.markdown(_insight_chips(insight), unsafe_allow_html=True)
                         _show_exercise_recommendation(insight, key_suffix=f"history_{idx}")
+                    audio_by_message = st.session_state.get("_speech_audio", {})
+                    audio_key = f"{cid}:{idx}"
+                    if audio_key in audio_by_message:
+                        st.audio(base64.b64decode(audio_by_message[audio_key]), format="audio/mp3")
 
     # ══════════════════════════════════════════════════════
     # PHASE 2a — show dots, call AI, store response, rerun
@@ -721,18 +759,29 @@ def show_chat(user_id):
         pending      = st.session_state.pop("_ai_thinking")
         pending_type = pending["type"]
         pending_text = pending["text"]
+        st.session_state["active_input_mode"] = pending.get(
+            "input_mode", "speech" if pending_type == "voice" else "text"
+        )
 
         # response = generate_response(pending_text, st.session_state["chat_history"][-5:])
         # Build history from previous turns (excludes current message) and send to API
         history_for_api = build_history_for_api(max_turns=3)
+        st.session_state["voice_language"] = pending.get("input_language")
         response_data = generate_response_from_backend(pending_text, history=history_for_api)
+        signal_fields = (
+            "crisis", "emotion", "emotion_confidence", "stress", "stress_confidence",
+            "depression", "depression_confidence",
+        )
         st.session_state["_ai_typing"] = {
             "type":     pending_type,
             "response": response_data["response"],
             "crisis":   response_data.get("crisis", False),
             "severity": response_data.get("severity"),
-            "insights": response_data,
+            "speech_text": response_data.get("speech_text", response_data["response"]),
+            "language": response_data.get("language", "english"),
+            "signals": {field: response_data.get(field) for field in signal_fields},
         }
+        st.session_state["last_response_language"] = response_data.get("language", "english")
         st.rerun()
 
     # ══════════════════════════════════════════════════════
@@ -744,7 +793,7 @@ def show_chat(user_id):
         response     = data["response"]
         data_crisis  = data.get("crisis", False)
         data_severity = data.get("severity")
-        insight_data = data.get("insights", {})
+        signal_data = data.get("signals", {})
 
         # ── CRISIS BANNER — rendered BEFORE slot so it always sits above the message ──
         if data_crisis:
@@ -780,39 +829,46 @@ def show_chat(user_id):
             f'</div></div>',
             unsafe_allow_html=True,
         )
-        if not data_crisis:
-            message_container.markdown(_insight_chips(insight_data), unsafe_allow_html=True)
-            _record_trajectory(insight_data)
-            _show_exercise_recommendation(
-                insight_data,
-                key_suffix="live",
-                container=message_container,
-            )
-
         message_index = len(st.session_state["chat_history"])
         st.session_state["chat_history"].append(("assistant", response))
         add_message(user_id, "assistant", response, cid)
+
+        if not data_crisis:
+            message_container.markdown(_insight_chips(signal_data), unsafe_allow_html=True)
+            _record_trajectory(signal_data)
+            _show_exercise_recommendation(
+                signal_data,
+                key_suffix="live",
+                container=message_container,
+            )
 
         # Persist crisis metadata keyed by message index so the history loop
         # can re-render the banner after st.rerun() clears the typewriter slot.
         if "_crisis_metadata" not in st.session_state:
             st.session_state["_crisis_metadata"] = {}
-        st.session_state["_crisis_metadata"][message_index] = {
+        st.session_state["_crisis_metadata"][f"{cid}:{message_index}"] = {
             "crisis":   data_crisis,
             "severity": data_severity,
         }
-        if "_insight_metadata" not in st.session_state:
-            st.session_state["_insight_metadata"] = {}
-        st.session_state["_insight_metadata"][message_index] = insight_data
-
+        st.session_state.setdefault("_insight_metadata", {})[message_index] = signal_data
         trajectory = st.session_state.get("emotion_trajectory", [])
         if trajectory:
             import pandas as pd
             message_container.caption("Session model signals (not a clinical measurement)")
             message_container.line_chart(pd.DataFrame(trajectory).set_index("turn")[["emotion_confidence", "stress_confidence", "depression_confidence"]])
-
+        # TTS is strictly tied to the actual input action, never inferred from language.
         if pending_type == "voice":
-            speak_and_auto_play(response)
+            speech_text = data.get("speech_text") or ""
+            if speech_text:
+                audio_bytes = synthesize_response_audio(
+                    speech_text,
+                    "urdu" if data.get("language") in {"urdu", "roman_urdu"} else "english",
+                )
+                if audio_bytes:
+                    audio_key = f"{cid}:{message_index}"
+                    st.session_state.setdefault("_speech_audio", {})[audio_key] = base64.b64encode(audio_bytes).decode("ascii")
+            else:
+                st.info("Speech audio could not be prepared for this response.")
 
         st.session_state["component_key_timestamp"] = time.time()
         st.rerun()
@@ -905,13 +961,16 @@ def show_chat(user_id):
 
             # Reset component key NOW so Phase 2a gets a blank input field
             st.session_state["component_key_timestamp"] = time.time()
-            st.session_state["_ai_thinking"] = {"type": "text", "text": text}
+            st.session_state.pop("auto_play_audio", None)
+            st.session_state["active_input_mode"] = "text"
+            st.session_state["_ai_thinking"] = {
+                "type": "text", "text": text, "input_language": None, "input_mode": "text"
+            }
             st.rerun()
 
         # ===== AUDIO MESSAGE =====
         elif user_input["type"] == "audio":
             audio_bytes = bytes(user_input["data"])
-            recognizer = sr.Recognizer()
             try:
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp:
                     tmp.write(audio_bytes)
@@ -921,10 +980,23 @@ def show_chat(user_id):
                 audio_segment = AudioSegment.from_file(webm_path, format="webm")
                 audio_segment.export(wav_path, format="wav")
 
-                with sr.AudioFile(wav_path) as source:
-                    recognizer.adjust_for_ambient_noise(source, duration=0.5)
-                    audio_data = recognizer.record(source)
-                    voice_text = recognizer.recognize_google(audio_data)
+                import whisper
+                import torch
+                if "whisper_model" not in st.session_state:
+                    st.session_state["whisper_model"] = whisper.load_model(
+                        os.getenv("WHISPER_MODEL", "base"),
+                        device="cuda" if torch.cuda.is_available() else "cpu",
+                    )
+                transcription = st.session_state["whisper_model"].transcribe(
+                    wav_path, task="transcribe", language=None,
+                    fp16=bool(torch.cuda.is_available()), temperature=0,
+                    condition_on_previous_text=False,
+                )
+                voice_text = (transcription.get("text") or "").strip()
+                detected_speech_language = transcription.get("language") or ""
+
+                if os.getenv("MINDCARE_ENV", "production").lower() == "development":
+                    print(f"[speech-dev] detected_language={detected_speech_language!r}; transcript={voice_text!r}")
 
                 if voice_text.strip():
                     st.session_state["chat_history"].append(("user", voice_text))
@@ -938,7 +1010,18 @@ def show_chat(user_id):
 
                     # Reset component key NOW so Phase 2a gets a blank input field
                     st.session_state["component_key_timestamp"] = time.time()
-                    st.session_state["_ai_thinking"] = {"type": "voice", "text": voice_text}
+                    st.session_state.pop("auto_play_audio", None)
+                    st.session_state["active_input_mode"] = "speech"
+                    previous_language = st.session_state.get("last_response_language")
+                    if previous_language not in {"roman_urdu", "urdu"}:
+                        previous_language = "urdu"
+                    st.session_state["_ai_thinking"] = {
+                        "type": "voice", "input_mode": "speech", "text": voice_text,
+                        "input_language": "english" if detected_speech_language == "en" else (
+                            previous_language
+                            if detected_speech_language == "ur" else "roman_urdu"
+                        ),
+                    }
                     st.rerun()
                 else:
                     st.warning("Could not recognize speech. Please try again.")

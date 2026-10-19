@@ -77,7 +77,7 @@ def show_demo_chat():
         .block-container {
             max-width: 820px !important;
             margin: 0 auto !important;
-            padding-top: 1.5rem !important;
+            padding-top: 0.15rem !important;
             padding-bottom: 1rem !important;
         }
 
@@ -114,6 +114,22 @@ def show_demo_chat():
             padding: 6px 14px !important;
             box-shadow: 0 1px 2px rgba(15,23,42,0.04) !important;
             transition: all 0.15s ease !important;
+        }
+        /* Header-row back control: visually light, not a separate card. */
+        .st-key-home_btn button {
+            width: auto !important;
+            min-height: 34px !important;
+            padding: 4px 10px !important;
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            color: #5141a5 !important;
+            font-size: 15px !important;
+        }
+        .st-key-home_btn button:hover {
+            background: #f1efff !important;
+            transform: none !important;
+            box-shadow: none !important;
         }
         div[data-testid="stButton"] > button:hover {
             background: #f8fafc !important;
@@ -194,10 +210,10 @@ def show_demo_chat():
         /* ===== TRIAL BOX (softer) ===== */
         .trial-box {
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            padding: 20px 18px;
-            border-radius: 14px;
+            padding: 15px 20px;
+            border-radius: 16px;
             text-align: center;
-            margin: 20px 0 16px 0;
+            margin: 0 0 14px 0;
             color: white;
             box-shadow: 0 4px 16px rgba(99,102,241,0.18);
         }
@@ -243,9 +259,10 @@ def show_demo_chat():
         /* ===== CHAT INPUT (no red ring) ===== */
         div[data-testid="stChatInput"] {
             background-color: #ffffff !important;
-            border-radius: 12px !important;
-            border: 1px solid #e2e8f0 !important;
-            box-shadow: 0 1px 3px rgba(15,23,42,0.04) !important;
+            border-radius: 18px !important;
+            border: 1px solid #dbe2f0 !important;
+            box-shadow: 0 6px 22px rgba(41,37,92,0.10) !important;
+            padding: 5px 8px !important;
         }
         div[data-testid="stChatInput"]:focus-within {
             border-color: #a5b4fc !important;
@@ -254,6 +271,8 @@ def show_demo_chat():
         div[data-testid="stChatInput"] textarea {
             background-color: #ffffff !important;
             color: #0f172a !important;
+            line-height: 1.55 !important;
+            padding: 11px 12px !important;
         }
         div[data-testid="stChatInput"] textarea::placeholder {
             color: #94a3b8 !important;
@@ -268,27 +287,12 @@ def show_demo_chat():
     </style>
     """, unsafe_allow_html=True)
 
-    # ===== TOP BAR =====
-    # Brand on left, Home button on right — but Streamlit columns
-    # align vertically, so we use a flex container with st.button
-    # positioned via column ratio.
-    brand_col, home_col = st.columns([5, 1])
-    with brand_col:
-        st.markdown(
-            "<div class='topbar-brand'>🧠 MindCare AI"
-            "<span>· Demo</span></div>",
-            unsafe_allow_html=True,
-        )
-    with home_col:
-        if st.button("← Home", use_container_width=True, key="home_btn"):
+    # Unified compact header row with the back control flush left.
+    back_col, _ = st.columns([1, 8], gap="small")
+    with back_col:
+        if st.button("← Back", key="home_btn", help="Back"):
             st.session_state.page = "home"
             st.rerun()
-
-    # Thin divider under top bar
-    st.markdown(
-        "<div style='border-bottom:1px solid #eef2f7;margin-bottom:14px;'></div>",
-        unsafe_allow_html=True,
-    )
 
     # ===== LOGIC =====
     remaining = 5 - st.session_state.demo_msg_count

@@ -34,6 +34,7 @@ Validation result:
 """
 
 import re
+from collections import Counter
 from typing import Optional
 
 from app.ai.llm.roman_urdu_style import FORBIDDEN_WORDS, MAX_REGENERATE_ATTEMPTS
@@ -45,6 +46,37 @@ from app.ai.llm.roman_urdu_style import FORBIDDEN_WORDS, MAX_REGENERATE_ATTEMPTS
 # Urdu Unicode ranges (Arabic script blocks)
 _URDU_RE = re.compile(
     r"[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]"
+)
+_DEVANAGARI_RE = re.compile(r"[\u0900-\u097F]")
+_URDU_UNNATURAL_PHRASES = (
+    "دل کی نہیں",
+    "ٹیکسچرز",
+    "ٹیکسچر",
+    "پریوار",
+    "سمسیا",
+    "سہایتا",
+    "پریشانی کا احساس کیا ہے",
+    "کیا کیا جائے گا",
+    "کیا کیا کرنا ہو گا",
+    "بات ہی اہم ہے",
+    "صاف اور واضح جواب دیا جائے گا",
+    "چھوٹی سی کھیڑی",
+    "کھانے کے لیے کہیں جائیں گے",
+    "کون سے پریشانیوں",
+    "پریشانیوں سے گزر رہے",
+    "آپ کے پاس کیا سہولت",
+    "آپ کے پاس کس طرح مدد",
+    "صارف کے ساتھ رابطہ",
+    "اہم اقدامات کر سکتے ہیں",
+    "صارف، مجھے سمجھ آئے",
+    "کس بات سے دوچار ہیں",
+    "صحت مند اور موثر طریقہ تلاش کرنا ہوگا",
+    "فکر اور بے چین کا سامنا کرنا",
+    "کچھ واضح اور منظم بنائیں",
+    "اپنے وقت کو ایک اور ایک کے لیے",
+    "ایک اور ایک کے لیے مخصوص کریں",
+    "کچھ اہم کہیں ہے",
+    "بات کریں اور کسی سے بھی بات کریں",
 )
 
 
@@ -135,6 +167,9 @@ def _validate_roman_urdu(response: str) -> dict:
     """
     reasons = []
 
+    if _DEVANAGARI_RE.search(response):
+        reasons.append("Response contains Devanagari script; Pakistani Roman Urdu must use Latin script.")
+
     # 1. Must not contain Urdu script
     if contains_urdu_script(response):
         reasons.append(
@@ -164,7 +199,6 @@ def _validate_roman_urdu(response: str) -> dict:
     }
     words_lower = set(re.findall(r"[a-z]+", response.lower()))
     has_ru_markers = bool(words_lower & roman_urdu_markers)
-
     # Only flag as English-heavy if there are truly NO Roman Urdu words at all
     if not has_ru_markers:
         reasons.append(
@@ -172,6 +206,15 @@ def _validate_roman_urdu(response: str) -> dict:
             "Please respond in Roman Urdu (Urdu words in Latin letters). "
             "English words like stress, anxiety, family, okay are allowed within Roman Urdu."
         )
+
+    stripped = response.rstrip()
+    if stripped and stripped[-1] not in ".!?؟۔":
+        reasons.append("Response appears unfinished; complete the final sentence.")
+    roman_words = re.findall(r"[a-z]+", response.lower())
+    if len(roman_words) >= 16:
+        windows = [tuple(roman_words[i:i + 5]) for i in range(len(roman_words) - 4)]
+        if any(count > 1 for count in Counter(windows).values()):
+            reasons.append("Response repeats the same phrase; rewrite it without repetition.")
 
     return {"valid": len(reasons) == 0, "reasons": reasons, "language": "roman_urdu"}
 
@@ -185,6 +228,22 @@ def _validate_urdu(response: str) -> dict:
           (meaning the model responded in Latin/English instead)
     """
     reasons = []
+    if _DEVANAGARI_RE.search(response):
+        reasons.append("Response contains Devanagari script; Urdu must use Urdu script.")
+    unnatural = [phrase for phrase in _URDU_UNNATURAL_PHRASES if phrase in response]
+    if unnatural:
+        reasons.append(
+            "Response contains unnatural or inappropriate Urdu wording: "
+            + ", ".join(unnatural)
+        )
+
+    tokens = re.findall(r"[\u0600-\u06ff\u0750-\u077f\ufb50-\ufdff\ufe70-\ufeff]+", response)
+    four_word_phrases = [tuple(tokens[i:i + 4]) for i in range(max(0, len(tokens) - 3))]
+    repeated = [phrase for phrase, count in Counter(four_word_phrases).items() if count > 1]
+    if repeated:
+        reasons.append("Response repeats the same Urdu phrase; rewrite it without repetition.")
+    if response.rstrip() and response.rstrip()[-1] not in "۔.!؟?":
+        reasons.append("Response appears unfinished; complete the final sentence.")
     ratio = urdu_script_ratio(response)
     if ratio < 0.10:
         reasons.append(
@@ -206,6 +265,16 @@ def _validate_english(response: str) -> dict:
         reasons.append(
             "Response contains Urdu Unicode script but an English response was expected."
         )
+    stripped = response.rstrip()
+    if stripped and stripped[-1] not in ".!?":
+        reasons.append("Response appears unfinished; complete the final sentence.")
+    if re.search(r"\b(?:and|or|but|because|that|which|to|with|for|if|think|such as|like)\s*[.!?]*$", stripped, re.I):
+        reasons.append("Response ends in an incomplete phrase; finish the thought.")
+    words = re.findall(r"[a-z]+", response.lower())
+    if len(words) >= 20:
+        windows = [tuple(words[i:i + 6]) for i in range(len(words) - 5)]
+        if any(count > 1 for count in Counter(windows).values()):
+            reasons.append("Response repeats the same phrase; rewrite it without repetition.")
     return {"valid": len(reasons) == 0, "reasons": reasons, "language": "english"}
 
 
@@ -304,11 +373,16 @@ def build_correction_prompt(
             f"Problems found:\n{reason_str}\n\n"
             f"Please rewrite the response for this user message:\n"
             f"\"{original_question}\"\n\n"
-            f"Write ONLY in Urdu Unicode script. "
-            f"Keep it 2 to 4 sentences, warm and supportive. "
-            f"Do not use English or Roman Urdu.\n"
+            f"Rewrite in fluent, simple Pakistani Urdu using Urdu script. Preserve the user's meaning "
+            f"and all mental-health safety advice. Use natural words such as پریشانی، بے چینی، "
+            f"اداسی، ذہنی دباؤ، سکون، مدد. Do not use Hindi/Sanskrit vocabulary, Devanagari, "
+            f"literal awkward translations, repeated/meaningless words, or the phrases "
+            f"دل کی نہیں، ٹیکسچرز، پریوار، سمسیا، سہایتا. Be empathetic and relevant; give "
+            f"one practical safe suggestion when useful and one gentle follow-up question. "
+            f"Use short paragraphs; use numbered steps only when they genuinely clarify advice. "
+            f"Do not diagnose or invent medical claims. Necessary English code-switched terms "
+            f"may remain in Latin script.\n"
         )
-
     # English fallback
     return (
         f"The following response has quality issues:\n"
