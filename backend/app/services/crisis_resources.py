@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 CRISIS_HELPLINES: dict = {
     "pakistan": {
         "Umang Helpline":             "0311-7786264",
-        "Rozan Helpline":             "0800-22444",
+        "Rozan Helpline":             "0800-22-444",
         "Government Mental Health":   "1166",
         "Emergency Services":         "1122 or 15",
     },
@@ -58,7 +58,7 @@ CRISIS_TEMPLATES: dict = {
             "Please reach out to a trained professional RIGHT NOW. They will listen without judgment:\n\n"
             "Pakistan Helplines:\n"
             "  • Umang:                    0311-7786264\n"
-            "  • Rozan:                    0800-22444\n"
+            "  • Rozan:                    0800-22-444\n"
             "  • Government Mental Health: 1166\n"
             "  • Emergency:                1122 or 15\n\n"
             "International:\n"
@@ -77,7 +77,7 @@ CRISIS_TEMPLATES: dict = {
             "Barah-e-karam, abhi kisi trained professional se raabta karein. Woh bina kisi judgement ke sunein ge:\n\n"
             "Pakistan Helplines:\n"
             "  • Umang:                    0311-7786264\n"
-            "  • Rozan:                    0800-22444\n"
+            "  • Rozan:                    0800-22-444\n"
             "  • Government Mental Health: 1166\n"
             "  • Emergency:                1122 ya 15\n\n"
             "International:\n"
@@ -85,6 +85,12 @@ CRISIS_TEMPLATES: dict = {
             "  • Crisis Text Line:   Text HOME to 741741\n\n"
             "Agar aap foran khatre mein hain, toh 1122 par call karein ya nazdeeki emergency room jayein.\n"
             "Aap akela/akeli nahi hain."
+        ),
+        "urdu": (
+            "آپ نے اپنی بات بتائی، اس کے لیے شکریہ۔ آپ کی زندگی بہت اہم ہے اور آپ کو یہ سب اکیلے برداشت کرنے کی ضرورت نہیں۔\n\n"
+            "براہِ کرم ابھی کسی قابلِ اعتماد شخص یا تربیت یافتہ ماہر سے رابطہ کریں۔\n"
+            "پاکستان میں مدد: امنگ 0311-7786264، روزان 0800-22-444، ذہنی صحت ہیلپ لائن 1166۔\n"
+            "فوری خطرے میں 1122 یا 15 پر کال کریں یا قریبی ایمرجنسی روم جائیں۔ آپ اکیلے نہیں ہیں۔"
         ),
     },
 
@@ -100,7 +106,7 @@ CRISIS_TEMPLATES: dict = {
             "Please contact a trained professional. They are there to help:\n\n"
             "Pakistan Helplines:\n"
             "  • Umang:                    0311-7786264\n"
-            "  • Rozan:                    0800-22444\n"
+            "  • Rozan:                    0800-22-444\n"
             "  • Government Mental Health: 1166\n"
             "  • Emergency:                1122 or 15\n\n"
             "International:\n"
@@ -119,7 +125,7 @@ CRISIS_TEMPLATES: dict = {
             "Kisi trained professional se rabta karein. Woh madad ke liye hain:\n\n"
             "Pakistan Helplines:\n"
             "  • Umang:                    0311-7786264\n"
-            "  • Rozan:                    0800-22444\n"
+            "  • Rozan:                    0800-22-444\n"
             "  • Government Mental Health: 1166\n"
             "  • Emergency:                1122 ya 15\n\n"
             "International:\n"
@@ -127,6 +133,11 @@ CRISIS_TEMPLATES: dict = {
             "  • Crisis Text Line:   Text HOME to 741741\n\n"
             "Agar aap foran khatre mein hain, toh 1122 par call karein ya nazdeeki emergency room jayein.\n"
             "Aap akela/akeli nahi hain."
+        ),
+        "urdu": (
+            "آپ کے احساسات حقیقی ہیں اور آپ مدد کے مستحق ہیں۔ درست مدد سے حالات بہتر ہو سکتے ہیں۔\n\n"
+            "براہِ کرم کسی تربیت یافتہ ماہر سے رابطہ کریں: امنگ 0311-7786264، روزان 0800-22-444، یا 1166۔\n"
+            "فوری خطرے میں 1122 یا 15 پر کال کریں۔ آپ اکیلے نہیں ہیں۔"
         ),
     },
 
@@ -142,7 +153,7 @@ CRISIS_TEMPLATES: dict = {
             "If you ever feel like things are getting heavier, please reach out:\n\n"
             "Pakistan Helplines:\n"
             "  • Umang:                    0311-7786264\n"
-            "  • Rozan:                    0800-22444\n"
+            "  • Rozan:                    0800-22-444\n"
             "  • Government Mental Health: 1166\n"
             "  • Emergency:                1122 or 15\n\n"
             "International:\n"
@@ -161,7 +172,7 @@ CRISIS_TEMPLATES: dict = {
             "Agar kabhi lagey ke cheezein ziada bhaari ho rahi hain, toh please raabta karein:\n\n"
             "Pakistan Helplines:\n"
             "  • Umang:                    0311-7786264\n"
-            "  • Rozan:                    0800-22444\n"
+            "  • Rozan:                    0800-22-444\n"
             "  • Government Mental Health: 1166\n"
             "  • Emergency:                1122 ya 15\n\n"
             "International:\n"
@@ -169,6 +180,11 @@ CRISIS_TEMPLATES: dict = {
             "  • Crisis Text Line:   Text HOME to 741741\n\n"
             "Agar aap foran khatre mein hain, toh 1122 par call karein ya nazdeeki emergency room jayein.\n"
             "Aap akela/akeli nahi hain — kya aap thoda aur bata sakte hain ke kya ho raha hai?"
+        ),
+        "urdu": (
+            "یہ سب بہت تھکا دینے والا ہو سکتا ہے، اور آپ کے احساسات اہم ہیں۔ آپ کو اس سے اکیلے گزرنے کی ضرورت نہیں۔\n\n"
+            "اگر بوجھ بڑھ رہا ہو تو کسی قابلِ اعتماد شخص یا ماہر سے بات کریں: امنگ 0311-7786264، روزان 0800-22-444، یا 1166۔\n"
+            "فوری خطرے میں 1122 یا 15 پر کال کریں۔"
         ),
     },
 }

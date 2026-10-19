@@ -113,3 +113,16 @@ The project has progressed beyond a UI mock-up: it contains integrated applicati
 - `backend/app/ai/evaluation_rag_llm/` — generation evaluation dataset, rubric and runner.
 - `backend/app/services/crisis_detector.py`, `crisis_resources.py`, `privacy.py` — safety/privacy components.
 - `frontend/app.py`, `frontend/ui/`, `frontend/api_client.py` — UI pages and API integration.
+
+## Remediation artifacts and current evidence (2026-10-19)
+
+The repository now contains repeatable tools and review templates under `VALIDATION/` and `backend/scripts/`. These artifacts improve auditability; they do **not** themselves complete human evaluation or establish production/clinical readiness.
+
+- **RAG generation runner:** `backend/app/ai/evaluation_rag_llm/run_evaluation.py` now checks the exact Ollama model tag before loading the heavyweight RAG service, records timestamped per-case JSONL (model digest, prompt hash, retrieved chunk IDs/text, raw/display responses and latency), and marks outputs unscored. `summarize_scores.py` refuses incomplete reviewer sheets; retrieval labels are handled separately by `summarize_retrieval.py`. No new human scores are present, so **no RAG/LLM quality claim is supported**.
+- **Runtime observed during this remediation:** local Ollama reports version `0.40.6`; `ollama list` showed `llama3.2:3b` and `llama3.2:1b`. The current code default is `llama3.2:3b`, and `OLLAMA_MODEL` now selects the runtime tag. This verifies local tag presence only, not answer quality or another machine's installation.
+- **Dataset/model baseline:** `backend/scripts/capture_validation_baseline.py` captures Git/runtime state and SHA-256 manifests. `backend/scripts/audit_datasets.py` reports row/class/missing/duplicate/near-duplicate data. Current data provenance and licenses remain unresolved where noted in `VALIDATION/datasets/PROVENANCE.md`; do not treat skipped near-duplicate comparisons as clean.
+- **Safety/privacy:** `backend/tests/safety/crisis_matrix.json` and its evaluator create a small, explicitly non-comprehensive diagnostic report. Privacy regression tests cover common email/phone/CNIC forms. The retention policy and helpline source check are in `VALIDATION/privacy/RETENTION.md` and `VALIDATION/safety/HELPLINES.md`; current helpline reachability and complete PII log audit remain pending.
+- **Deployment/E2E:** `DEPLOYMENT.md`, `backend/.env.example`, and `VALIDATION/e2e/SMOKE_CHECKLIST.md` document setup variables and unverified checks. No clean-machine install, live PostgreSQL workflow, backup/restore, user-scoping matrix, browser/mobile, accessibility, or full voice path is claimed as passed.
+- **Baseline caution:** the worktree contains unrelated/pre-existing changes. The capture script deliberately does not create a tag or commit; a reviewed, clean baseline commit/tag is still an owner action.
+
+See `VALIDATION/README.md` for commands to regenerate evidence and complete the manual reviewer sheets. Keep the top-level status as wellness-support prototype until evidence is completed and reviewed.

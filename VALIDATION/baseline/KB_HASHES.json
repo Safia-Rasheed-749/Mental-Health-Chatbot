@@ -1,0 +1,67 @@
+[
+  {
+    "path": "backend\\knowledge_base\\pdfs\\CBT\\.gitkeep",
+    "bytes": 15,
+    "sha256": "ce343a8231e3503249dbef93d3f43236674ca65722708ef8db430bf1e8259ecf"
+  },
+  {
+    "path": "backend\\knowledge_base\\pdfs\\CBT\\CBT model worksheet _ SimplePractice (1).pdf",
+    "bytes": 106951,
+    "sha256": "60a9eedda853d741b8f3d055d460d3372a40295d15601ec1fca0a2db26b478a3"
+  },
+  {
+    "path": "backend\\knowledge_base\\pdfs\\DSM5\\.gitkeep",
+    "bytes": 15,
+    "sha256": "ce343a8231e3503249dbef93d3f43236674ca65722708ef8db430bf1e8259ecf"
+  },
+  {
+    "path": "backend\\knowledge_base\\pdfs\\DSM5\\DSM-5.pdf",
+    "bytes": 31965300,
+    "sha256": "214cf3161016b4a75bdcf9d84bf7fa17117ee2e1d7ed88889265673d2cd43492"
+  },
+  {
+    "path": "backend\\knowledge_base\\pdfs\\Psychotherapy\\.gitkeep",
+    "bytes": 15,
+    "sha256": "ce343a8231e3503249dbef93d3f43236674ca65722708ef8db430bf1e8259ecf"
+  },
+  {
+    "path": "backend\\knowledge_base\\pdfs\\Psychotherapy\\techniqueofpsychotherapy.pdf",
+    "bytes": 12147006,
+    "sha256": "7aed26ccd722905fd78bdae76a557c52e84ea0514abb2ac8bff9a308d6752853"
+  },
+  {
+    "path": "backend\\knowledge_base\\pdfs\\WHO\\.gitkeep",
+    "bytes": 15,
+    "sha256": "ce343a8231e3503249dbef93d3f43236674ca65722708ef8db430bf1e8259ecf"
+  },
+  {
+    "path": "backend\\knowledge_base\\pdfs\\WHO\\doing_what_matters_in_stress.pdf",
+    "bytes": 2859274,
+    "sha256": "c1fdb7db032233874d5cf92604e212787d9beb065aa60351baef67f40a809478"
+  },
+  {
+    "path": "backend\\knowledge_base\\processed\\.gitkeep",
+    "bytes": 15,
+    "sha256": "ce343a8231e3503249dbef93d3f43236674ca65722708ef8db430bf1e8259ecf"
+  },
+  {
+    "path": "backend\\knowledge_base\\vector_store\\.gitkeep",
+    "bytes": 15,
+    "sha256": "ce343a8231e3503249dbef93d3f43236674ca65722708ef8db430bf1e8259ecf"
+  },
+  {
+    "path": "backend\\knowledge_base\\vector_store\\index.faiss",
+    "bytes": 57268269,
+    "sha256": "3b560b16f037fed3a4ecd476890bbd50d29229df37d8075e6562ee20cf462f31"
+  },
+  {
+    "path": "backend\\knowledge_base\\vector_store\\index.pkl",
+    "bytes": 21208179,
+    "sha256": "46e68ff82cf2193f693e8d636ac649fa4dad688dd9d0af9fa7590328cada3faf"
+  },
+  {
+    "path": "backend\\knowledge_base\\web_urls\\urls.txt",
+    "bytes": 502,
+    "sha256": "0a48ff9053d791e9f005dd0c630b8d09ef5e01ece537b60ca973a6ee174b985b"
+  }
+]

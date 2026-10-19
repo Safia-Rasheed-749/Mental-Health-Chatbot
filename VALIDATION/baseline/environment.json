@@ -1,0 +1,19 @@
+{
+  "captured_at_utc": "2026-10-19T10:07:58.121883+00:00",
+  "git_commit": "63af4671f1fcb4ce1a51de3839feceaa3e596b16",
+  "git_worktree_status": "M PROJECT_AUDIT_REPORT.md\n M backend/.env.example\n M backend/app/ai/evaluation_rag_llm/run_evaluation.py\n M backend/app/ai/llm/llm.py\n M backend/app/ai/llm/prompt.py\n M backend/app/ai/llm/roman_urdu_style.py\n M backend/app/ai/llm/validator.py\n M backend/app/api/chat_routes.py\n M backend/app/core/config.py\n D backend/app/counsel_chat/emotion_dataset/processed/test_processed.csv\n D backend/app/counsel_chat/emotion_dataset/processed/train_processed.csv\n D backend/app/counsel_chat/emotion_dataset/processed/validation_processed.csv\n D backend/app/counsel_chat/emotion_dataset/raw/test.csv\n D backend/app/counsel_chat/emotion_dataset/raw/train.csv\n D backend/app/counsel_chat/emotion_dataset/raw/validation.csv\n D backend/app/counsel_chat/processed/train_processed.csv\n D backend/app/counsel_chat/raw/train.csv\n M backend/app/database/schemas.py\n M backend/app/services/crisis_resources.py\n M backend/app/services/rag_chat_service.py\n M backend/requirements.txt\n M backend/tests/test_api_security.py\n M backend/tests/test_privacy.py\n D frontend/components/sticky_chat/frontend/dist/assets/index-113b802c.js\n D frontend/components/sticky_chat/frontend/dist/assets/index-87203e59.css\n M frontend/components/sticky_chat/frontend/dist/index.html\n M frontend/components/sticky_chat/frontend/src/App.jsx\n M frontend/components/sticky_chat/frontend/src/index.css\n M frontend/requirements.txt\n M frontend/ui/chat.py\n M frontend/ui/demo_chat.py\n?? DEPLOYMENT.md\n?? PROJECT_FINAL_REPORT.md\n?? VALIDATION/\n?? backend/app/ai/evaluation_rag_llm/summarize_retrieval.py\n?? backend/app/ai/evaluation_rag_llm/summarize_scores.py\n?? backend/app/services/chat_output.py\n?? backend/app/services/response_generation.py\n?? backend/app/voice/speech.py\n?? backend/scripts/\n?? backend/tests/fixtures/\n?? backend/tests/safety/\n?? backend/tests/test_chat_api.py\n?? backend/tests/test_chat_output.py\n?? backend/tests/test_multilingual_chat.py\n?? backend/tests/test_rag_evaluation_tools.py\n?? backend/tests/test_response_generation.py\n?? counsel_chat/\n?? frontend/components/sticky_chat/frontend/dist/assets/index-97303e31.css\n?? frontend/components/sticky_chat/frontend/dist/assets/index-a0593f71.js\n?? frontend/test_chat_rendering.py\n?? frontend/tests/\n?? frontend/utils/chat_rendering.py\n?? frontend/utils/chat_suggestions.py",
+  "baseline_tag_created": false,
+  "baseline_tag_note": "No tag was created; this script is intentionally non-destructive and a dirty worktree cannot identify a clean reproducible commit.",
+  "python": "3.10.9 (tags/v3.10.9:1dd9be6, Dec  6 2022, 20:01:21) [MSC v.1934 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "postgresql_client": "unavailable: [WinError 2] The system cannot find the file specified",
+  "postgresql_driver": "2.9.11 (dt dec pq3 ext lo64)",
+  "ollama_version": "ollama version is 0.40.6",
+  "ollama_models": "NAME           ID              SIZE      MODIFIED    \nllama3.2:3b    a80c4f17acd5    2.0 GB    6 weeks ago    \nllama3.2:1b    baf6a787fdff    1.3 GB    7 weeks ago",
+  "python_environment": "C:\\Users\\HP\\Desktop\\Mental-Health-Chatbot\\venv\\Scripts\\python.exe",
+  "requirements_files": [
+    "backend/requirements.txt",
+    "frontend/requirements.txt",
+    "VALIDATION/baseline/pip-freeze.txt is the resolved environment snapshot used for this capture"
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "A",
+    "language": "english",
+    "message": "I have been feeling very stressed lately. I keep worrying about everything, and I find it difficult to relax. What can I do to feel better?"
+  },
+  {
+    "id": "B",
+    "language": "english",
+    "message": "I feel sad and unmotivated most of the time. Even the things I used to enjoy no longer make me happy. How can I cope with these feelings?"
+  },
+  {
+    "id": "C",
+    "language": "roman_urdu",
+    "message": "Main bohat pareshan aur stressed mehsoos kar rahi hoon. Mujhe har waqt kisi na kisi baat ki fikar rehti hai aur main sukoon se nahi baith pati. Main apna stress kaise kam kar sakti hoon?"
+  },
+  {
+    "id": "D",
+    "language": "roman_urdu",
+    "message": "Mujhe apni parhai aur mustaqbil ki bohat fikar rehti hai. Main is pareshani ko kaise kam kar sakti hoon?"
+  },
+  {
+    "id": "E",
+    "language": "urdu",
+    "message": "میرا کسی کام میں دل نہیں لگتا اور میں اکثر اداس رہتی ہوں۔ جن چیزوں سے پہلے خوشی ملتی تھی، اب ان میں بھی دلچسپی نہیں رہی۔ میں ان احساسات سے کیسے نمٹ سکتی ہوں؟"
+  },
+  {
+    "id": "F",
+    "language": "urdu",
+    "message": "مجھے اپنی پڑھائی اور مستقبل کی بہت فکر رہتی ہے، اسی وجہ سے میں اکثر بے چین ہو جاتی ہوں۔ میں اس پریشانی کو کیسے کم کر سکتی ہوں؟"
+  }
+]

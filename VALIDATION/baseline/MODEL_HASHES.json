@@ -1,0 +1,177 @@
+[
+  {
+    "path": "backend\\models\\depression_production_model\\config.json",
+    "bytes": 828,
+    "sha256": "090e3e805e6efdc0a90174c0e35bb9c5f5ec67f4f84dd4281ccfb160030c9dcd"
+  },
+  {
+    "path": "backend\\models\\depression_production_model\\label_mapping.json",
+    "bytes": 47,
+    "sha256": "f1960a98b5b57e490061744923c6d53bb89250627ea8b4b37c51fba8c2e7bd8b"
+  },
+  {
+    "path": "backend\\models\\depression_production_model\\merges.txt",
+    "bytes": 456318,
+    "sha256": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5"
+  },
+  {
+    "path": "backend\\models\\depression_production_model\\model.safetensors",
+    "bytes": 498612824,
+    "sha256": "ce8a9589987b8009023e919a5f67187b5e39068779dc11731f585114f3b2bbad"
+  },
+  {
+    "path": "backend\\models\\depression_production_model\\production_model_metadata.json",
+    "bytes": 529,
+    "sha256": "90d5615e9ffc9aea066e077f5500f38e3d1809f3ebd1ab227c9b448df175fd1f"
+  },
+  {
+    "path": "backend\\models\\depression_production_model\\special_tokens_map.json",
+    "bytes": 280,
+    "sha256": "06e405a36dfe4b9604f484f6a1e619af1a7f7d09e34a8555eb0b77b66318067f"
+  },
+  {
+    "path": "backend\\models\\depression_production_model\\tokenizer.json",
+    "bytes": 3558741,
+    "sha256": "31d5eaa58f882f7259d27ee12c3adc89a200ae6329ef815dd97c9531e5b8d418"
+  },
+  {
+    "path": "backend\\models\\depression_production_model\\tokenizer_config.json",
+    "bytes": 1246,
+    "sha256": "4ea8648e4067230942ac6b32dd61328675bc99ae0a9f4cc665c30a95f0f68712"
+  },
+  {
+    "path": "backend\\models\\depression_production_model\\training_args.bin",
+    "bytes": 5905,
+    "sha256": "5cec959a6afaeb00f076bfe6e0f29c13972d39458eaf3cb447674ccb08a3a4b6"
+  },
+  {
+    "path": "backend\\models\\depression_production_model\\vocab.json",
+    "bytes": 798293,
+    "sha256": "ed19656ea1707df69134c4af35c8ceda2cc9860bf2c3495026153a133670ab5e"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model\\config.json",
+    "bytes": 1011,
+    "sha256": "cac256895cf2ddae1ec467187f513ca49a6f7d9cf6d5d04446178314fcd17a39"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model\\evaluation_results.txt",
+    "bytes": 866,
+    "sha256": "7a10853f5e7135e98e264826079bfb4d7b266a05c2587e186bd62495d357d5a9"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model\\label_mapping.json",
+    "bytes": 118,
+    "sha256": "2e14bc2430e7b3b2617c544b9d343de7a2c97fa266bcc33ae43e5c81f5ecadc4"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model\\merges.txt",
+    "bytes": 506319,
+    "sha256": "84809de545b2f3e79275acfaefa4af5055438ddb13d9eed9cff02eacf5cc19fc"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model\\model.safetensors",
+    "bytes": 498625128,
+    "sha256": "dd55507814a8406d3a1093d60f534fc0fcfc20d4e52130d200f4bcf9a4bb6c6b"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model\\special_tokens_map.json",
+    "bytes": 295,
+    "sha256": "8574792bfefae68f2ce2eae93a4145d95b1232c59e71094bcdcb49dbcb549c97"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model\\tokenizer.json",
+    "bytes": 3808999,
+    "sha256": "c634edfad5e7ea8951fd1b570eab6ed8ddf94b832af916e645be6264ad6e211c"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model\\tokenizer_config.json",
+    "bytes": 1304,
+    "sha256": "253e231e9ae9fd6e64762375b14c8f7f266c711b75d2b74a17170e6f3defe729"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model\\training_args.bin",
+    "bytes": 5841,
+    "sha256": "1a6a81c983248b60db34855f3ba67c5b3e37467f59f00f0d6a6073bb12faf931"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model\\vocab.json",
+    "bytes": 798293,
+    "sha256": "ed19656ea1707df69134c4af35c8ceda2cc9860bf2c3495026153a133670ab5e"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model_distilbert_backup\\config.json",
+    "bytes": 809,
+    "sha256": "7042f249a97dd913c5d04062ac2c0e57b0f30a0a8fdc61fcdd2579fc3456635b"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model_distilbert_backup\\label_mapping.json",
+    "bytes": 99,
+    "sha256": "1fa11e94da09bd4e13c2c62b2edb0710ce346350f785b4e3cc9a99fe5a34d5df"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model_distilbert_backup\\model.safetensors",
+    "bytes": 267844872,
+    "sha256": "c76355f128fedf5ffe7f10af9a34d06bb9fc747d9cdce48f8ac640177bbc8c09"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model_distilbert_backup\\production_model_metadata.json",
+    "bytes": 632,
+    "sha256": "be2d3e71ef3851fedd11ffccfab5342a95ecf63bcc8dd50ed298983c16cf986a"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model_distilbert_backup\\special_tokens_map.json",
+    "bytes": 125,
+    "sha256": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model_distilbert_backup\\tokenizer.json",
+    "bytes": 711494,
+    "sha256": "79ea220416a57ca8acdf069d71875d5d2ddadef66021aeb6c120a7c546c04344"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model_distilbert_backup\\tokenizer_config.json",
+    "bytes": 1227,
+    "sha256": "a3c9410f27554c6e26af779fd147e536c6c5f9e5cb0e6b8f38ddaa25e1b0f6af"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model_distilbert_backup\\training_args.bin",
+    "bytes": 5969,
+    "sha256": "b968fd33d0c6add49c6c9fc9443a32ae8fcf05ab3f2ccd9b2df259ac2dce0086"
+  },
+  {
+    "path": "backend\\models\\emotion_dair_ai_production_model_distilbert_backup\\vocab.txt",
+    "bytes": 231508,
+    "sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+  },
+  {
+    "path": "backend\\models\\stress_production_model\\config.json",
+    "bytes": 1057,
+    "sha256": "6a986660cbff2ec8137f131cfa1d63e87717341f661d73e4937a1c09527f0efb"
+  },
+  {
+    "path": "backend\\models\\stress_production_model\\model.safetensors",
+    "bytes": 737719272,
+    "sha256": "6f0257b8dda36fcf21ae8ff472e00b40f242f438b93dc8478b398479c216edf0"
+  },
+  {
+    "path": "backend\\models\\stress_production_model\\tokenizer.json",
+    "bytes": 8340141,
+    "sha256": "d87197028bcdd4a6c68dc03bd9b04e0956b0998daf7351345de21278a1c9249a"
+  },
+  {
+    "path": "backend\\models\\stress_production_model\\tokenizer_config.json",
+    "bytes": 547,
+    "sha256": "7ec77f0a81786268879ad1829fe6c9c37337c08b76bec52999a917009ac4781c"
+  },
+  {
+    "path": "backend\\models\\stress_production_model\\tokenizer_config.json.bak",
+    "bytes": 538,
+    "sha256": "0dbe41323167ba5f2e1e876ccd05068318dd2378b922bdfd924a389dba3bcc7a"
+  },
+  {
+    "path": "backend\\models\\stress_production_model\\training_args.bin",
+    "bytes": 5265,
+    "sha256": "14104675c8d2e48fc39368f8530666b0e4171b11edf98f37b33f67221125b3ae"
+  }
+]

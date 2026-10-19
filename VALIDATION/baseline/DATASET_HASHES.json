@@ -1,0 +1,92 @@
+[
+  {
+    "path": "backend\\datasets\\depression_v2\\processed\\test.csv",
+    "bytes": 430237,
+    "sha256": "66129129c38c7d12d8e892f6bc961407834395162966d1930cf53811bbf2891f"
+  },
+  {
+    "path": "backend\\datasets\\depression_v2\\processed\\train.csv",
+    "bytes": 1955902,
+    "sha256": "cbbdcf9345bb539d671be72c55384d111906497a0e16ad4bf1901c5357a7f04a"
+  },
+  {
+    "path": "backend\\datasets\\depression_v2\\processed\\validation.csv",
+    "bytes": 386791,
+    "sha256": "4cab08a364d0236bf7ca9295e92a2481ec96e39df88b163e8bec8ec4b0de86e2"
+  },
+  {
+    "path": "backend\\datasets\\independent_test\\download_independent_test.py",
+    "bytes": 6126,
+    "sha256": "c1445cdd3fa655f77266a1a2d79fb769f4a187401ff0f8c4a8a5351dafcf45c0"
+  },
+  {
+    "path": "backend\\datasets\\independent_test\\mental_health_combined_test.csv",
+    "bytes": 9152,
+    "sha256": "46eb2c2c36765c3dd253dd5a7bf3dee4f7830586763b5f30987570edfde64877"
+  },
+  {
+    "path": "backend\\datasets\\processed\\clean_dev.csv",
+    "bytes": 424696,
+    "sha256": "3093689f1b85e2845ab69886ae1ae0ffe55d9af359ab51034a3630e25a516373"
+  },
+  {
+    "path": "backend\\datasets\\processed\\clean_test.csv",
+    "bytes": 422082,
+    "sha256": "1bf436a091cf7199e927e731e63a7cd4015b879488747bf3f535d0be5e6734a4"
+  },
+  {
+    "path": "backend\\datasets\\processed\\clean_train.csv",
+    "bytes": 3401881,
+    "sha256": "1d2c9d2d6100d1d159f2f08f59c4751c6e5b8368fc1d27cf4dbd20d08f32496b"
+  },
+  {
+    "path": "backend\\datasets\\stress\\processed\\clean_test.csv",
+    "bytes": 321568,
+    "sha256": "801811f2f4201d618dfbbe5558863b225985fc1d47df1c9e8e5144d69ff33509"
+  },
+  {
+    "path": "backend\\datasets\\stress\\processed\\clean_train.csv",
+    "bytes": 1272185,
+    "sha256": "103f602caaf89bf852e8a03359055561dd344ed33e7e23461745c94db2bec69f"
+  },
+  {
+    "path": "counsel_chat\\emotion_dataset\\processed\\test_processed.csv",
+    "bytes": 201185,
+    "sha256": "d49c5637e3596968acfe68c7f54c4e62777b773f24b3df310df51a16f90a931a"
+  },
+  {
+    "path": "counsel_chat\\emotion_dataset\\processed\\train_processed.csv",
+    "bytes": 1613479,
+    "sha256": "8007bc30530d3115ab97b96030fbfd4e39553917c5ddd7d3d2774e2f262c26fd"
+  },
+  {
+    "path": "counsel_chat\\emotion_dataset\\processed\\validation_processed.csv",
+    "bytes": 198707,
+    "sha256": "90e9a77bd4f6e6ba88a91391384b29a39045c2e4c99f456b0534e016f38a6be0"
+  },
+  {
+    "path": "counsel_chat\\emotion_dataset\\raw\\test.csv",
+    "bytes": 201185,
+    "sha256": "d49c5637e3596968acfe68c7f54c4e62777b773f24b3df310df51a16f90a931a"
+  },
+  {
+    "path": "counsel_chat\\emotion_dataset\\raw\\train.csv",
+    "bytes": 1613545,
+    "sha256": "6fbd463fbdec05aa2cf0ba38cd20f1bb2a9e118b3e1b80672ee2c685d0ada112"
+  },
+  {
+    "path": "counsel_chat\\emotion_dataset\\raw\\validation.csv",
+    "bytes": 198707,
+    "sha256": "90e9a77bd4f6e6ba88a91391384b29a39045c2e4c99f456b0534e016f38a6be0"
+  },
+  {
+    "path": "counsel_chat\\processed\\train_processed.csv",
+    "bytes": 3965269,
+    "sha256": "b157a9af89fcfe3bf4495d9331da54be085a16314510494ab787c6c1f2c237bc"
+  },
+  {
+    "path": "counsel_chat\\raw\\train.csv",
+    "bytes": 4134714,
+    "sha256": "8732157004cc91ca7cc4f6c355f030bc61ae2e8e5f16405708d40d10f43a950f"
+  }
+]

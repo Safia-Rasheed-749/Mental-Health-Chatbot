@@ -42,7 +42,14 @@ HIGH_SEVERITY_PHRASES = [
     "want to die",
     "commit suicide",
     "end it all",
-    "suicide",
+    "feel suicidal",
+    "i am suicidal",
+    "i'm suicidal",
+    "suicidal thoughts",
+    "suicidal ideation",
+    "thinking about suicide",
+    "considering suicide",
+    "planning suicide",
     "hang myself",
     "overdose",
     "want to kill myself",
@@ -54,6 +61,15 @@ HIGH_SEVERITY_PHRASES = [
     "zindagi khatam",
     "jaan dena",
     "jaan de dun",
+    # Urdu-script phrases (kept specific to avoid matching educational mentions)
+    "خودکشی کرنے کا سوچ رہا",
+    "خودکشی کرنے کا سوچ رہی",
+    "خودکشی کرنا چاہتا",
+    "خودکشی کرنا چاہتی",
+    "خود کشی کرنے کا سوچ رہا",
+    "خود کشی کرنے کا سوچ رہی",
+    "اپنی جان لینا چاہتا",
+    "اپنی جان لینا چاہتی",
 ]
 
 MEDIUM_SEVERITY_PHRASES = [
@@ -63,6 +79,9 @@ MEDIUM_SEVERITY_PHRASES = [
     "can't go on",
     "cannot go on",
     "no point in living",
+    "point anymore",
+    "cannot see a way forward",
+    "can't see a way forward",
     "don't want to be here",
     "do not want to be here",
     # Roman Urdu
@@ -157,21 +176,47 @@ def detect_crisis(text: str) -> dict:
     matched: list[str] = []
     severity: Optional[str] = None
 
+    def active_occurrence(phrase: str) -> bool:
+        """Ignore a narrowly negated mention; this reduces obvious false alarms.
+
+        This is a limited lexical rule, not semantic negation detection. A
+        second active phrase in the same message can still trigger escalation.
+        """
+        start = 0
+        while True:
+            index = normalised.find(phrase, start)
+            if index < 0:
+                return False
+            before = normalised[max(0, index - 48):index]
+            after = normalised[index + len(phrase):index + len(phrase) + 32]
+            english_negation = re.search(
+                r"(?:\b(?:not|never|don't|dont|do not|doesn't|does not|didn't|did not|no longer)\b)"
+                r"(?:\s+(?:want|wanted|wish|wished|plan|planned|intend|intended|think|thought|consider|considered))?"
+                r"(?:\s+(?:to|about))?\s*$",
+                before,
+            )
+            roman_negation = re.search(r"\b(?:nahi|nahin|nhi|mat)\b(?:\s+\w+){0,2}\s*$", before)
+            urdu_negation_before = re.search(r"(?:نہیں|نہ|مت)\s*$", before)
+            urdu_negation_after = re.match(r"\s*(?:نہیں|نہ|مت)", after)
+            if not (english_negation or roman_negation or urdu_negation_before or urdu_negation_after):
+                return True
+            start = index + 1
+
     # Check HIGH first — stop at first positive level
     for phrase in HIGH_SEVERITY_PHRASES:
-        if phrase in normalised:
+        if active_occurrence(phrase):
             matched.append(phrase)
             severity = "HIGH"
 
     if not matched:
         for phrase in MEDIUM_SEVERITY_PHRASES:
-            if phrase in normalised:
+            if active_occurrence(phrase):
                 matched.append(phrase)
                 severity = "MEDIUM"
 
     if not matched:
         for phrase in LOW_SEVERITY_PHRASES:
-            if phrase in normalised:
+            if active_occurrence(phrase):
                 matched.append(phrase)
                 severity = "LOW"
 

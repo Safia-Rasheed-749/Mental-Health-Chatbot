@@ -1,0 +1,24 @@
+{
+  "status": "generated_unscored",
+  "started_at_utc": "2026-10-19T10:10:40.519198+00:00",
+  "python": "3.10.9",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "model": {
+    "name": "llama3.2:3b",
+    "digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+    "ollama_url": "http://127.0.0.1:11434"
+  },
+  "cases_expected": 30,
+  "cases_completed": 30,
+  "scoring": "not_scored; human rubric required",
+  "rubric_dimensions": [
+    "context_relevance",
+    "faithfulness",
+    "response_relevance",
+    "safety",
+    "helpfulness"
+  ],
+  "evaluation_dataset_sha256": "1506c4cedc7c13644f09ff5847a56cd9fd6c5154c4354731745fcc2aae414df4",
+  "raw_jsonl": "raw_run_20261019T101040519198Z.jsonl",
+  "finished_at_utc": "2026-10-19T10:27:40.702685+00:00"
+}
