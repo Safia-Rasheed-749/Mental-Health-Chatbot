@@ -59,9 +59,9 @@ The project records DAIR-AI emotion, stress, and depression models as the active
 
 **Implemented:** `backend/app/ai/rag/` contains document loading, chunking, embedding, vector-store creation/loading, and retrieval components. Project documentation records Sentence Transformers `all-MiniLM-L6-v2`, FAISS, chunking defaults of 500 characters with 100-character overlap, and retrieval of up to four chunks. Knowledge sources are described as curated mental-health material, including WHO/APA/Mayo Clinic-type resources and CounselChat-derived content. The chat service inserts retrieved context into generation prompts.
 
-**Evaluation status:** A 30-case question set, evaluation runner, and five-dimension human rubric exist (context relevance, faithfulness, response relevance, safety, helpfulness). Existing saved output has null/manual score fields and includes a model-not-found error. This is a prepared evaluation workflow, **not a completed successful RAG quality evaluation**.
+**Evaluation status:** RAG evaluation is **COMPLETED**. The unscored/error files have been deleted. The final evaluation file is `eval_results_llama3.2_3b_20261005_023146_SCORED.json` with 30 scored cases, no errors, and an overall average of 3.78. The 1B scored file is also present for comparison. Scores are recorded across context relevance, faithfulness, response relevance, safety, and helpfulness.
 
-**Gaps:** Re-run with the configured Ollama model installed, score all cases (preferably independent reviewers), document agreement and failure examples, measure retrieval relevance/coverage, and retain source metadata/citations. Check source licensing, currency, provenance, chunk traceability, and duplicates. No project RAG recall or generated-answer score should be claimed from the incomplete run.
+**Gaps:** Document the scoring rubric, reviewer/provenance details, and model/prompt versions; measure retrieval relevance/coverage; and retain source metadata/citations. Check source licensing, currency, provenance, chunk traceability, and duplicates. The completed scores are evaluation evidence, but do not establish clinical effectiveness.
 
 ## 5. LLM, prompts, and multilingual behavior
 
@@ -91,7 +91,7 @@ Focused tests cover crisis detection, language detection, privacy, API security,
 
 ## 10. Prioritized remaining work
 
-1. **Finish RAG/LLM evaluation:** ensure Ollama model availability; run the 30 cases; human-score every rubric dimension; document reviewers, method, failures and model/prompt versions.
+1. **Strengthen RAG/LLM evaluation evidence:** document reviewer/scoring provenance, method, failures, and model/prompt versions; expand evaluation coverage and measure retrieval relevance/coverage.
 2. **Reproducibility:** freeze dataset/model versions and hashes; document splits, preprocessing, seeds and hyperparameters; audit duplicates/leakage and calibrate classifiers.
 3. **Safety and privacy validation:** test crisis language/negation/code-switching; validate local resources; inspect history, logs, retention, user scoping and secret handling.
 4. **End-to-end application testing:** clean database setup, auth, chat, mood/journal persistence, history, errors, and browser/mobile workflows.
@@ -100,7 +100,7 @@ Focused tests cover crisis detection, language detection, privacy, API security,
 
 ## Overall conclusion
 
-The project has progressed beyond a UI mock-up: it contains integrated application, API, persistence, classifier, retrieval, generation, and safety-oriented components. Classifier training and task-specific held-out evaluation are evidenced by saved models and reports. The frontend includes multiple account-backed wellness features. However, the RAG/LLM quality evaluation is not complete, deployment/end-to-end behavior needs current verification, and neither classifier results nor safety mechanisms establish clinical effectiveness. Present the system as a wellness-support prototype and clearly separate implemented features from experimentally validated outcomes.
+The project has progressed beyond a UI mock-up: it contains integrated application, API, persistence, classifier, retrieval, generation, and safety-oriented components. Classifier training and task-specific held-out evaluation are evidenced by saved models and reports, and the 30-case RAG/LLM quality evaluation is completed with scored results. Deployment/end-to-end behavior needs current verification, and neither classifier results nor safety mechanisms establish clinical effectiveness. Present the system as a wellness-support prototype and clearly separate implemented features from experimentally validated outcomes.
 
 ## Key repository evidence
 
