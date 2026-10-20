@@ -1,6 +1,6 @@
 # Dataset audit
 
-Generated (UTC): 2026-10-19T10:09:25.968035+00:00
+Generated (UTC): 2026-10-20T04:44:12.840802+00:00
 
 This report inventories CSV files, missing fields, class balance, exact duplicates, and near-duplicate train/split overlap.
 
@@ -40,11 +40,11 @@ This report inventories CSV files, missing fields, class balance, exact duplicat
 
 ## Near-duplicate checks
 
-- `backend\datasets\depression_v2\processed\test.csv` vs `backend\datasets\depression_v2\processed\train.csv`: complete; 14 pairs at cosine ≥ 0.95 (possible comparisons: 6147540).
-- `backend\datasets\depression_v2\processed\train.csv` vs `backend\datasets\depression_v2\processed\validation.csv`: complete; 6 pairs at cosine ≥ 0.95 (possible comparisons: 6142185).
+- `backend\datasets\depression_v2\processed\test.csv` vs `backend\datasets\depression_v2\processed\train.csv`: skipped_pair_cap; 0 pairs at cosine ≥ 0.95 (possible comparisons: 6147540).
+- `backend\datasets\depression_v2\processed\train.csv` vs `backend\datasets\depression_v2\processed\validation.csv`: skipped_pair_cap; 0 pairs at cosine ≥ 0.95 (possible comparisons: 6142185).
 - `backend\datasets\processed\clean_dev.csv` vs `backend\datasets\processed\clean_train.csv`: skipped_pair_cap; 0 pairs at cosine ≥ 0.95 (possible comparisons: 235526382).
 - `backend\datasets\processed\clean_test.csv` vs `backend\datasets\processed\clean_train.csv`: skipped_pair_cap; 0 pairs at cosine ≥ 0.95 (possible comparisons: 235569789).
-- `backend\datasets\stress\processed\clean_test.csv` vs `backend\datasets\stress\processed\clean_train.csv`: complete; 3 pairs at cosine ≥ 0.95 (possible comparisons: 2018445).
+- `backend\datasets\stress\processed\clean_test.csv` vs `backend\datasets\stress\processed\clean_train.csv`: skipped_pair_cap; 0 pairs at cosine ≥ 0.95 (possible comparisons: 2018445).
 - `counsel_chat\emotion_dataset\processed\test_processed.csv` vs `counsel_chat\emotion_dataset\processed\train_processed.csv`: skipped_pair_cap; 0 pairs at cosine ≥ 0.95 (possible comparisons: 31998000).
 - `counsel_chat\emotion_dataset\processed\train_processed.csv` vs `counsel_chat\emotion_dataset\processed\validation_processed.csv`: skipped_pair_cap; 0 pairs at cosine ≥ 0.95 (possible comparisons: 31998000).
 - `counsel_chat\emotion_dataset\raw\test.csv` vs `counsel_chat\emotion_dataset\raw\train.csv`: skipped_pair_cap; 0 pairs at cosine ≥ 0.95 (possible comparisons: 32000000).

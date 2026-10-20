@@ -22,6 +22,12 @@ def permitted_user(target_user_id: int, claims: dict) -> int:
     return target_user_id
 
 
+def _require_owned_conversation(cur, conversation_id: int, user_id: int) -> None:
+    cur.execute("SELECT id FROM conversations WHERE id=%s AND user_id=%s", (conversation_id, user_id))
+    if not cur.fetchone():
+        raise HTTPException(404, "Conversation not found")
+
+
 @router.get("/auth/user")
 def user_by_email(email: str):
     with db_cursor() as cur:
@@ -61,6 +67,7 @@ def add_message(conversation_id: int, body: dict, claims: dict = Depends(current
 @router.get("/conversations/{conversation_id}/messages")
 def messages(conversation_id: int, claims: dict = Depends(current_claims)):
     with db_cursor() as cur:
+        _require_owned_conversation(cur, conversation_id, uid(claims))
         cur.execute("SELECT m.role,m.content,m.created_at FROM messages m JOIN conversations c ON c.id=m.conversation_id WHERE c.id=%s AND c.user_id=%s ORDER BY m.id", (conversation_id, uid(claims)))
         return [{"role": r[0], "content": r[1], "created_at": r[2]} for r in cur.fetchall()]
 
@@ -75,6 +82,7 @@ def history(claims: dict = Depends(current_claims)):
 @router.post("/conversations/{conversation_id}/rename")
 def rename(conversation_id: int, body: dict, claims: dict = Depends(current_claims)):
     with db_cursor(commit=True) as cur:
+        _require_owned_conversation(cur, conversation_id, uid(claims))
         cur.execute("UPDATE conversations SET title=%s WHERE id=%s AND user_id=%s", (body["title"], conversation_id, uid(claims)))
     return {"message": "Conversation renamed"}
 
@@ -82,6 +90,7 @@ def rename(conversation_id: int, body: dict, claims: dict = Depends(current_clai
 @router.delete("/conversations/{conversation_id}")
 def delete(conversation_id: int, claims: dict = Depends(current_claims)):
     with db_cursor(commit=True) as cur:
+        _require_owned_conversation(cur, conversation_id, uid(claims))
         cur.execute("DELETE FROM conversations WHERE id=%s AND user_id=%s", (conversation_id, uid(claims)))
     return {"message": "Conversation deleted"}
 

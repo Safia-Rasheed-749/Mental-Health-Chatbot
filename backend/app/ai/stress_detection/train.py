@@ -18,6 +18,7 @@ Author : Shamsa Akram (modified)
 import importlib.util
 import os
 import glob
+import random
 from pathlib import Path
 
 # =====================================================
@@ -35,36 +36,27 @@ _hf_cache_spec.loader.exec_module(_hf_cache_module)
 import numpy as np
 
 from datasets import load_dataset
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
 from transformers import (
     AutoTokenizer,
     AutoModelForSequenceClassification,
     TrainingArguments,
     Trainer,
-    EarlyStoppingCallback
-)
-
-from sklearn.metrics import (
-    accuracy_score,
-    precision_recall_fscore_support
+    EarlyStoppingCallback,
+    set_seed,
 )
 
 # -------------------------------------------------------
 # Paths
 # -------------------------------------------------------
 
-DATASET_PATH = os.path.join(
-    os.getcwd(),
-    "datasets",
-    "stress",
-    "processed"
-)
+BACKEND_DIR = Path(__file__).resolve().parents[3]
+SEED = 42
+DATASET_PATH = BACKEND_DIR / "datasets" / "stress" / "processed"
 
-MODEL_SAVE_PATH = os.path.join(
-    os.getcwd(),
-    "models",
-    "stress_roberta"   # changed to avoid overwriting DistilRoBERTa model
-)
+MODEL_SAVE_PATH = Path(os.getenv("STRESS_MODEL_OUTPUT_DIR", str(BACKEND_DIR / "models" / "stress_roberta")))
 
 os.makedirs(MODEL_SAVE_PATH, exist_ok=True)
 
@@ -74,13 +66,22 @@ os.makedirs(MODEL_SAVE_PATH, exist_ok=True)
 
 print("\nLoading Stress Dataset...\n")
 
-dataset = load_dataset(
-    "csv",
-    data_files={
-        "train": os.path.join(DATASET_PATH, "clean_train.csv"),
-        "validation": os.path.join(DATASET_PATH, "clean_test.csv")
-    }
+set_seed(SEED)
+random.seed(SEED)
+np.random.seed(SEED)
+
+source_train = load_dataset("csv", data_files={"train": str(DATASET_PATH / "clean_train.csv")})["train"].to_pandas()
+train_frame, validation_frame = train_test_split(
+    source_train,
+    test_size=0.1,
+    random_state=SEED,
+    stratify=source_train["label"],
 )
+from datasets import Dataset, DatasetDict
+dataset = DatasetDict({
+    "train": Dataset.from_pandas(train_frame.reset_index(drop=True), preserve_index=False),
+    "validation": Dataset.from_pandas(validation_frame.reset_index(drop=True), preserve_index=False),
+})
 
 print(dataset)
 
@@ -180,7 +181,9 @@ training_args = TrainingArguments(
     load_best_model_at_end=True,
     metric_for_best_model="accuracy",
     greater_is_better=True,
-    report_to="none"
+    report_to="none",
+    seed=SEED,
+    data_seed=SEED,
 )
 
 # -------------------------------------------------------

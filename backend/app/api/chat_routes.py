@@ -53,9 +53,6 @@ def chat(request: ChatRequest):
     result = generate_chat_response(
         question=request.message,
         history=request.history or [],
-        response_language=request.response_language,
-        input_language=request.input_language,
-        input_mode=request.input_mode,
     )
 
     if result.get("crisis"):

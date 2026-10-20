@@ -1,38 +1,27 @@
-# Baseline snapshot — Issue 0
+# 1. Tag exists locally and matches
+git rev-parse baseline-pre-fix-20261019
+# expect: 58f4ba233589642f6e774e494b33382818b93433
 
-**Captured:** 2026-10-19  
-**Purpose:** Record the repository revision and available local environment before further remediation.
+# 2. Tag exists on origin
+git ls-remote --tags origin | Select-String baseline
+# expect: ... refs/tags/baseline-pre-fix-20261019
 
-## Repository state
+# 3. main is clean
+git checkout main
+git status
+# expect: nothing to commit
 
-- Current branch at capture: `main`
-- `HEAD`: `63af4671f1fcb4ce1a51de3839feceaa3e596b16`
-- Intended tag: `baseline-pre-fix-20261019` — **not created**
-- Worktree: **dirty**. It contains modified, deleted, and untracked files, including unrelated frontend, classifier, and backend work.
-- No commit or push was performed. Creating a commit/tag now would include changes without confirmed ownership and scope.
+# 4. baseline doc now reflects reality
+Get-Content docs/baseline.md | Select-String "58f4ba23|Done|not created"
+# expect: shows "58f4ba23" and "Done"; no "not created"
 
-This is a record of the existing `HEAD`, not a frozen clean baseline. To complete the requested tagged baseline, the owner must review and explicitly approve which existing changes belong in the snapshot, then commit/tag that reviewed state.
+# 5. local-only-work is safe (no upstream)
+git checkout local-only-work
+git branch -vv
+# expect: local-only-work ... (no [origin/...] bracket)
 
-## Local environment observed
-
-- Python: `3.10.9`
-- PostgreSQL client (`psql`): unavailable on `PATH`; PostgreSQL server version/status not verified.
-- Ollama: `0.40.6`
-- Ollama models observed:
-  - `llama3.2:3b` — ID `a80c4f17acd5`
-  - `llama3.2:1b` — ID `baf6a787fdff`
-- Python packages: captured with `python -m pip freeze` from the `backend` directory into `VALIDATION/baseline/pip-freeze.txt` during baseline capture. This reflects the active environment, not independently verified backend and frontend lockfiles.
-
-## Completion status
-
-| Baseline item | Status |
-|---|---|
-| Record existing commit | Done — hash above |
-| Record Python/Ollama/model list | Done |
-| Record PostgreSQL version | Blocked — `psql` unavailable; server version unknown |
-| Freeze environment dependencies | Partial — backend interpreter `pip freeze` is captured; separate reproducible lockfiles not established |
-| Create baseline branch | Not done — requires reviewed clean snapshot |
-| Create baseline tag | Not done — worktree is dirty |
-| Push tag | Not done — no tag created and remote push requires owner authorization |
-
-Do not treat this artifact as proof that the current dirty worktree is reproducible. No existing changes were discarded or staged.
+# 6. Toolchain still works
+cd backend
+python -m pytest tests/ -q
+cd ..
+# expect: 24 passed (or current count)

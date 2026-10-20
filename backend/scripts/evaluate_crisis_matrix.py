@@ -1,68 +1,57 @@
 # -*- coding: utf-8 -*-
-"""Run the curated crisis detector matrix and save honest diagnostic metrics."""
-
+"""Score the curated crisis diagnostic matrix; reports are diagnostic, not coverage proof."""
 from __future__ import annotations
 
-import csv
+import argparse
 import json
-import sys
-from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "backend"))
 from app.services.crisis_detector import detect_crisis
 
-CASES_PATH = ROOT / "backend" / "tests" / "safety" / "crisis_matrix.json"
-OUT = ROOT / "VALIDATION" / "safety"
+ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_MATRIX = ROOT / "backend" / "tests" / "safety" / "crisis_matrix.json"
+DEFAULT_REPORT = ROOT / "VALIDATION" / "safety" / "crisis_matrix_report.json"
 
 
-def run() -> tuple[Path, Path]:
-    cases = json.loads(CASES_PATH.read_text(encoding="utf-8"))
-    rows = []
-    tp = fp = tn = fn = 0
+def evaluate(matrix_path: Path) -> dict:
+    cases = json.loads(matrix_path.read_text(encoding="utf-8"))
+    ids = [case.get("id") for case in cases]
+    if not cases or len(set(ids)) != len(ids):
+        raise ValueError("Matrix must contain non-empty cases with unique IDs")
+    tp = fp = fn = tn = 0
+    details = []
+    by_category = {}
     for case in cases:
-        predicted = bool(detect_crisis(case["text"])["is_crisis"])
         expected = bool(case["expected_crisis"])
-        tp += expected and predicted
-        fn += expected and not predicted
-        fp += not expected and predicted
-        tn += not expected and not predicted
-        rows.append({**case, "predicted_crisis": predicted, "correct": predicted == expected})
-    OUT.mkdir(parents=True, exist_ok=True)
-    csv_path = OUT / "crisis_matrix_results.csv"
-    with csv_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
-        writer.writeheader()
-        writer.writerows(rows)
+        detected = bool(detect_crisis(case["text"])["is_crisis"])
+        tp += expected and detected
+        fn += expected and not detected
+        fp += not expected and detected
+        tn += not expected and not detected
+        category = by_category.setdefault(case["category"], {"cases": 0, "correct": 0, "false_positive": 0, "false_negative": 0})
+        category["cases"] += 1
+        category["correct"] += expected == detected
+        category["false_positive"] += not expected and detected
+        category["false_negative"] += expected and not detected
+        if expected != detected:
+            details.append({"id": case["id"], "category": case["category"], "expected_crisis": expected, "detected_crisis": detected})
     precision = tp / (tp + fp) if tp + fp else 0.0
     recall = tp / (tp + fn) if tp + fn else 0.0
-    report = {
-        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
-        "cases": len(rows),
-        "true_positive": int(tp), "false_positive": int(fp),
-        "true_negative": int(tn), "false_negative": int(fn),
-        "precision": precision, "recall": recall,
-        "scope": "small, hand-authored regression matrix; not comprehensive validation",
-        "missed_cases": [row["id"] for row in rows if row["expected_crisis"] and not row["predicted_crisis"]],
-        "false_trigger_cases": [row["id"] for row in rows if not row["expected_crisis"] and row["predicted_crisis"]],
-    }
-    json_path = OUT / "crisis_matrix_metrics.json"
-    json_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
-    md = [
-        "# Crisis phrase-matrix diagnostic (not comprehensive)", "",
-        f"Generated: {report['generated_at_utc']}", "",
-        f"Cases: {len(rows)}; TP={tp}, FP={fp}, TN={tn}, FN={fn}; precision={precision:.3f}; recall={recall:.3f}.", "",
-        "This is a small, hand-authored test set, not a representative sample and not proof of crisis coverage. Phrase matching can miss novel/indirect expressions and may false-trigger. The tool is not emergency monitoring or a hotline.", "",
-        f"Missed positive cases: {', '.join(report['missed_cases']) or 'none in this small matrix'}.",
-        f"False triggers: {', '.join(report['false_trigger_cases']) or 'none in this small matrix'}.", "",
-        "See `crisis_matrix_results.csv` for each labeled input and output.", "",
-    ]
-    md_path = OUT / "CRISIS_MATRIX_REPORT.md"
-    md_path.write_text("\n".join(md), encoding="utf-8")
-    return csv_path, md_path
+    return {"case_count": len(cases), "confusion": {"true_positive": tp, "false_positive": fp, "false_negative": fn, "true_negative": tn},
+            "precision": precision, "recall": recall, "accuracy": (tp + tn) / len(cases),
+            "category_diagnostics": by_category, "misclassified_cases": details,
+            "limitation": "Curated phrase matrix is a small diagnostic set, not comprehensive crisis detection or clinical validation."}
 
 
 if __name__ == "__main__":
-    for output in run():
-        print(output)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--matrix", type=Path, default=DEFAULT_MATRIX)
+    parser.add_argument("--output", type=Path, default=DEFAULT_REPORT)
+    args = parser.parse_args()
+    try:
+        result = evaluate(args.matrix)
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps(result, indent=2), encoding="utf-8")
+        print(json.dumps(result, indent=2))
+    except (OSError, KeyError, TypeError, ValueError) as exc:
+        raise SystemExit(f"CRISIS EVALUATION FAILED: {exc}") from exc

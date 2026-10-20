@@ -1,0 +1,1522 @@
+{
+  "generated_at_utc": "2026-10-20T07:35:05.834544+00:00",
+  "roots": [
+    "C:\\Users\\HP\\Desktop\\Mental-Health-Chatbot\\backend\\datasets\\depression_v2",
+    "C:\\Users\\HP\\Desktop\\Mental-Health-Chatbot\\backend\\datasets\\stress",
+    "C:\\Users\\HP\\Desktop\\Mental-Health-Chatbot\\counsel_chat\\emotion_dataset"
+  ],
+  "near_duplicate_method": "character n-gram TF-IDF cosine similarity",
+  "near_duplicate_threshold": 0.95,
+  "max_pair_comparisons": 100000,
+  "csv_files": [
+    {
+      "path": "backend\\datasets\\depression_v2\\processed\\test.csv",
+      "headers": [
+        "text",
+        "label"
+      ],
+      "row_count": 1148,
+      "text_column": "text",
+      "label_column": "label",
+      "label_balance": {
+        "0": 584,
+        "1": 564
+      },
+      "missing_values_by_column": {
+        "text": 0,
+        "label": 0
+      },
+      "exact_duplicate_rows_within_file": 0,
+      "exact_duplicate_texts_within_file": 0,
+      "exact_duplicate_text_groups_within_file": []
+    },
+    {
+      "path": "backend\\datasets\\depression_v2\\processed\\train.csv",
+      "headers": [
+        "text",
+        "label"
+      ],
+      "row_count": 5355,
+      "text_column": "text",
+      "label_column": "label",
+      "label_balance": {
+        "0": 2722,
+        "1": 2633
+      },
+      "missing_values_by_column": {
+        "text": 0,
+        "label": 0
+      },
+      "exact_duplicate_rows_within_file": 1,
+      "exact_duplicate_texts_within_file": 1,
+      "exact_duplicate_text_groups_within_file": [
+        {
+          "normalized_text_sha256": "6d6dc0b0d9177a9c2a48a9fee54bd39024c49ade047fa5f764f5bba149328ee9",
+          "source_rows_1based_including_header": [
+            866,
+            2677
+          ]
+        }
+      ]
+    },
+    {
+      "path": "backend\\datasets\\depression_v2\\processed\\validation.csv",
+      "headers": [
+        "text",
+        "label"
+      ],
+      "row_count": 1147,
+      "text_column": "text",
+      "label_column": "label",
+      "label_balance": {
+        "0": 583,
+        "1": 564
+      },
+      "missing_values_by_column": {
+        "text": 0,
+        "label": 0
+      },
+      "exact_duplicate_rows_within_file": 0,
+      "exact_duplicate_texts_within_file": 0,
+      "exact_duplicate_text_groups_within_file": []
+    },
+    {
+      "path": "backend\\datasets\\stress\\processed\\clean_test.csv",
+      "headers": [
+        "text",
+        "label"
+      ],
+      "row_count": 715,
+      "text_column": "text",
+      "label_column": "label",
+      "label_balance": {
+        "0": 346,
+        "1": 369
+      },
+      "missing_values_by_column": {
+        "text": 0,
+        "label": 0
+      },
+      "exact_duplicate_rows_within_file": 0,
+      "exact_duplicate_texts_within_file": 0,
+      "exact_duplicate_text_groups_within_file": []
+    },
+    {
+      "path": "backend\\datasets\\stress\\processed\\clean_train.csv",
+      "headers": [
+        "text",
+        "label"
+      ],
+      "row_count": 2823,
+      "text_column": "text",
+      "label_column": "label",
+      "label_balance": {
+        "0": 1338,
+        "1": 1485
+      },
+      "missing_values_by_column": {
+        "text": 0,
+        "label": 0
+      },
+      "exact_duplicate_rows_within_file": 2,
+      "exact_duplicate_texts_within_file": 5,
+      "exact_duplicate_text_groups_within_file": [
+        {
+          "normalized_text_sha256": "82a3537ff0dbce7eec35d69edc3a189ee6f17d82f353a553f9aa96cb0be3ce89",
+          "source_rows_1based_including_header": [
+            297,
+            1592
+          ]
+        },
+        {
+          "normalized_text_sha256": "0f5e1ff732b83951c09ac82dc08d217863a8c93490ecb2f4c3016c12ca4dfd09",
+          "source_rows_1based_including_header": [
+            421,
+            1253
+          ]
+        },
+        {
+          "normalized_text_sha256": "a2a38f9593b50e0d9153157d468656d2af8380816f1df8c6eaa61e9e5ef92a3d",
+          "source_rows_1based_including_header": [
+            532,
+            2539
+          ]
+        },
+        {
+          "normalized_text_sha256": "84fdc24bccd736f1c424b3c9732439287185e450e6c1ab64a3b8059d528401b9",
+          "source_rows_1based_including_header": [
+            1612,
+            1814
+          ]
+        },
+        {
+          "normalized_text_sha256": "e7373190b44ebbd3f1d2090ce757165175a76aef422b385c4e9ae91726ab0acd",
+          "source_rows_1based_including_header": [
+            1739,
+            2202
+          ]
+        }
+      ]
+    },
+    {
+      "path": "counsel_chat\\emotion_dataset\\processed\\test_processed.csv",
+      "headers": [
+        "text",
+        "label"
+      ],
+      "row_count": 2000,
+      "text_column": "text",
+      "label_column": "label",
+      "label_balance": {
+        "0": 581,
+        "1": 695,
+        "2": 159,
+        "3": 275,
+        "4": 224,
+        "5": 66
+      },
+      "missing_values_by_column": {
+        "text": 0,
+        "label": 0
+      },
+      "exact_duplicate_rows_within_file": 0,
+      "exact_duplicate_texts_within_file": 0,
+      "exact_duplicate_text_groups_within_file": []
+    },
+    {
+      "path": "counsel_chat\\emotion_dataset\\processed\\train_processed.csv",
+      "headers": [
+        "text",
+        "label"
+      ],
+      "row_count": 15999,
+      "text_column": "text",
+      "label_column": "label",
+      "label_balance": {
+        "0": 4666,
+        "1": 5361,
+        "2": 1304,
+        "3": 2159,
+        "4": 1937,
+        "5": 572
+      },
+      "missing_values_by_column": {
+        "text": 0,
+        "label": 0
+      },
+      "exact_duplicate_rows_within_file": 0,
+      "exact_duplicate_texts_within_file": 30,
+      "exact_duplicate_text_groups_within_file": [
+        {
+          "normalized_text_sha256": "f6128b87ff14560264e1df77b05e3b236f5b44d4a8012e9bf6e995d206b109d3",
+          "source_rows_1based_including_header": [
+            366,
+            6565
+          ]
+        },
+        {
+          "normalized_text_sha256": "57884b54d5b94f4ab0396cce65158d5754013229b29bd19a70d53a7b3be863e9",
+          "source_rows_1based_including_header": [
+            1503,
+            5069
+          ]
+        },
+        {
+          "normalized_text_sha256": "5deffb8eedd7adca7637560dd386512089691d454cd286dba4e829546e424270",
+          "source_rows_1based_including_header": [
+            1627,
+            7625
+          ]
+        },
+        {
+          "normalized_text_sha256": "6dd1ac1c9042e7b0da4749d3d64854a764bef3014299cd0f1a95556ba0c5fbc7",
+          "source_rows_1based_including_header": [
+            1804,
+            12443
+          ]
+        },
+        {
+          "normalized_text_sha256": "74f20f3bb4f10887ba764aa7dca0e8e8e7243b58eebabc4d647c18702660cb5a",
+          "source_rows_1based_including_header": [
+            2910,
+            7687
+          ]
+        },
+        {
+          "normalized_text_sha256": "2c19384b14ffb7193908dba09174f1d83cdb6afc3a51608e0930b63f847d1c4e",
+          "source_rows_1based_including_header": [
+            2951,
+            15330
+          ]
+        },
+        {
+          "normalized_text_sha256": "230a447d096bc0fcee3d4a7767734c4c6eea973cb5bebda86bde75cd38d16de7",
+          "source_rows_1based_including_header": [
+            3510,
+            8248
+          ]
+        },
+        {
+          "normalized_text_sha256": "13787eb845d366d63f084b5241d3f37662a99dde19320ca86809a2096f75ce8d",
+          "source_rows_1based_including_header": [
+            4478,
+            6135
+          ]
+        },
+        {
+          "normalized_text_sha256": "ff5ab1a860b58254498f8acd7b73662fe8fbb91e012b141d0857ed55652e9909",
+          "source_rows_1based_including_header": [
+            4604,
+            9771
+          ]
+        },
+        {
+          "normalized_text_sha256": "c38ce9409887a4fea09daedc6d1f2b98282241ecbb302444420ae50dd352ca90",
+          "source_rows_1based_including_header": [
+            4778,
+            9689
+          ]
+        },
+        {
+          "normalized_text_sha256": "22a2241850ecb1449a5e1ecae630bc238e4ab51bead2c693d6dd178bb60e3346",
+          "source_rows_1based_including_header": [
+            5279,
+            15706
+          ]
+        },
+        {
+          "normalized_text_sha256": "535e743c87fb3ca2d6ea1d4e61ed877415057032ca2079493a808da21a76bce9",
+          "source_rows_1based_including_header": [
+            5301,
+            14635
+          ]
+        },
+        {
+          "normalized_text_sha256": "839abf75757d3e1166798205c5b2638b19186f07a0b0b7cc5b21a2f3e033b673",
+          "source_rows_1based_including_header": [
+            5402,
+            11825
+          ]
+        },
+        {
+          "normalized_text_sha256": "366c699a5d4f0159405eb35bca46576cfba496ccf11e3737351e3b8f3ced1e58",
+          "source_rows_1based_including_header": [
+            5907,
+            14927
+          ]
+        },
+        {
+          "normalized_text_sha256": "198e5467284841781ed29a5f44c2fc860021da28b9f645934cd2e8c4d65451aa",
+          "source_rows_1based_including_header": [
+            7335,
+            13881
+          ]
+        },
+        {
+          "normalized_text_sha256": "6c5de63810b6e5c1f5ef0a73c8115b7a29d8142efc4ffaffa0e8179d11a4c61e",
+          "source_rows_1based_including_header": [
+            7580,
+            11527
+          ]
+        },
+        {
+          "normalized_text_sha256": "eb91ffae58e83b082cb835b32712980bafb27148f0ec436b5385ae7d0bc9d4a5",
+          "source_rows_1based_including_header": [
+            7584,
+            11275
+          ]
+        },
+        {
+          "normalized_text_sha256": "ce2f1e3eee4c07e18975cb23d9d69bccf410ca1cc179c3e84630ebe458470660",
+          "source_rows_1based_including_header": [
+            7671,
+            12564
+          ]
+        },
+        {
+          "normalized_text_sha256": "d18f651fe2f904a12ba63039fcc2560b7a4d433899f24f0054d30031f6c8450f",
+          "source_rows_1based_including_header": [
+            7725,
+            10583
+          ]
+        },
+        {
+          "normalized_text_sha256": "70c2e90404c77e7fe3ffd27805ec2f4382cb7e05da87020a95a7c65f5bd4be0f",
+          "source_rows_1based_including_header": [
+            8559,
+            14108
+          ]
+        },
+        {
+          "normalized_text_sha256": "2bd04e3a1c8f5da1472986a9719e363fd18b4c5106aac024f3df7a057bcd528a",
+          "source_rows_1based_including_header": [
+            8777,
+            11356
+          ]
+        },
+        {
+          "normalized_text_sha256": "750b8283de48bff513914a8641b8fc2e85a4cd739c78b0af0caf3627d092b6ec",
+          "source_rows_1based_including_header": [
+            8806,
+            15573
+          ]
+        },
+        {
+          "normalized_text_sha256": "71b343451ba402bb0af098dcb6a152ee15d050d485380ec24c204fe5943ad317",
+          "source_rows_1based_including_header": [
+            9071,
+            9598
+          ]
+        },
+        {
+          "normalized_text_sha256": "fc3d1ebdf50b6c53fba4ff3ac3b2e1784586ecaa9a2218affe0b2db6e88667b6",
+          "source_rows_1based_including_header": [
+            9073,
+            9788
+          ]
+        },
+        {
+          "normalized_text_sha256": "8ea45b4079caad2c98ec43be74834b099b8ba3bd1412836f630950376d7acadb",
+          "source_rows_1based_including_header": [
+            9133,
+            10119
+          ]
+        },
+        {
+          "normalized_text_sha256": "4c436fbdcfd2c8df9e05740ea018cb7946054abec94b9d5d904a14c990898072",
+          "source_rows_1based_including_header": [
+            9607,
+            13238
+          ]
+        },
+        {
+          "normalized_text_sha256": "2cdb8b43cb18c93332d3fec230fb466b00289be09423dd3bea2f4829fe1698e2",
+          "source_rows_1based_including_header": [
+            10329,
+            15877
+          ]
+        },
+        {
+          "normalized_text_sha256": "19d7e25676e67b8103c4a0fa9a60e0834ed13974e8061315f212d5cafecc3375",
+          "source_rows_1based_including_header": [
+            10346,
+            15316
+          ]
+        },
+        {
+          "normalized_text_sha256": "e21dfb9ba54e2e4315c5720a5ccd84b89fcdade67ab73047353dce4fcdc0201d",
+          "source_rows_1based_including_header": [
+            11015,
+            12894
+          ]
+        },
+        {
+          "normalized_text_sha256": "29ebcdf23f62315de932e799b9ca78e80e60d4952f467204fdb4aa9a5b44f192",
+          "source_rows_1based_including_header": [
+            13655,
+            14315
+          ]
+        }
+      ]
+    },
+    {
+      "path": "counsel_chat\\emotion_dataset\\processed\\validation_processed.csv",
+      "headers": [
+        "text",
+        "label"
+      ],
+      "row_count": 2000,
+      "text_column": "text",
+      "label_column": "label",
+      "label_balance": {
+        "0": 550,
+        "1": 704,
+        "2": 178,
+        "3": 275,
+        "4": 212,
+        "5": 81
+      },
+      "missing_values_by_column": {
+        "text": 0,
+        "label": 0
+      },
+      "exact_duplicate_rows_within_file": 0,
+      "exact_duplicate_texts_within_file": 2,
+      "exact_duplicate_text_groups_within_file": [
+        {
+          "normalized_text_sha256": "99e8b1081c8d9863f0569b6e6207cb2da796962fe2f87d889496bf2178f959f9",
+          "source_rows_1based_including_header": [
+            302,
+            605
+          ]
+        },
+        {
+          "normalized_text_sha256": "e0b018363d883d8e30c9677b6cd6ea9e343f267b50478386479f75d2d9350e89",
+          "source_rows_1based_including_header": [
+            776,
+            1995
+          ]
+        }
+      ]
+    },
+    {
+      "path": "counsel_chat\\emotion_dataset\\raw\\test.csv",
+      "headers": [
+        "text",
+        "label"
+      ],
+      "row_count": 2000,
+      "text_column": "text",
+      "label_column": "label",
+      "label_balance": {
+        "0": 581,
+        "1": 695,
+        "2": 159,
+        "3": 275,
+        "4": 224,
+        "5": 66
+      },
+      "missing_values_by_column": {
+        "text": 0,
+        "label": 0
+      },
+      "exact_duplicate_rows_within_file": 0,
+      "exact_duplicate_texts_within_file": 0,
+      "exact_duplicate_text_groups_within_file": []
+    },
+    {
+      "path": "counsel_chat\\emotion_dataset\\raw\\train.csv",
+      "headers": [
+        "text",
+        "label"
+      ],
+      "row_count": 16000,
+      "text_column": "text",
+      "label_column": "label",
+      "label_balance": {
+        "0": 4666,
+        "1": 5362,
+        "2": 1304,
+        "3": 2159,
+        "4": 1937,
+        "5": 572
+      },
+      "missing_values_by_column": {
+        "text": 0,
+        "label": 0
+      },
+      "exact_duplicate_rows_within_file": 1,
+      "exact_duplicate_texts_within_file": 31,
+      "exact_duplicate_text_groups_within_file": [
+        {
+          "normalized_text_sha256": "f6128b87ff14560264e1df77b05e3b236f5b44d4a8012e9bf6e995d206b109d3",
+          "source_rows_1based_including_header": [
+            366,
+            6565
+          ]
+        },
+        {
+          "normalized_text_sha256": "57884b54d5b94f4ab0396cce65158d5754013229b29bd19a70d53a7b3be863e9",
+          "source_rows_1based_including_header": [
+            1503,
+            5069
+          ]
+        },
+        {
+          "normalized_text_sha256": "5deffb8eedd7adca7637560dd386512089691d454cd286dba4e829546e424270",
+          "source_rows_1based_including_header": [
+            1627,
+            7625
+          ]
+        },
+        {
+          "normalized_text_sha256": "6dd1ac1c9042e7b0da4749d3d64854a764bef3014299cd0f1a95556ba0c5fbc7",
+          "source_rows_1based_including_header": [
+            1804,
+            12443
+          ]
+        },
+        {
+          "normalized_text_sha256": "74f20f3bb4f10887ba764aa7dca0e8e8e7243b58eebabc4d647c18702660cb5a",
+          "source_rows_1based_including_header": [
+            2910,
+            7687
+          ]
+        },
+        {
+          "normalized_text_sha256": "2c19384b14ffb7193908dba09174f1d83cdb6afc3a51608e0930b63f847d1c4e",
+          "source_rows_1based_including_header": [
+            2951,
+            15331
+          ]
+        },
+        {
+          "normalized_text_sha256": "230a447d096bc0fcee3d4a7767734c4c6eea973cb5bebda86bde75cd38d16de7",
+          "source_rows_1based_including_header": [
+            3510,
+            8248
+          ]
+        },
+        {
+          "normalized_text_sha256": "13787eb845d366d63f084b5241d3f37662a99dde19320ca86809a2096f75ce8d",
+          "source_rows_1based_including_header": [
+            4478,
+            6135
+          ]
+        },
+        {
+          "normalized_text_sha256": "ff5ab1a860b58254498f8acd7b73662fe8fbb91e012b141d0857ed55652e9909",
+          "source_rows_1based_including_header": [
+            4604,
+            9771
+          ]
+        },
+        {
+          "normalized_text_sha256": "c38ce9409887a4fea09daedc6d1f2b98282241ecbb302444420ae50dd352ca90",
+          "source_rows_1based_including_header": [
+            4778,
+            9689
+          ]
+        },
+        {
+          "normalized_text_sha256": "e0b10b6cee1f3682294782ace352c61e0ab6da90c288057ab7e9fe4189777e0d",
+          "source_rows_1based_including_header": [
+            4977,
+            13848
+          ]
+        },
+        {
+          "normalized_text_sha256": "22a2241850ecb1449a5e1ecae630bc238e4ab51bead2c693d6dd178bb60e3346",
+          "source_rows_1based_including_header": [
+            5279,
+            15707
+          ]
+        },
+        {
+          "normalized_text_sha256": "535e743c87fb3ca2d6ea1d4e61ed877415057032ca2079493a808da21a76bce9",
+          "source_rows_1based_including_header": [
+            5301,
+            14636
+          ]
+        },
+        {
+          "normalized_text_sha256": "839abf75757d3e1166798205c5b2638b19186f07a0b0b7cc5b21a2f3e033b673",
+          "source_rows_1based_including_header": [
+            5402,
+            11825
+          ]
+        },
+        {
+          "normalized_text_sha256": "366c699a5d4f0159405eb35bca46576cfba496ccf11e3737351e3b8f3ced1e58",
+          "source_rows_1based_including_header": [
+            5907,
+            14928
+          ]
+        },
+        {
+          "normalized_text_sha256": "198e5467284841781ed29a5f44c2fc860021da28b9f645934cd2e8c4d65451aa",
+          "source_rows_1based_including_header": [
+            7335,
+            13882
+          ]
+        },
+        {
+          "normalized_text_sha256": "6c5de63810b6e5c1f5ef0a73c8115b7a29d8142efc4ffaffa0e8179d11a4c61e",
+          "source_rows_1based_including_header": [
+            7580,
+            11527
+          ]
+        },
+        {
+          "normalized_text_sha256": "eb91ffae58e83b082cb835b32712980bafb27148f0ec436b5385ae7d0bc9d4a5",
+          "source_rows_1based_including_header": [
+            7584,
+            11275
+          ]
+        },
+        {
+          "normalized_text_sha256": "ce2f1e3eee4c07e18975cb23d9d69bccf410ca1cc179c3e84630ebe458470660",
+          "source_rows_1based_including_header": [
+            7671,
+            12564
+          ]
+        },
+        {
+          "normalized_text_sha256": "d18f651fe2f904a12ba63039fcc2560b7a4d433899f24f0054d30031f6c8450f",
+          "source_rows_1based_including_header": [
+            7725,
+            10583
+          ]
+        },
+        {
+          "normalized_text_sha256": "70c2e90404c77e7fe3ffd27805ec2f4382cb7e05da87020a95a7c65f5bd4be0f",
+          "source_rows_1based_including_header": [
+            8559,
+            14109
+          ]
+        },
+        {
+          "normalized_text_sha256": "2bd04e3a1c8f5da1472986a9719e363fd18b4c5106aac024f3df7a057bcd528a",
+          "source_rows_1based_including_header": [
+            8777,
+            11356
+          ]
+        },
+        {
+          "normalized_text_sha256": "750b8283de48bff513914a8641b8fc2e85a4cd739c78b0af0caf3627d092b6ec",
+          "source_rows_1based_including_header": [
+            8806,
+            15574
+          ]
+        },
+        {
+          "normalized_text_sha256": "71b343451ba402bb0af098dcb6a152ee15d050d485380ec24c204fe5943ad317",
+          "source_rows_1based_including_header": [
+            9071,
+            9598
+          ]
+        },
+        {
+          "normalized_text_sha256": "fc3d1ebdf50b6c53fba4ff3ac3b2e1784586ecaa9a2218affe0b2db6e88667b6",
+          "source_rows_1based_including_header": [
+            9073,
+            9788
+          ]
+        },
+        {
+          "normalized_text_sha256": "8ea45b4079caad2c98ec43be74834b099b8ba3bd1412836f630950376d7acadb",
+          "source_rows_1based_including_header": [
+            9133,
+            10119
+          ]
+        },
+        {
+          "normalized_text_sha256": "4c436fbdcfd2c8df9e05740ea018cb7946054abec94b9d5d904a14c990898072",
+          "source_rows_1based_including_header": [
+            9607,
+            13238
+          ]
+        },
+        {
+          "normalized_text_sha256": "2cdb8b43cb18c93332d3fec230fb466b00289be09423dd3bea2f4829fe1698e2",
+          "source_rows_1based_including_header": [
+            10329,
+            15878
+          ]
+        },
+        {
+          "normalized_text_sha256": "19d7e25676e67b8103c4a0fa9a60e0834ed13974e8061315f212d5cafecc3375",
+          "source_rows_1based_including_header": [
+            10346,
+            15317
+          ]
+        },
+        {
+          "normalized_text_sha256": "e21dfb9ba54e2e4315c5720a5ccd84b89fcdade67ab73047353dce4fcdc0201d",
+          "source_rows_1based_including_header": [
+            11015,
+            12894
+          ]
+        },
+        {
+          "normalized_text_sha256": "29ebcdf23f62315de932e799b9ca78e80e60d4952f467204fdb4aa9a5b44f192",
+          "source_rows_1based_including_header": [
+            13655,
+            14316
+          ]
+        }
+      ]
+    },
+    {
+      "path": "counsel_chat\\emotion_dataset\\raw\\validation.csv",
+      "headers": [
+        "text",
+        "label"
+      ],
+      "row_count": 2000,
+      "text_column": "text",
+      "label_column": "label",
+      "label_balance": {
+        "0": 550,
+        "1": 704,
+        "2": 178,
+        "3": 275,
+        "4": 212,
+        "5": 81
+      },
+      "missing_values_by_column": {
+        "text": 0,
+        "label": 0
+      },
+      "exact_duplicate_rows_within_file": 0,
+      "exact_duplicate_texts_within_file": 2,
+      "exact_duplicate_text_groups_within_file": [
+        {
+          "normalized_text_sha256": "99e8b1081c8d9863f0569b6e6207cb2da796962fe2f87d889496bf2178f959f9",
+          "source_rows_1based_including_header": [
+            302,
+            605
+          ]
+        },
+        {
+          "normalized_text_sha256": "e0b018363d883d8e30c9677b6cd6ea9e343f267b50478386479f75d2d9350e89",
+          "source_rows_1based_including_header": [
+            776,
+            1995
+          ]
+        }
+      ]
+    }
+  ],
+  "exact_duplicate_texts_across_split_files": [
+    {
+      "left": "backend\\datasets\\depression_v2\\processed\\test.csv",
+      "right": "backend\\datasets\\depression_v2\\processed\\train.csv",
+      "duplicate_text_count": 1,
+      "duplicate_records": [
+        {
+          "normalized_text_sha256": "6d6dc0b0d9177a9c2a48a9fee54bd39024c49ade047fa5f764f5bba149328ee9",
+          "left_source_rows_1based_including_header": [
+            644
+          ],
+          "right_source_rows_1based_including_header": [
+            866,
+            2677
+          ]
+        }
+      ]
+    },
+    {
+      "left": "backend\\datasets\\stress\\processed\\clean_test.csv",
+      "right": "backend\\datasets\\stress\\processed\\clean_train.csv",
+      "duplicate_text_count": 3,
+      "duplicate_records": [
+        {
+          "normalized_text_sha256": "bccafb0cc3c4ecc2d153c999b3568810df15295e636921a2c55b03a2a956b0bf",
+          "left_source_rows_1based_including_header": [
+            160
+          ],
+          "right_source_rows_1based_including_header": [
+            572
+          ]
+        },
+        {
+          "normalized_text_sha256": "8b9916f7d193bc2a9d2742c53384bd0d4557f0f33423e84b4ebb366ca3b9e31b",
+          "left_source_rows_1based_including_header": [
+            617
+          ],
+          "right_source_rows_1based_including_header": [
+            1118
+          ]
+        },
+        {
+          "normalized_text_sha256": "f65eefbcaa823b2803e5eda636d0f102cebe7c45e3735f033a51b864d04f42a3",
+          "left_source_rows_1based_including_header": [
+            375
+          ],
+          "right_source_rows_1based_including_header": [
+            1988
+          ]
+        }
+      ]
+    },
+    {
+      "left": "counsel_chat\\emotion_dataset\\processed\\test_processed.csv",
+      "right": "counsel_chat\\emotion_dataset\\processed\\train_processed.csv",
+      "duplicate_text_count": 11,
+      "duplicate_records": [
+        {
+          "normalized_text_sha256": "0cc4c7b0fc3f814fd417012c532c6c3e64e29ceca3e9220d77f9ea6ba603eba7",
+          "left_source_rows_1based_including_header": [
+            504
+          ],
+          "right_source_rows_1based_including_header": [
+            11900
+          ]
+        },
+        {
+          "normalized_text_sha256": "35ba1f0dda83ed53f74071192a607e86070329fb93d77a845bcc35f26ff6ae92",
+          "left_source_rows_1based_including_header": [
+            355
+          ],
+          "right_source_rows_1based_including_header": [
+            15361
+          ]
+        },
+        {
+          "normalized_text_sha256": "24c2a3b49262128f8e7f4493cf92e2df90ac37301bef8868e23a0655b278617e",
+          "left_source_rows_1based_including_header": [
+            961
+          ],
+          "right_source_rows_1based_including_header": [
+            1795
+          ]
+        },
+        {
+          "normalized_text_sha256": "afcd3ba1392e867e5c4a1f41cb49ced9ef5c5411dccad9c492c9bf93f1f2c55b",
+          "left_source_rows_1based_including_header": [
+            1889
+          ],
+          "right_source_rows_1based_including_header": [
+            114
+          ]
+        },
+        {
+          "normalized_text_sha256": "06c46e710e749878f2fda1ba9dfdd8d405bf7e0e475a6ab3897298da17e28470",
+          "left_source_rows_1based_including_header": [
+            267
+          ],
+          "right_source_rows_1based_including_header": [
+            8998
+          ]
+        },
+        {
+          "normalized_text_sha256": "ced93a46d8138b45ebbcba3e12d1ff7f3dcf8968eacdd3f6b8f3611b70b65f30",
+          "left_source_rows_1based_including_header": [
+            1277
+          ],
+          "right_source_rows_1based_including_header": [
+            3747
+          ]
+        },
+        {
+          "normalized_text_sha256": "48ae2f9cd15da5b67c5ca3a68c5c2ef3111e251360673511cb1dc207ebfdcb21",
+          "left_source_rows_1based_including_header": [
+            919
+          ],
+          "right_source_rows_1based_including_header": [
+            7647
+          ]
+        },
+        {
+          "normalized_text_sha256": "f77e8331c9ac6e8de60a9880cb1b2be5d5eb87055fb429c68b6f428e803134bf",
+          "left_source_rows_1based_including_header": [
+            588
+          ],
+          "right_source_rows_1based_including_header": [
+            8231
+          ]
+        },
+        {
+          "normalized_text_sha256": "17d71e9d037b5b499caf58368288b6fbcdd8fa2698d69f959218e3a0ff2b6b21",
+          "left_source_rows_1based_including_header": [
+            1028
+          ],
+          "right_source_rows_1based_including_header": [
+            6036
+          ]
+        },
+        {
+          "normalized_text_sha256": "69612911ab4ad9877f3ff662212d141d177626b50b39f75eb34ec7a6579ce1c0",
+          "left_source_rows_1based_including_header": [
+            417
+          ],
+          "right_source_rows_1based_including_header": [
+            1374
+          ]
+        },
+        {
+          "normalized_text_sha256": "5bddb8733e587edd8da800a25ec2a1c7386a4c7f3ab980178e6b8bc0d93779ef",
+          "left_source_rows_1based_including_header": [
+            264
+          ],
+          "right_source_rows_1based_including_header": [
+            14465
+          ]
+        }
+      ]
+    },
+    {
+      "left": "counsel_chat\\emotion_dataset\\processed\\test_processed.csv",
+      "right": "counsel_chat\\emotion_dataset\\processed\\validation_processed.csv",
+      "duplicate_text_count": 3,
+      "duplicate_records": [
+        {
+          "normalized_text_sha256": "2d0eb7ee1bf4b7d73974753f59712c1df7088cfca9d00862b6f0886103a12290",
+          "left_source_rows_1based_including_header": [
+            1828
+          ],
+          "right_source_rows_1based_including_header": [
+            1232
+          ]
+        },
+        {
+          "normalized_text_sha256": "33c3bcf5acd5d9b97a1a24f42b66dbbe61168e0e2ce9313dc1b2844298acd599",
+          "left_source_rows_1based_including_header": [
+            88
+          ],
+          "right_source_rows_1based_including_header": [
+            1790
+          ]
+        },
+        {
+          "normalized_text_sha256": "a637d9ded5254b05560d5ed4eb72fda9c58377a9721df9a0f6f3686261e05c12",
+          "left_source_rows_1based_including_header": [
+            577
+          ],
+          "right_source_rows_1based_including_header": [
+            881
+          ]
+        }
+      ]
+    },
+    {
+      "left": "counsel_chat\\emotion_dataset\\processed\\train_processed.csv",
+      "right": "counsel_chat\\emotion_dataset\\processed\\validation_processed.csv",
+      "duplicate_text_count": 5,
+      "duplicate_records": [
+        {
+          "normalized_text_sha256": "c47b1044d26e57287c40dc994bee0f9850882684122add04087b318838a9f44f",
+          "left_source_rows_1based_including_header": [
+            558
+          ],
+          "right_source_rows_1based_including_header": [
+            1628
+          ]
+        },
+        {
+          "normalized_text_sha256": "fc05f2d2d99b2350e573fb60347ad15dd57498f22d77fac4353e290a572e0694",
+          "left_source_rows_1based_including_header": [
+            8137
+          ],
+          "right_source_rows_1based_including_header": [
+            468
+          ]
+        },
+        {
+          "normalized_text_sha256": "a2224ad3afa889af24343db331afda8c3234213d1a5a84e34d2a6b71117a9e8b",
+          "left_source_rows_1based_including_header": [
+            2651
+          ],
+          "right_source_rows_1based_including_header": [
+            1674
+          ]
+        },
+        {
+          "normalized_text_sha256": "f4dd914ebb147dc625864309d60f12093ea8f1783a27d36d3557ed2ec2bc6c39",
+          "left_source_rows_1based_including_header": [
+            2114
+          ],
+          "right_source_rows_1based_including_header": [
+            480
+          ]
+        },
+        {
+          "normalized_text_sha256": "80869ff6d201834502251849c0dcb6be23c4f5938ecea7157c7867ef7c78613e",
+          "left_source_rows_1based_including_header": [
+            8260
+          ],
+          "right_source_rows_1based_including_header": [
+            62
+          ]
+        }
+      ]
+    },
+    {
+      "left": "counsel_chat\\emotion_dataset\\raw\\test.csv",
+      "right": "counsel_chat\\emotion_dataset\\raw\\train.csv",
+      "duplicate_text_count": 11,
+      "duplicate_records": [
+        {
+          "normalized_text_sha256": "0cc4c7b0fc3f814fd417012c532c6c3e64e29ceca3e9220d77f9ea6ba603eba7",
+          "left_source_rows_1based_including_header": [
+            504
+          ],
+          "right_source_rows_1based_including_header": [
+            11900
+          ]
+        },
+        {
+          "normalized_text_sha256": "35ba1f0dda83ed53f74071192a607e86070329fb93d77a845bcc35f26ff6ae92",
+          "left_source_rows_1based_including_header": [
+            355
+          ],
+          "right_source_rows_1based_including_header": [
+            15362
+          ]
+        },
+        {
+          "normalized_text_sha256": "24c2a3b49262128f8e7f4493cf92e2df90ac37301bef8868e23a0655b278617e",
+          "left_source_rows_1based_including_header": [
+            961
+          ],
+          "right_source_rows_1based_including_header": [
+            1795
+          ]
+        },
+        {
+          "normalized_text_sha256": "afcd3ba1392e867e5c4a1f41cb49ced9ef5c5411dccad9c492c9bf93f1f2c55b",
+          "left_source_rows_1based_including_header": [
+            1889
+          ],
+          "right_source_rows_1based_including_header": [
+            114
+          ]
+        },
+        {
+          "normalized_text_sha256": "06c46e710e749878f2fda1ba9dfdd8d405bf7e0e475a6ab3897298da17e28470",
+          "left_source_rows_1based_including_header": [
+            267
+          ],
+          "right_source_rows_1based_including_header": [
+            8998
+          ]
+        },
+        {
+          "normalized_text_sha256": "ced93a46d8138b45ebbcba3e12d1ff7f3dcf8968eacdd3f6b8f3611b70b65f30",
+          "left_source_rows_1based_including_header": [
+            1277
+          ],
+          "right_source_rows_1based_including_header": [
+            3747
+          ]
+        },
+        {
+          "normalized_text_sha256": "48ae2f9cd15da5b67c5ca3a68c5c2ef3111e251360673511cb1dc207ebfdcb21",
+          "left_source_rows_1based_including_header": [
+            919
+          ],
+          "right_source_rows_1based_including_header": [
+            7647
+          ]
+        },
+        {
+          "normalized_text_sha256": "f77e8331c9ac6e8de60a9880cb1b2be5d5eb87055fb429c68b6f428e803134bf",
+          "left_source_rows_1based_including_header": [
+            588
+          ],
+          "right_source_rows_1based_including_header": [
+            8231
+          ]
+        },
+        {
+          "normalized_text_sha256": "17d71e9d037b5b499caf58368288b6fbcdd8fa2698d69f959218e3a0ff2b6b21",
+          "left_source_rows_1based_including_header": [
+            1028
+          ],
+          "right_source_rows_1based_including_header": [
+            6036
+          ]
+        },
+        {
+          "normalized_text_sha256": "69612911ab4ad9877f3ff662212d141d177626b50b39f75eb34ec7a6579ce1c0",
+          "left_source_rows_1based_including_header": [
+            417
+          ],
+          "right_source_rows_1based_including_header": [
+            1374
+          ]
+        },
+        {
+          "normalized_text_sha256": "5bddb8733e587edd8da800a25ec2a1c7386a4c7f3ab980178e6b8bc0d93779ef",
+          "left_source_rows_1based_including_header": [
+            264
+          ],
+          "right_source_rows_1based_including_header": [
+            14466
+          ]
+        }
+      ]
+    },
+    {
+      "left": "counsel_chat\\emotion_dataset\\raw\\test.csv",
+      "right": "counsel_chat\\emotion_dataset\\raw\\validation.csv",
+      "duplicate_text_count": 3,
+      "duplicate_records": [
+        {
+          "normalized_text_sha256": "2d0eb7ee1bf4b7d73974753f59712c1df7088cfca9d00862b6f0886103a12290",
+          "left_source_rows_1based_including_header": [
+            1828
+          ],
+          "right_source_rows_1based_including_header": [
+            1232
+          ]
+        },
+        {
+          "normalized_text_sha256": "33c3bcf5acd5d9b97a1a24f42b66dbbe61168e0e2ce9313dc1b2844298acd599",
+          "left_source_rows_1based_including_header": [
+            88
+          ],
+          "right_source_rows_1based_including_header": [
+            1790
+          ]
+        },
+        {
+          "normalized_text_sha256": "a637d9ded5254b05560d5ed4eb72fda9c58377a9721df9a0f6f3686261e05c12",
+          "left_source_rows_1based_including_header": [
+            577
+          ],
+          "right_source_rows_1based_including_header": [
+            881
+          ]
+        }
+      ]
+    },
+    {
+      "left": "counsel_chat\\emotion_dataset\\raw\\train.csv",
+      "right": "counsel_chat\\emotion_dataset\\raw\\validation.csv",
+      "duplicate_text_count": 5,
+      "duplicate_records": [
+        {
+          "normalized_text_sha256": "c47b1044d26e57287c40dc994bee0f9850882684122add04087b318838a9f44f",
+          "left_source_rows_1based_including_header": [
+            558
+          ],
+          "right_source_rows_1based_including_header": [
+            1628
+          ]
+        },
+        {
+          "normalized_text_sha256": "fc05f2d2d99b2350e573fb60347ad15dd57498f22d77fac4353e290a572e0694",
+          "left_source_rows_1based_including_header": [
+            8137
+          ],
+          "right_source_rows_1based_including_header": [
+            468
+          ]
+        },
+        {
+          "normalized_text_sha256": "a2224ad3afa889af24343db331afda8c3234213d1a5a84e34d2a6b71117a9e8b",
+          "left_source_rows_1based_including_header": [
+            2651
+          ],
+          "right_source_rows_1based_including_header": [
+            1674
+          ]
+        },
+        {
+          "normalized_text_sha256": "f4dd914ebb147dc625864309d60f12093ea8f1783a27d36d3557ed2ec2bc6c39",
+          "left_source_rows_1based_including_header": [
+            2114
+          ],
+          "right_source_rows_1based_including_header": [
+            480
+          ]
+        },
+        {
+          "normalized_text_sha256": "80869ff6d201834502251849c0dcb6be23c4f5938ecea7157c7867ef7c78613e",
+          "left_source_rows_1based_including_header": [
+            8260
+          ],
+          "right_source_rows_1based_including_header": [
+            62
+          ]
+        }
+      ]
+    }
+  ],
+  "near_duplicate_split_checks": [
+    {
+      "left": "backend\\datasets\\depression_v2\\processed\\test.csv",
+      "right": "backend\\datasets\\depression_v2\\processed\\train.csv",
+      "threshold": 0.95,
+      "possible_comparisons": 6147540,
+      "comparisons_performed": 3181,
+      "skipped_comparisons": [],
+      "status": "complete",
+      "pairs": [
+        {
+          "left_row_1based": 498,
+          "right_row_1based": 3565,
+          "jaccard": 0.978242
+        },
+        {
+          "left_row_1based": 498,
+          "right_row_1based": 4486,
+          "jaccard": 0.988392
+        },
+        {
+          "left_row_1based": 644,
+          "right_row_1based": 866,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 644,
+          "right_row_1based": 2677,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 646,
+          "right_row_1based": 3000,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 684,
+          "right_row_1based": 1795,
+          "jaccard": 0.984346
+        }
+      ],
+      "method": "normalized text; character 3–5-gram shingle Jaccard, candidate generation by 64-permutation MinHash LSH (16 bands × 4 rows); exact normalized duplicates reported separately",
+      "candidate_pairs_examined": 3181
+    },
+    {
+      "left": "backend\\datasets\\depression_v2\\processed\\train.csv",
+      "right": "backend\\datasets\\depression_v2\\processed\\validation.csv",
+      "threshold": 0.95,
+      "possible_comparisons": 6142185,
+      "comparisons_performed": 3784,
+      "skipped_comparisons": [],
+      "status": "complete",
+      "pairs": [
+        {
+          "left_row_1based": 2180,
+          "right_row_1based": 666,
+          "jaccard": 0.963855
+        },
+        {
+          "left_row_1based": 3000,
+          "right_row_1based": 1072,
+          "jaccard": 0.981538
+        },
+        {
+          "left_row_1based": 4779,
+          "right_row_1based": 1145,
+          "jaccard": 0.966114
+        }
+      ],
+      "method": "normalized text; character 3–5-gram shingle Jaccard, candidate generation by 64-permutation MinHash LSH (16 bands × 4 rows); exact normalized duplicates reported separately",
+      "candidate_pairs_examined": 3784
+    },
+    {
+      "left": "backend\\datasets\\stress\\processed\\clean_test.csv",
+      "right": "backend\\datasets\\stress\\processed\\clean_train.csv",
+      "threshold": 0.95,
+      "possible_comparisons": 2018445,
+      "comparisons_performed": 1910,
+      "skipped_comparisons": [],
+      "status": "complete",
+      "pairs": [
+        {
+          "left_row_1based": 160,
+          "right_row_1based": 572,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 375,
+          "right_row_1based": 1988,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 617,
+          "right_row_1based": 1118,
+          "jaccard": 1.0
+        }
+      ],
+      "method": "normalized text; character 3–5-gram shingle Jaccard, candidate generation by 64-permutation MinHash LSH (16 bands × 4 rows); exact normalized duplicates reported separately",
+      "candidate_pairs_examined": 1910
+    },
+    {
+      "left": "counsel_chat\\emotion_dataset\\processed\\test_processed.csv",
+      "right": "counsel_chat\\emotion_dataset\\processed\\train_processed.csv",
+      "threshold": 0.95,
+      "possible_comparisons": 31998000,
+      "comparisons_performed": 7128,
+      "skipped_comparisons": [],
+      "status": "complete",
+      "pairs": [
+        {
+          "left_row_1based": 264,
+          "right_row_1based": 14465,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 267,
+          "right_row_1based": 8998,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 355,
+          "right_row_1based": 15361,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 417,
+          "right_row_1based": 1374,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 504,
+          "right_row_1based": 11900,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 588,
+          "right_row_1based": 8231,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 919,
+          "right_row_1based": 7647,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 961,
+          "right_row_1based": 1795,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 1028,
+          "right_row_1based": 6036,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 1277,
+          "right_row_1based": 3747,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 1889,
+          "right_row_1based": 114,
+          "jaccard": 1.0
+        }
+      ],
+      "method": "normalized text; character 3–5-gram shingle Jaccard, candidate generation by 64-permutation MinHash LSH (16 bands × 4 rows); exact normalized duplicates reported separately",
+      "candidate_pairs_examined": 7128
+    },
+    {
+      "left": "counsel_chat\\emotion_dataset\\processed\\train_processed.csv",
+      "right": "counsel_chat\\emotion_dataset\\processed\\validation_processed.csv",
+      "threshold": 0.95,
+      "possible_comparisons": 31998000,
+      "comparisons_performed": 7372,
+      "skipped_comparisons": [],
+      "status": "complete",
+      "pairs": [
+        {
+          "left_row_1based": 558,
+          "right_row_1based": 1628,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 2114,
+          "right_row_1based": 480,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 2651,
+          "right_row_1based": 1674,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 8137,
+          "right_row_1based": 468,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 8260,
+          "right_row_1based": 62,
+          "jaccard": 1.0
+        }
+      ],
+      "method": "normalized text; character 3–5-gram shingle Jaccard, candidate generation by 64-permutation MinHash LSH (16 bands × 4 rows); exact normalized duplicates reported separately",
+      "candidate_pairs_examined": 7372
+    },
+    {
+      "left": "counsel_chat\\emotion_dataset\\raw\\test.csv",
+      "right": "counsel_chat\\emotion_dataset\\raw\\train.csv",
+      "threshold": 0.95,
+      "possible_comparisons": 32000000,
+      "comparisons_performed": 7128,
+      "skipped_comparisons": [],
+      "status": "complete",
+      "pairs": [
+        {
+          "left_row_1based": 264,
+          "right_row_1based": 14466,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 267,
+          "right_row_1based": 8998,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 355,
+          "right_row_1based": 15362,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 417,
+          "right_row_1based": 1374,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 504,
+          "right_row_1based": 11900,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 588,
+          "right_row_1based": 8231,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 919,
+          "right_row_1based": 7647,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 961,
+          "right_row_1based": 1795,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 1028,
+          "right_row_1based": 6036,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 1277,
+          "right_row_1based": 3747,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 1889,
+          "right_row_1based": 114,
+          "jaccard": 1.0
+        }
+      ],
+      "method": "normalized text; character 3–5-gram shingle Jaccard, candidate generation by 64-permutation MinHash LSH (16 bands × 4 rows); exact normalized duplicates reported separately",
+      "candidate_pairs_examined": 7128
+    },
+    {
+      "left": "counsel_chat\\emotion_dataset\\raw\\train.csv",
+      "right": "counsel_chat\\emotion_dataset\\raw\\validation.csv",
+      "threshold": 0.95,
+      "possible_comparisons": 32000000,
+      "comparisons_performed": 7372,
+      "skipped_comparisons": [],
+      "status": "complete",
+      "pairs": [
+        {
+          "left_row_1based": 558,
+          "right_row_1based": 1628,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 2114,
+          "right_row_1based": 480,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 2651,
+          "right_row_1based": 1674,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 8137,
+          "right_row_1based": 468,
+          "jaccard": 1.0
+        },
+        {
+          "left_row_1based": 8260,
+          "right_row_1based": 62,
+          "jaccard": 1.0
+        }
+      ],
+      "method": "normalized text; character 3–5-gram shingle Jaccard, candidate generation by 64-permutation MinHash LSH (16 bands × 4 rows); exact normalized duplicates reported separately",
+      "candidate_pairs_examined": 7372
+    }
+  ],
+  "limitations": "Near-duplicate comparisons marked skipped are not evidence of no leakage. Results are text-overlap flags, not a legal or dataset-provenance audit."
+}

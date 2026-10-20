@@ -90,11 +90,12 @@ def _make_retrieval_template(path: Path, cases: list[dict]) -> None:
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         for case in cases:
+            retrieved_ids = case["retrieved_chunk_ids"]
             for reviewer in ("reviewer_1", "reviewer_2"):
                 writer.writerow({
                     "test_id": case["test_id"],
                     "question": case["question"],
-                    "retrieved_chunk_ids": ";".join(case["retrieved_chunk_ids"]),
+                    "retrieved_chunk_ids": ";".join(retrieved_ids),
                     "relevant_retrieved_chunk_ids": "",
                     "all_relevant_chunk_ids": "",
                     "precision_at_k": "",
@@ -102,6 +103,16 @@ def _make_retrieval_template(path: Path, cases: list[dict]) -> None:
                     "reviewer_role": reviewer,
                     "comments": "",
                 })
+
+
+def _occurrence_ids(chunk_ids: list[str]) -> list[str]:
+    """Give repeated identical chunks distinct, annotatable retrieval IDs."""
+    counts: dict[str, int] = {}
+    output = []
+    for chunk_id in chunk_ids:
+        counts[chunk_id] = counts.get(chunk_id, 0) + 1
+        output.append(f"{chunk_id}#{counts[chunk_id]}")
+    return output
 
 
 def run(model_name: str | None = None, ollama_url: str | None = None) -> Path:
@@ -150,7 +161,7 @@ def run(model_name: str | None = None, ollama_url: str | None = None) -> Path:
                     "model_digest": model.get("digest"),
                     "prompt_sha256": result.get("prompt_sha256"),
                     "latency_seconds": round(latency, 4),
-                    "retrieved_chunk_ids": [chunk["chunk_id"] for chunk in chunks],
+                    "retrieved_chunk_ids": _occurrence_ids([chunk["chunk_id"] for chunk in chunks]),
                     "retrieved_chunks": chunks,
                     "retrieved_context": result.get("context", ""),
                     "raw_response": result.get("raw_response", ""),

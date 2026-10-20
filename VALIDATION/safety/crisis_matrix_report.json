@@ -1,0 +1,76 @@
+{
+  "case_count": 20,
+  "confusion": {
+    "true_positive": 11,
+    "false_positive": 0,
+    "false_negative": 0,
+    "true_negative": 9
+  },
+  "precision": 1.0,
+  "recall": 1.0,
+  "accuracy": 1.0,
+  "category_diagnostics": {
+    "direct": {
+      "cases": 2,
+      "correct": 2,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "indirect": {
+      "cases": 3,
+      "correct": 3,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "conditional": {
+      "cases": 3,
+      "correct": 3,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "code_switched": {
+      "cases": 1,
+      "correct": 1,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "roman_urdu_variant": {
+      "cases": 1,
+      "correct": 1,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "urdu_script": {
+      "cases": 1,
+      "correct": 1,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "negation": {
+      "cases": 4,
+      "correct": 4,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "non_personal_mention": {
+      "cases": 2,
+      "correct": 2,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "hyperbole": {
+      "cases": 2,
+      "correct": 2,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "ordinary_distress": {
+      "cases": 1,
+      "correct": 1,
+      "false_positive": 0,
+      "false_negative": 0
+    }
+  },
+  "misclassified_cases": [],
+  "limitation": "Curated phrase matrix is a small diagnostic set, not comprehensive crisis detection or clinical validation."
+}

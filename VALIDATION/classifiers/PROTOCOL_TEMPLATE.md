@@ -16,5 +16,7 @@ Copy this file to the relevant task folder (`emotion`, `depression`, `stress`) a
 - Reproduction command: `UNKNOWN — recover exact command from training logs before claiming reproducibility`
 - Leakage checks: see `../datasets/DATASET_AUDIT.md`; exact and near duplicates require review
 - Calibration, bootstrap confidence intervals and class-wise errors: `PENDING`
+- Exact split overlap and normalized near-duplicate check: `../datasets/classifier_splits/DATASET_AUDIT.md` (if generated); skipped pair IDs are listed in JSON and remain unknown.
+- Held-out prediction recalculation and false-negative review: `HELDOUT_METRICS.md` / `HELDOUT_METRICS.json` (generated from saved predictions only; does not represent retraining).
 
 The existing scores are task- and split-specific classifier results, not clinical validation. Do not publish them as diagnostic accuracy.

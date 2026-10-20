@@ -1,7 +1,7 @@
 # MindCare AI — Project Audit Report
 
 **Purpose:** Inventory what is implemented, what evidence exists, and what remains to be verified across the project modules.  
-**Audit basis:** Repository source, model/evaluation artifacts, and project status documents available in this checkout.  
+**Audit basis:** Repository source, model/evaluation artifacts, project status documents, and a fresh backend test run on 2026-10-19.
 **Status:** Repository-level audit, not a clinical, security, or production certification. A feature in source code does not alone prove end-to-end operation.
 
 ## Executive summary
@@ -59,9 +59,9 @@ The project records DAIR-AI emotion, stress, and depression models as the active
 
 **Implemented:** `backend/app/ai/rag/` contains document loading, chunking, embedding, vector-store creation/loading, and retrieval components. Project documentation records Sentence Transformers `all-MiniLM-L6-v2`, FAISS, chunking defaults of 500 characters with 100-character overlap, and retrieval of up to four chunks. Knowledge sources are described as curated mental-health material, including WHO/APA/Mayo Clinic-type resources and CounselChat-derived content. The chat service inserts retrieved context into generation prompts.
 
-**Evaluation status:** RAG evaluation is **COMPLETED**. The unscored/error files have been deleted. The final evaluation file is `eval_results_llama3.2_3b_20261005_023146_SCORED.json` with 30 scored cases, no errors, and an overall average of 3.78. The 1B scored file is also present for comparison. Scores are recorded across context relevance, faithfulness, response relevance, safety, and helpfulness.
+**Evaluation status:** A 30-case generation capture is present at `VALIDATION/rag_llm/raw_run_20261019T101040519198Z.jsonl`, using the recorded local `llama3.2:3b` digest. It is explicitly `generated_unscored`; both reviewer score sheets and retrieval relevance labels remain blank. Therefore RAG/LLM quality is **not yet evaluated** and no answer-quality claim is supported. Older historical score claims in prior reports are not treated as current evidence unless their raw outputs and scoring provenance are available and independently reviewed.
 
-**Gaps:** Document the scoring rubric, reviewer/provenance details, and model/prompt versions; measure retrieval relevance/coverage; and retain source metadata/citations. Check source licensing, currency, provenance, chunk traceability, and duplicates. The completed scores are evaluation evidence, but do not establish clinical effectiveness.
+**Gaps:** Two independent reviewers must complete all 30 cases and retrieval annotations; summarize rubric dimensions and inter-rater agreement; retain source metadata/citations; and check source licensing, currency, provenance, chunk traceability, and duplicates. The current capture is useful raw evidence only and does not establish clinical effectiveness.
 
 ## 5. LLM, prompts, and multilingual behavior
 
@@ -87,7 +87,7 @@ Voice-related UI/audio files and backend STT/TTS/Whisper modules/routes exist. T
 
 ## 9. Test and delivery evidence
 
-Focused tests cover crisis detection, language detection, privacy, API security, chat service and selected frontend/database behavior. A project status note records a prior validation run with Python compilation passing and five automated tests passing. These are point-in-time notes, not a fresh test run for this audit. The repository has startup scripts for frontend/backend, requirements files, Docker Compose, model assets and setup notes; a clean-machine, repeatable installation and full end-to-end smoke test remain necessary.
+Focused tests cover crisis detection, language detection, privacy, API security, chat service and selected frontend/database behavior. On 2026-10-19, `python -m pytest -q` from `backend` passed **41 tests** (one dependency deprecation warning). This is a fresh backend unit/regression run, not a full-system test. The repository has startup scripts for frontend/backend, requirements files, Docker Compose, model assets and setup notes; a clean-machine, repeatable installation and full end-to-end smoke test remain necessary.
 
 ## 10. Prioritized remaining work
 
@@ -100,7 +100,7 @@ Focused tests cover crisis detection, language detection, privacy, API security,
 
 ## Overall conclusion
 
-The project has progressed beyond a UI mock-up: it contains integrated application, API, persistence, classifier, retrieval, generation, and safety-oriented components. Classifier training and task-specific held-out evaluation are evidenced by saved models and reports, and the 30-case RAG/LLM quality evaluation is completed with scored results. Deployment/end-to-end behavior needs current verification, and neither classifier results nor safety mechanisms establish clinical effectiveness. Present the system as a wellness-support prototype and clearly separate implemented features from experimentally validated outcomes.
+The project has progressed beyond a UI mock-up: it contains integrated application, API, persistence, classifier, retrieval, generation, and safety-oriented components. Classifier training and task-specific held-out evaluation are evidenced by saved models and reports, but reproducibility, leakage checks, and validity remain incomplete. The current 30-case RAG/LLM capture is unscored; deployment/end-to-end behavior needs verification. Neither classifier results nor safety mechanisms establish clinical effectiveness. Present the system as a wellness-support prototype and clearly separate implemented features from experimentally validated outcomes.
 
 ## Key repository evidence
 
@@ -121,7 +121,7 @@ The repository now contains repeatable tools and review templates under `VALIDAT
 - **RAG generation runner:** `backend/app/ai/evaluation_rag_llm/run_evaluation.py` now checks the exact Ollama model tag before loading the heavyweight RAG service, records timestamped per-case JSONL (model digest, prompt hash, retrieved chunk IDs/text, raw/display responses and latency), and marks outputs unscored. `summarize_scores.py` refuses incomplete reviewer sheets; retrieval labels are handled separately by `summarize_retrieval.py`. No new human scores are present, so **no RAG/LLM quality claim is supported**.
 - **Runtime observed during this remediation:** local Ollama reports version `0.40.6`; `ollama list` showed `llama3.2:3b` and `llama3.2:1b`. The current code default is `llama3.2:3b`, and `OLLAMA_MODEL` now selects the runtime tag. This verifies local tag presence only, not answer quality or another machine's installation.
 - **Dataset/model baseline:** `backend/scripts/capture_validation_baseline.py` captures Git/runtime state and SHA-256 manifests. `backend/scripts/audit_datasets.py` reports row/class/missing/duplicate/near-duplicate data. Current data provenance and licenses remain unresolved where noted in `VALIDATION/datasets/PROVENANCE.md`; do not treat skipped near-duplicate comparisons as clean.
-- **Safety/privacy:** `backend/tests/safety/crisis_matrix.json` and its evaluator create a small, explicitly non-comprehensive diagnostic report. Privacy regression tests cover common email/phone/CNIC forms. The retention policy and helpline source check are in `VALIDATION/privacy/RETENTION.md` and `VALIDATION/safety/HELPLINES.md`; current helpline reachability and complete PII log audit remain pending.
+- **Safety/privacy:** `backend/tests/safety/crisis_matrix.json` and its evaluator create a small, explicitly non-comprehensive diagnostic report. A fresh matrix run is recorded; the 12-case set had a baseline FN and FP and must not be presented as comprehensive detection. Regression tests cover common email/phone/CNIC forms. The retention policy and helpline source check are in `VALIDATION/privacy/RETENTION.md` and `VALIDATION/safety/HELPLINES.md`; current helpline reachability and complete PII log audit remain pending.
 - **Deployment/E2E:** `DEPLOYMENT.md`, `backend/.env.example`, and `VALIDATION/e2e/SMOKE_CHECKLIST.md` document setup variables and unverified checks. No clean-machine install, live PostgreSQL workflow, backup/restore, user-scoping matrix, browser/mobile, accessibility, or full voice path is claimed as passed.
 - **Baseline caution:** the worktree contains unrelated/pre-existing changes. The capture script deliberately does not create a tag or commit; a reviewed, clean baseline commit/tag is still an owner action.
 

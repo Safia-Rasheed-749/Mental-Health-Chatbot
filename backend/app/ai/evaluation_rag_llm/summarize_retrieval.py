@@ -14,8 +14,14 @@ PROJECT_ROOT = Path(__file__).resolve().parents[4]
 DEFAULT_INPUT = PROJECT_ROOT / "VALIDATION" / "rag_llm" / "retrieval_metrics.csv"
 
 
-def _ids(value: str) -> set[str]:
-    return {item.strip() for item in (value or "").split(";") if item.strip()}
+def _ids(value: str, *, allow_none: bool = False) -> list[str]:
+    """Parse occurrence IDs without collapsing duplicates; NONE means reviewed empty set."""
+    raw = [item.strip() for item in (value or "").split(";") if item.strip()]
+    if allow_none and len(raw) == 1 and raw[0].upper() == "NONE":
+        return []
+    if any(item.upper() == "NONE" for item in raw):
+        raise ValueError("Use NONE by itself to mark an explicitly empty relevant set.")
+    return raw
 
 
 def summarize(path: Path, report_path: Path, scored_path: Path) -> Path:
@@ -29,19 +35,25 @@ def summarize(path: Path, report_path: Path, scored_path: Path) -> Path:
         if key in pair_map:
             raise ValueError(f"Row {number}: duplicate case/reviewer pair {key}.")
         retrieved = _ids(row.get("retrieved_chunk_ids", ""))
-        relevant_retrieved = _ids(row.get("relevant_retrieved_chunk_ids", ""))
-        all_relevant = _ids(row.get("all_relevant_chunk_ids", ""))
-        if not relevant_retrieved or not all_relevant:
-            raise ValueError(f"Row {number}: manual relevant-retrieved and all-relevant chunk IDs are required.")
-        if not relevant_retrieved <= retrieved:
+        relevant_retrieved = _ids(row.get("relevant_retrieved_chunk_ids", ""), allow_none=True)
+        all_relevant = _ids(row.get("all_relevant_chunk_ids", ""), allow_none=True)
+        if not row.get("relevant_retrieved_chunk_ids", "").strip() or not row.get("all_relevant_chunk_ids", "").strip():
+            raise ValueError(f"Row {number}: reviewers must enter relevant IDs or NONE to explicitly label an empty set.")
+        if len(set(retrieved)) != len(retrieved):
+            raise ValueError(f"Row {number}: retrieved occurrence IDs must be unique; regenerate the worksheet.")
+        if len(set(relevant_retrieved)) != len(relevant_retrieved) or len(set(all_relevant)) != len(all_relevant):
+            raise ValueError(f"Row {number}: duplicate relevance IDs are not allowed.")
+        if not set(relevant_retrieved) <= set(retrieved):
             raise ValueError(f"Row {number}: relevant retrieved IDs must be a subset of retrieved IDs.")
-        if not relevant_retrieved <= all_relevant:
+        if not set(relevant_retrieved) <= set(all_relevant):
             raise ValueError(f"Row {number}: all relevant IDs must include relevant retrieved IDs.")
         if not retrieved:
             precision = 0.0
         else:
             precision = len(relevant_retrieved) / len(retrieved)
-        recall = len(relevant_retrieved) / len(all_relevant)
+        # NONE in all_relevant means reviewers found no relevant chunks anywhere
+        # in this KB snapshot; define coverage as zero and retain this explicit case.
+        recall = len(relevant_retrieved) / len(all_relevant) if all_relevant else 0.0
         row["precision_at_k"] = f"{precision:.6f}"
         row["coverage_recall"] = f"{recall:.6f}"
         pair_map[key] = row
@@ -62,15 +74,28 @@ def summarize(path: Path, report_path: Path, scored_path: Path) -> Path:
     sd_p = math.sqrt(sum((x - mean_p) ** 2 for x in precisions) / (len(precisions) - 1))
     sd_r = math.sqrt(sum((x - mean_r) ** 2 for x in recalls) / (len(recalls) - 1))
     report_path.parent.mkdir(parents=True, exist_ok=True)
-    report_path.write_text(
-        "# Manual retrieval evaluation\n\n"
-        f"- Paired annotations: {len(pair_map)} (30 questions × 2 reviewer roles)\n"
-        f"- Mean precision@k: {mean_p:.3f} (sample SD {sd_p:.3f})\n"
-        f"- Mean coverage/recall: {mean_r:.3f} (sample SD {sd_r:.3f})\n\n"
+    lines = [
+        "# Manual retrieval evaluation", "",
+        f"- Paired annotations: {len(pair_map)} (30 questions × 2 reviewer roles)",
+        f"- Mean precision@k: {mean_p:.3f} (sample SD {sd_p:.3f})",
+        f"- Mean coverage/recall: {mean_r:.3f} (sample SD {sd_r:.3f})", "",
+        "## Per-case diagnostic metrics", "",
+        "| Case | Reviewer 1 P@k | Reviewer 2 P@k | Reviewer 1 coverage | Reviewer 2 coverage | Disagreement |",
+        "|---|---:|---:|---:|---:|---|",
+    ]
+    for case_id in sorted(expected_ids):
+        left = pair_map[(case_id, "reviewer_1")]
+        right = pair_map[(case_id, "reviewer_2")]
+        p1, p2 = float(left["precision_at_k"]), float(right["precision_at_k"])
+        r1, r2 = float(left["coverage_recall"]), float(right["coverage_recall"])
+        disagreement = "review" if p1 != p2 or r1 != r2 else "none"
+        lines.append(f"| {case_id} | {p1:.3f} | {p2:.3f} | {r1:.3f} | {r2:.3f} | {disagreement} |")
+    lines.extend([
+        "", "## Interpretation and limitations", "",
         "Metrics depend on reviewers' manually identified complete relevant-chunk sets; incomplete sheets are rejected. "
-        "These results describe only this query set and index snapshot, not general retrieval quality. Review disagreements and source duplicates separately.\n",
-        encoding="utf-8",
-    )
+        "These results describe only this query set and index snapshot, not general retrieval quality. Reviewer disagreements and source duplicates require review.", "",
+    ])
+    report_path.write_text("\n".join(lines), encoding="utf-8")
     return report_path
 
 

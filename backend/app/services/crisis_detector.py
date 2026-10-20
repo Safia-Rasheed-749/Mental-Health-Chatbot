@@ -50,6 +50,8 @@ HIGH_SEVERITY_PHRASES = [
     "cutting myself",
     "hurt myself",
     "harm myself",
+    "خودکشی",
+    "خود کشی",
     # Roman Urdu
     "khudkushi",
     "khudkhusi",
@@ -69,6 +71,8 @@ MEDIUM_SEVERITY_PHRASES = [
     "can't go on",
     "cannot go on",
     "no point in living",
+    "don't see the point anymore",
+    "do not see the point anymore",
     "don't want to be here",
     "do not want to be here",
     "better off without me",
@@ -202,6 +206,10 @@ def detect_crisis(text: str) -> dict:
     normalised = text.lower().strip()
     language   = _detect_language(text)
 
+    # A clear personal negation should not be treated as a positive match.
+    if re.search(r"\b(?:not|never|don't|dont|do not|wouldn't|would not)\s+(?:be\s+)?(?:going to\s+)?(?:suicidal|suicide|want to die|want to kill myself|kill myself|end my life|hurt myself)\b", normalised):
+        return {"is_crisis": False, "severity": None, "matched_phrases": [], "language": language}
+
     # ===== NEGATIVE CONTEXT CHECK (false positive prevention) =====
     for neg_phrase in NEGATIVE_CONTEXT_PHRASES:
         if neg_phrase in normalised:
@@ -220,6 +228,8 @@ def detect_crisis(text: str) -> dict:
     contextual_reference = bool(re.search(
         r"\b(survived|prevention|research(?:ing)?|class|friend|dost)\b", normalised
     ))
+    if re.search(r"\b(?:movie|film)\b", normalised) and re.search(r"\b(?:ending|scene|plot)\b", normalised):
+        contextual_reference = True
 
     # Check HIGH first — stop at first positive level
     for phrase in HIGH_SEVERITY_PHRASES:

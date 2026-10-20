@@ -1,12 +1,12 @@
 {
-  "generated_at_utc": "2026-10-19T10:09:25.968035+00:00",
+  "generated_at_utc": "2026-10-20T04:44:12.840802+00:00",
   "roots": [
     "C:\\Users\\HP\\Desktop\\Mental-Health-Chatbot\\backend\\datasets",
     "C:\\Users\\HP\\Desktop\\Mental-Health-Chatbot\\counsel_chat"
   ],
   "near_duplicate_method": "character n-gram TF-IDF cosine similarity",
   "near_duplicate_threshold": 0.95,
-  "max_pair_comparisons": 10000000,
+  "max_pair_comparisons": 2000000,
   "csv_files": [
     {
       "path": "backend\\datasets\\depression_v2\\processed\\test.csv",
@@ -616,118 +616,16 @@
       "right": "backend\\datasets\\depression_v2\\processed\\train.csv",
       "threshold": 0.95,
       "possible_comparisons": 6147540,
-      "status": "complete",
-      "pairs": [
-        {
-          "left_row_1based": 64,
-          "right_row_1based": 2132,
-          "cosine": 0.959687
-        },
-        {
-          "left_row_1based": 104,
-          "right_row_1based": 2488,
-          "cosine": 0.998267
-        },
-        {
-          "left_row_1based": 247,
-          "right_row_1based": 2488,
-          "cosine": 0.995033
-        },
-        {
-          "left_row_1based": 356,
-          "right_row_1based": 3000,
-          "cosine": 0.972149
-        },
-        {
-          "left_row_1based": 385,
-          "right_row_1based": 3647,
-          "cosine": 0.955163
-        },
-        {
-          "left_row_1based": 498,
-          "right_row_1based": 4486,
-          "cosine": 0.998013
-        },
-        {
-          "left_row_1based": 498,
-          "right_row_1based": 3565,
-          "cosine": 0.994147
-        },
-        {
-          "left_row_1based": 505,
-          "right_row_1based": 3000,
-          "cosine": 0.956827
-        },
-        {
-          "left_row_1based": 578,
-          "right_row_1based": 2393,
-          "cosine": 0.989479
-        },
-        {
-          "left_row_1based": 644,
-          "right_row_1based": 2677,
-          "cosine": 1.0
-        },
-        {
-          "left_row_1based": 644,
-          "right_row_1based": 866,
-          "cosine": 1.0
-        },
-        {
-          "left_row_1based": 646,
-          "right_row_1based": 3000,
-          "cosine": 0.982382
-        },
-        {
-          "left_row_1based": 684,
-          "right_row_1based": 1795,
-          "cosine": 0.99676
-        },
-        {
-          "left_row_1based": 791,
-          "right_row_1based": 2330,
-          "cosine": 0.976504
-        }
-      ]
+      "status": "skipped_pair_cap",
+      "pairs": []
     },
     {
       "left": "backend\\datasets\\depression_v2\\processed\\train.csv",
       "right": "backend\\datasets\\depression_v2\\processed\\validation.csv",
       "threshold": 0.95,
       "possible_comparisons": 6142185,
-      "status": "complete",
-      "pairs": [
-        {
-          "left_row_1based": 136,
-          "right_row_1based": 249,
-          "cosine": 0.995982
-        },
-        {
-          "left_row_1based": 2180,
-          "right_row_1based": 666,
-          "cosine": 0.97041
-        },
-        {
-          "left_row_1based": 2440,
-          "right_row_1based": 406,
-          "cosine": 0.972612
-        },
-        {
-          "left_row_1based": 3468,
-          "right_row_1based": 384,
-          "cosine": 0.975074
-        },
-        {
-          "left_row_1based": 4476,
-          "right_row_1based": 249,
-          "cosine": 0.995982
-        },
-        {
-          "left_row_1based": 4779,
-          "right_row_1based": 1145,
-          "cosine": 0.983726
-        }
-      ]
+      "status": "skipped_pair_cap",
+      "pairs": []
     },
     {
       "left": "backend\\datasets\\processed\\clean_dev.csv",
@@ -750,24 +648,8 @@
       "right": "backend\\datasets\\stress\\processed\\clean_train.csv",
       "threshold": 0.95,
       "possible_comparisons": 2018445,
-      "status": "complete",
-      "pairs": [
-        {
-          "left_row_1based": 160,
-          "right_row_1based": 572,
-          "cosine": 1.0
-        },
-        {
-          "left_row_1based": 375,
-          "right_row_1based": 1988,
-          "cosine": 1.0
-        },
-        {
-          "left_row_1based": 617,
-          "right_row_1based": 1118,
-          "cosine": 1.0
-        }
-      ]
+      "status": "skipped_pair_cap",
+      "pairs": []
     },
     {
       "left": "counsel_chat\\emotion_dataset\\processed\\test_processed.csv",

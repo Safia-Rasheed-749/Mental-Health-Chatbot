@@ -1,0 +1,75 @@
+{
+  "source_audit": "..\\VALIDATION\\datasets\\classifier_splits\\dataset_audit.json",
+  "policy": "first normalized exact duplicate kept in each split; evaluation-side rows removed on exact train overlap and all audited near-duplicate candidate matches; source files untouched",
+  "splits": {
+    "train": {
+      "source": "C:\\Users\\HP\\Desktop\\Mental-Health-Chatbot\\backend\\datasets\\depression_v2\\processed\\train.csv",
+      "output": "..\\VALIDATION\\datasets\\deduplicated\\depression_v2\\train_deduplicated.csv",
+      "rows_before": 5355,
+      "rows_after": 5354,
+      "removed_count": 1,
+      "removed_source_rows_1based_including_header": [
+        2677
+      ],
+      "removal_reasons": {
+        "2677": [
+          "within_split_exact_duplicate"
+        ]
+      },
+      "sha256": "f1c3de2f041364644dc77f6061c8c7e3f05279d9ab1f850c82eee55a19711779"
+    },
+    "validation": {
+      "source": "C:\\Users\\HP\\Desktop\\Mental-Health-Chatbot\\backend\\datasets\\depression_v2\\processed\\validation.csv",
+      "output": "..\\VALIDATION\\datasets\\deduplicated\\depression_v2\\validation_deduplicated.csv",
+      "rows_before": 1147,
+      "rows_after": 1144,
+      "removed_count": 3,
+      "removed_source_rows_1based_including_header": [
+        666,
+        1072,
+        1145
+      ],
+      "removal_reasons": {
+        "666": [
+          "train_near_overlap_jaccard_0.963855"
+        ],
+        "1072": [
+          "train_near_overlap_jaccard_0.981538"
+        ],
+        "1145": [
+          "train_near_overlap_jaccard_0.966114"
+        ]
+      },
+      "sha256": "2c412f6b744e027deedbfb5fe92b1a3ac5bcafdd2a46dddd7770c0827cc95cc9"
+    },
+    "test": {
+      "source": "C:\\Users\\HP\\Desktop\\Mental-Health-Chatbot\\backend\\datasets\\depression_v2\\processed\\test.csv",
+      "output": "..\\VALIDATION\\datasets\\deduplicated\\depression_v2\\test_deduplicated.csv",
+      "rows_before": 1148,
+      "rows_after": 1144,
+      "removed_count": 4,
+      "removed_source_rows_1based_including_header": [
+        498,
+        644,
+        646,
+        684
+      ],
+      "removal_reasons": {
+        "498": [
+          "train_near_overlap_jaccard_0.978242",
+          "train_near_overlap_jaccard_0.988392"
+        ],
+        "644": [
+          "train_exact_overlap"
+        ],
+        "646": [
+          "train_near_overlap_jaccard_1.000000"
+        ],
+        "684": [
+          "train_near_overlap_jaccard_0.984346"
+        ]
+      },
+      "sha256": "ec8c9158010f28a96e31592318a4a85f1729bbe1d29d52c488b6a36ffd03d433"
+    }
+  }
+}

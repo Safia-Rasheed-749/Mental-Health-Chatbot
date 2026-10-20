@@ -91,6 +91,23 @@ def summarize(scores_path: Path, report_path: Path) -> Path:
         lines.append(f"| {dimension.replace('_', ' ').title()} | {mean:.2f} | {sd:.2f} | {kappa:.3f} | {agreement:.1%} |")
     lines.extend([
         "",
+        "## Case diagnostics",
+        "",
+        "Case means below 3.0 are flagged for human review; this threshold is a diagnostic convention, not a pass/fail safety guarantee.",
+        "",
+        "| Case | Reviewer | Dimension means | Low scores (<3) | Comments |",
+        "|---|---|---|---|---|",
+    ])
+    for case_id in sorted(expected_ids):
+        for reviewer in sorted(required_reviewers):
+            ratings = by_case_reviewer[(case_id, reviewer)]
+            low = [name for name, value in ratings.items() if value < 3]
+            original = next(row for row in rows if row["test_id"].strip() == case_id and row["reviewer_role"].strip() == reviewer)
+            comments = (original.get("comments") or "").replace("|", "\\|").replace("\n", " ")
+            means = ", ".join(f"{name.replace('_', ' ')}={value}" for name, value in ratings.items())
+            lines.append(f"| {case_id} | {reviewer} | {means} | {', '.join(low) or 'none'} | {comments} |")
+    lines.extend([
+        "",
         "## Interpretation and limitations",
         "",
         "Cohen's κ is unweighted and computed per rubric dimension across the 30 paired ratings. "

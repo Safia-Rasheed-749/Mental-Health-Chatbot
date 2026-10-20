@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 
 from app.services.crisis_detector import detect_crisis
+from scripts.evaluate_crisis_matrix import evaluate
 
 CASES = json.loads((Path(__file__).parent / "crisis_matrix.json").read_text(encoding="utf-8"))
 
@@ -30,3 +31,13 @@ def test_clear_negation_and_nonpersonal_mention_are_not_triggered():
 def test_matrix_includes_known_challenging_categories():
     categories = {case["category"] for case in CASES}
     assert {"indirect", "conditional", "negation", "code_switched", "roman_urdu_variant", "urdu_script", "hyperbole"} <= categories
+
+
+def test_full_matrix_reports_precision_recall_and_diagnostic_errors():
+    report = evaluate(Path(__file__).with_name("crisis_matrix.json"))
+    confusion = report["confusion"]
+    assert report["case_count"] == len(CASES)
+    assert 0.0 <= report["precision"] <= 1.0
+    assert 0.0 <= report["recall"] <= 1.0
+    assert len(report["misclassified_cases"]) == confusion["false_positive"] + confusion["false_negative"]
+    assert "not comprehensive" in report["limitation"]

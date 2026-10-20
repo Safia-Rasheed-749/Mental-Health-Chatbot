@@ -1,0 +1,594 @@
+{
+  "scope": "recalculation from archived held-out predictions; no retraining performed",
+  "models": {
+    "depression_deberta": {
+      "prediction_file": "backend/evaluation/depression_three_model_comparison/results/deberta_v3_base_test_predictions.csv",
+      "source_split": "backend/datasets/depression_v2/processed/test.csv",
+      "sample_count": 1148,
+      "labels": [
+        0,
+        1
+      ],
+      "accuracy": 0.9790940766550522,
+      "confusion_matrix_labels_order": [
+        0,
+        1
+      ],
+      "confusion_matrix": [
+        [
+          576,
+          8
+        ],
+        [
+          16,
+          548
+        ]
+      ],
+      "per_class": {
+        "0": {
+          "precision": 0.972972972972973,
+          "recall": 0.9863013698630136,
+          "f1": 0.9795918367346939,
+          "support": 584
+        },
+        "1": {
+          "precision": 0.9856115107913669,
+          "recall": 0.9716312056737588,
+          "f1": 0.9785714285714285,
+          "support": 564
+        }
+      },
+      "bootstrap": {
+        "method": "non-stratified percentile bootstrap over held-out rows",
+        "replicates": 2000,
+        "seed": 42,
+        "accuracy_95_ci": [
+          0.9712543554006968,
+          0.9869337979094077
+        ],
+        "macro_f1_95_ci": [
+          0.9711782280133565,
+          0.9869326080750815
+        ]
+      },
+      "calibration": {
+        "available": true,
+        "input": "saved top-class confidence only; not class probability vector",
+        "ece": null,
+        "brier_score": null,
+        "note": "Top-label ECE is reported separately; Brier omitted because class probability vectors are unavailable."
+      },
+      "mean_top_class_confidence": 0.9887115846319896,
+      "top_label_calibration": {
+        "available": true,
+        "method": "ECE with 10 equal-width bins of maximum class confidence; Brier unavailable because only maximum probability is saved",
+        "ece_10_bins": 0.010476636035101825,
+        "brier_score": null
+      },
+      "within_test_exact_normalized_duplicates_removed": 0,
+      "train_or_validation_overlap_rows_removed": 1,
+      "deduplicated_test_scope": "archived predictions restricted to first normalized test row not found in train or validation; same fitted model, not retraining; does not correct model-selection/training leakage or near-duplicate leakage",
+      "test_deduplicated_metrics": {
+        "sample_count": 1147,
+        "labels": [
+          0,
+          1
+        ],
+        "accuracy": 0.979075850043592,
+        "confusion_matrix_labels_order": [
+          0,
+          1
+        ],
+        "confusion_matrix": [
+          [
+            576,
+            8
+          ],
+          [
+            16,
+            547
+          ]
+        ],
+        "per_class": {
+          "0": {
+            "precision": 0.972972972972973,
+            "recall": 0.9863013698630136,
+            "f1": 0.9795918367346939,
+            "support": 584
+          },
+          "1": {
+            "precision": 0.9855855855855856,
+            "recall": 0.9715808170515098,
+            "f1": 0.9785330948121646,
+            "support": 563
+          }
+        }
+      },
+      "test_deduplicated_bootstrap": {
+        "method": "non-stratified percentile bootstrap over held-out rows",
+        "replicates": 2000,
+        "seed": 42,
+        "accuracy_95_ci": [
+          0.970357454228422,
+          0.986922406277245
+        ],
+        "macro_f1_95_ci": [
+          0.9703574271906603,
+          0.9869122503058326
+        ]
+      },
+      "test_text_overlap_with_train": 1,
+      "test_text_overlap_with_validation": 0
+    },
+    "stress_deberta": {
+      "prediction_file": "backend/evaluation/stress_three_model_comparison/results/deberta_v3_base_test_predictions.csv",
+      "source_split": "backend/datasets/stress/processed/clean_test.csv",
+      "sample_count": 715,
+      "labels": [
+        0,
+        1
+      ],
+      "accuracy": 0.8195804195804196,
+      "confusion_matrix_labels_order": [
+        0,
+        1
+      ],
+      "confusion_matrix": [
+        [
+          266,
+          80
+        ],
+        [
+          49,
+          320
+        ]
+      ],
+      "per_class": {
+        "0": {
+          "precision": 0.8444444444444444,
+          "recall": 0.7687861271676301,
+          "f1": 0.8048411497730711,
+          "support": 346
+        },
+        "1": {
+          "precision": 0.8,
+          "recall": 0.8672086720867209,
+          "f1": 0.8322496749024707,
+          "support": 369
+        }
+      },
+      "bootstrap": {
+        "method": "non-stratified percentile bootstrap over held-out rows",
+        "replicates": 2000,
+        "seed": 42,
+        "accuracy_95_ci": [
+          0.7902097902097902,
+          0.8461538461538461
+        ],
+        "macro_f1_95_ci": [
+          0.7889566316590165,
+          0.8452380952380952
+        ]
+      },
+      "calibration": {
+        "available": true,
+        "input": "saved top-class confidence only; not class probability vector",
+        "ece": null,
+        "brier_score": null,
+        "note": "Top-label ECE is reported separately; Brier omitted because class probability vectors are unavailable."
+      },
+      "mean_top_class_confidence": 0.9700128450260296,
+      "top_label_calibration": {
+        "available": true,
+        "method": "ECE with 10 equal-width bins of maximum class confidence; Brier unavailable because only maximum probability is saved",
+        "ece_10_bins": 0.15233083871694716,
+        "brier_score": null
+      },
+      "stress_false_negative_count": 49,
+      "stress_false_negative_examples": [
+        {
+          "row_id": 2,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9938482642173767,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "financial_or_work_stressor"
+        },
+        {
+          "row_id": 33,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9138917922973633,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "relationship_or_family_stressor"
+        },
+        {
+          "row_id": 38,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.7092023491859436,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 62,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9103736281394958,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 70,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9613131880760193,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 90,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.7085316777229309,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 100,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9555928707122803,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "health_or_emotional_context"
+        },
+        {
+          "row_id": 168,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9920146465301514,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "financial_or_work_stressor"
+        },
+        {
+          "row_id": 173,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9802518486976624,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "financial_or_work_stressor"
+        },
+        {
+          "row_id": 174,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.649686336517334,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "financial_or_work_stressor"
+        },
+        {
+          "row_id": 175,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9939725995063782,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 191,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9370529651641846,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 195,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.98450767993927,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "financial_or_work_stressor"
+        },
+        {
+          "row_id": 207,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9840741157531738,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 225,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9795921444892883,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "education_stressor"
+        },
+        {
+          "row_id": 239,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9945830702781677,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "health_or_emotional_context"
+        },
+        {
+          "row_id": 253,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.7576112151145935,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "relationship_or_family_stressor"
+        },
+        {
+          "row_id": 257,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9925077557563782,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 270,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9526156783103943,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "financial_or_work_stressor"
+        },
+        {
+          "row_id": 273,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9913474917411804,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        }
+      ],
+      "stress_false_negative_theme_counts": {
+        "education_stressor": 2,
+        "financial_or_work_stressor": 12,
+        "health_or_emotional_context": 5,
+        "other_or_contextual": 27,
+        "relationship_or_family_stressor": 3
+      }
+    },
+    "stress_roberta": {
+      "prediction_file": "backend/evaluation/stress_three_model_comparison/results/roberta_base_test_predictions.csv",
+      "source_split": "backend/datasets/stress/processed/clean_test.csv",
+      "sample_count": 715,
+      "labels": [
+        0,
+        1
+      ],
+      "accuracy": 0.7818181818181819,
+      "confusion_matrix_labels_order": [
+        0,
+        1
+      ],
+      "confusion_matrix": [
+        [
+          221,
+          125
+        ],
+        [
+          31,
+          338
+        ]
+      ],
+      "per_class": {
+        "0": {
+          "precision": 0.876984126984127,
+          "recall": 0.638728323699422,
+          "f1": 0.7391304347826086,
+          "support": 346
+        },
+        "1": {
+          "precision": 0.7300215982721382,
+          "recall": 0.9159891598915989,
+          "f1": 0.8125,
+          "support": 369
+        }
+      },
+      "bootstrap": {
+        "method": "non-stratified percentile bootstrap over held-out rows",
+        "replicates": 2000,
+        "seed": 42,
+        "accuracy_95_ci": [
+          0.7496503496503496,
+          0.811223776223776
+        ],
+        "macro_f1_95_ci": [
+          0.742702123770306,
+          0.8062274993805533
+        ]
+      },
+      "calibration": {
+        "available": true,
+        "input": "saved top-class confidence only; not class probability vector",
+        "ece": null,
+        "brier_score": null,
+        "note": "Top-label ECE is reported separately; Brier omitted because class probability vectors are unavailable."
+      },
+      "mean_top_class_confidence": 0.9818035926852193,
+      "top_label_calibration": {
+        "available": true,
+        "method": "ECE with 10 equal-width bins of maximum class confidence; Brier unavailable because only maximum probability is saved",
+        "ece_10_bins": 0.20007893297222115,
+        "brier_score": null
+      },
+      "stress_false_negative_count": 31,
+      "stress_false_negative_examples": [
+        {
+          "row_id": 12,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9949744939804077,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "education_stressor"
+        },
+        {
+          "row_id": 33,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.8476864099502563,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "relationship_or_family_stressor"
+        },
+        {
+          "row_id": 100,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9755446314811707,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "health_or_emotional_context"
+        },
+        {
+          "row_id": 105,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9941283464431763,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 168,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9924091100692749,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "financial_or_work_stressor"
+        },
+        {
+          "row_id": 173,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9900397658348083,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "financial_or_work_stressor"
+        },
+        {
+          "row_id": 174,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9905979037284851,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "financial_or_work_stressor"
+        },
+        {
+          "row_id": 175,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9962164759635925,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 180,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9535809755325317,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "financial_or_work_stressor"
+        },
+        {
+          "row_id": 195,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9937120676040649,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "financial_or_work_stressor"
+        },
+        {
+          "row_id": 239,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9956234097480774,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "health_or_emotional_context"
+        },
+        {
+          "row_id": 257,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9804672598838806,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 273,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9931674599647522,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 324,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.969788134098053,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 359,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.992965817451477,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "financial_or_work_stressor"
+        },
+        {
+          "row_id": 389,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9953466057777405,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 451,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.5245580077171326,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        },
+        {
+          "row_id": 477,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9783340692520142,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "financial_or_work_stressor"
+        },
+        {
+          "row_id": 493,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.9183914065361023,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "health_or_emotional_context"
+        },
+        {
+          "row_id": 507,
+          "true_label": 1,
+          "predicted_label": 0,
+          "confidence": 0.996183454990387,
+          "text_excerpt": "OMITTED_FOR_PRIVACY",
+          "error_theme": "other_or_contextual"
+        }
+      ],
+      "stress_false_negative_theme_counts": {
+        "education_stressor": 1,
+        "financial_or_work_stressor": 11,
+        "health_or_emotional_context": 5,
+        "other_or_contextual": 13,
+        "relationship_or_family_stressor": 1
+      }
+    }
+  }
+}

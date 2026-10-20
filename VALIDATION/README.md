@@ -20,4 +20,6 @@ python -m app.ai.evaluation_rag_llm.run_evaluation
 
 This checks the configured Ollama tag before importing the heavyweight RAG service, writes a timestamped JSONL output and refuses to report model quality. The two reviewers must complete `VALIDATION/rag_llm/scores.csv` and `retrieval_metrics.csv`; then run `python -m app.ai.evaluation_rag_llm.summarize_scores` and `python -m app.ai.evaluation_rag_llm.summarize_retrieval`. Incomplete or invalid sheets are rejected.
 
+For each retrieval row, mark relevant retrieved occurrences and the complete set of relevant chunks you found in the KB snapshot. IDs are occurrence-specific (for example, identical retrieved passages may appear as `abc123#1` and `abc123#2`). Use `NONE` by itself when the reviewed set is intentionally empty; a blank cell means not yet reviewed and is rejected. See the runner and summarizer for validation rules.
+
 No scores, agreement values, retrieval metrics, clean-install results, or browser-test results are claimed until their corresponding artifacts exist and have been reviewed. Unavailable checks are marked pending in the project audit report.
