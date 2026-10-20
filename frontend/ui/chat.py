@@ -970,7 +970,15 @@ def show_chat(user_id):
 
         # ===== AUDIO MESSAGE =====
         elif user_input["type"] == "audio":
+            if user_input.get("consent") is not True:
+                st.error("Voice processing requires your explicit consent. No audio was processed.")
+                st.stop()
             audio_bytes = bytes(user_input["data"])
+            if not audio_bytes:
+                st.warning("The recording was empty. Please try again.")
+                st.stop()
+            webm_path = None
+            wav_path = None
             try:
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp:
                     tmp.write(audio_bytes)
@@ -995,18 +1003,9 @@ def show_chat(user_id):
                 voice_text = (transcription.get("text") or "").strip()
                 detected_speech_language = transcription.get("language") or ""
 
-                if os.getenv("MINDCARE_ENV", "production").lower() == "development":
-                    print(f"[speech-dev] detected_language={detected_speech_language!r}; transcript={voice_text!r}")
-
                 if voice_text.strip():
                     st.session_state["chat_history"].append(("user", voice_text))
                     add_message(user_id, "user", voice_text, cid)
-
-                    try:
-                        os.unlink(webm_path)
-                        os.unlink(wav_path)
-                    except:
-                        pass
 
                     # Reset component key NOW so Phase 2a gets a blank input field
                     st.session_state["component_key_timestamp"] = time.time()
@@ -1029,4 +1028,11 @@ def show_chat(user_id):
             except sr.UnknownValueError:
                 st.warning("Sorry, I couldn't understand that. Please speak clearly.")
             except Exception as e:
-                st.error(f"Voice error: {str(e)}")
+                st.error(f"Voice processing failed ({type(e).__name__}). Your text chat is still available.")
+            finally:
+                for temporary_path in (webm_path, wav_path):
+                    if temporary_path:
+                        try:
+                            os.unlink(temporary_path)
+                        except OSError:
+                            pass

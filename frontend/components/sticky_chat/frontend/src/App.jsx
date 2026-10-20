@@ -7,12 +7,25 @@ import {
 function App() {
   const [text, setText] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  const [voiceConsent, setVoiceConsent] = useState(false);
+  const [voiceError, setVoiceError] = useState("");
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
+  const streamRef = useRef(null);
+  const recordingTimerRef = useRef(null);
+  const discardRecordingRef = useRef(false);
   const isUrduInput = /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/.test(text);
 
   useEffect(() => {
-    Streamlit.setFrameHeight(82);
+    Streamlit.setFrameHeight(104);
+    return () => {
+      if (recordingTimerRef.current) clearTimeout(recordingTimerRef.current);
+      if (mediaRecorderRef.current?.state === "recording") {
+        discardRecordingRef.current = true;
+        mediaRecorderRef.current.stop();
+      }
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+    };
   }, []);
 
   // SEND TEXT
@@ -39,10 +52,19 @@ function App() {
 
   // RECORD AUDIO
   const startRecording = async () => {
+    if (!voiceConsent) {
+      setVoiceError("Please review and accept the voice-processing notice before recording.");
+      return;
+    }
     try {
+      setVoiceError("");
+      if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
+        throw new Error("Voice recording is not supported by this browser.");
+      }
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: true,
       });
+      streamRef.current = stream;
       
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
@@ -53,39 +75,52 @@ function App() {
       };
       
       mediaRecorder.onstop = async () => {
+        if (recordingTimerRef.current) clearTimeout(recordingTimerRef.current);
         const blob = new Blob(chunksRef.current, {
-          type: "audio/webm",
+          type: mediaRecorder.mimeType || "audio/webm",
         });
-        const arrayBuffer = await blob.arrayBuffer();
-        const uint8Array = Array.from(new Uint8Array(arrayBuffer));
-        
-        // Send the value
-        Streamlit.setComponentValue({
-          type: "audio",
-          data: uint8Array,
-        });
-        
-        // Stop all tracks
-        stream.getTracks().forEach(track => track.stop());
-        setIsRecording(false);
+        chunksRef.current = [];
+        try {
+          if (discardRecordingRef.current) return;
+          if (!blob.size) throw new Error("No audio was recorded. Please try again.");
+          const arrayBuffer = await blob.arrayBuffer();
+          const uint8Array = Array.from(new Uint8Array(arrayBuffer));
+          Streamlit.setComponentValue({
+            type: "audio",
+            data: uint8Array,
+            mime_type: blob.type,
+            consent: true,
+          });
+        } catch (err) {
+          setVoiceError(err.message || "Could not prepare this recording.");
+        } finally {
+          discardRecordingRef.current = false;
+          stream.getTracks().forEach(track => track.stop());
+          streamRef.current = null;
+          setIsRecording(false);
+        }
       };
       
       mediaRecorder.start();
       setIsRecording(true);
       
       // Auto-stop after 5 seconds
-      setTimeout(() => {
+      recordingTimerRef.current = setTimeout(() => {
         if (mediaRecorder.state === "recording") {
           mediaRecorder.stop();
         }
       }, 5000);
     } catch (err) {
       console.error("Mic error:", err);
-      alert("Microphone access denied");
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+      setIsRecording(false);
+      setVoiceError(err.message || "Microphone access was denied.");
     }
   };
 
   const stopRecording = () => {
+    if (recordingTimerRef.current) clearTimeout(recordingTimerRef.current);
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
       mediaRecorderRef.current.stop();
     }
@@ -104,10 +139,28 @@ function App() {
         aria-label="Message MindCare AI"
       />
       
+      <label className="voice-consent" title="Microphone audio is sent to this app for local Whisper transcription; the transcript is sent as chat text and saved with chat history. Optional spoken replies use an online speech provider. Temporary audio files are deleted after processing.">
+        <input
+          type="checkbox"
+          checked={voiceConsent}
+          onChange={(event) => {
+            setVoiceConsent(event.target.checked);
+            setVoiceError("");
+            if (!event.target.checked && mediaRecorderRef.current?.state === "recording") {
+              discardRecordingRef.current = true;
+              stopRecording();
+            }
+          }}
+          aria-label="I consent to voice processing"
+        />
+        <span>I consent to voice processing (audio transcription; transcript saved as chat; optional reply audio uses online speech services).</span>
+      </label>
       <button
         className={`mic-btn ${isRecording ? 'recording' : ''}`}
         onClick={isRecording ? stopRecording : startRecording}
+        disabled={!voiceConsent && !isRecording}
         title={isRecording ? "Stop Recording" : "Start Recording"}
+        aria-label={isRecording ? "Stop recording" : "Start voice recording"}
       >
         {isRecording ? (
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="8" height="8" rx="1.5" /></svg>
@@ -123,6 +176,7 @@ function App() {
       >
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 3-7.4 18-3.8-7.8L2 9.4 21 3Z" /><path d="M10 13 21 3" /></svg>
       </button>
+      {voiceError && <span className="voice-error" role="alert">{voiceError}</span>}
     </div>
   );
 }
