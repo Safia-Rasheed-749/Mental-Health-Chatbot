@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """
 =========================================================
 RAG + LLM Integration Test Script
@@ -278,6 +278,7 @@ def main() -> None:
         try:
             messages = prompt.format_messages(
                 context=context,
+                mental_state="No classifier information provided in this standalone test.",
                 question=question,
             )
             response = llm.invoke(messages)
@@ -310,3 +311,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
