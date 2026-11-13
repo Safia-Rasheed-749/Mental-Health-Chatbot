@@ -29,6 +29,9 @@ Flow for every /chat request:
 
 from typing import List, Optional, Tuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timedelta
+import json
+import re
 
 from langchain_core.documents import Document
 
@@ -48,6 +51,7 @@ from .crisis_utils import assess_crisis
 from app.services.crisis_detector import detect_crisis, log_crisis_event
 from app.services.crisis_resources import get_crisis_response
 from app.services.privacy import redact_sensitive_data
+from app.database.connection import db_cursor
 
 # =====================================================
 # Configuration
@@ -57,9 +61,58 @@ TOP_K = 4          # Number of RAG chunks to retrieve
 LOW_CONF = 60.0    # Confidence threshold below which a label is "unreliable"
 
 # --- Multi-turn memory configuration (change these to tune behaviour) ---
-MAX_HISTORY_TURNS  = 3     # Maximum previous turns to inject (1 turn = 1 user + 1 assistant)
+MAX_HISTORY_TURNS  = 1     # Maximum previous turns to inject (1 turn = 1 user + 1 assistant)
 MAX_HISTORY_TOKENS = 1500  # Approximate token budget for history (1 token ≈ 4 chars)
 MAX_MESSAGE_CHARS  = 500   # Truncate any single message longer than this
+
+_JOURNAL_STOPWORDS = {
+    "about", "after", "also", "am", "and", "are", "because", "been", "being",
+    "but", "for", "from", "have", "her", "his", "into", "its", "just", "like",
+    "more", "much", "my", "our", "that", "the", "their", "them", "there", "this",
+    "was", "were", "with", "would", "you", "your",
+}
+_JOURNAL_SYNONYM_GROUPS = (
+    {"anxious", "anxiety", "nervous", "nervousness", "worried", "worry", "worrying"},
+    {"exam", "exams", "fyp", "presentation", "project", "study", "studies", "studying"},
+    {"tired", "fatigue", "exhausted", "sleep", "sleeping", "energy"},
+    {"stress", "stressed", "pressure", "overwhelmed", "overwhelm"},
+)
+
+
+def _journal_terms(text: str) -> set[str]:
+    return {
+        word for word in re.findall(r"[a-z]+", text.lower())
+        if len(word) >= 4 and word not in _JOURNAL_STOPWORDS
+    }
+
+
+def _journal_topics(text: str) -> set[str]:
+    words = set(re.findall(r"[a-z]+", text.lower()))
+    return {
+        f"topic_{index}"
+        for index, group in enumerate(_JOURNAL_SYNONYM_GROUPS)
+        if words & group
+    }
+
+
+def _journal_is_relevant(question: str, journal_text: str) -> bool:
+    question_terms = _journal_terms(question)
+    journal_terms = _journal_terms(journal_text)
+    return bool(
+        question_terms & journal_terms
+        or _journal_topics(question) & _journal_topics(journal_text)
+    )
+
+
+def _response_mentions_journal(response: str, journal_text: str) -> bool:
+    journal_terms = _journal_terms(journal_text)
+    if not journal_terms:
+        return True
+    response_terms = _journal_terms(response)
+    shared_terms = len(journal_terms & response_terms)
+    shared_topics = len(_journal_topics(response) & _journal_topics(journal_text))
+    required_terms = min(2, len(journal_terms))
+    return shared_terms + shared_topics >= required_terms
 
 # =====================================================
 # Context Builder
@@ -79,6 +132,79 @@ def build_context(documents: List[Document]) -> str:
     for index, document in enumerate(documents, start=1):
         parts.append(f"[Chunk {index}]\n{document.page_content}")
     return "\n\n".join(parts)
+
+
+def mood_to_score(mood: str) -> Optional[int]:
+    """Map stored mood labels to their requested 1-5 severity score."""
+    return {
+        "happy": 5,
+        "neutral": 4,
+        "anxious": 3,
+        "sad": 2,
+        "angry": 1,
+        "depressed": 1,
+    }.get((mood or "").strip().lower())
+
+
+def build_user_context(user_id: int) -> str:
+    """Load and format the user's recent mood and journal history."""
+    now = datetime.now()
+    cutoff_30 = now - timedelta(days=30)
+    cutoff_7 = now - timedelta(days=7)
+    with db_cursor() as cur:
+        cur.execute(
+            "SELECT mood, created_at FROM mood WHERE user_id=%s "
+            "AND created_at >= NOW() - INTERVAL '30 days' ORDER BY created_at DESC",
+            (user_id,),
+        )
+        moods = cur.fetchall()
+        cur.execute(
+            "SELECT entry, created_at FROM journal WHERE user_id=%s "
+            "ORDER BY created_at DESC LIMIT 3",
+            (user_id,),
+        )
+        journals = cur.fetchall()
+
+    if not moods and not journals:
+        return ""
+
+    scores_30 = []
+    scores_7 = []
+    recent_moods = []
+    for mood, created_at in moods:
+        label = str(mood)
+        recent_moods.append(label)
+        score = mood_to_score(label)
+        if score is not None:
+            scores_30.append(score)
+            if created_at and created_at.replace(tzinfo=None) >= cutoff_7:
+                scores_7.append(score)
+
+    def average(scores):
+        return f"{sum(scores) / len(scores):.1f}" if scores else "N/A"
+
+    lines = [
+        f"- Recent Mood Logs: {', '.join(recent_moods) if recent_moods else 'None'}",
+        f"- Mood Trend: Recent (7 days) average is {average(scores_7)}/5. "
+        f"Past (30 days) average is {average(scores_30)}/5.",
+        "- Recent Journal Entries:",
+    ]
+    if journals:
+        for index, (entry, created_at) in enumerate(journals, start=1):
+            entry_date = created_at.strftime("%Y-%m-%d") if created_at else "Unknown date"
+            journal_text = str(entry or "")
+            json_text = journal_text.removeprefix("JOURNAL_V1:").strip()
+            try:
+                parsed_entry = json.loads(json_text)
+                if isinstance(parsed_entry, dict) and isinstance(parsed_entry.get("content"), str):
+                    journal_text = parsed_entry["content"]
+            except (json.JSONDecodeError, TypeError):
+                pass
+            lines.append(f"  {index}. [{entry_date}] {journal_text}")
+    else:
+        lines.insert(0, "User Context:")
+        lines.append("  None")
+    return "\n".join(lines)
 
 
 # =====================================================
@@ -356,7 +482,7 @@ retriever, llm = initialize_rag_chat()
 # Main Chat Function
 # =====================================================
 
-def generate_chat_response(question: str, history: Optional[list] = None) -> dict:
+def generate_chat_response(question: str, history: Optional[list] = None, user_id: Optional[int] = None) -> dict:
     """
     Generate a response using detectors + RAG + LLM.
 
@@ -441,24 +567,24 @@ def generate_chat_response(question: str, history: Optional[list] = None) -> dic
         # Use level if provided, otherwise default to "high"
         level = crisis_eval.get("level", "high")
         print(f"  [CRISIS DETECTED]: level={level} — activating safety protocol.")
-        try:
-            emotion_result, stress_result, depression_result = run_detectors(question)
-        except Exception:
-            emotion_result = {"emotion": "fear", "confidence": 99.0}
-            stress_result = {"stress": "Stress", "confidence": 99.0}
-            depression_result = {"depression": "Depression", "confidence": 99.0}
-
         return {
             "response": crisis_eval["response"],
-            "emotion": emotion_result["emotion"],
-            "emotion_confidence": emotion_result["confidence"],
-            "stress": "Stress",
-            "stress_confidence": 99.0,
-            "depression": "Depression",
-            "depression_confidence": 99.0,
+            "emotion": None,
+            "emotion_confidence": 0.0,
+            "stress": None,
+            "stress_confidence": 0.0,
+            "depression": None,
+            "depression_confidence": 0.0,
             "crisis": True,
             "crisis_level": level,
         }
+
+    # Fetch personal history only after both crisis checks have passed.
+    try:
+        user_context = build_user_context(user_id) if user_id is not None else "User Context: unavailable"
+    except Exception as exc:
+        print(f"  Could not load user context: {exc}")
+        user_context = "User Context: unavailable"
 
     # --------------------------------------------------
     # Step 2: Run all three classifiers
@@ -507,23 +633,43 @@ def generate_chat_response(question: str, history: Optional[list] = None) -> dic
 
     # --------------------------------------------------
     # Step 5: Select language-specific prompt and format
-    # History is injected as a prefix in the question slot so
-    # the LLM sees recent context without changing prompt.py.
+    # Keep prior turns separate from the current user question.
     # --------------------------------------------------
-    history_prefix   = format_history(history)
-    question_with_history = history_prefix + question
+    history_context = format_history(history)
+    journal_match = re.search(
+        r"^\s*\d+\.\s*\[[^\]]+\]\s*(.+)$",
+        user_context,
+        flags=re.MULTILINE,
+    )
+    first_journal_text = journal_match.group(1).strip() if journal_match else ""
 
     prompt = get_prompt(language)
+    print(f"  [User Context] user_id={user_id}\n{user_context}")
     messages = prompt.format_messages(
         context=context,
         mental_state=mental_state,
-        question=question_with_history,
+        question=question,
+        history=history_context,
+        user_context=user_context,
     )
 
     # --------------------------------------------------
     # Step 6: Generate LLM response + validate/regenerate
     # --------------------------------------------------
     response_text, regenerated = _invoke_and_validate(messages, question, language)
+
+    # Crisis responses exit above; only add this fallback to a normal response
+    # when the current question relates to the journal and the model omitted it.
+    if (
+        first_journal_text
+        and _journal_is_relevant(question, first_journal_text)
+        and not _response_mentions_journal(response_text, first_journal_text)
+    ):
+        response_text = (
+            f"I can see from your recent journal that you wrote: '{first_journal_text}'. "
+            "It makes complete sense that you are feeling this way.\n\n"
+            + response_text
+        )
 
     if regenerated:
         print("  Note: response was regenerated due to quality check.")
@@ -582,6 +728,8 @@ def generate_response_with_context(question: str) -> dict:
         context=context,
         mental_state=mental_state,
         question=question,
+        history="",
+        user_context="User Context: unavailable",
     )
 
     raw_response  = llm.invoke(messages)

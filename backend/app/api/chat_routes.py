@@ -4,7 +4,7 @@
 # generate_chat_response() for multi-turn conversation memory.
 # MODIFIED (Part 2): Added crisis/severity fields to /chat response.
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 from app.database.schemas import (
     PredictionRequest,
@@ -14,6 +14,7 @@ from app.database.schemas import (
 )
 
 from app.services.privacy import redact_sensitive_data
+from app.api.deps import current_claims
 
 router = APIRouter()
 
@@ -41,7 +42,7 @@ def predict(request: PredictionRequest):
 
 
 @router.post("/chat")
-def chat(request: ChatRequest):
+def chat(request: ChatRequest, claims: dict = Depends(current_claims)):
     # Load the AI/RAG stack only when chat is requested.  Those modules load
     # large local models during import; importing them at API startup prevents
     # unrelated endpoints such as authentication from starting when model
@@ -52,6 +53,7 @@ def chat(request: ChatRequest):
     result = generate_chat_response(
         question=request.message,
         history=request.history or [],
+        user_id=int(claims["sub"]),
     )
 
     if result.get("crisis"):

@@ -36,17 +36,20 @@ def error_detail(exc: requests.HTTPError, fallback: str = "Request failed") -> s
 
 
 def _headers() -> dict[str, str]:
-    token = st.session_state.get("access_token")
+    # Support the current login key and the older key used by some UI flows.
+    token = st.session_state.get("access_token") or st.session_state.get("auth_token")
     return {"Authorization": f"Bearer {token}"} if token else {}
 
 
 def request(method: str, path: str, **kwargs: Any) -> Any:
+    headers = dict(kwargs.pop("headers", {}) or {})
+    headers.update(_headers())  # verified backend auth comes from saved login token
+    kwargs["timeout"] = 300
     try:
         response = requests.request(
             method,
             f"{API_URL}{path}",
-            headers=_headers(),
-            timeout=30,
+            headers=headers,
             **kwargs,
         )
     except (requests.ConnectionError, requests.Timeout) as exc:
@@ -56,6 +59,7 @@ def request(method: str, path: str, **kwargs: Any) -> Any:
         ) from exc
     if response.status_code == 401:
         st.session_state.pop("access_token", None)
+        st.session_state.pop("auth_token", None)
     response.raise_for_status()
     return response.json() if response.content else None
 

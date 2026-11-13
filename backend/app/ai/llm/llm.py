@@ -19,8 +19,8 @@ from langchain_ollama import ChatOllama
 
 DEFAULT_MODEL_NAME  = "llama3.2:3b"
 DEFAULT_TEMPERATURE = 0.2   # lower = more consistent wording
-DEFAULT_NUM_PREDICT = 300   # raised — responses are now 4-6 sentences (60-120 words)
-DEFAULT_NUM_CTX     = 1800  # fits few-shot prompt + RAG context + response
+DEFAULT_NUM_PREDICT = 300   # maximum generated tokens
+DEFAULT_NUM_CTX     = 2048  # context window
 
 
 # =======================================================

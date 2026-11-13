@@ -31,6 +31,7 @@ from gtts import gTTS
 from db import add_message, create_conversation, get_messages_by_conversation, log_user_activity
 # from utils.ai_engine import generate_response
 from layout_utils import apply_clean_layout
+from api_client import post as api_post, BackendUnavailableError
 import time
 import base64
 
@@ -114,16 +115,12 @@ def build_history_for_api(max_turns: int = 3) -> list:
 
 
 def generate_response_from_backend(message: str, history: list = None) -> dict:
-    url = os.getenv("API_URL", "http://127.0.0.1:8000").rstrip("/") + "/chat"
-
     payload = {"message": message, "history": history if history else []}
 
     try:
-        response = requests.post(url, json=payload, timeout=180)
-        response.raise_for_status()
-        data = response.json()
+        data = api_post("/chat", json=payload, timeout=180)
         return data  # Return full dict (includes crisis, severity, response, etc.)
-    except requests.Timeout:
+    except (requests.Timeout, requests.exceptions.Timeout):
         return {
             "response": (
                 "The local assistant is taking longer than expected to respond. "
@@ -132,7 +129,7 @@ def generate_response_from_backend(message: str, history: list = None) -> dict:
             "crisis": False,
             "severity": None,
         }
-    except requests.ConnectionError:
+    except (requests.ConnectionError, BackendUnavailableError):
         return {
             "response": "The chat backend is unavailable. Please start FastAPI and try again.",
             "crisis": False,
