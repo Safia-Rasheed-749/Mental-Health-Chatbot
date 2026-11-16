@@ -19,8 +19,8 @@ from langchain_ollama import ChatOllama
 
 DEFAULT_MODEL_NAME  = "llama3.2:3b"
 DEFAULT_TEMPERATURE = 0.2   # lower = more consistent wording
-DEFAULT_NUM_PREDICT = 300   # raised — responses are now 4-6 sentences (60-120 words)
-DEFAULT_NUM_CTX     = 1800  # fits few-shot prompt + RAG context + response
+DEFAULT_NUM_PREDICT = 600   # sufficient headroom for multilingual responses (Urdu tokens ~6x/word) and complete sentence generation
+DEFAULT_NUM_CTX     = 2560  # fits few-shot prompt + RAG context + multi-turn history + response
 
 
 # =======================================================
@@ -40,9 +40,9 @@ def get_llm(
     Args:
         model_name:   Ollama model installed locally.
         temperature:  Randomness of output (lower = more consistent).
-        num_predict:  Max tokens to generate.
-                      250 prevents mid-sentence cut-off for 3-4 sentence
-                      responses while staying reasonable on CPU.
+        num_predict:  Max tokens to generate. 600 prevents premature
+                      mid-sentence cut-off, especially in Urdu / Roman Urdu
+                      where token-to-word ratios are significantly higher.
         num_ctx:      Context window fed to Ollama.
         **kwargs:     Additional ChatOllama parameters.
 
@@ -54,7 +54,7 @@ def get_llm(
         temperature=temperature,
         num_predict=num_predict,
         num_ctx=num_ctx,
-        stop=["Human:", "User:", "Assistant:", "\n\n\n"],
+        stop=["Human:", "User:", "Assistant:"],
         **kwargs,
     )
 

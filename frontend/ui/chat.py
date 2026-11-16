@@ -118,8 +118,17 @@ def generate_response_from_backend(message: str, history: list = None) -> dict:
 
     payload = {"message": message, "history": history if history else []}
 
+    # Read the JWT token saved during login and send it as a Bearer header.
+    # The /chat endpoint is protected by current_claims (deps.py) which
+    # returns 401 if this header is missing.
+    token = (
+        st.session_state.get("access_token")
+        or st.session_state.get("auth_token")
+    )
+    headers = {"Authorization": f"Bearer {token}"} if token else {}
+
     try:
-        response = requests.post(url, json=payload, timeout=180)
+        response = requests.post(url, json=payload, headers=headers, timeout=300)
         response.raise_for_status()
         data = response.json()
         return data  # Return full dict (includes crisis, severity, response, etc.)
@@ -157,25 +166,8 @@ def generate_response_from_backend(message: str, history: list = None) -> dict:
 
 
 def _insight_chips(data: dict) -> str:
-    """Render non-diagnostic model predictions returned by FastAPI."""
-    if not data or not data.get("emotion"):
-        return ""
-    emotion = str(data.get("emotion", "Unknown")).title()
-    emotion_conf = float(data.get("emotion_confidence", 0) or 0)
-    stress = str(data.get("stress", "Unknown"))
-    stress_conf = float(data.get("stress_confidence", 0) or 0)
-    depression = str(data.get("depression", "Unknown"))
-    depression_conf = float(data.get("depression_confidence", 0) or 0)
-    return (
-        '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:5px 0 12px 48px;">'
-        f'<span style="background:#eef2ff;color:#4338ca;padding:4px 9px;border-radius:12px;font-size:11px;">'
-        f'🧠 Emotion: {emotion} ({emotion_conf:.0f}%)</span>'
-        f'<span style="background:#fff7ed;color:#c2410c;padding:4px 9px;border-radius:12px;font-size:11px;">'
-        f'⚡ Stress: {stress} ({stress_conf:.0f}%)</span>'
-        f'<span style="background:#f0fdf4;color:#15803d;padding:4px 9px;border-radius:12px;font-size:11px;">'
-        f'🛡️ Depression signal: {depression} ({depression_conf:.0f}%)</span>'
-        '</div>'
-    )
+    """Internal helper for model insights; returns empty string to hide visible indicators in chat UI."""
+    return ""
 
 
 def _record_trajectory(data: dict) -> None:
@@ -201,7 +193,7 @@ def _show_exercise_recommendation(data: dict, key_suffix: str = "live", containe
         <div class="exercise-prompt-icon">✦</div>
         <div>
             <div class="exercise-prompt-title">A gentle reset may help</div>
-            <div class="exercise-prompt-copy">Your message contains a high stress signal. You can try a short guided breathing exercise whenever you feel ready.</div>
+            <div class="exercise-prompt-copy">Taking a moment for a short guided breathing exercise can help you feel more grounded.</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -698,7 +690,6 @@ def show_chat(user_id):
                     """, unsafe_allow_html=True)
                     insight = st.session_state.get("_insight_metadata", {}).get(idx)
                     if insight and not (crisis_meta and crisis_meta.get("crisis")):
-                        st.markdown(_insight_chips(insight), unsafe_allow_html=True)
                         _show_exercise_recommendation(insight, key_suffix=f"history_{idx}")
 
     # ══════════════════════════════════════════════════════
@@ -781,7 +772,6 @@ def show_chat(user_id):
             unsafe_allow_html=True,
         )
         if not data_crisis:
-            message_container.markdown(_insight_chips(insight_data), unsafe_allow_html=True)
             _record_trajectory(insight_data)
             _show_exercise_recommendation(
                 insight_data,
@@ -805,11 +795,7 @@ def show_chat(user_id):
             st.session_state["_insight_metadata"] = {}
         st.session_state["_insight_metadata"][message_index] = insight_data
 
-        trajectory = st.session_state.get("emotion_trajectory", [])
-        if trajectory:
-            import pandas as pd
-            message_container.caption("Session model signals (not a clinical measurement)")
-            message_container.line_chart(pd.DataFrame(trajectory).set_index("turn")[["emotion_confidence", "stress_confidence", "depression_confidence"]])
+        # Trajectory is maintained in session state for analytics without displaying visible indicators in chat
 
         if pending_type == "voice":
             speak_and_auto_play(response)

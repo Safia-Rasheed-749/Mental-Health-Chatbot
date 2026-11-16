@@ -2,7 +2,7 @@
 import streamlit as st
 import re
 from db import add_user, check_login, get_user_by_email, create_reset_token_for_email, reset_password_with_code
-from api_client import BackendUnavailableError
+from api_client import BackendUnavailableError, error_detail
 from ui.email_utils import send_reset_email
 
 def show_auth_page():
@@ -654,19 +654,19 @@ def show_auth_page():
                 # Full Width Send Code Button
                 if st.button("Send Reset Code", key="send_reset_btn", type="primary", use_container_width=True):
                     if reset_email_input:
-                        user = get_user_by_email(reset_email_input)
-                        if user:
-                            token_data = create_reset_token_for_email(reset_email_input)
-                            success, message = send_reset_email(reset_email_input, token_data['reset_code'], user['username'])
-                            if success:
-                                st.success("✅ Code sent to your email.")
-                                st.session_state['reset_email_for_verification'] = reset_email_input
-                                st.session_state['show_reset_form'] = True
-                                st.rerun()
+                        try:
+                            with st.spinner("Sending verification code..."):
+                                create_reset_token_for_email(reset_email_input)
+                            st.success("✅ A 6-digit verification code has been sent to your email.")
+                            st.session_state['reset_email_for_verification'] = reset_email_input
+                            st.session_state['show_reset_form'] = True
+                            st.rerun()
+                        except Exception as exc:
+                            import requests
+                            if isinstance(exc, requests.HTTPError):
+                                st.error(error_detail(exc, "No account found with this email."))
                             else:
-                                st.error(message)
-                        else:
-                            st.error("No account found with this email.")
+                                st.error(f"Failed to send reset code: {exc}")
                     else:
                         st.warning("Please enter your email.")
                 

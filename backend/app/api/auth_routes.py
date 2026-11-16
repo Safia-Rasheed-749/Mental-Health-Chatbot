@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from fastapi import APIRouter, HTTPException
 
+from app.core.config import settings
 from app.core.security import create_access_token
 from app.database.schemas import LoginRequest, RegisterRequest, ResetRequest
 from app.services import auth_service
+from app.services.email_service import send_password_reset_email
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -35,13 +37,23 @@ def me():
 
 @router.post("/forgot-password")
 def forgot_password(request: dict):
-    result = auth_service.create_reset_code(request.get("email", ""))
+    email = request.get("email", "").strip()
+    if not email:
+        raise HTTPException(400, "Email address is required")
+
+    result = auth_service.create_reset_code(email)
     if not result:
         raise HTTPException(404, "No account found with this email")
-    # Email delivery is intentionally kept behind the API boundary. The code
-    # is returned only for local development/testing; production should send it
-    # through the backend SMTP service and remove this field.
-    return {"message": "Reset code created", "reset_code": result["code"]}
+
+    sent, error_msg = send_password_reset_email(
+        to_email=result["email"],
+        username=result["username"],
+        reset_code=result["code"],
+    )
+    if not sent and settings.sender_email:
+        raise HTTPException(500, f"Failed to send reset email: {error_msg}")
+
+    return {"message": "Password reset code sent to your registered email address"}
 
 
 @router.post("/reset-password")

@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 CRISIS_HELPLINES: dict = {
     "pakistan": {
         "Umang Helpline":             "0311-7786264",
-        "Rozan Helpline":             "0800-22444",
+        "Rozan Helpline":             "0800-22-444",
         "Government Mental Health":   "1166",
         "Emergency Services":         "1122 or 15",
     },
