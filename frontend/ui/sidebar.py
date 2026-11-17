@@ -189,8 +189,8 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         margin-left: 0 !important;
     }
     section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label:hover {
-        background: #e0f2fe !important;
-        border-color: #bae6fd !important;
+        background: rgba(99, 102, 241, 0.10) !important;
+        border-color: rgba(99, 102, 241, 0.28) !important;
     }
     section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label p,
     section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label span {
@@ -202,16 +202,23 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         margin: 0 !important;
     }
     section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label:has(input:checked) {
-        background: #e0f2fe !important;
-        border-color: #7dd3fc !important;
+        background: linear-gradient(135deg, #6366f1 0%, #7c3aed 100%) !important;
+        border-color: #5b5ce2 !important;
+        box-shadow: 0 5px 14px rgba(99, 102, 241, 0.28) !important;
+    }
+    section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label:has(input:checked):hover {
+        background: linear-gradient(135deg, #5b5ce2 0%, #6d28d9 100%) !important;
+        border-color: #4f46e5 !important;
     }
     section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label:has(input:checked) p,
     section[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label:has(input:checked) span {
-        color: #0369a1 !important;
-        -webkit-text-fill-color: #0369a1 !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        font-weight: 700 !important;
+        text-shadow: 0 1px 1px rgba(49, 46, 129, 0.22) !important;
     }
     section[data-testid="stSidebar"] [data-testid="stRadio"] input[type="radio"] {
-        accent-color: #0284c7 !important;
+        accent-color: #6366f1 !important;
     }
 
     /* ── ALL SIDEBAR BUTTONS ── */
@@ -445,7 +452,6 @@ def show_sidebar(user_id=None, current_page="Dashboard"):
         choice = st.radio(
             "Navigation",
             page_labels,
-            index=page_labels.index(current_label),
             key="nav",
             label_visibility="collapsed",
             on_change=_sync_sidebar_navigation,

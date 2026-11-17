@@ -362,13 +362,14 @@ def get_prompt(language: str = "english") -> ChatPromptTemplate:
         "urdu":       _URDU_SYSTEM,
     }
     system = system_map.get(language, _ENGLISH_SYSTEM)
+    system += "\n\nPERSONALIZATION CONTEXT (may be empty):\n{personalization_context}"
 
     return ChatPromptTemplate.from_messages(
         [
             ("system", system),
             ("human", "{question}"),
         ]
-    )
+    ).partial(personalization_context="")
 
 
 # =====================================================

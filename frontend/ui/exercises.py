@@ -488,6 +488,11 @@ def _render_session_summary():
 # ---------------------------------------------------------------------------
 
 def show_exercises_page():
+    # Streamlit caches imported modules, but logout clears session state. Re-run
+    # this initialization every time the page renders so direct state reads below
+    # remain safe after a logout/login or a fresh session.
+    _init_state()
+
     st.markdown(
         """
         <style>
