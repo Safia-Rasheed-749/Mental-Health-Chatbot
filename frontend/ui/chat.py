@@ -798,7 +798,10 @@ def show_chat(user_id):
         # Trajectory is maintained in session state for analytics without displaying visible indicators in chat
 
         if pending_type == "voice":
-            speak_and_auto_play(response)
+            try:
+                speak_and_auto_play(response)
+            except Exception as e:
+                print(f"Voice playback error: {e}")
 
         st.session_state["component_key_timestamp"] = time.time()
         st.rerun()
