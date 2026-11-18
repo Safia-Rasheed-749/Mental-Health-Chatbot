@@ -1,48 +1,69 @@
+import html
+import os
+
 import streamlit as st
 import requests
+from components.navbar import render_navbar
 
 # =====================================================
 # Backend API Call
 # =====================================================
 
-BACKEND_URL = "http://127.0.0.1:8000/chat"
+BACKEND_URL = os.getenv("API_URL", "http://127.0.0.1:8000").rstrip("/") + "/demo/chat"
 
-_FALLBACK_RESPONSES = [
-    "I'm here for you. It's okay to not feel okay sometimes. Your feelings are valid.",
-    "Tell me more about what's on your mind. You're not alone in this.",
-    "You don't have to face this alone. Whatever you're going through, I'm here to listen.",
-    "Be gentle with yourself today. You deserve compassion and care.",
-]
 
-def get_demo_response(message: str) -> str:
+def get_demo_response(message: str, history: list = None) -> str:
     try:
         response = requests.post(
             BACKEND_URL,
-            json={"message": message},
+            json={"message": message, "history": history or []},
             timeout=300,
         )
         response.raise_for_status()
         data = response.json()
-        return data.get("response", "I'm here to listen. Can you tell me more?")
+        if not isinstance(data, dict) or not isinstance(data.get("response"), str):
+            raise ValueError("The chat service returned an invalid response.")
+        return data["response"]
 
     except requests.exceptions.ConnectionError:
         return (
-            "I'm here for you. "
-            "(Note: AI service is starting up — please try again in a moment.)"
+            "The chat service is unavailable. Please try again in a moment."
         )
     except requests.exceptions.Timeout:
         return (
-            "I'm taking a little longer than usual to respond. "
-            "Please send your message again."
+            "The assistant is taking longer than usual to respond. Please try again."
         )
-    except Exception:
-        import random
-        return random.choice(_FALLBACK_RESPONSES)
+    except requests.exceptions.HTTPError as exc:
+        detail = "Chat request failed."
+        if exc.response is not None:
+            try:
+                error_data = exc.response.json()
+                if isinstance(error_data, dict):
+                    detail = str(error_data.get("detail", detail))
+            except (ValueError, requests.exceptions.JSONDecodeError):
+                detail = (exc.response.text or detail).strip()[:300]
+        return f"The assistant could not complete this request: {detail}"
+    except (ValueError, requests.exceptions.JSONDecodeError):
+        return "The assistant returned an invalid response. Please try again."
+    except requests.exceptions.RequestException:
+        return "The chat request could not be completed. Please try again."
+
+
+def _demo_history(messages: list, max_turns: int = 3) -> list:
+    """Build the same recent-turn payload used by the signed-in chat page."""
+    previous_messages = messages[1:-1]
+    return [
+        {"role": message["role"], "content": message["content"]}
+        for message in previous_messages[-max_turns * 2:]
+        if message.get("role") in ("user", "assistant")
+        and isinstance(message.get("content"), str)
+        and message["content"].strip()
+    ]
 
 def show_demo_chat():
 
     # ===== INITIALIZATION =====
-    if "demo_messages" not in st.session_state:
+    if not st.session_state.get("demo_messages"):
         st.session_state.demo_messages = [
             {"role": "assistant", "content": "👋 Welcome! How can I support you today?"}
         ]
@@ -79,28 +100,6 @@ def show_demo_chat():
             margin: 0 auto !important;
             padding-top: 1.5rem !important;
             padding-bottom: 1rem !important;
-        }
-
-        /* ===== TOP BAR ===== */
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 0 18px 0;
-            border-bottom: 1px solid #eef2f7;
-            margin-bottom: 8px;
-        }
-        .topbar-brand {
-            font-size: 16px;
-            font-weight: 700;
-            color: #1e293b;
-            letter-spacing: -0.2px;
-        }
-        .topbar-brand span {
-            font-weight: 400;
-            color: #94a3b8;
-            font-size: 12px;
-            margin-left: 6px;
         }
 
         /* ===== HOME BUTTON (subtle outline) ===== */
@@ -268,27 +267,7 @@ def show_demo_chat():
     </style>
     """, unsafe_allow_html=True)
 
-    # ===== TOP BAR =====
-    # Brand on left, Home button on right — but Streamlit columns
-    # align vertically, so we use a flex container with st.button
-    # positioned via column ratio.
-    brand_col, home_col = st.columns([5, 1])
-    with brand_col:
-        st.markdown(
-            "<div class='topbar-brand'>🧠 MindCare AI"
-            "<span>· Demo</span></div>",
-            unsafe_allow_html=True,
-        )
-    with home_col:
-        if st.button("← Home", use_container_width=True, key="home_btn"):
-            st.session_state.page = "home"
-            st.rerun()
-
-    # Thin divider under top bar
-    st.markdown(
-        "<div style='border-bottom:1px solid #eef2f7;margin-bottom:14px;'></div>",
-        unsafe_allow_html=True,
-    )
+    render_navbar()
 
     # ===== LOGIC =====
     remaining = 5 - st.session_state.demo_msg_count
@@ -320,10 +299,11 @@ def show_demo_chat():
 
     # ===== CHAT DISPLAY =====
     for msg in st.session_state.demo_messages:
+        message_content = html.escape(str(msg.get("content", ""))).replace("\n", "<br>")
         if msg["role"] == "user":
             st.markdown(f"""
             <div class="user-message">
-                <div class="user-bubble">{msg["content"]}</div>
+                <div class="user-bubble">{message_content}</div>
             </div>
             """, unsafe_allow_html=True)
         else:
@@ -331,7 +311,7 @@ def show_demo_chat():
             <div class="assistant-message">
                 <div class="ai-bubble-wrap">
                     <div class="ai-avatar">🧠</div>
-                    <div class="assistant-bubble">{msg["content"]}</div>
+                    <div class="assistant-bubble">{message_content}</div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -345,9 +325,10 @@ def show_demo_chat():
                 {"role": "user", "content": user_input}
             )
             st.session_state.demo_msg_count += 1
+            history = _demo_history(st.session_state.demo_messages)
 
             with st.spinner("MindCare AI is thinking..."):
-                ai_response = get_demo_response(user_input)
+                ai_response = get_demo_response(user_input, history=history)
 
             st.session_state.demo_messages.append(
                 {"role": "assistant", "content": ai_response}

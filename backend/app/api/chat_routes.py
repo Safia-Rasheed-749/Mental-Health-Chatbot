@@ -86,3 +86,24 @@ def chat(request: ChatRequest, claims: dict = Depends(current_claims)):
         "depression_confidence": result["depression_confidence"],
     }
 
+
+@router.post("/demo/chat")
+def demo_chat(request: ChatRequest):
+    """Generate a public demo reply through the same pipeline as authenticated chat."""
+    from app.services.rag_chat_service import generate_chat_response
+
+    result = generate_chat_response(
+        question=request.message,
+        history=request.history or [],
+        user_id=None,
+    )
+    is_crisis = result.get("crisis", False)
+    return {
+        "response": result["response"],
+        "crisis": is_crisis,
+        "severity": (
+            result.get("severity", result.get("crisis_level"))
+            if is_crisis else None
+        ),
+    }
+
